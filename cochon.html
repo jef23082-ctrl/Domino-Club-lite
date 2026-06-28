@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👑 Le Roi du Cochon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --gold: #ffd700;
+            --gold-glow: rgba(255, 215, 0, 0.25);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --cochon-color: #ff85a2;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; padding: 15px 15px 90px 15px; overflow-x: hidden; }
+
+        /* Écrans de verrouillage */
+        .lock-screen { position: fixed; top:0; left:0; right:0; bottom:0; background: #050507; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .lock-box { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 30px 20px; border-radius: 24px; text-align: center; width: 100%; max-width: 360px; backdrop-filter: blur(20px); }
+        .lock-input { width: 100%; padding: 14px; background: #1a1b20; border: 1px solid var(--glass-border); border-radius: 12px; color: #fff; text-align: center; font-size: 1.2rem; letter-spacing: 4px; margin: 20px 0; }
+
+        header { text-align: center; margin-bottom: 20px; }
+        header h1 { font-size: 1.8rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { color: var(--cochon-color); font-size: 0.85rem; font-weight: 600; }
+        h2 { font-size: 1.3rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: #fff; }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .players-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .player-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px 8px; text-align: center; position: relative; backdrop-filter: blur(10px); transition: all 0.3s; cursor: pointer; }
+        .player-card.at-table { border-color: var(--gold); box-shadow: 0 0 15px var(--gold-glow); transform: scale(1.02); background: rgba(255, 215, 0, 0.02); }
+        .player-card.waiting { opacity: 0.55; }
+
+        .rank-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 1.4rem; }
+        .pos-badge { position: absolute; top: 8px; right: 8px; font-size: 0.95rem; font-weight: 900; color: #fff; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 6px; }
+        
+        .avatar-container { width: 60px; height: 60px; margin: 8px auto; border-radius: 50%; background: #1d1e22; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.1); font-size: 1.8rem; overflow: hidden; }
+        .avatar-container img { width: 100%; height: 100%; object-fit: cover; }
+        .player-card.at-table .avatar-container { border-color: var(--gold); }
+        .player-name { font-size: 1.05rem; font-weight: 900; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; }
+        
+        .mini-stats { display: flex; justify-content: space-around; font-size: 1.1rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px; margin-top: 8px; }
+        .stat-item .val { font-weight: 900; }
+        .stat-item .val.vic { color: var(--gold); }
+        .stat-item .val.coch { color: var(--cochon-color); }
+        .streak-fire { position: absolute; bottom: 32px; right: 8px; color: #ff4500; font-size: 0.85rem; font-weight: 800; }
+
+        .card-panel { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 15px; margin-bottom: 20px; backdrop-filter: blur(10px); overflow-x: auto; }
+        
+        .table-display { display: flex; justify-content: space-around; margin: 15px 0; }
+        .table-spot { text-align: center; width: 30%; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); }
+        .table-spot.active-p { border-color: var(--gold); background: rgba(255, 215, 0, 0.05); }
+        .table-spot .spot-avatar { width: 45px; height: 45px; margin: 0 auto 5px auto; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; overflow: hidden; }
+        .table-spot .spot-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .btn-action { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: linear-gradient(90deg, #d4af37, #f3e5ab); color: #000; border: none; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-bottom: 10px; }
+        .btn-action.start-game { background: linear-gradient(90deg, #3b82f6, #60a5fa); color: #fff; }
+        .btn-action.secondary { background: rgba(255,255,255,0.08); color: #fff; margin-top: 0px; padding: 10px; font-size: 0.85rem; }
+        .btn-danger { background: #ef4444; color: #fff; padding: 6px 10px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+
+        .legend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 0.75rem; text-align: center; margin-top: 5px; }
+        .legend-item { background: rgba(255,255,255,0.02); padding: 6px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+
+        .ranking-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .ranking-table th { text-transform: uppercase; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 12px 4px; border-bottom: 2px solid rgba(255,255,255,0.1); }
+        .ranking-table td { text-align: center; padding: 14px 4px; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }
+        .ranking-table td:nth-child(2) { text-align: left; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .ranking-avatar { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; background: rgba(255,255,255,0.05); }
+        .ranking-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 5, 7, 0.98); backdrop-filter: blur(15px); z-index: 100; display: none; padding: 20px; overflow-y: auto; }
+        .modal.active { display: block; }
+        .step-box { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 16px; padding: 15px; margin-bottom: 15px; }
+        .step-title { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; font-weight: 600; }
+        
+        .selector-row { display: flex; gap: 10px; }
+        .select-btn { flex: 1; padding: 12px 5px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); color: #fff; font-weight: 600; font-size: 0.85rem; }
+        .select-btn.selected-win { background: var(--gold); color: #000; }
+        .select-btn.selected-cochon { background: var(--cochon-color); color: #000; }
+        .select-btn.selected-saved { background: #3b82f6; color: #fff; }
+        
+        .bench-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .bench-btn { padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); color: var(--text-main); font-size: 0.8rem; }
+        .bench-btn.chosen { background: #2563eb; color: #fff; }
+
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(10, 10, 12, 0.9); border-top: 1px solid var(--glass-border); backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; z-index: 90; }
+        .nav-item { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; font-size: 0.6rem; gap: 4px; cursor: pointer; width: 18%; }
+        .nav-item.active { color: var(--gold); }
+        .nav-item i { font-size: 1.1rem; }
+
+        .history-item { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; background: rgba(255,255,255,0.01); margin-bottom: 10px; border-radius: 12px; }
+        .history-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .day-ranking-box { background: rgba(255, 215, 0, 0.02); border: 1px solid rgba(255, 215, 0, 0.15); border-radius: 14px; padding: 15px; margin-bottom: 20px; overflow-x: auto; }
+        
+        .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .profile-avatar { width: 70px; height: 70px; border-radius: 50%; background: var(--glass-bg); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; border: 2px solid var(--gold); overflow: hidden; }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .p-stat-box { background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 12px 8px; border-radius: 12px; text-align: center; }
+        .p-stat-val { font-size: 1.2rem; font-weight: 700; color: #fff; }
+        .p-stat-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 2px; text-transform: uppercase; }
+        .p-sub-stat { font-size: 0.85rem; font-weight: bold; color: #fff; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 4px; margin-top: 4px; }
+
+        .admin-form-group { margin-bottom: 15px; }
+        .admin-form-group label { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+        .admin-input { width: 100%; padding: 12px; background: #1a1b20; border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-size: 0.95rem; }
+        
+        .avatar-picker-zone { display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.02); border: 1px dashed var(--glass-border); padding: 10px; border-radius: 10px; }
+        .avatar-preview-admin { width: 45px; height: 45px; border-radius: 50%; background: #1a1b20; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; flex-shrink: 0; }
+        .avatar-preview-admin img { width: 100%; height: 100%; object-fit: cover; }
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; flex-grow: 1; }
+        .file-input-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; }
+        .btn-file-trigger { width: 100%; padding: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 8px; font-size: 0.8rem; font-weight: 600; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen-global" class="lock-screen">
+        <div class="lock-box">
+            <h1 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 5px;">🔒 Accès au Club</h1>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Entre le mot de passe général</p>
+            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="••••" oninput="checkGlobalPassword()">
+            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none;">Mot de passe incorrect</div>
+        </div>
+    </div>
+
+    <div id="lock-screen-admin" class="lock-screen" style="display: none;">
+        <div class="lock-box">
+            <h1 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 5px;">🛠️ Zone Admin</h1>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Mot de passe administrateur requis</p>
+            <input type="password" id="adminPasswordInput" class="lock-input" placeholder="••••" oninput="checkAdminPassword()">
+            <div id="adminLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none;">Mot de passe admin incorrect</div>
+            <button onclick="cancelAdminAccess()" style="background:none; border:none; color:var(--text-muted); font-size:0.8rem; text-decoration:underline; cursor:pointer; margin-top:10px;">Retour à l'accueil</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>Le Roi du Cochon</h1>
+        <div class="subtitle">👑 Domino Club Élite</div>
+    </header>
+
+    <main id="page-home" class="page active">
+        <section class="players-grid" id="mainGrid"></section>
+
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-gamepad text-gold"></i> Table Actuelle</h2>
+            <div class="table-display" id="homeTableDisplay"></div>
+            
+            <button class="btn-action start-game" onclick="openNewGameModal()"><i class="fa-solid fa-play"></i> Nouvelle Partie</button>
+            <button class="btn-action" onclick="openMatchModal(false)"><i class="fa-solid fa-circle-check"></i> Fin de Manche Standard</button>
+            <button class="btn-action secondary" onclick="openMatchModal(true)"><i class="fa-solid fa-arrows-rotate"></i> Égalité (Les 3 sortent)</button>
+        </section>
+
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-bolt" style="color:#ff4500;"></i> En Forme</h2>
+            <div id="homeHighlights" style="margin-bottom: 12px;"></div>
+        </section>
+
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-circle-info" style="color:var(--gold);"></i> Légende des Badges</h2>
+            <div class="legend-grid">
+                <div class="legend-item">👑 Roi (#1)</div>
+                <div class="legend-item">💎 Prince (#2)</div>
+                <div class="legend-item">🥇 Champion (#3-4)</div>
+                <div class="legend-item">⚔️ Challenger (#5-7)</div>
+                <div class="legend-item">🪵 Novice (#8-9)</div>
+                <div class="legend-item">🔥 Série en cours</div>
+            </div>
+        </section>
+    </main>
+
+    <main id="page-ranking" class="page">
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-trophy" style="color:var(--gold);"></i> Classement Général</h2>
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>Joueur</th>
+                        <th>Vic</th>
+                        <th>Coch</th>
+                        <th>% Vic</th>
+                        <th>Série</th>
+                        <th>Sauvé</th>
+                        <th>Jouées</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingTableBody"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <main id="page-profiles" class="page">
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-user"></i> Fiches des Joueurs</h2>
+            <select id="profileSelector" onchange="renderProfile(this.value)" style="width:100%; padding:10px; background:#1a1b20; color:#fff; border-radius:8px; border:1px solid var(--glass-border); font-weight:600; margin-bottom:20px;"></select>
+            <div id="profileContent"></div>
+        </section>
+    </main>
+
+    <main id="page-history" class="page">
+        <div class="day-ranking-box">
+            <h2><i class="fa-solid fa-calendar-day" style="color:var(--gold);"></i> Classement Complet du Jour</h2>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Prend uniquement en compte les manches jouées aujourd'hui.</p>
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>Joueur</th>
+                        <th>Vic</th>
+                        <th>Coch</th>
+                        <th>% Vic</th>
+                        <th>Sauvé</th>
+                        <th>Jouées</th>
+                    </tr>
+                </thead>
+                <tbody id="dayRankingTableBody"></tbody>
+            </table>
+        </div>
+
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> Historique des Manches</h2>
+            <div id="historyList"></div>
+        </section>
+    </main>
+
+    <main id="page-admin" class="page">
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-user-plus"></i> Ajouter / Modifier un Joueur</h2>
+            <div class="admin-form-group">
+                <label>Sélectionner un joueur pour le modifier (ou créer un nouveau)</label>
+                <select id="adminPlayerSelector" onchange="loadPlayerToEdit(this.value)" style="width:100%; padding:10px; background:#1a1b20; color:#fff; border-radius:8px; border:1px solid var(--glass-border); font-weight:600; margin-bottom:12px;"></select>
+            </div>
+            <div class="admin-form-group">
+                <label>Nom du Joueur</label>
+                <input type="text" id="adminPlayerName" class="admin-input" placeholder="Ex: Khalil">
+            </div>
+            <div class="admin-form-group">
+                <label>Avatar / Image / Émoji</label>
+                <div class="avatar-picker-zone">
+                    <div class="avatar-preview-admin" id="adminAvatarPreview">❓</div>
+                    <input type="text" id="adminPlayerAvatarText" class="admin-input" placeholder="Tapez un émoji..." style="flex-grow:1; width:auto;" oninput="updateAdminAvatarPreview(this.value)">
+                    <div class="file-input-wrapper">
+                        <button class="btn-file-trigger"><i class="fa-solid fa-image"></i> Fichier</button>
+                        <input type="file" id="adminPlayerAvatarFile" accept="image/*" onchange="handleAdminImageUpload(event)">
+                    </div>
+                </div>
+            </div>
+            <button class="btn-action" onclick="savePlayerAdmin()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer le Joueur</button>
+        </section>
+
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-screwdriver-wrench"></i> Corriger l'Historique (Suppression)</h2>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">En supprimant une manche ci-dessous, les scores, séries et cochons des joueurs associés seront nettoyés automatiquement.</p>
+            <div id="adminHistoryList"></div>
+        </section>
+    </main>
+
+
+    <div class="modal" id="matchModal">
+        <h2 id="modalTitle">Fin de la Manche</h2>
+        
+        <div class="step-box" id="winStepBox">
+            <div class="step-title">🏆 Qui a gagné la partie ?</div>
+            <div class="selector-row" id="winSelector"></div>
+        </div>
+
+        <div class="step-box" id="savedStepBox" style="display:none;">
+            <div class="step-title">🛡️ Qui s'est sauvé de l'égalité ?</div>
+            <div class="selector-row" id="savedSelector"></div>
+        </div>
+
+        <div class="step-box" id="cochonStepBox">
+            <div class="step-title" id="cochonTitle">🐷 Qui prend le cochon ? (Optionnel)</div>
+            <div class="selector-row" id="cochonSelector"></div>
+        </div>
+
+        <div class="step-box">
+            <div class="step-title" id="benchTitle">🚀 Qui rejoint la table ? (Optionnel)</div>
+            <div class="bench-grid" id="benchSelector"></div>
+        </div>
+
+        <div class="modal-actions" style="display:flex; gap:10px; margin-top:20px;">
+            <button class="btn-cancel" onclick="closeMatchModal()" style="flex:1; padding:12px; border-radius:12px; background:rgba(255,255,255,0.1); color:#fff; border:none;">Annuler</button>
+            <button class="btn-confirm" onclick="submitManche()" style="flex:2; padding:12px; border-radius:12px; background:#10b981; color:#fff; border:none; font-weight:700;">Valider</button>
+        </div>
+    </div>
+
+    <div class="modal" id="newGameModal">
+        <h2>🚀 Lancer une Nouvelle Partie</h2>
+        <div class="step-box" style="margin-top:15px;">
+            <div class="step-title">Sélectionne les 3 joueurs qui s'installent :</div>
+            <div class="bench-grid" id="newGamePlayersSelector"></div>
+        </div>
+        <div class="modal-actions" style="display:flex; gap:10px; margin-top:20px;">
+            <button class="btn-cancel" onclick="closeNewGameModal()" style="flex:1; padding:12px; border-radius:12px; background:rgba(255,255,255,0.1); color:#fff; border:none;">Annuler</button>
+            <button class="btn-confirm" onclick="submitNewGame()" style="flex:2; padding:12px; border-radius:12px; background:#3b82f6; color:#fff; border:none; font-weight:700;">Démarrer</button>
+        </div>
+    </div>
+
+
+    <nav class="nav-bar">
+        <button id="nav-btn-home" class="nav-item active" onclick="switchPage('home', this)"><i class="fa-solid fa-house"></i>Accueil</button>
+        <button id="nav-btn-ranking" class="nav-item" onclick="switchPage('ranking', this)"><i class="fa-solid fa-list-ol"></i>Classement Général</button>
+        <button id="nav-btn-profiles" class="nav-item" onclick="switchPage('profiles', this)"><i class="fa-solid fa-user-group"></i>Profils</button>
+        <button id="nav-btn-history" class="nav-item" onclick="switchPage('history', this)"><i class="fa-solid fa-history"></i>Historique</button>
+        <button id="nav-btn-admin" class="nav-item" onclick="switchPage('admin', this)"><i class="fa-solid fa-user-gear"></i>Admin</button>
+    </nav>
+
+    <script>
+        // --- MOTS DE PASSE SECURISE ---
+        let isAdminUnlocked = false;
+
+        function checkGlobalPassword() {
+            const input = document.getElementById("globalPasswordInput").value;
+            const errorDiv = document.getElementById("globalLockError");
+            if (input === "laposte") {
+                document.getElementById("lock-screen-global").style.display = "none";
+                errorDiv.style.display = "none";
+            } else if (input.length >= 7) {
+                errorDiv.style.display = "block";
+            }
+        }
+
+        function checkAdminPassword() {
+            const input = document.getElementById("adminPasswordInput").value;
+            const errorDiv = document.getElementById("adminLockError");
+            if (input === "klil") {
+                isAdminUnlocked = true;
+                document.getElementById("lock-screen-admin").style.display = "none";
+                errorDiv.style.display = "none";
+                document.getElementById("adminPasswordInput").value = "";
+                
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+                document.getElementById('page-admin').classList.add('active');
+                document.getElementById('nav-btn-admin').classList.add('active');
+                setupAdminPage();
+            } else if (input.length >= 4) {
+                errorDiv.style.display = "block";
+            }
+        }
+
+        function cancelAdminAccess() {
+            document.getElementById("lock-screen-admin").style.display = "none";
+            document.getElementById("adminPasswordInput").value = "";
+            const homeBtn = document.getElementById("nav-btn-home");
+            switchPage('home', homeBtn);
+        }
+
+        // ================= COMPTEURS REMIS À ZÉRO =================
+        let players = JSON.parse(localStorage.getItem('domino_players')) || [
+            { id: 0, name: "Alexis", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇧🇬" },
+            { id: 1, name: "Thomas", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "⚡" },
+            { id: 2, name: "Eddy", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇲🇶" },
+            { id: 3, name: "Khalil", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇲🇦" },
+            { id: 4, name: "Christopher", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🐺" },
+            { id: 5, name: "Cédric", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🔵🔴" },
+            { id: 6, name: "Ryad", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇩🇿" },
+            { id: 7, name: "Jean-Claude", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇲🇶" },
+            { id: 8, name: "Fantôme", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "👻" }
+        ];
+
+        let currentTable = JSON.parse(localStorage.getItem('domino_table')) || [3, 0, 6]; 
+        let history = JSON.parse(localStorage.getItem('domino_history')) || []; // Historique vide par défaut ou récupéré
+
+        let isEqualityMode = false;
+        let selectedWinner = null;
+        let selectedSaved = null;
+        let selectedCochons = [];
+        let selectedIncoming = [];
+        let newGameSelected = [];
+        let currentAdminAvatarData = ""; 
+
+        function save() {
+            localStorage.setItem('domino_players', JSON.stringify(players));
+            localStorage.setItem('domino_table', JSON.stringify(currentTable));
+            localStorage.setItem('domino_history', JSON.stringify(history));
+        }
+
+        function getAvatarHtml(avatarString) {
+            if (!avatarString) return "❓";
+            if (avatarString.startsWith("data:image")) {
+                return `<img src="${avatarString}" alt="Avatar">`;
+            }
+            return avatarString;
+        }
+
+        function switchPage(pageId, btn) {
+            if (pageId === 'admin' && !isAdminUnlocked) {
+                document.getElementById("lock-screen-admin").style.display = "flex";
+                document.getElementById("adminPasswordInput").focus();
+                return;
+            }
+
+            if (pageId !== 'admin') {
+                isAdminUnlocked = false;
+            }
+
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            btn.classList.add('active');
+            
+            if(pageId === 'ranking') renderRanking();
+            if(pageId === 'profiles') setupProfileSelector();
+            if(pageId === 'history') { renderDayRanking(); renderHistory(); }
+            if(pageId === 'home') renderHome();
+            if(pageId === 'admin') setupAdminPage();
+        }
+
+        function getCrown(rank) {
+            if (rank === 1) return { icon: "👑" };
+            if (rank === 2) return { icon: "💎" };
+            if (rank <= 4) return { icon: "🥇" };
+            if (rank <= 7) return { icon: "⚔️" };
+            return { icon: "🪵" };
+        }
+
+        function renderHome() {
+            let sorted = [...players].sort((a,b) => (b.vic - a.vic) || (a.coch - b.coch));
+            const grid = document.getElementById("mainGrid");
+            grid.innerHTML = "";
+
+            sorted.forEach((p, idx) => {
+                const rankIndex = idx + 1;
+                const crown = getCrown(rankIndex);
+                const isAtTable = currentTable.includes(p.id);
+
+                grid.innerHTML += `
+                    <div class="player-card ${isAtTable ? 'at-table' : 'waiting'}" onclick="openSpecificProfile(${p.id})">
+                        <div class="rank-badge">${crown.icon}</div>
+                        <div class="pos-badge">#${rankIndex}</div>
+                        <div class="avatar-container">${getAvatarHtml(p.avatar)}</div>
+                        <div class="player-name">${p.name}</div>
+                        ${p.currentStreak >= 3 ? `<div class="streak-fire"><i class="fa-solid fa-fire"></i> x${p.currentStreak}</div>` : ''}
+                        <div class="mini-stats">
+                            <div class="stat-item"><span class="val vic">${p.vic}</span></div>
+                            <div class="stat-item"><span class="val coch">${p.coch}🐷</span></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const tableDisp = document.getElementById("homeTableDisplay");
+            tableDisp.innerHTML = "";
+            currentTable.forEach(id => {
+                const p = players.find(x => x.id === id);
+                if(p) {
+                    tableDisp.innerHTML += `
+                        <div class="table-spot active-p">
+                            <div class="spot-avatar">${getAvatarHtml(p.avatar)}</div>
+                            <div style="font-size:0.9rem; font-weight:900;">${p.name}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            const sortedCopy = [...players].sort((a,b) => (b.vic - a.vic) || (a.coch - b.coch));
+            const topPlayer = sortedCopy[0];
+            const maxCochon = [...players].sort((a,b) => b.coch - a.coch)[0];
+            document.getElementById("homeHighlights").innerHTML = `
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                    <div>🔥 En tête : <strong>${topPlayer ? topPlayer.name : '-'}</strong></div>
+                    <div>🐷 Roi des Cochons : <strong>${maxCochon ? maxCochon.name : '-'} (${maxCochon ? maxCochon.coch : 0})</strong></div>
+                </div>
+            `;
+        }
+
+        function openNewGameModal() {
+            newGameSelected = [];
+            const container = document.getElementById("newGamePlayersSelector");
+            container.innerHTML = "";
+            players.forEach(p => {
+                let btn = document.createElement("button");
+                btn.className = "bench-btn";
+                btn.innerHTML = `${p.avatar.startsWith('data:image') ? '🖼️' : p.avatar} ${p.name}`;
+                btn.onclick = () => {
+                    if (newGameSelected.includes(p.id)) {
+                        newGameSelected = newGameSelected.filter(x => x !== p.id);
+                        btn.classList.remove('chosen');
+                    } else if (newGameSelected.length < 3) {
+                        newGameSelected.push(p.id);
+                        btn.classList.add('chosen');
+                    }
+                };
+                container.appendChild(btn);
+            });
+            document.getElementById("newGameModal").classList.add("active");
+        }
+        function closeNewGameModal() { document.getElementById("newGameModal").classList.remove("active"); }
+        function submitNewGame() {
+            if (newGameSelected.length !== 3) { alert("Choisis exactement 3 joueurs pour démarrer !"); return; }
+            currentTable = [...newGameSelected];
+            save(); closeNewGameModal(); renderHome();
+        }
+
+        function openMatchModal(equality = false) {
+            isEqualityMode = equality;
+            selectedWinner = null; selectedSaved = null; selectedCochons = []; selectedIncoming = [];
+            
+            document.getElementById("modalTitle").innerText = equality ? "Égalité Complète" : "Fin de la Manche";
+            document.getElementById("winStepBox").style.display = equality ? "none" : "block";
+            document.getElementById("savedStepBox").style.display = equality ? "block" : "none";
+            document.getElementById("cochonStepBox").style.display = equality ? "none" : "block";
+
+            const winRow = document.getElementById("winSelector");
+            const savedRow = document.getElementById("savedSelector");
+            const cochRow = document.getElementById("cochonSelector");
+            
+            winRow.innerHTML = ""; savedRow.innerHTML = ""; cochRow.innerHTML = "";
+
+            currentTable.forEach(id => {
+                const p = players.find(x => x.id === id);
+                if(!p) return;
+                
+                if(!equality) {
+                    let bWin = document.createElement("button"); bWin.className = "select-btn"; bWin.innerText = p.name;
+                    bWin.onclick = () => { document.querySelectorAll("#winSelector .select-btn").forEach(b => b.classList.remove('selected-win')); bWin.classList.add('selected-win'); selectedWinner = id; };
+                    winRow.appendChild(bWin);
+                }
+
+                if(equality) {
+                    let bSave = document.createElement("button"); bSave.className = "select-btn"; bSave.innerText = p.name;
+                    bSave.onclick = () => { document.querySelectorAll("#savedSelector .select-btn").forEach(b => b.classList.remove('selected-saved')); bSave.classList.add('selected-saved'); selectedSaved = id; };
+                    savedRow.appendChild(bSave);
+                }
+
+                if(!equality) {
+                    let bCoch = document.createElement("button"); bCoch.className = "select-btn"; bCoch.innerText = p.name;
+                    bCoch.onclick = () => {
+                        if (selectedCochons.includes(id)) {
+                            selectedCochons = selectedCochons.filter(x => x !== id); bCoch.classList.remove('selected-cochon');
+                        } else if (selectedCochons.length < 2) {
+                            selectedCochons.push(id); bCoch.classList.add('selected-cochon');
+                        }
+                    };
+                    cochRow.appendChild(bCoch);
+                }
+            });
+
+            const benchRow = document.getElementById("benchSelector");
+            benchRow.innerHTML = "";
+            players.forEach(p => {
+                let bBench = document.createElement("button"); bBench.className = "bench-btn"; bBench.innerHTML = `${p.avatar.startsWith('data:image') ? '🖼️' : p.avatar} ${p.name}`;
+                bBench.onclick = () => {
+                    let limit = equality ? 3 : 2;
+                    if (selectedIncoming.includes(p.id)) {
+                        selectedIncoming = selectedIncoming.filter(x => x !== p.id); bBench.classList.remove('chosen');
+                    } else if (selectedIncoming.length < limit) {
+                        selectedIncoming.push(p.id); bBench.classList.add('chosen');
+                    }
+                };
+                benchRow.appendChild(bBench);
+            });
+
+            document.getElementById("matchModal").classList.add("active");
+        }
+
+        function closeMatchModal() { document.getElementById("matchModal").classList.remove("active"); }
+
+        function submitManche() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) + " – " + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            const dateIso = now.toISOString().split('T')[0]; 
+
+            let logWinner = "";
+            let logCochons = [];
+            let oldTable = [...currentTable];
+
+            if (isEqualityMode) {
+                if (selectedSaved === null) { alert("Sélectionne le joueur sauvé !"); return; }
+                
+                players.find(p => p.id === selectedSaved).saved += 1;
+                logWinner = `Égalité (${players.find(p => p.id === selectedSaved).name} Sauvé)`;
+                
+                currentTable.forEach(id => {
+                    let p = players.find(x => x.id === id);
+                    if(p) { p.totalGames += 1; p.currentStreak = 0; }
+                });
+
+                if (selectedIncoming.length === 3) {
+                    currentTable = [...selectedIncoming];
+                } else {
+                    currentTable = [selectedSaved];
+                }
+            } else {
+                if (selectedWinner === null) { alert("Sélectionne le gagnant !"); return; }
+
+                players.find(p => p.id === selectedWinner).vic += 1;
+                logWinner = players.find(p => p.id === selectedWinner).name;
+
+                selectedCochons.forEach(cid => { 
+                    players.find(p => p.id === cid).coch += 1; 
+                    logCochons.push({ giver: selectedWinner, receiver: cid });
+                });
+
+                currentTable.forEach(id => {
+                    let p = players.find(x => x.id === id);
+                    if(p) {
+                        p.totalGames += 1;
+                        if (id === selectedWinner) { p.currentStreak += 1; } else { p.currentStreak = 0; }
+                    }
+                });
+
+                if (selectedIncoming.length === 2) {
+                    currentTable = [selectedWinner, selectedIncoming[0], selectedIncoming[1]];
+                } else {
+                    currentTable = [selectedWinner];
+                }
+            }
+
+            history.unshift({ 
+                date: dateStr, 
+                dateIso: dateIso,
+                table: oldTable,
+                winnerId: isEqualityMode ? null : selectedWinner,
+                savedId: isEqualityMode ? selectedSaved : null,
+                equality: isEqualityMode,
+                winner: logWinner, 
+                cochonIds: [...selectedCochons],
+                cochon: selectedCochons.length > 0 ? selectedCochons.map(cid => players.find(p => p.id === cid).name).join(' & ') : "Aucun",
+                cochonDetails: logCochons
+            });
+
+            save(); closeMatchModal(); renderHome();
+        }
+
+        function renderDayRanking() {
+            const todayIso = new Date().toISOString().split('T')[0];
+            let dayStats = {};
+            players.forEach(p => {
+                dayStats[p.id] = { id: p.id, name: p.name, avatar: p.avatar, vic: 0, coch: 0, totalGames: 0, saved: 0 };
+            });
+
+            history.forEach(h => {
+                if (h.dateIso === todayIso) {
+                    h.table.forEach(pid => {
+                        if (dayStats[pid]) dayStats[pid].totalGames += 1;
+                    });
+                    if (h.equality) {
+                        if (h.savedId !== null && dayStats[h.savedId]) dayStats[h.savedId].saved += 1;
+                    } else {
+                        if (h.winnerId !== null && dayStats[h.winnerId]) dayStats[h.winnerId].vic += 1;
+                        if (h.cochonIds) {
+                            h.cochonIds.forEach(cid => { if (dayStats[cid]) dayStats[cid].coch += 1; });
+                        }
+                    }
+                }
+            });
+
+            let daySorted = Object.values(dayStats).sort((a,b) => (b.vic - a.vic) || (a.coch - b.coch));
+
+            const tbody = document.getElementById("dayRankingTableBody");
+            tbody.innerHTML = "";
+            daySorted.forEach((p, idx) => {
+                let winRate = p.totalGames > 0 ? Math.round((p.vic / p.totalGames) * 100) : 0;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>#${idx+1}</strong></td>
+                        <td><div class="ranking-avatar">${getAvatarHtml(p.avatar)}</div> ${p.name}</td>
+                        <td style="color:var(--gold); font-weight:700;">${p.vic}</td>
+                        <td style="color:var(--cochon-color);">${p.coch}</td>
+                        <td>${winRate}%</td>
+                        <td style="color:#3b82f6;">${p.saved}</td>
+                        <td>${p.totalGames}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderRanking() {
+            let sorted = [...players].sort((a,b) => (b.vic - a.vic) || (a.coch - b.coch));
+            const tbody = document.getElementById("rankingTableBody");
+            tbody.innerHTML = "";
+            sorted.forEach((p, idx) => {
+                let winRate = p.totalGames > 0 ? Math.round((p.vic / p.totalGames) * 100) : 0;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>#${idx+1}</strong></td>
+                        <td><div class="ranking-avatar">${getAvatarHtml(p.avatar)}</div> ${p.name}</td>
+                        <td style="color:var(--gold); text-shadow: 0 0 4px rgba(255,215,0,0.2);">${p.vic}</td>
+                        <td style="color:var(--cochon-color);">${p.coch}</td>
+                        <td>${winRate}%</td>
+                        <td>🔥 ${p.currentStreak}</td>
+                        <td style="color:#3b82f6;">${p.saved || 0}</td>
+                        <td>${p.totalGames}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function setupProfileSelector() {
+            const sel = document.getElementById("profileSelector");
+            sel.innerHTML = "";
+            players.forEach(p => { sel.innerHTML += `<option value="${p.id}">${p.name}</option>`; });
+            if(players.length > 0) renderProfile(players[0].id);
+        }
+
+        function openSpecificProfile(id) {
+            const profBtn = document.getElementById("nav-btn-profiles");
+            switchPage('profiles', profBtn);
+            document.getElementById("profileSelector").value = id;
+            renderProfile(id);
+        }
+
+        function computeCochonRelations(playerId) {
+            let victims = {}; let givers = {};   
+            history.forEach(h => {
+                if (h.cochonDetails) {
+                    h.cochonDetails.forEach(detail => {
+                        if (detail.giver === playerId) { victims[detail.receiver] = (victims[detail.receiver] || 0) + 1; }
+                        if (detail.receiver === playerId) { givers[detail.giver] = (givers[detail.giver] || 0) + 1; }
+                    });
+                }
+            });
+            let favoriteVictim = "Aucune"; let maxVicCount = 0;
+            for (let vid in victims) { if (victims[vid] > maxVicCount) { maxVicCount = victims[vid]; let f = players.find(p => p.id == vid); favoriteVictim = f ? `${f.name} (${maxVicCount})` : `Joueur supprimé (${maxVicCount})`; } }
+            let favoriteGiver = "Aucun"; let maxGiverCount = 0;
+            for (let gid in givers) { if (givers[gid] > maxGiverCount) { maxGiverCount = givers[gid]; let f = players.find(p => p.id == gid); favoriteGiver = f ? `${f.name} (${maxGiverCount})` : `Joueur supprimé (${maxGiverCount})`; } }
+            return { favoriteVictim, favoriteGiver };
+        }
+
+        function renderProfile(id) {
+            const p = players.find(x => x.id == id);
+            if(!p) return;
+            let winRate = p.totalGames > 0 ? Math.round((p.vic / p.totalGames) * 100) : 0;
+            let relations = computeCochonRelations(p.id);
+
+            document.getElementById("profileContent").innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-avatar">${getAvatarHtml(p.avatar)}</div>
+                    <div><h3>${p.name}</h3></div>
+                </div>
+                <div class="profile-summary">
+                    <div class="p-stat-box">
+                        <div class="p-stat-label">Manches Gagnées</div>
+                        <div class="p-stat-val" style="color:var(--gold);">${p.vic}</div>
+                        <div class="p-sub-stat">🐷 Préféré : <span style="color:var(--cochon-color); font-size:0.75rem;">${relations.favoriteVictim}</span></div>
+                    </div>
+                    <div class="p-stat-box">
+                        <div class="p-stat-label">Cochons Reçus</div>
+                        <div class="p-stat-val" style="color:var(--cochon-color);">${p.coch}</div>
+                        <div class="p-sub-stat">🎯 Victime de : <span style="color:var(--gold); font-size:0.75rem;">${relations.favoriteGiver}</span></div>
+                    </div>
+                    <div class="p-stat-box"><div class="p-stat-label">Pourcentage Victoires</div><div class="p-stat-val">${winRate}%</div></div>
+                    <div class="p-stat-box"><div class="p-stat-label">Parties Jouées</div><div class="p-stat-val">${p.totalGames}</div></div>
+                    <div class="p-stat-box"><div class="p-stat-label">Sauvé (Égalité)</div><div class="p-stat-val" style="color:#3b82f6;">${p.saved || 0}</div></div>
+                    <div class="p-stat-box"><div class="p-stat-label">Série Actuelle</div><div class="p-stat-val">🔥 ${p.currentStreak}</div></div>
+                </div>
+            `;
+        }
+
+        function renderHistory() {
+            const container = document.getElementById("historyList"); container.innerHTML = "";
+            if(history.length === 0) { container.innerHTML = "<p>Aucune manche enregistrée.</p>"; return; }
+            history.forEach(h => {
+                let tableNames = h.table.map(id => { let p = players.find(x => x.id === id); return p ? `${p.name}` : '?'; });
+                container.innerHTML += `
+                    <div class="history-item">
+                        <div class="history-meta"><span>📅 ${h.date}</span></div>
+                        <div style="margin-top:4px;">Table : <strong>${tableNames.filter(n => n !== '?').join(', ')}</strong></div>
+                        <div>🏆 Résultat : <span style="color:var(--gold); font-weight:700;">${h.winner}</span> | 🐷 Cochon(s) : <span style="color:var(--cochon-color); font-weight:700;">${h.cochon}</span></div>
+                    </div>
+                `;
+            });
+        }
+
+        function setupAdminPage() {
+            const sel = document.getElementById("adminPlayerSelector");
+            sel.innerHTML = `<option value="new">-- CRÉER UN NOUVEAU JOUEUR --</option>`;
+            players.forEach(p => {
+                sel.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+            });
+            loadPlayerToEdit("new");
+            renderAdminHistory();
+        }
+
+        function loadPlayerToEdit(val) {
+            document.getElementById("adminPlayerAvatarFile").value = ""; 
+            if(val === "new") {
+                document.getElementById("adminPlayerName").value = "";
+                document.getElementById("adminPlayerAvatarText").value = "";
+                currentAdminAvatarData = "❓";
+            } else {
+                let p = players.find(x => x.id == val);
+                if(p) {
+                    document.getElementById("adminPlayerName").value = p.name;
+                    if (p.avatar.startsWith("data:image")) {
+                        document.getElementById("adminPlayerAvatarText").value = "";
+                    } else {
+                        document.getElementById("adminPlayerAvatarText").value = p.avatar;
+                    }
+                    currentAdminAvatarData = p.avatar;
+                }
+            }
+            updateAdminAvatarPreview(currentAdminAvatarData);
+        }
+
+        function updateAdminAvatarPreview(val) {
+            const prev = document.getElementById("adminAvatarPreview");
+            if (!val || val.trim() === "") {
+                prev.innerHTML = "❓";
+                currentAdminAvatarData = "";
+            } else if (val.startsWith("data:image")) {
+                prev.innerHTML = `<img src="${val}" alt="Preview">`;
+                currentAdminAvatarData = val;
+            } else {
+                prev.innerHTML = val;
+                currentAdminAvatarData = val;
+            }
+        }
+
+        function handleAdminImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    const maxW = 120; 
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > h) { if (w > maxW) { h *= maxW / w; w = maxW; } } 
+                    else { if (h > maxW) { w *= maxW / h; h = maxW; } }
+                    canvas.width = w; canvas.height = h;
+                    ctx.drawImage(img, 0, 0, w, h);
+                    
+                    const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.7);
+                    document.getElementById("adminPlayerAvatarText").value = "";
+                    updateAdminAvatarPreview(compressedDataUrl);
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function savePlayerAdmin() {
+            let selVal = document.getElementById("adminPlayerSelector").value;
+            let nameInput = document.getElementById("adminPlayerName").value.trim();
+
+            if(!nameInput || !currentAdminAvatarData) { alert("Remplis le nom et l'avatar !"); return; }
+
+            if(selVal === "new") {
+                let newId = players.length > 0 ? Math.max(...players.map(p => p.id)) + 1 : 0;
+                players.push({
+                    id: newId, name: nameInput, avatar: currentAdminAvatarData,
+                    vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0
+                });
+                alert(`Joueur ${nameInput} créé !`);
+            } else {
+                let p = players.find(x => x.id === parseInt(selVal));
+                if(p) {
+                    p.name = nameInput;
+                    p.avatar = currentAdminAvatarData;
+                    alert("Joueur modified avec succès !");
+                }
+            }
+            save(); setupAdminPage(); renderHome();
+        }
+
+        function renderAdminHistory() {
+            const container = document.getElementById("adminHistoryList"); container.innerHTML = "";
+            if(history.length === 0) { container.innerHTML = "<p>Aucune manche à corriger.</p>"; return; }
+            history.forEach((h, index) => {
+                let tableNames = h.table.map(id => { let p = players.find(x => x.id === id); return p ? p.name : '?'; });
+                container.innerHTML += `
+                    <div class="history-item" style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <div class="history-meta"><span>📅 ${h.date}</span></div>
+                            <div>Table : <strong>${tableNames.join(', ')}</strong></div>
+                            <div>🏆 ${h.winner} | 🐷 ${h.cochon}</div>
+                        </div>
+                        <button class="btn-danger" onclick="deleteHistoryItem(${index})"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteHistoryItem(index) {
+            if(!confirm("Es-tu sûr de vouloir supprimer cette manche ? Les statistiques des joueurs seront recalculées.")) return;
+            
+            let h = history[index];
+
+            if(h.equality) {
+                if(h.savedId !== null) { let p = players.find(x => x.id === h.savedId); if(p) p.saved -= 1; }
+                h.table.forEach(id => { let p = players.find(x => x.id === id); if(p) p.totalGames -= 1; });
+            } else {
+                if(h.winnerId !== null) { let p = players.find(x => x.id === h.winnerId); if(p) p.vic -= 1; }
+                if(h.cochonIds) { h.cochonIds.forEach(cid => { let p = players.find(x => x.id === cid); if(p) p.coch -= 1; }); }
+                h.table.forEach(id => { let p = players.find(x => x.id === id); if(p) p.totalGames -= 1; });
+            }
+
+            history.splice(index, 1);
+
+            players.forEach(p => p.currentStreak = 0);
+            let revHistory = [...history].reverse();
+            revHistory.forEach(mh => {
+                if(!mh.equality && mh.winnerId !== null) {
+                    mh.table.forEach(id => {
+                        let p = players.find(x => x.id === id);
+                        if(p) { if(id === mh.winnerId) p.currentStreak += 1; else p.currentStreak = 0; }
+                    });
+                } else if(mh.equality) {
+                    mh.table.forEach(id => { let p = players.find(x => x.id === id); if(p) p.currentStreak = 0; });
+                }
+            });
+
+            save(); renderAdminHistory(); renderHome();
+        }
+
+        renderHome();
+    </script>
+</body>
+</html>
