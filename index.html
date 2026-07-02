@@ -1306,25 +1306,7 @@
             <div class="table-display" id="homeTableDisplay"></div>
 
             <button class="btn-action start-game" onclick="openNewGameModal()"><i class="fa-solid fa-play"></i> Nouvelle Partie</button>
-            <button class="btn-action" onclick="openMatchModal(false)"><i class="fa-solid fa-circle-check"></i> Fin de Manche Standard</button>
-            <button class="btn-action secondary" onclick="openMatchModal(true)"><i class="fa-solid fa-arrows-rotate"></i> Égalité (Les 3 sortent)</button>
-        </section>
-
-        <section class="card-panel">
-            <h2><i class="fa-solid fa-bolt" style="color: #ff4500;"></i> En Forme</h2>
-            <div id="homeHighlights" style="margin-bottom: 4px;"></div>
-        </section>
-
-        <section class="card-panel">
-            <h2><i class="fa-solid fa-circle-info" style="color: var(--gold);"></i> Légende des Badges</h2>
-            <div class="legend-grid">
-                <div class="legend-item">👑 Roi (#1)</div>
-                <div class="legend-item">💎 Prince (#2)</div>
-                <div class="legend-item">🥇 Champion (#3-4)</div>
-                <div class="legend-item">⚔️ Challenger (#5-7)</div>
-                <div class="legend-item">🪵 Novice (#8-9)</div>
-                <div class="legend-item">🔥 Série en cours</div>
-            </div>
+            <button class="btn-action" onclick="openMatchModal()"><i class="fa-solid fa-circle-check"></i> Fin de Manche</button>
         </section>
     </main>
 
@@ -1332,17 +1314,18 @@
     <main id="page-ranking" class="page">
         <section class="card-panel">
             <h2><i class="fa-solid fa-trophy" style="color: var(--gold);"></i> Classement Général</h2>
-            <table class="ranking-table">
+            <table class="ranking-table" id="table-ranking">
                 <thead>
                     <tr>
-                        <th>Pos</th>
-                        <th>Joueur</th>
-                        <th>Vic</th>
-                        <th>Coch</th>
-                        <th>% Vic</th>
-                        <th>Série</th>
-                        <th>Sauvé</th>
-                        <th>Jouées</th>
+                        <th onclick="sortTable('table-ranking', 0)" style="cursor:pointer;">Pos ↕️</th>
+                        <th onclick="sortTable('table-ranking', 1)" style="cursor:pointer;">Joueur ↕️</th>
+                        <th onclick="sortTable('table-ranking', 2)" style="cursor:pointer; color:#ff4444;">Score ↕️</th>
+                        <th onclick="sortTable('table-ranking', 3)" style="cursor:pointer;">Vic ↕️</th>
+                        <th onclick="sortTable('table-ranking', 4)" style="cursor:pointer;">Coch ↕️</th>
+                        <th onclick="sortTable('table-ranking', 5)" style="cursor:pointer;">% Vic ↕️</th>
+                        <th onclick="sortTable('table-ranking', 6)" style="cursor:pointer;">Série ↕️</th>
+                        <th onclick="sortTable('table-ranking', 7)" style="cursor:pointer;">Sauvé ↕️</th>
+                        <th onclick="sortTable('table-ranking', 8)" style="cursor:pointer;">Jouées ↕️</th>
                     </tr>
                 </thead>
                 <tbody id="rankingTableBody"></tbody>
@@ -1364,16 +1347,17 @@
         <div class="day-ranking-box">
             <h2><i class="fa-solid fa-calendar-day" style="color: var(--gold);"></i> Classement Complet du Jour</h2>
             <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:12px;">Prend uniquement en compte les manches jouées aujourd'hui.</p>
-            <table class="ranking-table">
+            <table class="ranking-table" id="table-day">
                 <thead>
                     <tr>
-                        <th>Pos</th>
-                        <th>Joueur</th>
-                        <th>Vic</th>
-                        <th>Coch</th>
-                        <th>% Vic</th>
-                        <th>Sauvé</th>
-                        <th>Jouées</th>
+                        <th onclick="sortTable('table-day', 0)" style="cursor:pointer;">Pos ↕️</th>
+                        <th onclick="sortTable('table-day', 1)" style="cursor:pointer;">Joueur ↕️</th>
+                        <th onclick="sortTable('table-day', 2)" style="cursor:pointer; color:#ff4444;">Score ↕️</th>
+                        <th onclick="sortTable('table-day', 3)" style="cursor:pointer;">Vic ↕️</th>
+                        <th onclick="sortTable('table-day', 4)" style="cursor:pointer;">Coch ↕️</th>
+                        <th onclick="sortTable('table-day', 5)" style="cursor:pointer;">% Vic ↕️</th>
+                        <th onclick="sortTable('table-day', 6)" style="cursor:pointer;">Sauvé ↕️</th>
+                        <th onclick="sortTable('table-day', 7)" style="cursor:pointer;">Jouées ↕️</th>
                     </tr>
                 </thead>
                 <tbody id="dayRankingTableBody"></tbody>
@@ -1429,14 +1413,14 @@
             <div class="selector-row" id="winSelector"></div>
         </div>
 
-        <div class="step-box" id="savedStepBox" style="display:none;">
-            <div class="step-title">🛡️ Qui s'est sauvé de l'égalité ?</div>
-            <div class="selector-row" id="savedSelector"></div>
-        </div>
-
         <div class="step-box" id="cochonStepBox">
             <div class="step-title" id="cochonTitle">🐷 Qui prend le cochon ? (Optionnel)</div>
             <div class="selector-row" id="cochonSelector"></div>
+        </div>
+
+        <div class="step-box" id="savedStepBox">
+            <div class="step-title">🛡️ Qui s'est sauvé de l'égalité ?</div>
+            <div class="selector-row" id="savedSelector"></div>
         </div>
 
         <div class="step-box">
@@ -1638,27 +1622,17 @@
             if(pageId === 'admin') setupAdminPage();
         }
 
-        function getCrown(rank) {
-            if (rank === 1) return { icon: "👑" };
-            if (rank === 2) return { icon: "💎" };
-            if (rank <= 4) return { icon: "🥇" };
-            if (rank <= 7) return { icon: "⚔️" };
-            return { icon: "🪵" };
-        }
-
         function renderHome() {
-            let sorted = [...players].sort((a,b) => (b.vic - a.vic) || (a.coch - b.coch));
+            let sorted = [...players].sort((a,b) => ((b.vic - b.coch) - (a.vic - a.coch)) || (b.vic - a.vic));
             const grid = document.getElementById("mainGrid");
             grid.innerHTML = "";
 
             sorted.forEach((p, idx) => {
                 const rankIndex = idx + 1;
-                const crown = getCrown(rankIndex);
                 const isAtTable = currentTable.includes(p.id);
 
                 grid.innerHTML += `
                     <div class="player-card ${isAtTable ? 'at-table' : 'waiting'}" onclick="openSpecificProfile(${p.id})">
-                        <div class="rank-badge">${crown.icon}</div>
                         <div class="pos-badge">#${rankIndex}</div>
                         <div class="avatar-container">${getAvatarHtml(p.avatar)}</div>
                         <div class="player-name">${p.name}</div>
@@ -1684,24 +1658,6 @@
                     `;
                 }
             });
-
-            const sortedCopy = [...players].sort((a,b) => (b.vic - a.vic) || (a.coch - b.coch));
-            const topPlayer = sortedCopy[0];
-            const maxCochon = [...players].sort((a,b) => b.coch - a.coch)[0];
-            document.getElementById("homeHighlights").innerHTML = `
-                <div class="highlights-row">
-                    <div class="highlight-card">
-                        <span class="hl-emoji">🔥</span>
-                        <div class="hl-name">${topPlayer ? topPlayer.name : '-'}</div>
-                        <div class="hl-label">En tête</div>
-                    </div>
-                    <div class="highlight-card">
-                        <span class="hl-emoji">🐷</span>
-                        <div class="hl-name">${maxCochon ? maxCochon.name : '-'}</div>
-                        <div class="hl-label">Roi des Cochons (${maxCochon ? maxCochon.coch : 0})</div>
-                    </div>
-                </div>
-            `;
         }
 
         function openNewGameModal() {
@@ -1733,14 +1689,13 @@
             showToast("Nouvelle partie lancée !", "success");
         }
 
-        function openMatchModal(equality = false) {
-            isEqualityMode = equality;
+        function openMatchModal() {
             selectedWinner = null; selectedSaved = null; selectedCochons = []; selectedIncoming = [];
 
-            document.getElementById("modalTitle").innerText = equality ? "Égalité Complète" : "Fin de la Manche";
-            document.getElementById("winStepBox").style.display = equality ? "none" : "block";
-            document.getElementById("savedStepBox").style.display = equality ? "block" : "none";
-            document.getElementById("cochonStepBox").style.display = equality ? "none" : "block";
+            document.getElementById("modalTitle").innerText = "Fin de la Manche";
+            document.getElementById("winStepBox").style.display = "block";
+            document.getElementById("savedStepBox").style.display = "block";
+            document.getElementById("cochonStepBox").style.display = "block";
 
             const winRow = document.getElementById("winSelector");
             const savedRow = document.getElementById("savedSelector");
@@ -1752,29 +1707,41 @@
                 const p = players.find(x => x.id === id);
                 if(!p) return;
 
-                if(!equality) {
-                    let bWin = document.createElement("button"); bWin.className = "select-btn"; bWin.innerText = p.name;
-                    bWin.onclick = () => { document.querySelectorAll("#winSelector .select-btn").forEach(b => b.classList.remove('selected-win')); bWin.classList.add('selected-win'); selectedWinner = id; };
-                    winRow.appendChild(bWin);
-                }
+                let bWin = document.createElement("button"); bWin.className = "select-btn"; bWin.innerText = p.name;
+                bWin.onclick = () => { 
+                    document.querySelectorAll("#winSelector .select-btn").forEach(b => b.classList.remove('selected-win')); 
+                    bWin.classList.add('selected-win'); 
+                    selectedWinner = id;
+                    document.querySelectorAll("#savedSelector .select-btn").forEach(b => b.classList.remove('selected-saved'));
+                    selectedSaved = null;
+                };
+                winRow.appendChild(bWin);
 
-                if(equality) {
-                    let bSave = document.createElement("button"); bSave.className = "select-btn"; bSave.innerText = p.name;
-                    bSave.onclick = () => { document.querySelectorAll("#savedSelector .select-btn").forEach(b => b.classList.remove('selected-saved')); bSave.classList.add('selected-saved'); selectedSaved = id; };
-                    savedRow.appendChild(bSave);
-                }
+                let bSave = document.createElement("button"); bSave.className = "select-btn"; bSave.innerText = p.name;
+                bSave.onclick = () => { 
+                    document.querySelectorAll("#savedSelector .select-btn").forEach(b => b.classList.remove('selected-saved')); 
+                    bSave.classList.add('selected-saved'); 
+                    selectedSaved = id;
+                    document.querySelectorAll("#winSelector .select-btn").forEach(b => b.classList.remove('selected-win'));
+                    selectedWinner = null;
+                    document.querySelectorAll("#cochonSelector .select-btn").forEach(b => b.classList.remove('selected-cochon'));
+                    selectedCochons = [];
+                };
+                savedRow.appendChild(bSave);
 
-                if(!equality) {
-                    let bCoch = document.createElement("button"); bCoch.className = "select-btn"; bCoch.innerText = p.name;
-                    bCoch.onclick = () => {
-                        if (selectedCochons.includes(id)) {
-                            selectedCochons = selectedCochons.filter(x => x !== id); bCoch.classList.remove('selected-cochon');
-                        } else if (selectedCochons.length < 2) {
-                            selectedCochons.push(id); bCoch.classList.add('selected-cochon');
-                        }
-                    };
-                    cochRow.appendChild(bCoch);
-                }
+                let bCoch = document.createElement("button"); bCoch.className = "select-btn"; bCoch.innerText = p.name;
+                bCoch.onclick = () => {
+                    if (selectedSaved !== null) {
+                        showToast("Impossible de donner un cochon en cas d'égalité.", "warning");
+                        return;
+                    }
+                    if (selectedCochons.includes(id)) {
+                        selectedCochons = selectedCochons.filter(x => x !== id); bCoch.classList.remove('selected-cochon');
+                    } else if (selectedCochons.length < 2) {
+                        selectedCochons.push(id); bCoch.classList.add('selected-cochon');
+                    }
+                };
+                cochRow.appendChild(bCoch);
             });
 
             const benchRow = document.getElementById("benchSelector");
@@ -1782,11 +1749,13 @@
             players.forEach(p => {
                 let bBench = document.createElement("button"); bBench.className = "bench-btn"; bBench.innerHTML = `${p.avatar.startsWith('data:image') ? '🖼️' : p.avatar} ${p.name}`;
                 bBench.onclick = () => {
-                    let limit = equality ? 3 : 2;
+                    let limit = (selectedSaved !== null) ? 3 : 2;
                     if (selectedIncoming.includes(p.id)) {
                         selectedIncoming = selectedIncoming.filter(x => x !== p.id); bBench.classList.remove('chosen');
                     } else if (selectedIncoming.length < limit) {
                         selectedIncoming.push(p.id); bBench.classList.add('chosen');
+                    } else {
+                        showToast(`Maximum de remplaçants atteint (${limit})`, "warning");
                     }
                 };
                 benchRow.appendChild(bBench);
@@ -1805,6 +1774,10 @@
             let logWinner = "";
             let logCochons = [];
             let oldTable = [...currentTable];
+
+            const isEqualityMode = (selectedSaved !== null);
+
+            if (!isEqualityMode && selectedWinner === null) { showToast("Sélectionne le gagnant ou l'égalité !", "warning"); return; }
 
             if (isEqualityMode) {
                 if (selectedSaved === null) { showToast("Sélectionne le joueur sauvé !", "warning"); return; }
@@ -1888,7 +1861,7 @@
                 }
             });
 
-            let daySorted = Object.values(dayStats).sort((a,b) => (b.vic - a.vic) || (a.coch - b.coch));
+            let daySorted = Object.values(dayStats).sort((a,b) => ((b.vic - b.coch) - (a.vic - a.coch)) || (b.vic - a.vic));
 
             const tbody = document.getElementById("dayRankingTableBody");
             tbody.innerHTML = "";
@@ -1898,6 +1871,7 @@
                     <tr>
                         <td><strong>#${idx+1}</strong></td>
                         <td><div class="ranking-avatar">${getAvatarHtml(p.avatar)}</div> ${p.name}</td>
+                        <td style="color:#ff4444; font-weight:900;">${p.vic - p.coch}</td>
                         <td style="color:var(--gold); font-weight:700;">${p.vic}</td>
                         <td style="color:var(--cochon-color);">${p.coch}</td>
                         <td>${winRate}%</td>
@@ -1909,7 +1883,7 @@
         }
 
         function renderRanking() {
-            let sorted = [...players].sort((a,b) => (b.vic - a.vic) || (a.coch - b.coch));
+            let sorted = [...players].sort((a,b) => ((b.vic - b.coch) - (a.vic - a.coch)) || (b.vic - a.vic));
             const tbody = document.getElementById("rankingTableBody");
             tbody.innerHTML = "";
             sorted.forEach((p, idx) => {
@@ -1918,6 +1892,7 @@
                     <tr>
                         <td><strong>#${idx+1}</strong></td>
                         <td><div class="ranking-avatar">${getAvatarHtml(p.avatar)}</div> ${p.name}</td>
+                        <td style="color:#ff4444; font-weight:900;">${p.vic - p.coch}</td>
                         <td style="color:var(--gold); text-shadow: 0 0 6px rgba(251,191,36,0.15);">${p.vic}</td>
                         <td style="color:var(--cochon-color);">${p.coch}</td>
                         <td>${winRate}%</td>
@@ -2159,7 +2134,7 @@
             showToast("Manche supprimée et scores recalculés", "success");
         }
 
-        // renderHome(); (Appelé automatiquement après le chargement des données)
-    </script>
-</body>
-</html>
+        function sortTable(tableId, n) {
+            let table = document.getElementById(tableId);
+            let switching = true;
+            let dir = "asc"; 
