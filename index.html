@@ -174,7 +174,7 @@
             text-align: center;
             font-size: 1.3rem;
             letter-spacing: 6px;
-            margin: 24px 0;
+            margin: 24px 0 12px 0;
             outline: none;
             transition: var(--transition-fast);
         }
@@ -1271,24 +1271,26 @@
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Lock Screen: Global -->
+    <!-- Lock Screen: Global (CORRIGÉ AVEC BOUTON VALIDATION) -->
     <div id="lock-screen-global" class="lock-screen">
         <div class="lock-box">
             <h1>🔒 Accès au Club</h1>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Entre le mot de passe général</p>
-            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="••••" oninput="checkGlobalPassword()">
-            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none;">Mot de passe incorrect</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Entre le mot de passe général</p>
+            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="••••" onkeydown="if(event.key === 'Enter') checkGlobalPassword()">
+            <button class="btn-action" onclick="checkGlobalPassword()" style="margin-top: 10px; padding: 12px;"><i class="fa-solid fa-unlock"></i> Entrer</button>
+            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none; margin-top: 12px;">Mot de passe incorrect</div>
         </div>
     </div>
 
-    <!-- Lock Screen: Admin -->
+    <!-- Lock Screen: Admin (CORRIGÉ AVEC BOUTON VALIDATION) -->
     <div id="lock-screen-admin" class="lock-screen" style="display: none;">
         <div class="lock-box">
             <h1>🛠️ Zone Admin</h1>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Mot de passe administrateur requis</p>
-            <input type="password" id="adminPasswordInput" class="lock-input" placeholder="••••" oninput="checkAdminPassword()">
-            <div id="adminLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none;">Mot de passe admin incorrect</div>
-            <button onclick="cancelAdminAccess()" style="background:none; border:none; color:var(--text-muted); font-size:0.8rem; text-decoration:underline; cursor:pointer; margin-top:12px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">Retour à l'accueil</button>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Mot de passe administrateur requis</p>
+            <input type="password" id="adminPasswordInput" class="lock-input" placeholder="••••" onkeydown="if(event.key === 'Enter') checkAdminPassword()">
+            <button class="btn-action" onclick="checkAdminPassword()" style="margin-top: 10px; padding: 12px;"><i class="fa-solid fa-screwdriver-wrench"></i> Valider</button>
+            <div id="adminLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none; margin-top: 12px;">Mot de passe admin incorrect</div>
+            <button onclick="cancelAdminAccess()" style="background:none; border:none; color:var(--text-muted); font-size:0.8rem; text-decoration:underline; cursor:pointer; margin-top:16px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">Retour à l'accueil</button>
         </div>
     </div>
 
@@ -1474,6 +1476,7 @@
         const db = firebase.database();
         const dbRef = db.ref('domino_data');
         let isInitialLoad = true;
+        
         // ========== TOAST NOTIFICATION SYSTEM ==========
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
@@ -1489,18 +1492,18 @@
         let isAdminUnlocked = false;
 
         function checkGlobalPassword() {
-            const input = document.getElementById("globalPasswordInput").value;
+            const input = document.getElementById("globalPasswordInput").value.trim().toLowerCase();
             const errorDiv = document.getElementById("globalLockError");
             if (input === "laposte") {
                 document.getElementById("lock-screen-global").style.display = "none";
                 errorDiv.style.display = "none";
-            } else if (input.length >= 7) {
+            } else {
                 errorDiv.style.display = "block";
             }
         }
 
         function checkAdminPassword() {
-            const input = document.getElementById("adminPasswordInput").value;
+            const input = document.getElementById("adminPasswordInput").value.trim().toLowerCase();
             const errorDiv = document.getElementById("adminLockError");
             if (input === "klil") {
                 isAdminUnlocked = true;
@@ -1513,7 +1516,7 @@
                 document.getElementById('page-admin').classList.add('active');
                 document.getElementById('nav-btn-admin').classList.add('active');
                 setupAdminPage();
-            } else if (input.length >= 4) {
+            } else {
                 errorDiv.style.display = "block";
             }
         }
@@ -1537,7 +1540,6 @@
                 currentTable = data.currentTable || [];
                 history = data.history || [];
             } else if (isInitialLoad) {
-                // Initialisation par défaut si la base de données est complètement vide
                 players = [
                     { id: 0, name: "Alexis", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇧🇬" },
                     { id: 1, name: "Thomas", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "⚡" },
@@ -1551,10 +1553,9 @@
                 ];
                 currentTable = [3, 0, 6];
                 history = [];
-                save(); // Pousse les données initiales vers Firebase
+                save();
             }
 
-            // Rafraîchir l'interface avec les nouvelles données
             if (!isInitialLoad) {
                 const activePage = document.querySelector('.page.active').id;
                 if (activePage === 'page-home') renderHome();
@@ -1571,7 +1572,7 @@
                 }
             } else {
                 isInitialLoad = false;
-                renderHome(); // Premier affichage au chargement du site
+                renderHome();
             }
         });
 
@@ -2138,3 +2139,47 @@
             let table = document.getElementById(tableId);
             let switching = true;
             let dir = "asc"; 
+            let switchcount = 0;
+            while (switching) {
+                switching = false;
+                let rows = table.rows;
+                let shouldSwitch = false;
+                let i;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    let x = rows[i].getElementsByTagName("TD")[n];
+                    let y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (!x || !y) continue;
+                    
+                    let xVal = x.innerText.replace(/[^0-9.-]/g, '');
+                    let yVal = y.innerText.replace(/[^0-9.-]/g, '');
+                    
+                    if (xVal !== "" && yVal !== "" && !isNaN(xVal) && !isNaN(yVal)) {
+                        xVal = parseFloat(xVal);
+                        yVal = parseFloat(yVal);
+                    } else {
+                        xVal = x.innerText.toLowerCase();
+                        yVal = y.innerText.toLowerCase();
+                    }
+                    
+                    if (dir == "asc") {
+                        if (xVal > yVal) { shouldSwitch = true; break; }
+                    } else if (dir == "desc") {
+                        if (xVal < yVal) { shouldSwitch = true; break; }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
