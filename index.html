@@ -174,7 +174,7 @@
             text-align: center;
             font-size: 1.3rem;
             letter-spacing: 6px;
-            margin: 24px 0 12px 0;
+            margin: 24px 0;
             outline: none;
             transition: var(--transition-fast);
         }
@@ -1271,26 +1271,24 @@
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Lock Screen: Global (CORRIGÉ AVEC BOUTON VALIDATION) -->
+    <!-- Lock Screen: Global -->
     <div id="lock-screen-global" class="lock-screen">
         <div class="lock-box">
             <h1>🔒 Accès au Club</h1>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Entre le mot de passe général</p>
-            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="••••" onkeydown="if(event.key === 'Enter') checkGlobalPassword()">
-            <button class="btn-action" onclick="checkGlobalPassword()" style="margin-top: 10px; padding: 12px;"><i class="fa-solid fa-unlock"></i> Entrer</button>
-            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none; margin-top: 12px;">Mot de passe incorrect</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Entre le mot de passe général</p>
+            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="••••" oninput="checkGlobalPassword()">
+            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none;">Mot de passe incorrect</div>
         </div>
     </div>
 
-    <!-- Lock Screen: Admin (CORRIGÉ AVEC BOUTON VALIDATION) -->
+    <!-- Lock Screen: Admin -->
     <div id="lock-screen-admin" class="lock-screen" style="display: none;">
         <div class="lock-box">
             <h1>🛠️ Zone Admin</h1>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Mot de passe administrateur requis</p>
-            <input type="password" id="adminPasswordInput" class="lock-input" placeholder="••••" onkeydown="if(event.key === 'Enter') checkAdminPassword()">
-            <button class="btn-action" onclick="checkAdminPassword()" style="margin-top: 10px; padding: 12px;"><i class="fa-solid fa-screwdriver-wrench"></i> Valider</button>
-            <div id="adminLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none; margin-top: 12px;">Mot de passe admin incorrect</div>
-            <button onclick="cancelAdminAccess()" style="background:none; border:none; color:var(--text-muted); font-size:0.8rem; text-decoration:underline; cursor:pointer; margin-top:16px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">Retour à l'accueil</button>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Mot de passe administrateur requis</p>
+            <input type="password" id="adminPasswordInput" class="lock-input" placeholder="••••" oninput="checkAdminPassword()">
+            <div id="adminLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none;">Mot de passe admin incorrect</div>
+            <button onclick="cancelAdminAccess()" style="background:none; border:none; color:var(--text-muted); font-size:0.8rem; text-decoration:underline; cursor:pointer; margin-top:12px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">Retour à l'accueil</button>
         </div>
     </div>
 
@@ -1321,10 +1319,10 @@
                     <tr>
                         <th onclick="sortTable('table-ranking', 0)" style="cursor:pointer;">Pos ↕️</th>
                         <th onclick="sortTable('table-ranking', 1)" style="cursor:pointer;">Joueur ↕️</th>
-                        <th onclick="sortTable('table-ranking', 2)" style="cursor:pointer; color:#ff4444;">Score ↕️</th>
-                        <th onclick="sortTable('table-ranking', 3)" style="cursor:pointer;">Vic ↕️</th>
-                        <th onclick="sortTable('table-ranking', 4)" style="cursor:pointer;">Coch ↕️</th>
-                        <th onclick="sortTable('table-ranking', 5)" style="cursor:pointer;">% Vic ↕️</th>
+                        <th onclick="sortTable('table-ranking', 2)" style="cursor:pointer;">% Vic ↕️</th>
+                        <th onclick="sortTable('table-ranking', 3)" style="cursor:pointer; color:#ff4444;">Score ↕️</th>
+                        <th onclick="sortTable('table-ranking', 4)" style="cursor:pointer;">Vic ↕️</th>
+                        <th onclick="sortTable('table-ranking', 5)" style="cursor:pointer;">Coch ↕️</th>
                         <th onclick="sortTable('table-ranking', 6)" style="cursor:pointer;">Série ↕️</th>
                         <th onclick="sortTable('table-ranking', 7)" style="cursor:pointer;">Sauvé ↕️</th>
                         <th onclick="sortTable('table-ranking', 8)" style="cursor:pointer;">Jouées ↕️</th>
@@ -1347,17 +1345,17 @@
     <!-- PAGE: HISTORY -->
     <main id="page-history" class="page">
         <div class="day-ranking-box">
-            <h2><i class="fa-solid fa-calendar-day" style="color: var(--gold);"></i> Classement Complet du Jour</h2>
-            <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:12px;">Prend uniquement en compte les manches jouées aujourd'hui.</p>
+            <h2><i class="fa-solid fa-moon" style="color: var(--gold);"></i> Classement Complet de la Nuit</h2>
+            <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:12px;">Prend en compte les manches de la nuit en cours (regroupées de midi à midi le lendemain).</p>
             <table class="ranking-table" id="table-day">
                 <thead>
                     <tr>
                         <th onclick="sortTable('table-day', 0)" style="cursor:pointer;">Pos ↕️</th>
                         <th onclick="sortTable('table-day', 1)" style="cursor:pointer;">Joueur ↕️</th>
-                        <th onclick="sortTable('table-day', 2)" style="cursor:pointer; color:#ff4444;">Score ↕️</th>
-                        <th onclick="sortTable('table-day', 3)" style="cursor:pointer;">Vic ↕️</th>
-                        <th onclick="sortTable('table-day', 4)" style="cursor:pointer;">Coch ↕️</th>
-                        <th onclick="sortTable('table-day', 5)" style="cursor:pointer;">% Vic ↕️</th>
+                        <th onclick="sortTable('table-day', 2)" style="cursor:pointer;">% Vic ↕️</th>
+                        <th onclick="sortTable('table-day', 3)" style="cursor:pointer; color:#ff4444;">Score ↕️</th>
+                        <th onclick="sortTable('table-day', 4)" style="cursor:pointer;">Vic ↕️</th>
+                        <th onclick="sortTable('table-day', 5)" style="cursor:pointer;">Coch ↕️</th>
                         <th onclick="sortTable('table-day', 6)" style="cursor:pointer;">Sauvé ↕️</th>
                         <th onclick="sortTable('table-day', 7)" style="cursor:pointer;">Jouées ↕️</th>
                     </tr>
@@ -1395,7 +1393,10 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-action" onclick="savePlayerAdmin()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer le Joueur</button>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <button class="btn-action" style="flex: 2; margin-bottom: 0;" onclick="savePlayerAdmin()"><i class="fa-solid fa-floppy-disk"></i> Enregistrer le Joueur</button>
+                <button class="btn-danger" id="btnDeletePlayer" style="display:none; padding: 15px;" onclick="deletePlayerAdmin()"><i class="fa-solid fa-trash"></i> Supprimer</button>
+            </div>
         </section>
 
         <section class="card-panel">
@@ -1476,7 +1477,6 @@
         const db = firebase.database();
         const dbRef = db.ref('domino_data');
         let isInitialLoad = true;
-        
         // ========== TOAST NOTIFICATION SYSTEM ==========
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
@@ -1497,8 +1497,10 @@
             if (input === "laposte") {
                 document.getElementById("lock-screen-global").style.display = "none";
                 errorDiv.style.display = "none";
-            } else {
+            } else if (input.length >= 7) {
                 errorDiv.style.display = "block";
+            } else {
+                errorDiv.style.display = "none";
             }
         }
 
@@ -1516,8 +1518,10 @@
                 document.getElementById('page-admin').classList.add('active');
                 document.getElementById('nav-btn-admin').classList.add('active');
                 setupAdminPage();
-            } else {
+            } else if (input.length >= 4) {
                 errorDiv.style.display = "block";
+            } else {
+                errorDiv.style.display = "none";
             }
         }
 
@@ -1540,6 +1544,7 @@
                 currentTable = data.currentTable || [];
                 history = data.history || [];
             } else if (isInitialLoad) {
+                // Initialisation par défaut si la base de données est complètement vide
                 players = [
                     { id: 0, name: "Alexis", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇧🇬" },
                     { id: 1, name: "Thomas", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "⚡" },
@@ -1553,9 +1558,10 @@
                 ];
                 currentTable = [3, 0, 6];
                 history = [];
-                save();
+                save(); // Pousse les données initiales vers Firebase
             }
 
+            // Rafraîchir l'interface avec les nouvelles données
             if (!isInitialLoad) {
                 const activePage = document.querySelector('.page.active').id;
                 if (activePage === 'page-home') renderHome();
@@ -1572,7 +1578,7 @@
                 }
             } else {
                 isInitialLoad = false;
-                renderHome();
+                renderHome(); // Premier affichage au chargement du site
             }
         });
 
@@ -1640,7 +1646,7 @@
                         ${p.currentStreak >= 3 ? `<div class="streak-fire"><i class="fa-solid fa-fire"></i> x${p.currentStreak}</div>` : ''}
                         <div class="mini-stats">
                             <div class="stat-item"><span class="val vic">${p.vic}</span></div>
-                            <div class="stat-item"><span class="val coch">${p.coch}🐷</span></div>
+                            <div class="stat-item"><span class="val coch">${p.coch} 🐷</span></div>
                         </div>
                     </div>
                 `;
@@ -1668,7 +1674,7 @@
             players.forEach(p => {
                 let btn = document.createElement("button");
                 btn.className = "bench-btn";
-                btn.innerHTML = `${p.avatar.startsWith('data:image') ? '🖼️' : p.avatar} ${p.name}`;
+                btn.innerHTML = `${p.name}`;
                 btn.onclick = () => {
                     if (newGameSelected.includes(p.id)) {
                         newGameSelected = newGameSelected.filter(x => x !== p.id);
@@ -1683,9 +1689,12 @@
             document.getElementById("newGameModal").classList.add("active");
         }
         function closeNewGameModal() { document.getElementById("newGameModal").classList.remove("active"); }
+        let matchStartTime = null;
+
         function submitNewGame() {
             if (newGameSelected.length !== 3) { showToast("Choisis exactement 3 joueurs pour démarrer !", "warning"); return; }
             currentTable = [...newGameSelected];
+            matchStartTime = new Date();
             save(); closeNewGameModal(); renderHome();
             showToast("Nouvelle partie lancée !", "success");
         }
@@ -1715,6 +1724,20 @@
                     selectedWinner = id;
                     document.querySelectorAll("#savedSelector .select-btn").forEach(b => b.classList.remove('selected-saved'));
                     selectedSaved = null;
+                    
+                    document.querySelectorAll("#cochonSelector .select-btn").forEach(b => {
+                        if (parseInt(b.dataset.id) === id) {
+                            b.disabled = true;
+                            b.style.opacity = '0.3';
+                            if (b.classList.contains('selected-cochon')) {
+                                b.classList.remove('selected-cochon');
+                                selectedCochons = selectedCochons.filter(x => x !== id);
+                            }
+                        } else {
+                            b.disabled = false;
+                            b.style.opacity = '1';
+                        }
+                    });
                 };
                 winRow.appendChild(bWin);
 
@@ -1725,12 +1748,16 @@
                     selectedSaved = id;
                     document.querySelectorAll("#winSelector .select-btn").forEach(b => b.classList.remove('selected-win'));
                     selectedWinner = null;
-                    document.querySelectorAll("#cochonSelector .select-btn").forEach(b => b.classList.remove('selected-cochon'));
+                    document.querySelectorAll("#cochonSelector .select-btn").forEach(b => {
+                        b.classList.remove('selected-cochon');
+                        b.disabled = false;
+                        b.style.opacity = '1';
+                    });
                     selectedCochons = [];
                 };
                 savedRow.appendChild(bSave);
 
-                let bCoch = document.createElement("button"); bCoch.className = "select-btn"; bCoch.innerText = p.name;
+                let bCoch = document.createElement("button"); bCoch.className = "select-btn"; bCoch.innerText = p.name; bCoch.dataset.id = id;
                 bCoch.onclick = () => {
                     if (selectedSaved !== null) {
                         showToast("Impossible de donner un cochon en cas d'égalité.", "warning");
@@ -1748,7 +1775,7 @@
             const benchRow = document.getElementById("benchSelector");
             benchRow.innerHTML = "";
             players.forEach(p => {
-                let bBench = document.createElement("button"); bBench.className = "bench-btn"; bBench.innerHTML = `${p.avatar.startsWith('data:image') ? '🖼️' : p.avatar} ${p.name}`;
+                let bBench = document.createElement("button"); bBench.className = "bench-btn"; bBench.innerHTML = `${p.name}`;
                 bBench.onclick = () => {
                     let limit = (selectedSaved !== null) ? 3 : 2;
                     if (selectedIncoming.includes(p.id)) {
@@ -1822,9 +1849,19 @@
                 }
             }
 
+            let durationStr = "";
+            if (matchStartTime) {
+                let diffMs = Date.now() - matchStartTime;
+                let diffMins = Math.floor(diffMs / 60000);
+                if (diffMins > 0) durationStr = `⏱️ ${diffMins} min`;
+                else durationStr = `⏱️ < 1 min`;
+                matchStartTime = null;
+            }
+
             history.unshift({
                 date: dateStr,
                 dateIso: dateIso,
+                duration: durationStr,
                 table: oldTable,
                 winnerId: isEqualityMode ? null : selectedWinner,
                 savedId: isEqualityMode ? selectedSaved : null,
@@ -1840,14 +1877,33 @@
         }
 
         function renderDayRanking() {
-            const todayIso = new Date().toISOString().split('T')[0];
+            const now = new Date();
+            let sessionNow = new Date(now);
+            if (now.getHours() < 12) {
+                sessionNow.setDate(sessionNow.getDate() - 1);
+            }
+            const currentSessionIso = sessionNow.toISOString().split('T')[0];
+
             let dayStats = {};
             players.forEach(p => {
                 dayStats[p.id] = { id: p.id, name: p.name, avatar: p.avatar, vic: 0, coch: 0, totalGames: 0, saved: 0 };
             });
 
             history.forEach(h => {
-                if (h.dateIso === todayIso) {
+                let hSession = h.dateIso;
+                if (h.date && h.date.includes('–')) {
+                    let timePart = h.date.split('–')[1];
+                    if (timePart) {
+                        let hour = parseInt(timePart.trim().split(':')[0], 10);
+                        if (!isNaN(hour) && hour < 12) {
+                            let d = new Date(h.dateIso);
+                            d.setDate(d.getDate() - 1);
+                            hSession = d.toISOString().split('T')[0];
+                        }
+                    }
+                }
+
+                if (hSession === currentSessionIso) {
                     h.table.forEach(pid => {
                         if (dayStats[pid]) dayStats[pid].totalGames += 1;
                     });
@@ -1862,7 +1918,14 @@
                 }
             });
 
-            let daySorted = Object.values(dayStats).sort((a,b) => ((b.vic - b.coch) - (a.vic - a.coch)) || (b.vic - a.vic));
+            let daySorted = Object.values(dayStats).sort((a,b) => {
+                if (a.totalGames === 0 && b.totalGames > 0) return 1;
+                if (b.totalGames === 0 && a.totalGames > 0) return -1;
+                let aWin = a.totalGames > 0 ? Math.round((a.vic / a.totalGames) * 100) : -1;
+                let bWin = b.totalGames > 0 ? Math.round((b.vic / b.totalGames) * 100) : -1;
+                if (aWin !== bWin) return bWin - aWin;
+                return ((b.vic - b.coch) - (a.vic - a.coch));
+            });
 
             const tbody = document.getElementById("dayRankingTableBody");
             tbody.innerHTML = "";
@@ -1872,10 +1935,10 @@
                     <tr>
                         <td><strong>#${idx+1}</strong></td>
                         <td><div class="ranking-avatar">${getAvatarHtml(p.avatar)}</div> ${p.name}</td>
+                        <td>${winRate}%</td>
                         <td style="color:#ff4444; font-weight:900;">${p.vic - p.coch}</td>
                         <td style="color:var(--gold); font-weight:700;">${p.vic}</td>
                         <td style="color:var(--cochon-color);">${p.coch}</td>
-                        <td>${winRate}%</td>
                         <td style="color:var(--blue);">${p.saved}</td>
                         <td>${p.totalGames}</td>
                     </tr>
@@ -1884,19 +1947,30 @@
         }
 
         function renderRanking() {
-            let sorted = [...players].sort((a,b) => ((b.vic - b.coch) - (a.vic - a.coch)) || (b.vic - a.vic));
+            let sorted = [...players].sort((a,b) => {
+                if (a.totalGames === 0 && b.totalGames > 0) return 1;
+                if (b.totalGames === 0 && a.totalGames > 0) return -1;
+                let aWin = a.totalGames > 0 ? Math.round((a.vic / a.totalGames) * 100) : -1;
+                let bWin = b.totalGames > 0 ? Math.round((b.vic / b.totalGames) * 100) : -1;
+                if (aWin !== bWin) return bWin - aWin;
+                return ((b.vic - b.coch) - (a.vic - a.coch));
+            });
             const tbody = document.getElementById("rankingTableBody");
             tbody.innerHTML = "";
+            
+            let tVic = 0, tCoch = 0, tSaved = 0, tScore = 0;
+            
             sorted.forEach((p, idx) => {
                 let winRate = p.totalGames > 0 ? Math.round((p.vic / p.totalGames) * 100) : 0;
+                tVic += p.vic; tCoch += p.coch; tSaved += (p.saved || 0); tScore += (p.vic - p.coch);
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>#${idx+1}</strong></td>
                         <td><div class="ranking-avatar">${getAvatarHtml(p.avatar)}</div> ${p.name}</td>
+                        <td>${winRate}%</td>
                         <td style="color:#ff4444; font-weight:900;">${p.vic - p.coch}</td>
                         <td style="color:var(--gold); text-shadow: 0 0 6px rgba(251,191,36,0.15);">${p.vic}</td>
                         <td style="color:var(--cochon-color);">${p.coch}</td>
-                        <td>${winRate}%</td>
                         <td>🔥 ${p.currentStreak}</td>
                         <td style="color:var(--blue);">${p.saved || 0}</td>
                         <td>${p.totalGames}</td>
@@ -1942,6 +2016,21 @@
             let winRate = p.totalGames > 0 ? Math.round((p.vic / p.totalGames) * 100) : 0;
             let relations = computeCochonRelations(p.id);
 
+            let maxStreak = 0;
+            let tempStreak = 0;
+            for (let i = history.length - 1; i >= 0; i--) {
+                let h = history[i];
+                if (h.table.includes(p.id)) {
+                    if (!h.equality && h.winnerId === p.id) {
+                        tempStreak++;
+                        if (tempStreak > maxStreak) maxStreak = tempStreak;
+                    } else {
+                        tempStreak = 0;
+                    }
+                }
+            }
+            if (p.currentStreak > maxStreak) maxStreak = p.currentStreak;
+
             document.getElementById("profileContent").innerHTML = `
                 <div class="profile-header">
                     <div class="profile-avatar">${getAvatarHtml(p.avatar)}</div>
@@ -1968,7 +2057,7 @@
                     </div>
                     <div class="p-stat-box"><div class="p-stat-label">Parties Jouées</div><div class="p-stat-val">${p.totalGames}</div></div>
                     <div class="p-stat-box"><div class="p-stat-label">Sauvé (Égalité)</div><div class="p-stat-val" style="color:var(--blue);">${p.saved || 0}</div></div>
-                    <div class="p-stat-box"><div class="p-stat-label">Série Actuelle</div><div class="p-stat-val">🔥 ${p.currentStreak}</div></div>
+                    <div class="p-stat-box"><div class="p-stat-label">Record de Série</div><div class="p-stat-val">🏆 ${maxStreak}</div></div>
                 </div>
             `;
         }
@@ -1976,11 +2065,13 @@
         function renderHistory() {
             const container = document.getElementById("historyList"); container.innerHTML = "";
             if(history.length === 0) { container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">Aucune manche enregistrée.</p>`; return; }
-            history.forEach(h => {
+            history.forEach((h, index) => {
+                let matchNum = history.length - index;
+                let durationText = h.duration ? ` | ${h.duration}` : '';
                 let tableNames = h.table.map(id => { let p = players.find(x => x.id === id); return p ? `${p.name}` : '?'; });
                 container.innerHTML += `
                     <div class="history-item">
-                        <div class="history-meta"><span>📅 ${h.date}</span></div>
+                        <div class="history-meta"><span>📅 ${h.date}${durationText}</span><span style="font-weight:bold; color:var(--text-secondary)">#${matchNum}</span></div>
                         <div style="margin-top:4px;">Table : <strong>${tableNames.filter(n => n !== '?').join(', ')}</strong></div>
                         <div>🏆 Résultat : <span style="color:var(--gold); font-weight:700;">${h.winner}</span> | 🐷 Cochon(s) : <span style="color:var(--cochon-color); font-weight:700;">${h.cochon}</span></div>
                     </div>
@@ -2000,10 +2091,12 @@
 
         function loadPlayerToEdit(val) {
             document.getElementById("adminPlayerAvatarFile").value = "";
+            let btnDel = document.getElementById("btnDeletePlayer");
             if(val === "new") {
                 document.getElementById("adminPlayerName").value = "";
                 document.getElementById("adminPlayerAvatarText").value = "";
                 currentAdminAvatarData = "❓";
+                if(btnDel) btnDel.style.display = "none";
             } else {
                 let p = players.find(x => x.id == val);
                 if(p) {
@@ -2015,8 +2108,20 @@
                     }
                     currentAdminAvatarData = p.avatar;
                 }
+                if(btnDel) btnDel.style.display = "block";
             }
             updateAdminAvatarPreview(currentAdminAvatarData);
+        }
+
+        function deletePlayerAdmin() {
+            let selVal = document.getElementById("adminPlayerSelector").value;
+            if(selVal === "new") return;
+            if(!confirm("Es-tu sûr de vouloir supprimer définitivement ce joueur ?")) return;
+            let pid = parseInt(selVal);
+            players = players.filter(p => p.id !== pid);
+            currentTable = currentTable.filter(id => id !== pid);
+            save(); setupAdminPage(); renderHome();
+            showToast("Joueur supprimé avec succès", "success");
         }
 
         function updateAdminAvatarPreview(val) {
@@ -2180,6 +2285,8 @@
                 }
             }
         }
+
+        // renderHome(); (Appelé automatiquement après le chargement des données)
     </script>
 </body>
 </html>
