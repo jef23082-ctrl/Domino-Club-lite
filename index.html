@@ -1274,10 +1274,11 @@
     <!-- Lock Screen: Global -->
     <div id="lock-screen-global" class="lock-screen">
         <div class="lock-box">
-            <h1>🔒 Accès au Club</h1>
+            <h1>🎯 Accès au Club</h1>
             <p style="font-size: 0.8rem; color: var(--text-muted);">Entre le mot de passe général</p>
-            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="••••" oninput="checkGlobalPassword()">
-            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none;">Mot de passe incorrect</div>
+            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="•••••" oninput="checkGlobalPassword()">
+            <button class="btn-primary" onclick="checkGlobalPassword()" style="margin-top: 10px; width: 100%;">Valider</button>
+            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none; margin-top: 10px;">Mot de passe incorrect</div>
         </div>
     </div>
 
@@ -1286,8 +1287,9 @@
         <div class="lock-box">
             <h1>🛠️ Zone Admin</h1>
             <p style="font-size: 0.8rem; color: var(--text-muted);">Mot de passe administrateur requis</p>
-            <input type="password" id="adminPasswordInput" class="lock-input" placeholder="••••" oninput="checkAdminPassword()">
-            <div id="adminLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none;">Mot de passe admin incorrect</div>
+            <input type="password" id="adminPasswordInput" class="lock-input" placeholder="•••••" oninput="checkAdminPassword()">
+            <button class="btn-primary" onclick="checkAdminPassword()" style="margin-top: 10px; width: 100%;">Valider</button>
+            <div id="adminLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none; margin-top: 10px;">Mot de passe admin incorrect</div>
             <button onclick="cancelAdminAccess()" style="background:none; border:none; color:var(--text-muted); font-size:0.8rem; text-decoration:underline; cursor:pointer; margin-top:12px; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted)'">Retour à l'accueil</button>
         </div>
     </div>
@@ -1540,9 +1542,15 @@
         dbRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                players = Array.isArray(data.players) ? data.players : (data.players ? Object.values(data.players) : []);
-                currentTable = Array.isArray(data.currentTable) ? data.currentTable : (data.currentTable ? Object.values(data.currentTable) : []);
-                history = Array.isArray(data.history) ? data.history : (data.history ? Object.values(data.history) : []);
+                let pData = Array.isArray(data.players) ? data.players : (data.players ? Object.values(data.players) : []);
+                players = pData.filter(x => x !== null && x !== undefined);
+
+                let cData = Array.isArray(data.currentTable) ? data.currentTable : (data.currentTable ? Object.values(data.currentTable) : []);
+                currentTable = cData.filter(x => x !== null && x !== undefined);
+
+                let hData = Array.isArray(data.history) ? data.history : (data.history ? Object.values(data.history) : []);
+                history = hData.filter(x => x !== null && x !== undefined);
+
                 recalculateStats();
             } else if (isInitialLoad) {
                 // Initialisation par défaut si la base de données est complètement vide
@@ -2283,4 +2291,19 @@
                     }
                 }
                 if (shouldSwitch) {
-                    rows[i].parentN 
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+        // renderHome(); (Appelé automatiquement après le chargement des données)
+    </script>
+</body>
+</html>
