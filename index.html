@@ -1540,9 +1540,9 @@
         dbRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                players = data.players || [];
-                currentTable = data.currentTable || [];
-                history = data.history || [];
+                players = Array.isArray(data.players) ? data.players : (data.players ? Object.values(data.players) : []);
+                currentTable = Array.isArray(data.currentTable) ? data.currentTable : (data.currentTable ? Object.values(data.currentTable) : []);
+                history = Array.isArray(data.history) ? data.history : (data.history ? Object.values(data.history) : []);
                 recalculateStats();
             } else if (isInitialLoad) {
                 // Initialisation par défaut si la base de données est complètement vide
@@ -1605,10 +1605,12 @@
             });
             let revHistory = [...history].reverse();
             revHistory.forEach(h => {
-                h.table.forEach(id => {
-                    let p = players.find(x => x.id === id);
-                    if(p) p.totalGames += 1;
-                });
+                if (h.table && Array.isArray(h.table)) {
+                    h.table.forEach(id => {
+                        let p = players.find(x => x.id === id);
+                        if(p) p.totalGames += 1;
+                    });
+                }
                 if (h.equality) {
                     if (h.savedId !== null) {
                         let p = players.find(x => x.id === h.savedId);
@@ -1618,11 +1620,11 @@
                     if (h.winnerId !== null) {
                         let p = players.find(x => x.id === h.winnerId);
                         if(p) {
-                            let givenCochons = (h.cochonIds && h.cochonIds.length) ? h.cochonIds.length : 0;
+                            let givenCochons = (h.cochonIds && Array.isArray(h.cochonIds)) ? h.cochonIds.length : 0;
                             p.vic += (givenCochons >= 2) ? 2 : 1;
                         }
                     }
-                    if (h.cochonIds) {
+                    if (h.cochonIds && Array.isArray(h.cochonIds)) {
                         h.cochonIds.forEach(cid => {
                             let p = players.find(x => x.id === cid);
                             if(p) p.coch += 1;
@@ -1635,7 +1637,7 @@
                 let streak = 0;
                 for(let i=0; i<history.length; i++) {
                     let h = history[i];
-                    if (h.table.includes(p.id)) {
+                    if (h.table && Array.isArray(h.table) && h.table.includes(p.id)) {
                         if (!h.equality && h.winnerId === p.id) streak++;
                         else break;
                     }
@@ -2281,16 +2283,4 @@
                     }
                 }
                 if (shouldSwitch) {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                    switchcount++;
-                } else {
-                    if (switchcount == 0 && dir == "asc") {
-                        dir = "desc";
-                        switching = true;
-                    }
-                }
-            }
-        }
-
-        // renderHome(); (Appelé automatiquement après le chargeme
+                    rows[i].parentN
