@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>👑 Le Roi du Cochon — Domino Club Élite</title>
-    <meta name="description" content="Le Roi du Cochon : application de suivi de scores et classement pour votre club de dominos élite. Suivez les victoires, cochons et séries en temps réel.">
+    <meta name="description" content="Le Roi du Cochon : classement des parties réelles et jeu de domino en ligne privé, avec données Firebase séparées.">
     <meta property="og:title" content="Le Roi du Cochon — Domino Club Élite">
     <meta property="og:description" content="Suivi de scores et classement pour club de dominos élite.">
     <meta property="og:type" content="website">
@@ -864,7 +864,7 @@
             font-size: 0.58rem;
             gap: 4px;
             cursor: pointer;
-            width: 18%;
+            width: 16.3%;
             padding: 8px 4px;
             border-radius: var(--radius-sm);
             transition: all var(--transition-smooth);
@@ -1257,6 +1257,146 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        /* ========== DOMINO EN LIGNE ========== */
+        .online-shell { max-width: 980px; margin: 0 auto; }
+        .online-hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 85% 10%, rgba(16,185,129,.18), transparent 34%),
+                radial-gradient(circle at 5% 90%, rgba(251,191,36,.12), transparent 30%),
+                rgba(255,255,255,.025);
+        }
+        .online-hero::after {
+            content: '●  ●';
+            position: absolute;
+            right: 18px;
+            top: 12px;
+            color: rgba(255,255,255,.05);
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 12px;
+            transform: rotate(-18deg);
+            pointer-events: none;
+        }
+        .online-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; position:relative; z-index:1; }
+        .online-title-row h2 { margin-bottom:6px; }
+        .online-kicker { color:var(--green); font-size:.68rem; font-weight:900; letter-spacing:2px; text-transform:uppercase; }
+        .online-copy { color:var(--text-secondary); font-size:.82rem; line-height:1.55; max-width:650px; position:relative; z-index:1; }
+        .online-badge { display:inline-flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px; background:rgba(16,185,129,.1); border:1px solid rgba(16,185,129,.22); color:#6ee7b7; font-size:.7rem; font-weight:800; white-space:nowrap; }
+        .online-grid { display:grid; grid-template-columns:1fr; gap:16px; }
+        .online-card { background:rgba(255,255,255,.025); border:1px solid var(--glass-border); border-radius:var(--radius-lg); padding:18px; backdrop-filter:blur(14px); }
+        .online-card-title { display:flex; align-items:center; gap:9px; font-weight:850; font-size:1rem; margin-bottom:14px; }
+        .online-help { font-size:.76rem; line-height:1.55; color:var(--text-secondary); }
+        .online-label { display:block; color:var(--text-muted); font-size:.68rem; font-weight:800; letter-spacing:.7px; text-transform:uppercase; margin:0 0 7px; }
+        .online-select, .online-input {
+            width:100%; padding:13px 14px; border-radius:12px; border:1px solid var(--glass-border);
+            background:rgba(255,255,255,.045); color:#fff; outline:none; font-size:.92rem; font-weight:650;
+        }
+        .online-input { text-transform:uppercase; letter-spacing:4px; text-align:center; font-weight:900; }
+        .online-select:focus, .online-input:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(16,185,129,.1); }
+        .online-actions { display:grid; grid-template-columns:1fr; gap:10px; margin-top:14px; }
+        .online-btn {
+            min-height:46px; border:0; border-radius:13px; padding:12px 14px; cursor:pointer; font-weight:850; font-size:.86rem;
+            display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+        }
+        .online-btn:hover { transform:translateY(-1px); }
+        .online-btn:disabled { opacity:.42; cursor:not-allowed; transform:none; }
+        .online-btn.primary { background:linear-gradient(135deg,#10b981,#059669); color:white; box-shadow:0 8px 24px rgba(16,185,129,.17); }
+        .online-btn.gold { background:linear-gradient(135deg,var(--gold),#f59e0b); color:#111; box-shadow:0 8px 24px var(--gold-glow); }
+        .online-btn.blue { background:linear-gradient(135deg,#3b82f6,#6366f1); color:#fff; }
+        .online-btn.ghost { background:rgba(255,255,255,.055); color:var(--text-secondary); border:1px solid var(--glass-border); }
+        .online-btn.danger { background:rgba(239,68,68,.11); color:#fca5a5; border:1px solid rgba(239,68,68,.18); }
+        .online-btn.small { min-height:36px; padding:8px 10px; font-size:.74rem; border-radius:10px; }
+        .online-room-header { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
+        .online-room-code { font-size:1.6rem; font-weight:950; letter-spacing:7px; color:var(--gold); text-shadow:0 0 18px var(--gold-glow); }
+        .online-status-pill { display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border-radius:999px; font-size:.67rem; font-weight:850; background:rgba(59,130,246,.1); color:#93c5fd; border:1px solid rgba(59,130,246,.18); }
+        .online-player-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:12px 0; }
+        .online-player-chip { min-width:0; padding:10px 6px; text-align:center; border-radius:14px; background:rgba(255,255,255,.028); border:1px solid rgba(255,255,255,.06); position:relative; }
+        .online-player-chip.turn { border-color:var(--gold); box-shadow:0 0 18px var(--gold-glow); background:rgba(251,191,36,.045); }
+        .online-player-chip.me { outline:2px solid rgba(16,185,129,.35); outline-offset:1px; }
+        .online-player-avatar { width:42px; height:42px; margin:0 auto 6px; border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); font-size:1.25rem; }
+        .online-player-avatar img { width:100%; height:100%; object-fit:cover; }
+        .online-player-name { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:.73rem; font-weight:850; }
+        .online-player-score { margin-top:4px; color:var(--gold); font-size:1.1rem; font-weight:950; }
+        .online-presence { position:absolute; width:9px; height:9px; border-radius:50%; right:7px; top:7px; background:#64748b; box-shadow:0 0 0 2px rgba(6,6,15,.8); }
+        .online-presence.on { background:#22c55e; }
+        .online-table {
+            min-height:190px; border-radius:24px; padding:18px 12px; margin:14px 0;
+            background:
+              radial-gradient(circle at 50% 35%, rgba(16,185,129,.1), transparent 44%),
+              linear-gradient(145deg,#09261f,#071913 70%);
+            border:1px solid rgba(52,211,153,.18); box-shadow:inset 0 0 55px rgba(0,0,0,.35), 0 16px 45px rgba(0,0,0,.25);
+            display:flex; flex-direction:column; justify-content:center;
+        }
+        .online-turn-banner { text-align:center; font-size:.8rem; color:#a7f3d0; font-weight:800; min-height:22px; }
+        .online-board-scroll { width:100%; overflow-x:auto; padding:18px 4px 8px; }
+        .online-board { display:flex; align-items:center; justify-content:flex-start; min-width:max-content; gap:3px; margin:0 auto; }
+        .online-empty-board { text-align:center; color:rgba(255,255,255,.35); font-size:.8rem; padding:26px 8px; }
+        .domino-tile {
+            display:inline-flex; flex-shrink:0; background:linear-gradient(145deg,#fffdf4,#e7e1d1); border:1px solid rgba(0,0,0,.34);
+            border-radius:9px; padding:3px; box-shadow:0 5px 10px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.9); color:#111;
+            position:relative; user-select:none;
+        }
+        .domino-tile.hand-tile { cursor:pointer; transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease; }
+        .domino-tile.hand-tile:hover, .domino-tile.hand-tile.selected { transform:translateY(-7px); box-shadow:0 12px 22px rgba(0,0,0,.35),0 0 0 2px var(--gold); }
+        .domino-tile.hand-tile.unplayable { opacity:.35; cursor:not-allowed; filter:grayscale(.4); }
+        .domino-half { width:34px; height:34px; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); padding:3px; position:relative; }
+        .domino-half + .domino-half { border-left:2px solid rgba(0,0,0,.45); }
+        .pip-cell { display:flex; align-items:center; justify-content:center; }
+        .pip-dot { width:6px; height:6px; background:#111827; border-radius:50%; box-shadow:inset 0 1px 1px rgba(255,255,255,.25); }
+        .online-hand-zone { margin-top:14px; }
+        .online-hand-title { display:flex; justify-content:space-between; align-items:center; gap:10px; color:var(--text-secondary); font-size:.74rem; margin-bottom:10px; }
+        .online-hand { display:flex; gap:8px; overflow-x:auto; padding:10px 5px 16px; min-height:85px; }
+        .online-play-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+        .online-round-message { padding:14px; border-radius:15px; background:rgba(251,191,36,.07); border:1px solid rgba(251,191,36,.16); margin-top:12px; text-align:center; }
+        .online-round-message strong { color:var(--gold); display:block; margin-bottom:5px; }
+        .online-result-card { padding:18px; border-radius:18px; background:linear-gradient(145deg,rgba(251,191,36,.1),rgba(255,255,255,.025)); border:1px solid rgba(251,191,36,.2); text-align:center; margin-top:14px; }
+        .online-result-icon { font-size:2.2rem; margin-bottom:8px; }
+        .online-result-title { font-size:1.1rem; font-weight:950; color:var(--gold); }
+        .online-result-copy { color:var(--text-secondary); font-size:.78rem; line-height:1.55; margin-top:6px; }
+        .online-waiting-slots { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:15px 0; }
+        .online-slot { min-height:105px; border:1px dashed rgba(255,255,255,.12); border-radius:15px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:.72rem; text-align:center; padding:8px; }
+        .online-slot.filled { border-style:solid; background:rgba(255,255,255,.025); color:#fff; }
+        .online-rules-list { display:grid; gap:7px; margin-top:10px; }
+        .online-rule { display:flex; gap:9px; align-items:flex-start; color:var(--text-secondary); font-size:.75rem; line-height:1.45; }
+        .online-rule span:first-child { flex:0 0 22px; height:22px; border-radius:7px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.06); }
+        .online-ranking-wrap { overflow-x:auto; }
+        .online-ranking { width:100%; border-collapse:collapse; min-width:590px; }
+        .online-ranking th { color:var(--text-muted); font-size:.65rem; text-transform:uppercase; letter-spacing:.5px; padding:9px 6px; border-bottom:1px solid rgba(255,255,255,.08); }
+        .online-ranking td { text-align:center; padding:11px 6px; border-bottom:1px solid rgba(255,255,255,.04); font-size:.78rem; font-weight:650; }
+        .online-ranking td.player-cell { text-align:left; display:flex; align-items:center; gap:8px; }
+        .online-mini-avatar { width:30px; height:30px; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.05); flex-shrink:0; }
+        .online-mini-avatar img { width:100%; height:100%; object-fit:cover; }
+        .online-history-item { padding:13px; border-radius:14px; border:1px solid rgba(255,255,255,.055); background:rgba(255,255,255,.018); margin-bottom:9px; }
+        .online-history-top { display:flex; justify-content:space-between; gap:10px; color:var(--text-muted); font-size:.68rem; margin-bottom:6px; }
+        .online-history-result { font-size:.81rem; line-height:1.5; }
+        .online-inline-note { color:var(--text-muted); text-align:center; font-size:.7rem; margin-top:9px; }
+        .online-hidden { display:none !important; }
+        .online-error { color:#fca5a5; font-size:.74rem; font-weight:700; min-height:18px; margin-top:8px; text-align:center; }
+        .online-loader { width:18px; height:18px; border:2px solid rgba(255,255,255,.2); border-top-color:#fff; border-radius:50%; animation:odSpin .8s linear infinite; }
+        @keyframes odSpin { to { transform:rotate(360deg); } }
+
+        @media (min-width: 720px) {
+            .online-grid.two { grid-template-columns:1fr 1fr; }
+            .online-actions { grid-template-columns:1fr 1fr; }
+            .online-card { padding:22px; }
+            .online-table { min-height:245px; padding:24px; }
+            .domino-half { width:40px; height:40px; }
+            .pip-dot { width:7px; height:7px; }
+        }
+
+        @media (max-width: 430px) {
+            .online-room-code { font-size:1.25rem; letter-spacing:5px; }
+            .online-player-row, .online-waiting-slots { gap:5px; }
+            .online-player-chip { padding:9px 4px; }
+            .online-player-avatar { width:36px; height:36px; }
+            .domino-half { width:31px; height:31px; }
+            .pip-dot { width:5px; height:5px; }
+            .online-play-actions { grid-template-columns:1fr; }
+        }
+
     </style>
 </head>
 <body>
@@ -1297,10 +1437,12 @@
     <header>
         <h1>Le Roi du Cochon</h1>
         <div class="subtitle">👑 Domino Club Élite</div>
+        <div id="legacyDataStatus" style="font-size:.66rem;color:var(--text-muted);margin-top:7px;">Sauvegarde historique intégrée : 10 joueurs · 79 manches</div>
     </header>
 
     <!-- PAGE: HOME -->
     <main id="page-home" class="page active">
+        <div id="legacyDataStatus" style="font-size:.72rem;color:var(--text-muted);text-align:center;margin:-4px 0 12px;"></div>
         <section class="players-grid" id="mainGrid"></section>
 
         <section class="card-panel">
@@ -1371,6 +1513,119 @@
             <div id="historyList"></div>
         </section>
     </main>
+
+
+    <!-- PAGE: DOMINO EN LIGNE -->
+    <main id="page-online" class="page">
+        <div class="online-shell">
+            <section class="card-panel online-hero">
+                <div class="online-title-row">
+                    <div>
+                        <div class="online-kicker">Salle privée entre collègues</div>
+                        <h2><i class="fa-solid fa-globe" style="color:var(--green);"></i> Domino en ligne</h2>
+                    </div>
+                    <span class="online-badge"><i class="fa-solid fa-shield-halved"></i> Données séparées</span>
+                </div>
+                <p class="online-copy">Les parties jouées ici possèdent leur propre classement et leur propre historique. Elles ne modifient jamais le classement des parties jouées en réel.</p>
+            </section>
+
+            <section id="odLobbyView">
+                <div class="online-grid two">
+                    <div class="online-card">
+                        <div class="online-card-title"><i class="fa-solid fa-user-check" style="color:var(--green);"></i> Ton identité</div>
+                        <label class="online-label" for="odProfileSelect">Choisis ton profil du club</label>
+                        <select id="odProfileSelect" class="online-select" onchange="odSaveSelectedProfile(this.value)"></select>
+                        <div class="online-actions">
+                            <button id="odCreateRoomBtn" class="online-btn primary" onclick="odCreateRoom()"><i class="fa-solid fa-plus"></i> Créer une salle</button>
+                            <button id="odResumeRoomBtn" class="online-btn ghost online-hidden" onclick="odResumeSavedRoom()"><i class="fa-solid fa-rotate-right"></i> Reprendre la salle</button>
+                        </div>
+                        <div id="odLobbyError" class="online-error"></div>
+                    </div>
+
+                    <div class="online-card">
+                        <div class="online-card-title"><i class="fa-solid fa-right-to-bracket" style="color:var(--blue);"></i> Rejoindre des collègues</div>
+                        <label class="online-label" for="odJoinCode">Code de la salle</label>
+                        <input id="odJoinCode" class="online-input" maxlength="5" inputmode="text" autocomplete="off" placeholder="ABCDE" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+                        <button class="online-btn blue" style="width:100%; margin-top:14px;" onclick="odJoinRoom()"><i class="fa-solid fa-users"></i> Rejoindre la salle</button>
+                        <p class="online-inline-note">Une salle accueille exactement trois joueurs.</p>
+                    </div>
+                </div>
+
+                <div class="online-card" style="margin-top:16px;">
+                    <div class="online-card-title"><i class="fa-solid fa-book-open" style="color:var(--gold);"></i> Règles intégrées</div>
+                    <div class="online-rules-list">
+                        <div class="online-rule"><span>🁣</span><div>Trois joueurs, jeu double-six, sept dominos chacun et aucune pioche.</div></div>
+                        <div class="online-rule"><span>🚫</span><div>Quand personne ne peut jouer, le plus petit total en main gagne seulement s’il est strictement inférieur à 7. Une égalité au minimum ou un minimum de 7 et plus annule la manche.</div></div>
+                        <div class="online-rule"><span>🏆</span><div>Le premier joueur à remporter trois manches gagne la partie. Les adversaires restés à zéro manche prennent un cochon.</div></div>
+                        <div class="online-rule"><span>🛡️</span><div>Dès que les trois joueurs ont chacun remporté au moins une manche, la partie est annulée et le gagnant de la dernière manche est déclaré sauvé.</div></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="odRoomView" class="online-hidden">
+                <div class="online-card">
+                    <div class="online-room-header">
+                        <div>
+                            <div class="online-label">Code de la salle</div>
+                            <div id="odRoomCodeDisplay" class="online-room-code">-----</div>
+                        </div>
+                        <div style="display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end;">
+                            <span id="odRoomStatus" class="online-status-pill">Connexion…</span>
+                            <button class="online-btn ghost small" onclick="odCopyRoomCode()"><i class="fa-regular fa-copy"></i> Copier</button>
+                            <button class="online-btn danger small" onclick="odLeaveRoomView()"><i class="fa-solid fa-arrow-left"></i> Quitter</button>
+                        </div>
+                    </div>
+                    <div id="odRoomPlayers" class="online-player-row"></div>
+                    <div id="odRoomError" class="online-error"></div>
+                </div>
+
+                <div id="odWaitingPanel" class="online-card" style="margin-top:16px;">
+                    <div class="online-card-title"><i class="fa-solid fa-hourglass-half" style="color:var(--gold);"></i> En attente des joueurs</div>
+                    <div id="odWaitingSlots" class="online-waiting-slots"></div>
+                    <p id="odWaitingText" class="online-help" style="text-align:center;">Partage le code avec deux collègues.</p>
+                    <button id="odStartMatchBtn" class="online-btn gold" style="width:100%; margin-top:14px;" onclick="odStartOnlineMatch()" disabled><i class="fa-solid fa-play"></i> Lancer la partie</button>
+                </div>
+
+                <div id="odGamePanel" class="online-hidden">
+                    <div class="online-card" style="margin-top:16px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                            <div class="online-card-title" style="margin:0;"><i class="fa-solid fa-chess-board" style="color:var(--green);"></i> <span id="odRoundTitle">Manche 1</span></div>
+                            <span id="odGameStateLabel" class="online-status-pill">En cours</span>
+                        </div>
+
+                        <div class="online-table">
+                            <div id="odTurnBanner" class="online-turn-banner"></div>
+                            <div class="online-board-scroll"><div id="odBoard" class="online-board"></div></div>
+                        </div>
+
+                        <div id="odHandZone" class="online-hand-zone">
+                            <div class="online-hand-title"><span><i class="fa-solid fa-hand"></i> Tes dominos</span><span id="odHandPoints"></span></div>
+                            <div id="odHand" class="online-hand"></div>
+                            <div id="odPlayActions" class="online-play-actions online-hidden">
+                                <button id="odPlayLeftBtn" class="online-btn blue" onclick="odPlaySelectedTile('left')"><i class="fa-solid fa-arrow-left"></i> Jouer à gauche</button>
+                                <button id="odPlayRightBtn" class="online-btn primary" onclick="odPlaySelectedTile('right')">Jouer à droite <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                            <button id="odPassBtn" class="online-btn ghost" style="width:100%; margin-top:8px;" onclick="odPassTurn()"><i class="fa-solid fa-forward"></i> Je passe</button>
+                        </div>
+
+                        <div id="odRoundResult"></div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="online-grid two" style="margin-top:16px;">
+                <section class="online-card">
+                    <div class="online-card-title"><i class="fa-solid fa-ranking-star" style="color:var(--gold);"></i> Classement en ligne</div>
+                    <div id="odOnlineRanking" class="online-ranking-wrap"><p class="online-help">Aucune partie en ligne enregistrée.</p></div>
+                </section>
+                <section class="online-card">
+                    <div class="online-card-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--blue);"></i> Historique en ligne</div>
+                    <div id="odOnlineHistory"><p class="online-help">Aucune partie en ligne enregistrée.</p></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
 
     <!-- PAGE: ADMIN -->
     <main id="page-admin" class="page">
@@ -1456,6 +1711,7 @@
     <!-- NAVBAR -->
     <nav class="nav-bar">
         <button id="nav-btn-home" class="nav-item active" onclick="switchPage('home', this)"><i class="fa-solid fa-house"></i>Accueil</button>
+        <button id="nav-btn-online" class="nav-item" onclick="switchPage('online', this)"><i class="fa-solid fa-globe"></i>En ligne</button>
         <button id="nav-btn-ranking" class="nav-item" onclick="switchPage('ranking', this)"><i class="fa-solid fa-list-ol"></i>Classement</button>
         <button id="nav-btn-profiles" class="nav-item" onclick="switchPage('profiles', this)"><i class="fa-solid fa-user-group"></i>Profils</button>
         <button id="nav-btn-history" class="nav-item" onclick="switchPage('history', this)"><i class="fa-solid fa-history"></i>Historique</button>
@@ -1477,8 +1733,20 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        // IMPORTANT : ce nœud reste exclusivement réservé aux parties jouées en réel.
         const dbRef = db.ref('domino_data');
+        const legacyBackupsRef = db.ref('domino_data_backups');
         let isInitialLoad = true;
+        let legacyDataReady = false;
+        let legacyDataExists = false;
+        let legacyBackupPromise = null;
+        // Sauvegarde intégrée depuis l'export Firebase fourni le 6 août 2026.
+        // Elle garantit l'affichage des anciens joueurs et des 79 manches même si Firebase
+        // est temporairement inaccessible, vide ou bloqué par ses règles de sécurité.
+        const LEGACY_EMBEDDED_DATA = {"currentTable":[7],"history":[{"cochon":"Aucun","date":"27 juillet – 00:17","dateIso":"2026-07-26","duration":"⏱️ 12 min","equality":true,"savedId":7,"table":[1,7,2],"winner":"Égalité (Jean-Claude Sauvé)"},{"cochon":"Jean-Claude","cochonDetails":[{"giver":2,"receiver":7}],"cochonIds":[7],"date":"27 juillet – 00:04","dateIso":"2026-07-26","duration":"⏱️ 10 min","equality":false,"table":[1,7,2],"winner":"Eddy","winnerId":2},{"cochon":"Aucun","date":"26 juillet – 23:53","dateIso":"2026-07-26","duration":"⏱️ 8 min","equality":true,"savedId":1,"table":[1,2,7],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Aucun","date":"26 juillet – 23:44","dateIso":"2026-07-26","duration":"⏱️ 8 min","equality":true,"savedId":1,"table":[1,7,2],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Thomas & Eddy","cochonDetails":[{"giver":7,"receiver":1},{"giver":7,"receiver":2}],"cochonIds":[1,2],"date":"26 juillet – 23:35","dateIso":"2026-07-26","duration":"⏱️ 7 min","equality":false,"table":[1,7,2],"winner":"Jean-Claude","winnerId":7},{"cochon":"Thomas","cochonDetails":[{"giver":7,"receiver":1}],"cochonIds":[1],"date":"26 juillet – 23:27","dateIso":"2026-07-26","duration":"⏱️ 22 min","equality":false,"table":[1,7,2],"winner":"Jean-Claude","winnerId":7},{"cochon":"Jean-Claude","cochonDetails":[{"giver":3,"receiver":7}],"cochonIds":[7],"date":"20 juillet – 05:27","dateIso":"2026-07-20","duration":"⏱️ < 1 min","equality":false,"table":[3,1,7],"winner":"Khalil","winnerId":3},{"cochon":"Aucun","date":"20 juillet – 05:14","dateIso":"2026-07-20","duration":"⏱️ 46 min","equality":true,"savedId":7,"table":[3,1,7],"winner":"Égalité (Jean-Claude Sauvé)"},{"cochon":"Aucun","date":"20 juillet – 04:12","dateIso":"2026-07-20","duration":"⏱️ 21 min","equality":true,"savedId":1,"table":[3,1,7],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Aucun","date":"20 juillet – 03:45","dateIso":"2026-07-20","duration":"⏱️ 16 min","equality":true,"savedId":7,"table":[3,1,7],"winner":"Égalité (Jean-Claude Sauvé)"},{"cochon":"Jean-Claude & Khalil","cochonDetails":[{"giver":1,"receiver":7},{"giver":1,"receiver":3}],"cochonIds":[7,3],"date":"20 juillet – 03:24","dateIso":"2026-07-20","duration":"⏱️ 9 min","equality":false,"table":[3,1,7],"winner":"Thomas","winnerId":1},{"cochon":"Thomas & Jean-Claude","cochonDetails":[{"giver":3,"receiver":1},{"giver":3,"receiver":7}],"cochonIds":[1,7],"date":"20 juillet – 03:15","dateIso":"2026-07-20","duration":"⏱️ 7 min","equality":false,"table":[3,1,7],"winner":"Khalil","winnerId":3},{"cochon":"Eddy & Ryad","cochonDetails":[{"giver":0,"receiver":2},{"giver":0,"receiver":6}],"cochonIds":[2,6],"date":"18 juillet – 06:02","dateIso":"2026-07-18","duration":"⏱️ < 1 min","equality":false,"table":[0,2,6],"winner":"Alexis","winnerId":0},{"cochon":"Ryad","cochonDetails":[{"giver":2,"receiver":6}],"cochonIds":[6],"date":"18 juillet – 05:52","dateIso":"2026-07-18","duration":"⏱️ 28 min","equality":false,"table":[0,2,6],"winner":"Eddy","winnerId":2},{"cochon":"Alexis & Ryad","cochonDetails":[{"giver":2,"receiver":0},{"giver":2,"receiver":6}],"cochonIds":[0,6],"date":"18 juillet – 05:22","dateIso":"2026-07-18","duration":"⏱️ < 1 min","equality":false,"table":[0,6,2],"winner":"Eddy","winnerId":2},{"cochon":"Eddy","cochonDetails":[{"giver":6,"receiver":2}],"cochonIds":[2],"date":"18 juillet – 04:59","dateIso":"2026-07-18","duration":"⏱️ < 1 min","equality":false,"table":[0,6,2],"winner":"Ryad","winnerId":6},{"cochon":"Ryad & Eddy","cochonDetails":[{"giver":0,"receiver":6},{"giver":0,"receiver":2}],"cochonIds":[6,2],"date":"18 juillet – 04:48","dateIso":"2026-07-18","duration":"⏱️ < 1 min","equality":false,"table":[0,6,2],"winner":"Alexis","winnerId":0},{"cochon":"Ryad","cochonDetails":[{"giver":1,"receiver":6}],"cochonIds":[6],"date":"15 juillet – 05:30","dateIso":"2026-07-15","duration":"⏱️ 11 min","equality":false,"table":[1,3,6],"winner":"Thomas","winnerId":1},{"cochon":"Jean-Claude","cochonDetails":[{"giver":1,"receiver":7}],"cochonIds":[7],"date":"15 juillet – 05:17","dateIso":"2026-07-15","duration":"⏱️ 14 min","equality":false,"table":[1,3,7],"winner":"Thomas","winnerId":1},{"cochon":"Khalil","cochonDetails":[{"giver":8,"receiver":3}],"cochonIds":[3],"date":"13 juillet – 05:34","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":false,"table":[3,6,8],"winner":"Killyan","winnerId":8},{"cochon":"Aucun","date":"13 juillet – 05:12","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":true,"savedId":3,"table":[3,1,2],"winner":"Égalité (Khalil Sauvé)"},{"cochon":"Ryad & Killyan","cochonDetails":[{"giver":3,"receiver":6},{"giver":3,"receiver":8}],"cochonIds":[6,8],"date":"13 juillet – 05:03","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":false,"table":[3,6,8],"winner":"Khalil","winnerId":3},{"cochon":"Aucun","date":"13 juillet – 04:54","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":true,"savedId":3,"table":[3,1,2],"winner":"Égalité (Khalil Sauvé)"},{"cochon":"Killyan & Ryad","cochonDetails":[{"giver":3,"receiver":8},{"giver":3,"receiver":6}],"cochonIds":[8,6],"date":"13 juillet – 04:43","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":false,"table":[6,8,3],"winner":"Khalil","winnerId":3},{"cochon":"Aucun","date":"13 juillet – 04:34","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":true,"savedId":6,"table":[6,2,1],"winner":"Égalité (Ryad Sauvé)"},{"cochon":"Killyan & Ryad","cochonDetails":[{"giver":2,"receiver":8},{"giver":2,"receiver":6}],"cochonIds":[8,6],"date":"13 juillet – 04:25","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":false,"table":[2,8,6],"winner":"Eddy","winnerId":2},{"cochon":"Jean-Claude","cochonDetails":[{"giver":6,"receiver":7}],"cochonIds":[7],"date":"13 juillet – 04:10","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":false,"table":[7,2,6],"winner":"Ryad","winnerId":6},{"cochon":"Aucun","date":"13 juillet – 03:12","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":true,"savedId":7,"table":[7,1,3],"winner":"Égalité (Jean-Claude Sauvé)"},{"cochon":"Khalil & Thomas","cochonDetails":[{"giver":7,"receiver":3},{"giver":7,"receiver":1}],"cochonIds":[3,1],"date":"13 juillet – 02:59","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":false,"table":[3,1,7],"winner":"Jean-Claude","winnerId":7},{"cochon":"Aucun","date":"13 juillet – 02:51","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":true,"savedId":1,"table":[3,1,7],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Aucun","date":"13 juillet – 02:10","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":true,"savedId":2,"table":[2,1,3],"winner":"Égalité (Eddy Sauvé)"},{"cochon":"Aucun","date":"13 juillet – 02:02","dateIso":"2026-07-13","duration":"⏱️ < 1 min","equality":true,"savedId":1,"table":[7,3,1],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Eddy","cochonDetails":[{"giver":3,"receiver":2}],"cochonIds":[2],"date":"13 juillet – 01:33","dateIso":"2026-07-12","duration":"⏱️ < 1 min","equality":false,"table":[6,2,3],"winner":"Khalil","winnerId":3},{"cochon":"Thomas","cochonDetails":[{"giver":2,"receiver":1}],"cochonIds":[1],"date":"13 juillet – 01:16","dateIso":"2026-07-12","duration":"⏱️ < 1 min","equality":false,"table":[1,3,2],"winner":"Eddy","winnerId":2},{"cochon":"Aucun","date":"13 juillet – 01:06","dateIso":"2026-07-12","duration":"⏱️ 7 min","equality":true,"savedId":2,"table":[3,6,2],"winner":"Égalité (Eddy Sauvé)"},{"cochon":"Aucun","date":"13 juillet – 00:55","dateIso":"2026-07-12","duration":"⏱️ < 1 min","equality":true,"savedId":6,"table":[6,2,1],"winner":"Égalité (Ryad Sauvé)"},{"cochon":"Aucun","date":"13 juillet – 00:49","dateIso":"2026-07-12","duration":"⏱️ 18 min","equality":true,"savedId":6,"table":[3,6,2],"winner":"Égalité (Ryad Sauvé)"},{"cochon":"Thomas","cochonDetails":[{"giver":6,"receiver":1}],"cochonIds":[1],"date":"13 juillet – 00:29","dateIso":"2026-07-12","duration":"⏱️ < 1 min","equality":false,"table":[1,6,3],"winner":"Ryad","winnerId":6},{"cochon":"Eddy","cochonDetails":[{"giver":6,"receiver":2}],"cochonIds":[2],"date":"13 juillet – 00:13","dateIso":"2026-07-12","duration":"⏱️ 17 min","equality":false,"table":[3,6,2],"winner":"Ryad","winnerId":6},{"cochon":"Aucun","date":"12 juillet – 23:55","dateIso":"2026-07-12","duration":"⏱️ 25 min","equality":true,"savedId":2,"table":[3,1,2],"winner":"Égalité (Eddy Sauvé)"},{"cochon":"Thomas","cochonDetails":[{"giver":6,"receiver":1}],"cochonIds":[1],"date":"10 juillet – 05:10","dateIso":"2026-07-10","duration":"⏱️ 11 min","equality":false,"table":[6,3,1],"winner":"Ryad","winnerId":6},{"cochon":"Khalil","cochonDetails":[{"giver":1,"receiver":3}],"cochonIds":[3],"date":"10 juillet – 04:56","dateIso":"2026-07-10","duration":"⏱️ < 1 min","equality":false,"table":[6,1,3],"winner":"Thomas","winnerId":1},{"cochon":"Jean-Claude","cochonDetails":[{"giver":3,"receiver":7}],"cochonIds":[7],"date":"9 juillet – 05:34","dateIso":"2026-07-09","duration":"⏱️ < 1 min","equality":false,"table":[3,7,1],"winner":"Khalil","winnerId":3},{"cochon":"Thomas & Khalil","cochonDetails":[{"giver":7,"receiver":1},{"giver":7,"receiver":3}],"cochonIds":[1,3],"date":"9 juillet – 05:07","dateIso":"2026-07-09","duration":"⏱️ < 1 min","equality":false,"table":[3,1,7],"winner":"Jean-Claude","winnerId":7},{"cochon":"Aucun","date":"9 juillet – 04:53","dateIso":"2026-07-09","duration":"⏱️ < 1 min","equality":true,"savedId":1,"table":[3,7,1],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Thomas & Khalil","cochonDetails":[{"giver":2,"receiver":1},{"giver":2,"receiver":3}],"cochonIds":[1,3],"date":"8 juillet – 05:30","dateIso":"2026-07-08","duration":"⏱️ < 1 min","equality":false,"table":[1,3,2],"winner":"Eddy","winnerId":2},{"cochon":"Eddy & Khalil","cochonDetails":[{"giver":1,"receiver":2},{"giver":1,"receiver":3}],"cochonIds":[2,3],"date":"8 juillet – 05:02","dateIso":"2026-07-08","duration":"⏱️ < 1 min","equality":false,"table":[2,3,1],"winner":"Thomas","winnerId":1},{"cochon":"Aucun","date":"8 juillet – 04:50","dateIso":"2026-07-08","duration":"⏱️ < 1 min","equality":true,"savedId":3,"table":[2,3,1],"winner":"Égalité (Khalil Sauvé)"},{"cochon":"Aucun","date":"6 juillet – 05:24","dateIso":"2026-07-06","duration":"⏱️ < 1 min","equality":true,"savedId":3,"table":[3,6,4],"winner":"Égalité (Khalil Sauvé)"},{"cochon":"Aucun","date":"6 juillet – 04:54","dateIso":"2026-07-06","duration":"⏱️ 22 min","equality":true,"savedId":6,"table":[1,6,4],"winner":"Égalité (Ryad Sauvé)"},{"cochon":"Thomas","cochonDetails":[{"giver":6,"receiver":1}],"cochonIds":[1],"date":"6 juillet – 04:31","dateIso":"2026-07-06","duration":"⏱️ < 1 min","equality":false,"table":[6,4,1],"winner":"Ryad","winnerId":6},{"cochon":"Christopher & Jean-Claude","cochonDetails":[{"giver":6,"receiver":4},{"giver":6,"receiver":7}],"cochonIds":[4,7],"date":"6 juillet – 04:06","dateIso":"2026-07-06","duration":"⏱️ 7 min","equality":false,"table":[4,6,7],"winner":"Ryad","winnerId":6},{"cochon":"Aucun","date":"6 juillet – 03:51","dateIso":"2026-07-06","duration":"⏱️ 19 min","equality":true,"savedId":7,"table":[6,7,4],"winner":"Égalité (Jean-Claude Sauvé)"},{"cochon":"Aucun","date":"6 juillet – 03:31","dateIso":"2026-07-06","duration":"⏱️ < 1 min","equality":true,"savedId":6,"table":[6,3,8],"winner":"Égalité (Ryad Sauvé)"},{"cochon":"Christopher","cochonDetails":[{"giver":8,"receiver":4}],"cochonIds":[4],"date":"6 juillet – 02:16","dateIso":"2026-07-06","duration":"⏱️ < 1 min","equality":false,"table":[8,4,3],"winner":"KILLYAN","winnerId":8},{"cochon":"Thomas & Christopher","cochonDetails":[{"giver":8,"receiver":1},{"giver":8,"receiver":4}],"cochonIds":[1,4],"date":"6 juillet – 02:09","dateIso":"2026-07-06","duration":"⏱️ < 1 min","equality":false,"table":[4,1,8],"winner":"KILLYAN","winnerId":8},{"cochon":"Aucun","date":"6 juillet – 02:03","dateIso":"2026-07-06","duration":"⏱️ < 1 min","equality":true,"savedId":7,"table":[7,6,3],"winner":"Égalité (Jean-Claude Sauvé)"},{"cochon":"KILLYAN","cochonDetails":[{"giver":7,"receiver":8}],"cochonIds":[8],"date":"6 juillet – 01:49","dateIso":"2026-07-05","duration":"⏱️ < 1 min","equality":false,"table":[7,8,4],"winner":"Jean-Claude","winnerId":7},{"cochon":"Thomas","cochonDetails":[{"giver":7,"receiver":1}],"cochonIds":[1],"date":"6 juillet – 01:32","dateIso":"2026-07-05","duration":"⏱️ < 1 min","equality":false,"table":[7,3,1],"winner":"Jean-Claude","winnerId":7},{"cochon":"KILLYAN","cochonDetails":[{"giver":7,"receiver":8}],"cochonIds":[8],"date":"6 juillet – 01:17","dateIso":"2026-07-05","duration":"⏱️ 11 min","equality":false,"table":[7,8,6],"winner":"Jean-Claude","winnerId":7},{"cochon":"Aucun","date":"6 juillet – 01:01","dateIso":"2026-07-05","duration":"⏱️ < 1 min","equality":true,"savedId":1,"table":[3,4,1],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Aucun","date":"6 juillet – 00:44","dateIso":"2026-07-05","duration":"⏱️ 10 min","equality":true,"savedId":6,"table":[8,7,6],"winner":"Égalité (Ryad Sauvé)"},{"cochon":"Ryad","cochonDetails":[{"giver":3,"receiver":6}],"cochonIds":[6],"date":"6 juillet – 00:16","dateIso":"2026-07-05","duration":"⏱️ < 1 min","equality":false,"table":[3,1,6],"winner":"Khalil","winnerId":3},{"cochon":"Aucun","date":"6 juillet – 00:03","dateIso":"2026-07-05","duration":"⏱️ < 1 min","equality":true,"savedId":1,"table":[1,7,8],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Aucun","date":"5 juillet – 23:55","dateIso":"2026-07-05","duration":"⏱️ < 1 min","equality":true,"savedId":1,"table":[1,3,6],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Aucun","date":"5 juillet – 23:45","dateIso":"2026-07-05","duration":"⏱️ 9 min","equality":true,"savedId":1,"table":[7,1,8],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Khalil & Ryad","cochonDetails":[{"giver":7,"receiver":3},{"giver":7,"receiver":6}],"cochonIds":[3,6],"date":"5 juillet – 23:35","dateIso":"2026-07-05","duration":"⏱️ 8 min","equality":false,"table":[3,7,6],"winner":"Jean-Claude","winnerId":7},{"cochon":"Aucun","date":"5 juillet – 23:25","dateIso":"2026-07-05","duration":"⏱️ 7 min","equality":true,"savedId":3,"table":[3,1,8],"winner":"Égalité (Khalil Sauvé)"},{"cochon":"Aucun","date":"5 juillet – 23:15","dateIso":"2026-07-05","duration":"⏱️ 12 min","equality":true,"savedId":3,"table":[3,6,7],"winner":"Égalité (Khalil Sauvé)"},{"cochon":"Aucun","date":"3 juillet – 05:35","dateIso":"2026-07-03","equality":true,"savedId":7,"table":[1,7,2],"winner":"Égalité (Jean-Claude Sauvé)"},{"cochon":"Aucun","date":"3 juillet – 05:20","dateIso":"2026-07-03","equality":true,"savedId":7,"table":[1,7,2],"winner":"Égalité (Jean-Claude Sauvé)"},{"cochon":"Thomas & Eddy","cochonDetails":[{"giver":7,"receiver":1},{"giver":7,"receiver":2}],"cochonIds":[1,2],"date":"3 juillet – 05:00","dateIso":"2026-07-03","equality":false,"table":[1,7,2],"winner":"Jean-Claude","winnerId":7},{"cochon":"Aucun","date":"3 juillet – 04:47","dateIso":"2026-07-03","equality":true,"savedId":1,"table":[1,7,2],"winner":"Égalité (Thomas Sauvé)"},{"cochon":"Thomas","cochonDetails":[{"giver":3,"receiver":1}],"cochonIds":[1],"date":"2 juillet – 05:30","dateIso":"2026-07-02","equality":false,"table":[1,3,2],"winner":"Khalil","winnerId":3},{"cochon":"Khalil","cochonDetails":[{"giver":1,"receiver":3}],"cochonIds":[3],"date":"2 juillet – 05:13","dateIso":"2026-07-02","equality":false,"table":[3,2,1],"winner":"Thomas","winnerId":1},{"cochon":"Aucun","date":"1 juillet – 07:16","dateIso":"2026-07-01","equality":true,"savedId":6,"table":[1,4,6],"winner":"Égalité (Ryad Sauvé)"},{"cochon":"Cédric","cochonDetails":[{"giver":1,"receiver":5}],"cochonIds":[5],"date":"1 juillet – 07:16","dateIso":"2026-07-01","equality":false,"table":[3,1,5],"winner":"Thomas","winnerId":1},{"cochon":"Aucun","date":"1 juillet – 07:15","dateIso":"2026-07-01","equality":true,"savedId":3,"table":[3,6,7],"winner":"Égalité (Khalil Sauvé)"},{"cochon":"Aucun","date":"1 juillet – 07:14","dateIso":"2026-07-01","equality":true,"savedId":3,"table":[1,7,3],"winner":"Égalité (Khalil Sauvé)"}],"players":[{"avatar":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCABIAHgDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAcE/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/EABgBAQADAQAAAAAAAAAAAAAAAAACBQYI/8QAGREBAAIDAAAAAAAAAAAAAAAAABIVYqHh/9oADAMBAAIRAxEAPwCzAAAAAAAAAAAAAAAACBiUVFcYb4vggYRLjDfF8EDCJcYb4vggYRLjDfF8EDCJcYb4vggYRLjDfF8EDCJcYb4vggYRLjDfABJRAAAAAAAAAAAAAAMoDNuggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/2Q==","coch":1,"currentStreak":1,"id":0,"name":"Alexis","saved":0,"totalGames":5,"vic":4},{"avatar":"data:image/jpeg;base64,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","coch":14,"currentStreak":0,"id":1,"name":"Thomas","saved":11,"totalGames":53,"vic":9},{"avatar":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCABQAHgDASIAAhEBAxEB/8QAGQABAAMBAQAAAAAAAAAAAAAAAAMEBgUB/8QAHhABAAICAgMBAAAAAAAAAAAAAAEDAhEEIQUSobH/xAAcAQEAAQQDAAAAAAAAAAAAAAAABAMFBgcBAgj/xAArEQABAwEECgMBAQAAAAAAAAAAAQMEAgURcaESExUhIjFBYWPhBoGxUZH/2gAMAwEAAhEDEQA/AOLXdOPU9wsY5RlG4nam9xynGdxOlqpcVOZkls/FY8292PwOZLinTFPtFLgjrujLqepSJCKi8jVU2DIhOq1Ip0V/cF6gByQwAAAAAAAAAAAKQCEekgkrunHqe4RjlFVORDmwY81pWpFOkn5gvQuY5RlG4nb1TxynGdxOliu6Mup6lIpcReZqq2fisiFe7H4280xTrin+ISAKhhwAAAAAAAAAUgEI9JAAAAASV3Tj1PcLGOUZRuJ24fN8rVx94Vass+Q4l19vIs97c5yn8TGqK1TfyNb/ACKzLOec0mOFzrdy+0/uH2bgYMV9V3MU2L5MvZvBgw1XcbF8mXs3gwYaruNi+TL2bwYMNV3GxfJl7NeAthvMA5/N8rVx94Vass+Q7U0rUtyFB+Q1Ho03FuQuXX1cev3tzjGP1xOb5W3kbwq3XX9lTuvt5FnvbnOU/iNObYSneu9TDp1sOyL6G+GnNQAkFkAAAAAAAAADXo7r6uPX725xjH6p83ytXH3hVqyz5DiXX28iz3tznKfxb22Fq3ruQzedbDUe+hviqyQuc3ytvI3hVuuv7LngnU0pSlyGHvyHZFem4t6gB2KAAAAAAAAAAAAH/9k=","coch":8,"currentStreak":0,"id":2,"name":"Eddy","saved":3,"totalGames":33,"vic":9},{"avatar":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCABPAHgDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAMBAgb/xAAhEAEAAgEEAgMBAAAAAAAAAAAAARECAxITMQQhMkFhof/EABoBAQEBAAMBAAAAAAAAAAAAAAABAwIFBgT/xAAhEQEAAgEEAQUAAAAAAAAAAAAAAQIRAxIhMUEEBRNhcf/aAAwDAQACEQMRAD8A86A6170AFAAABAAUAAAEAAABQAAAAHPJHLx/lqzvqU08bp7nEfroBGgAAAAAAAAAAACWetlhltnT76m/SO7K+bZPy7v66pfyJiNGbi0a1OPbWXH/AFtXGHlPcfljXnTm9rYjdGIjifGeOo55Vw1ss8tsafXc36hVPx5idGKilGdu3fegnUtoV1L33bufHH1wAOL7QAAAAAAAAAGTjGVXF00FSKxEzMR2yMYxuoq2gFaxWMVjAAigAAAAAAAAAAAAAAAAAAAP/9k=","coch":9,"currentStreak":1,"id":3,"name":"Khalil","saved":8,"totalGames":49,"vic":11},{"avatar":"data:image/jpeg;base64,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","coch":3,"currentStreak":0,"id":4,"name":"Christopher","saved":0,"totalGames":10,"vic":0},{"avatar":"data:image/jpeg;base64,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","coch":1,"currentStreak":0,"id":5,"name":"Cédric","saved":0,"totalGames":1,"vic":0},{"avatar":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCABQAHgDASIAAhEBAxEB/8QAHAABAAMBAQADAAAAAAAAAAAAAAQGBwMIAQIF/8QAMxAAAQMCAgYIBQUAAAAAAAAAAAECAwQFERIGBxMhMVEUIkFFYYGDwjIzUnGRQ2KhsdH/xAAaAQEAAgMBAAAAAAAAAAAAAAAAAwYBAgQF/8QAKxEAAQIDBgUEAwAAAAAAAAAAAAEDAhEhBAUSMUFhE1GRsfAGFCIzFYHB/9oADAMBAAIRAxEAPwClgAhK2AAAAAADTdTnfHo+8zI03U53x6PvNoczpsv3J5oaaACQ9sAAAAAAAAA8ygAhK2AAAADtDHj1l8gqyO2w2Jy2voy315JzPo2Jzt/BPEtWhmlLdE1rM1ItUlVk4SZMuXN4Lj8RW5JEYniaFqhijnfdXyxse5mxyq5qKrfj4cjEOJVLO5Z7qu91GVhVxzWspU27VLTZdPrJeJWwbR9JO7cjJ0REVeSO4f0WYh19vttXA5K+lp5I1TBVlYnbu49iigonW9i07JXy06fKSR2Z0afTivFOWO9CZJ6nO7wYvk2ipsteikwAGTnAAAAAAPMoAIStgAAAlomVETkRCWi4oi8zSMunpLBjdnnJOlZ/wjSLjIpeNXc10prbe6q0tjlnh2LnQyMVySN6+KJgqLj2p+CjyJhIpeNXcd1ntl7prPs2VE2xYs0j8qRN6+K7kVVXl+TdDxG8f5NeJKeJZzy187Ha66wJb3U22N0HQ6WGoZLUIj8+fByLyTcmGOH+Gm2+8226xo+grYZ8Uxysf1k+7eKeZmF00AnslVbnyTdMpZ52RTq1ityKrkTDjwXmabbrHa7S1EoKGGBUTDO1uL1Txcu9fNTaDFOpZ7x9nwoODvKWW851J4AJDwwAAAAADzKACErYAAAO0MmHVXyOICpM7bDbXLE+jzf7TmnIkyRo9PFDQ9UDmxPuzJHNa52xyoq8fj4GbNmc3dxTxLTodoqulvS8KzonRcn6efNmzeKfT/JiHEilocfuq8HUeWJW3NaTnTbvQ2OvrLfS07nV88EcSb12rkRN29OPbifFBWrcGLURxOZTL8t0jVa6T9yIvBvLHev2wx/Cs2r6yWiRk72PrJ24Kjp8Fai80bw/OJaSZJ6nM6jMPxbVYt1p0QAAyc4AAAAAB5lABCVsAAAAAAGm6nO+PR95mRpupzvj0febQ5nTZfuTzQ00AEh7YAAAAAAAAB//2Q==","coch":10,"currentStreak":0,"id":6,"name":"Ryad","saved":7,"totalGames":35,"vic":8},{"avatar":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCABQAHgDASIAAhEBAxEB/8QAGQABAAMBAQAAAAAAAAAAAAAAAAMEBgUB/8QAHhABAAICAgMBAAAAAAAAAAAAAAEDAhEEIQUSobH/xAAcAQEAAQQDAAAAAAAAAAAAAAAABAMFBgcBAgj/xAArEQABAwEECgMBAQAAAAAAAAAAAQMEAgURcaESExUhIjFBYWPhBoGxUZH/2gAMAwEAAhEDEQA/AOLXdOPU9wsY5RlG4nam9xynGdxOlqpcVOZkls/FY8292PwOZLinTFPtFLgjrujLqepSJCKi8jVU2DIhOq1Ip0V/cF6gByQwAAAAAAAAAAAKQCEekgkrunHqe4RjlFVORDmwY81pWpFOkn5gvQuY5RlG4nb1TxynGdxOliu6Mup6lIpcReZqq2fisiFe7H4280xTrin+ISAKhhwAAAAAAAAAUgEI9JAAAAASV3Tj1PcLGOUZRuJ24fN8rVx94Vass+Q4l19vIs97c5yn8TGqK1TfyNb/ACKzLOec0mOFzrdy+0/uH2bgYMV9V3MU2L5MvZvBgw1XcbF8mXs3gwYaruNi+TL2bwYMNV3GxfJl7NeAthvMA5/N8rVx94Vass+Q7U0rUtyFB+Q1Ho03FuQuXX1cev3tzjGP1xOb5W3kbwq3XX9lTuvt5FnvbnOU/iNObYSneu9TDp1sOyL6G+GnNQAkFkAAAAAAAAADXo7r6uPX725xjH6p83ytXH3hVqyz5DiXX28iz3tznKfxb22Fq3ruQzedbDUe+hviqyQuc3ytvI3hVuuv7LngnU0pSlyGHvyHZFem4t6gB2KAAAAAAAAAAAAH/9k=","coch":8,"currentStreak":0,"id":7,"name":"Jean-Claude","saved":8,"totalGames":38,"vic":14},{"avatar":"data:image/jpeg;base64,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","coch":5,"currentStreak":1,"id":8,"name":"Killyan","saved":0,"totalGames":13,"vic":4},{"avatar":"data:image/jpeg;base64,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","coch":0,"currentStreak":0,"id":9,"name":"EMMANUELLE","saved":0,"totalGames":0,"vic":0}]};
+        const LEGACY_FALLBACK_PLAYERS = legacyToArray(LEGACY_EMBEDDED_DATA.players).map(player => ({ ...player }));
+        let legacyUsingEmbeddedData = true;
+        let legacyRestoreAttempted = false;
         // ========== TOAST NOTIFICATION SYSTEM ==========
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
@@ -1535,60 +1803,138 @@
         }
 
         // ================= DONNÉES GLOBALES =================
-        let players = [];
-        let currentTable = [];
-        let history = [];
+        // Chargement immédiat depuis la sauvegarde intégrée : aucune page vide pendant
+        // l'attente de Firebase et aucune dépendance à un import manuel séparé.
+        let players = legacyToArray(LEGACY_EMBEDDED_DATA.players).map(player => ({ ...player }));
+        let currentTable = legacyToArray(LEGACY_EMBEDDED_DATA.currentTable);
+        let history = legacyToArray(LEGACY_EMBEDDED_DATA.history).map(item => ({ ...item }));
+
+        function legacyToArray(value) {
+            if (Array.isArray(value)) return value.filter(item => item !== null && item !== undefined);
+            if (value && typeof value === 'object') return Object.values(value).filter(item => item !== null && item !== undefined);
+            return [];
+        }
+
+        function legacyHasUsefulData(data) {
+            if (!data || typeof data !== 'object') return false;
+            return legacyToArray(data.players).length > 0 || legacyToArray(data.history).length > 0;
+        }
+
+
+        function legacyDeepClone(value) {
+            return JSON.parse(JSON.stringify(value));
+        }
+
+        function legacyApplyData(data, source = 'firebase') {
+            const safeData = legacyHasUsefulData(data) ? data : LEGACY_EMBEDDED_DATA;
+            players = legacyToArray(safeData.players).map(player => legacyDeepClone(player));
+            currentTable = legacyToArray(safeData.currentTable);
+            history = legacyToArray(safeData.history).map(item => legacyDeepClone(item));
+            legacyUsingEmbeddedData = source !== 'firebase';
+            recalculateStats({ preserveStoredWhenHistoryEmpty: true });
+            const status = document.getElementById('legacyDataStatus');
+            if (status) {
+                status.textContent = `${players.length} joueurs · ${history.length} manches · ${legacyUsingEmbeddedData ? 'sauvegarde intégrée' : 'Firebase synchronisé'}`;
+                status.style.color = legacyUsingEmbeddedData ? 'var(--gold)' : 'var(--green)';
+            }
+        }
+
+        async function legacyRestoreEmbeddedDataIfDatabaseEmpty() {
+            if (legacyRestoreAttempted) return;
+            legacyRestoreAttempted = true;
+            try {
+                const result = await dbRef.transaction(current => {
+                    if (legacyHasUsefulData(current)) return;
+                    return legacyDeepClone(LEGACY_EMBEDDED_DATA);
+                }, undefined, false);
+                if (result.committed) {
+                    showToast('Les anciennes données ont été restaurées dans Firebase.', 'success');
+                }
+            } catch (error) {
+                console.warn('Restauration Firebase impossible, la sauvegarde intégrée reste utilisée :', error);
+            }
+        }
+
+        function legacyRenderCurrentPage() {
+            const active = document.querySelector('.page.active');
+            const activePage = active ? active.id : 'page-home';
+            if (activePage === 'page-home') renderHome();
+            if (activePage === 'page-ranking') renderRanking();
+            if (activePage === 'page-profiles') {
+                setupProfileSelector();
+                const sel = document.getElementById('profileSelector');
+                if (sel && sel.value) renderProfile(sel.value);
+            }
+            if (activePage === 'page-history') { renderDayRanking(); renderHistory(); }
+            if (activePage === 'page-online') setupOnlinePage();
+            if (activePage === 'page-admin') setupAdminPage();
+        }
+
+        async function legacyCreateSafetyBackup(snapshotData, reason = 'chargement') {
+            if (!snapshotData || !legacyHasUsefulData(snapshotData)) return;
+            if (sessionStorage.getItem('domino_real_backup_done') === '1') return;
+            if (legacyBackupPromise) return legacyBackupPromise;
+
+            legacyBackupPromise = legacyBackupsRef.push({
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                reason,
+                source: 'index-monofichier-securise-v2',
+                data: snapshotData
+            }).then(() => {
+                sessionStorage.setItem('domino_real_backup_done', '1');
+            }).catch(error => {
+                console.warn('La sauvegarde de sécurité automatique n’a pas pu être créée :', error);
+            }).finally(() => {
+                legacyBackupPromise = null;
+            });
+            return legacyBackupPromise;
+        }
+
+        // Les données intégrées sont affichées immédiatement, puis Firebase les remplace
+        // uniquement s'il contient réellement une sauvegarde exploitable.
+        setTimeout(() => {
+            legacyApplyData(LEGACY_EMBEDDED_DATA, 'export-intégré');
+            legacyRenderCurrentPage();
+        }, 0);
+
+        // L'export intégré reste disponible si Firebase met trop longtemps à répondre.
+        setTimeout(() => {
+            if (!legacyDataReady) {
+                legacyDataReady = true;
+                legacyDataExists = false;
+                legacyApplyData(LEGACY_EMBEDDED_DATA, 'export-intégré');
+                legacyRenderCurrentPage();
+            }
+        }, 3500);
 
         dbRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data) {
-                let pData = Array.isArray(data.players) ? data.players : (data.players ? Object.values(data.players) : []);
-                players = pData.filter(x => x !== null && x !== undefined);
+            legacyDataReady = true;
 
-                let cData = Array.isArray(data.currentTable) ? data.currentTable : (data.currentTable ? Object.values(data.currentTable) : []);
-                currentTable = cData.filter(x => x !== null && x !== undefined);
+            if (legacyHasUsefulData(data)) {
+                legacyDataExists = true;
+                legacyApplyData(data, 'firebase');
+                legacyCreateSafetyBackup(data, 'premier chargement de la nouvelle version');
 
-                let hData = Array.isArray(data.history) ? data.history : (data.history ? Object.values(data.history) : []);
-                history = hData.filter(x => x !== null && x !== undefined);
-
-                recalculateStats();
-            } else if (isInitialLoad) {
-                // Initialisation par défaut si la base de données est complètement vide
-                players = [
-                    { id: 0, name: "Alexis", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇧🇬" },
-                    { id: 1, name: "Thomas", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "⚡" },
-                    { id: 2, name: "Eddy", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇲🇶" },
-                    { id: 3, name: "Khalil", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇲🇦" },
-                    { id: 4, name: "Christopher", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🐺" },
-                    { id: 5, name: "Cédric", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🔵🔴" },
-                    { id: 6, name: "Ryad", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇩🇿" },
-                    { id: 7, name: "Jean-Claude", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "🇲🇶" },
-                    { id: 8, name: "Fantôme", vic: 0, coch: 0, currentStreak: 0, totalGames: 0, saved: 0, avatar: "👻" }
-                ];
-                currentTable = [3, 0, 6];
-                history = [];
-                save(); // Pousse les données initiales vers Firebase
-            }
-
-            // Rafraîchir l'interface avec les nouvelles données
-            if (!isInitialLoad) {
-                const activePage = document.querySelector('.page.active').id;
-                if (activePage === 'page-home') renderHome();
-                if (activePage === 'page-ranking') renderRanking();
-                if (activePage === 'page-profiles') {
-                    const sel = document.getElementById("profileSelector");
-                    if (sel && sel.value) renderProfile(sel.value);
-                }
-                if (activePage === 'page-history') {
-                    renderDayRanking(); renderHistory();
-                }
-                if (activePage === 'page-admin') {
-                    renderAdminHistory();
+                if (isInitialLoad) {
+                    showToast(`${players.length} anciens joueurs et ${history.length} manches récupérés`, 'success');
                 }
             } else {
-                isInitialLoad = false;
-                renderHome(); // Premier affichage au chargement du site
+                legacyDataExists = false;
+                legacyApplyData(LEGACY_EMBEDDED_DATA, 'export-intégré');
+                showToast(`${players.length} joueurs et ${history.length} manches chargés depuis la sauvegarde intégrée`, 'warning');
+                legacyRestoreEmbeddedDataIfDatabaseEmpty();
             }
+
+            isInitialLoad = false;
+            legacyRenderCurrentPage();
+        }, (error) => {
+            console.error('Chargement des anciennes données impossible :', error);
+            legacyDataReady = true;
+            legacyDataExists = false;
+            legacyApplyData(LEGACY_EMBEDDED_DATA, 'export-intégré');
+            legacyRenderCurrentPage();
+            showToast(`${players.length} joueurs et ${history.length} manches chargés depuis la sauvegarde intégrée`, 'warning');
         });
 
         let isEqualityMode = false;
@@ -1599,15 +1945,52 @@
         let newGameSelected = [];
         let currentAdminAvatarData = "";
 
-        function save() {
-            dbRef.set({
-                players: players,
-                currentTable: currentTable,
-                history: history
-            });
+        async function save() {
+            if (!legacyDataReady) {
+                // Les données intégrées sont déjà fiables ; on autorise quand même la tentative
+                // d'enregistrement au lieu de perdre l'action de l'utilisateur.
+                legacyDataReady = true;
+            }
+
+            try {
+                try {
+                    const beforeWrite = await dbRef.once('value');
+                    const existingData = beforeWrite.val();
+                    if (legacyHasUsefulData(existingData)) {
+                        await legacyCreateSafetyBackup(existingData, 'avant modification des parties réelles');
+                    }
+                } catch (backupReadError) {
+                    console.warn('Lecture de sauvegarde préalable impossible :', backupReadError);
+                }
+
+                // update() conserve tout éventuel champ supplémentaire du nœud historique.
+                await dbRef.update({
+                    players: legacyDeepClone(players),
+                    currentTable: legacyDeepClone(currentTable),
+                    history: legacyDeepClone(history)
+                });
+                legacyDataExists = true;
+                legacyUsingEmbeddedData = false;
+                return true;
+            } catch (error) {
+                console.error('Enregistrement des données réelles impossible :', error);
+                showToast('Les données restent visibles, mais Firebase a refusé l’enregistrement.', 'error');
+                return false;
+            }
         }
 
-        function recalculateStats() {
+        function recalculateStats(options = {}) {
+            const preserveStoredWhenHistoryEmpty = !!options.preserveStoredWhenHistoryEmpty;
+            if (preserveStoredWhenHistoryEmpty && history.length === 0) {
+                players.forEach(p => {
+                    p.vic = Number(p.vic || 0);
+                    p.coch = Number(p.coch || 0);
+                    p.totalGames = Number(p.totalGames || 0);
+                    p.saved = Number(p.saved || 0);
+                    p.currentStreak = Number(p.currentStreak || 0);
+                });
+                return;
+            }
             players.forEach(p => {
                 p.vic = 0; p.coch = 0; p.totalGames = 0; p.saved = 0; p.currentStreak = 0;
             });
@@ -1682,11 +2065,18 @@
             if(pageId === 'profiles') setupProfileSelector();
             if(pageId === 'history') { renderDayRanking(); renderHistory(); }
             if(pageId === 'home') renderHome();
+            if(pageId === 'online') setupOnlinePage();
             if(pageId === 'admin') setupAdminPage();
         }
 
         function renderHome() {
-            let sorted = [...players].sort((a,b) => ((b.vic - b.coch) - (a.vic - a.coch)) || (b.vic - a.vic));
+            const dataStatus = document.getElementById('legacyDataStatus');
+            if (dataStatus) {
+                dataStatus.textContent = legacyDataReady && legacyDataExists
+                    ? `✅ Données réelles Firebase chargées : ${players.length} joueurs · ${history.length} manches`
+                    : (legacyDataReady ? '⚠️ Mode de secours : base historique vide' : '⏳ Chargement des anciennes données…');
+            }
+            let sorted = [...players].sort((a,b) => ((Number(b.vic || 0) - Number(b.coch || 0)) - (Number(a.vic || 0) - Number(a.coch || 0))) || (Number(b.vic || 0) - Number(a.vic || 0)));
             const grid = document.getElementById("mainGrid");
             grid.innerHTML = "";
 
@@ -2303,7 +2693,981 @@
             }
         }
 
+
+        // ==========================================================
+        // DOMINO EN LIGNE — DONNÉES SÉPARÉES DE domino_data
+        // ==========================================================
+        // Branche séparée pour le jeu en ligne, placée sous domino_data afin de
+        // rester compatible avec les règles Firebase de l'ancien site.
+        const odRoot = db.ref('domino_data/online_domino_v1');
+        const odRoomsRef = odRoot.child('rooms');
+        const odStatsRef = odRoot.child('stats');
+        const odHistoryRef = odRoot.child('history');
+
+        let odCurrentRoomCode = localStorage.getItem('od_room_code') || '';
+        let odSelectedPlayerId = localStorage.getItem('od_player_id') || '';
+        let odClientToken = localStorage.getItem('od_client_token') || '';
+        let odRoomListenerRef = null;
+        let odDisconnectRef = null;
+        let odCurrentRoom = null;
+        let odSelectedTileId = null;
+        let odStatsBound = false;
+        let odHistoryBound = false;
+        let odStatsCache = {};
+        let odHistoryCache = [];
+        let odBusy = false;
+        const odRecordingMatches = new Set();
+
+        if (!odClientToken) {
+            odClientToken = odRandomId(24);
+            localStorage.setItem('od_client_token', odClientToken);
+        }
+
+        function odRandomId(length = 10) {
+            const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            const values = new Uint32Array(length);
+            if (window.crypto && window.crypto.getRandomValues) window.crypto.getRandomValues(values);
+            else for (let i = 0; i < length; i++) values[i] = Math.floor(Math.random() * 100000);
+            return Array.from(values, n => alphabet[n % alphabet.length]).join('');
+        }
+
+        function odPlayerKey(id) { return `p_${String(id)}`; }
+        function odEsc(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+        function odAvatarMarkup(avatar, className = '') {
+            if (avatar && String(avatar).startsWith('data:image')) {
+                return `<span class="${className}"><img src="${odEsc(avatar)}" alt="Avatar"></span>`;
+            }
+            return `<span class="${className}">${odEsc(avatar || '❓')}</span>`;
+        }
+        function odNow() { return Date.now(); }
+        function odWithTimeout(promise, timeoutMs = 12000, message = 'Firebase ne répond pas.') {
+            let timer;
+            const timeout = new Promise((_, reject) => {
+                timer = setTimeout(() => reject(new Error(message)), timeoutMs);
+            });
+            return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+        }
+        function odFirebaseErrorMessage(error, action = 'Action impossible') {
+            const code = String(error && error.code || '').toLowerCase();
+            const text = String(error && error.message || '');
+            if (code.includes('permission') || text.toLowerCase().includes('permission')) {
+                return `${action} : les règles Firebase refusent l'accès.`;
+            }
+            if (text.toLowerCase().includes('ne répond pas')) {
+                return `${action} : Firebase ne répond pas. Réessaie dans quelques secondes.`;
+            }
+            return `${action}. Vérifie la connexion internet puis réessaie.`;
+        }
+        function odSetBusy(value) {
+            odBusy = value;
+            const createBtn = document.getElementById('odCreateRoomBtn');
+            if (createBtn) createBtn.disabled = value;
+            const startBtn = document.getElementById('odStartMatchBtn');
+            if (startBtn && value) startBtn.disabled = true;
+            if (!value && odCurrentRoom && odCurrentRoom.status === 'waiting') odRenderWaitingRoom(odCurrentRoom);
+        }
+        function odSetError(message, target = 'odLobbyError') {
+            const el = document.getElementById(target);
+            if (el) el.textContent = message || '';
+        }
+        function odGetProfileById(id) {
+            return players.find(p => String(p.id) === String(id)) || null;
+        }
+        function odGetSelectedProfile() {
+            const select = document.getElementById('odProfileSelect');
+            const id = select ? select.value : odSelectedPlayerId;
+            return odGetProfileById(id);
+        }
+        function odSaveSelectedProfile(value) {
+            odSelectedPlayerId = String(value || '');
+            if (odSelectedPlayerId) localStorage.setItem('od_player_id', odSelectedPlayerId);
+        }
+        function odRoomPlayers(room) {
+            return Object.values((room && room.players) || {}).sort((a, b) => (a.joinedAt || 0) - (b.joinedAt || 0));
+        }
+        function odFindMyPlayer(room = odCurrentRoom) {
+            return odRoomPlayers(room).find(p => p.token === odClientToken) || null;
+        }
+        function odIsHost(room = odCurrentRoom) {
+            return !!room && room.hostToken === odClientToken;
+        }
+        function odStatusText(status) {
+            return ({ waiting: 'En attente', playing: 'Partie en cours', finished: 'Partie terminée' })[status] || 'Connexion';
+        }
+
+        function setupOnlinePage() {
+            odPopulateProfileSelect();
+            odBindOnlineFeeds();
+            odRenderResumeButton();
+            if (odCurrentRoomCode && !odRoomListenerRef) odAttachRoom(odCurrentRoomCode, true);
+        }
+
+        function odPopulateProfileSelect() {
+            const select = document.getElementById('odProfileSelect');
+            if (!select) return;
+            const previous = odSelectedPlayerId || select.value;
+            select.innerHTML = '';
+            players.forEach(p => {
+                const option = document.createElement('option');
+                option.value = p.id;
+                option.textContent = `${p.avatar && !String(p.avatar).startsWith('data:image') ? p.avatar + ' ' : ''}${p.name}`;
+                select.appendChild(option);
+            });
+            if (players.length) {
+                const valid = players.some(p => String(p.id) === String(previous));
+                select.value = valid ? String(previous) : String(players[0].id);
+                odSaveSelectedProfile(select.value);
+            }
+        }
+
+        function odBindOnlineFeeds() {
+            if (!odStatsBound) {
+                odStatsBound = true;
+                odStatsRef.on('value', snap => {
+                    odStatsCache = snap.val() || {};
+                    odRenderOnlineRanking();
+                }, err => console.error('Classement en ligne:', err));
+            }
+            if (!odHistoryBound) {
+                odHistoryBound = true;
+                odHistoryRef.limitToLast(50).on('value', snap => {
+                    const value = snap.val() || {};
+                    odHistoryCache = Object.values(value).sort((a, b) => (b.endedAt || 0) - (a.endedAt || 0));
+                    odRenderOnlineHistory();
+                }, err => console.error('Historique en ligne:', err));
+            }
+        }
+
+        function odRenderResumeButton() {
+            const btn = document.getElementById('odResumeRoomBtn');
+            if (!btn) return;
+            btn.classList.toggle('online-hidden', !odCurrentRoomCode);
+            if (odCurrentRoomCode) btn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Reprendre ${odEsc(odCurrentRoomCode)}`;
+        }
+
+        async function odCreateRoom() {
+            if (odBusy) return;
+            odSetError('');
+            const profile = odGetSelectedProfile();
+            if (!profile) return odSetError('Choisis d’abord ton profil.');
+            odSaveSelectedProfile(profile.id);
+            odSetBusy(true);
+            try {
+                let createdCode = '';
+                for (let attempt = 0; attempt < 8 && !createdCode; attempt++) {
+                    const code = odRandomId(5);
+                    const roomRef = odRoomsRef.child(code);
+                    const now = odNow();
+                    const player = {
+                        playerId: profile.id,
+                        name: profile.name,
+                        avatar: profile.avatar || '❓',
+                        token: odClientToken,
+                        joinedAt: now,
+                        connected: true,
+                        isHost: true
+                    };
+                    const initialRoom = {
+                        version: 1,
+                        code,
+                        status: 'waiting',
+                        hostToken: odClientToken,
+                        createdAt: now,
+                        updatedAt: now,
+                        players: { [odPlayerKey(profile.id)]: player }
+                    };
+                    const result = await odWithTimeout(new Promise((resolve, reject) => {
+                        roomRef.transaction(current => current ? undefined : initialRoom, (error, committed) => {
+                            if (error) reject(error); else resolve(committed);
+                        }, false);
+                    }), 12000, 'Firebase ne répond pas pendant la création de la salle.');
+                    if (result) createdCode = code;
+                }
+                if (!createdCode) throw new Error('Impossible de créer une salle unique.');
+                showToast(`Salle ${createdCode} créée`, 'success');
+                odAttachRoom(createdCode);
+            } catch (error) {
+                console.error('Création de salle :', error);
+                const message = odFirebaseErrorMessage(error, 'Création impossible');
+                odSetError(message);
+                showToast(message, 'error');
+            } finally {
+                odSetBusy(false);
+            }
+        }
+
+        async function odJoinRoom() {
+            if (odBusy) return;
+            odSetError('');
+            const profile = odGetSelectedProfile();
+            const input = document.getElementById('odJoinCode');
+            const code = String(input ? input.value : '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 5);
+            if (!profile) return odSetError('Choisis d’abord ton profil.');
+            if (code.length !== 5) return odSetError('Le code doit contenir cinq caractères.');
+            odSaveSelectedProfile(profile.id);
+            odSetBusy(true);
+            let reason = '';
+            try {
+                const roomRef = odRoomsRef.child(code);
+                const now = odNow();
+                const result = await odWithTimeout(new Promise((resolve, reject) => {
+                    roomRef.transaction(room => {
+                        if (!room) { reason = 'introuvable'; return; }
+                        if (room.status !== 'waiting') { reason = 'commencee'; return; }
+                        room.players = room.players || {};
+                        const key = odPlayerKey(profile.id);
+                        const existing = room.players[key];
+                        if (existing && existing.token !== odClientToken) { reason = 'profil'; return; }
+                        if (!existing && Object.keys(room.players).length >= 3) { reason = 'pleine'; return; }
+                        room.players[key] = {
+                            playerId: profile.id,
+                            name: profile.name,
+                            avatar: profile.avatar || '❓',
+                            token: odClientToken,
+                            joinedAt: existing ? existing.joinedAt : now,
+                            connected: true,
+                            isHost: room.hostToken === odClientToken
+                        };
+                        room.updatedAt = now;
+                        return room;
+                    }, (error, committed, snap) => {
+                        if (error) reject(error); else resolve({ committed, exists: snap && snap.exists() });
+                    }, false);
+                }), 12000, 'Firebase ne répond pas pendant la connexion à la salle.');
+                if (!result.committed) {
+                    const messages = {
+                        introuvable: 'Salle introuvable.',
+                        commencee: 'Cette partie a déjà commencé.',
+                        profil: 'Ce profil est déjà utilisé dans cette salle.',
+                        pleine: 'La salle est déjà complète.'
+                    };
+                    throw new Error(messages[reason] || 'Impossible de rejoindre cette salle.');
+                }
+                showToast(`Salle ${code} rejointe`, 'success');
+                odAttachRoom(code);
+            } catch (error) {
+                console.error('Connexion à la salle :', error);
+                const knownMessage = error && error.message && !String(error.message).includes('Firebase ne répond pas')
+                    ? error.message
+                    : odFirebaseErrorMessage(error, 'Connexion impossible');
+                odSetError(knownMessage);
+                showToast(knownMessage, 'error');
+            } finally {
+                odSetBusy(false);
+            }
+        }
+
+        function odAttachRoom(code, silent = false) {
+            code = String(code || '').toUpperCase();
+            if (!code) return;
+            if (odRoomListenerRef) odRoomListenerRef.off();
+            if (odDisconnectRef) {
+                try { odDisconnectRef.onDisconnect().cancel(); } catch (_) {}
+                odDisconnectRef = null;
+            }
+            odCurrentRoomCode = code;
+            localStorage.setItem('od_room_code', code);
+            odRenderResumeButton();
+            odRoomListenerRef = odRoomsRef.child(code);
+            odRoomListenerRef.on('value', snap => {
+                const room = snap.val();
+                if (!room) {
+                    if (!silent) showToast('Cette salle n’existe plus.', 'warning');
+                    odDetachRoom(true);
+                    return;
+                }
+                odCurrentRoom = room;
+                const me = odFindMyPlayer(room);
+                if (me) {
+                    odSelectedPlayerId = String(me.playerId);
+                    localStorage.setItem('od_player_id', odSelectedPlayerId);
+                    const myRef = odRoomListenerRef.child(`players/${odPlayerKey(me.playerId)}/connected`);
+                    if (!odDisconnectRef || odDisconnectRef.toString() !== myRef.toString()) {
+                        odDisconnectRef = myRef;
+                        myRef.set(true);
+                        myRef.onDisconnect().set(false);
+                    }
+                }
+                odRenderRoom(room);
+                if (room.status === 'finished' && odFindMyPlayer(room)) odEnsureOnlineResultRecorded(room);
+            }, error => {
+                console.error(error);
+                odSetError('Lecture de la salle impossible.', 'odRoomError');
+            });
+            document.getElementById('odLobbyView')?.classList.add('online-hidden');
+            document.getElementById('odRoomView')?.classList.remove('online-hidden');
+        }
+
+        function odResumeSavedRoom() {
+            if (odCurrentRoomCode) odAttachRoom(odCurrentRoomCode);
+        }
+
+        function odDetachRoom(clearSaved = false) {
+            if (odRoomListenerRef) odRoomListenerRef.off();
+            odRoomListenerRef = null;
+            odCurrentRoom = null;
+            odSelectedTileId = null;
+            if (odDisconnectRef) {
+                try { odDisconnectRef.onDisconnect().cancel(); } catch (_) {}
+                odDisconnectRef = null;
+            }
+            if (clearSaved) {
+                odCurrentRoomCode = '';
+                localStorage.removeItem('od_room_code');
+            }
+            document.getElementById('odRoomView')?.classList.add('online-hidden');
+            document.getElementById('odLobbyView')?.classList.remove('online-hidden');
+            odRenderResumeButton();
+        }
+
+        async function odLeaveRoomView() {
+            const room = odCurrentRoom;
+            const me = odFindMyPlayer(room);
+            if (room && me && room.status === 'waiting') {
+                try {
+                    await odRoomsRef.child(room.code).transaction(current => {
+                        if (!current || !current.players) return current;
+                        delete current.players[odPlayerKey(me.playerId)];
+                        const remaining = Object.values(current.players || {}).sort((a, b) => (a.joinedAt || 0) - (b.joinedAt || 0));
+                        if (!remaining.length) return null;
+                        if (current.hostToken === odClientToken) {
+                            current.hostToken = remaining[0].token;
+                            Object.values(current.players).forEach(p => { p.isHost = p.token === current.hostToken; });
+                        }
+                        current.updatedAt = odNow();
+                        return current;
+                    });
+                    odDetachRoom(true);
+                } catch (error) {
+                    console.error(error);
+                    odSetError('Impossible de quitter proprement la salle.', 'odRoomError');
+                }
+            } else {
+                odDetachRoom(false);
+                showToast('La partie pourra être reprise depuis cet appareil.', 'warning');
+            }
+        }
+
+        function odCopyRoomCode() {
+            if (!odCurrentRoomCode) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(odCurrentRoomCode).then(() => showToast('Code copié !', 'success'));
+            } else {
+                showToast(`Code : ${odCurrentRoomCode}`, 'success');
+            }
+        }
+
+        function odRenderRoom(room) {
+            const roomCodeEl = document.getElementById('odRoomCodeDisplay');
+            const statusEl = document.getElementById('odRoomStatus');
+            if (roomCodeEl) roomCodeEl.textContent = room.code || odCurrentRoomCode;
+            if (statusEl) statusEl.textContent = odStatusText(room.status);
+            odRenderRoomPlayers(room);
+            const waiting = document.getElementById('odWaitingPanel');
+            const gamePanel = document.getElementById('odGamePanel');
+            waiting?.classList.toggle('online-hidden', room.status !== 'waiting');
+            gamePanel?.classList.toggle('online-hidden', room.status === 'waiting');
+            if (room.status === 'waiting') odRenderWaitingRoom(room);
+            else odRenderOnlineGame(room);
+        }
+
+        function odRenderRoomPlayers(room) {
+            const container = document.getElementById('odRoomPlayers');
+            if (!container) return;
+            const list = odRoomPlayers(room);
+            const game = room.game || {};
+            const scores = game.roundWins || {};
+            const me = odFindMyPlayer(room);
+            container.innerHTML = list.map(p => {
+                const score = Number(scores[odPlayerKey(p.playerId)] || 0);
+                const classes = ['online-player-chip'];
+                if (String(game.currentTurnId) === String(p.playerId) && room.status === 'playing' && game.roundStatus === 'playing') classes.push('turn');
+                if (me && String(me.playerId) === String(p.playerId)) classes.push('me');
+                return `<div class="${classes.join(' ')}">
+                    <span class="online-presence ${p.connected ? 'on' : ''}"></span>
+                    ${odAvatarMarkup(p.avatar, 'online-player-avatar')}
+                    <div class="online-player-name">${odEsc(p.name)}${p.token === room.hostToken ? ' 👑' : ''}</div>
+                    <div class="online-player-score">${score}/3</div>
+                </div>`;
+            }).join('');
+        }
+
+        function odRenderWaitingRoom(room) {
+            const slots = document.getElementById('odWaitingSlots');
+            const button = document.getElementById('odStartMatchBtn');
+            const text = document.getElementById('odWaitingText');
+            const list = odRoomPlayers(room);
+            if (slots) {
+                const html = [];
+                for (let i = 0; i < 3; i++) {
+                    const p = list[i];
+                    html.push(p ? `<div class="online-slot filled"><div>${odAvatarMarkup(p.avatar, 'online-player-avatar')}<strong>${odEsc(p.name)}</strong>${p.token === room.hostToken ? '<br><small style="color:var(--gold);">Hôte</small>' : ''}</div></div>` : `<div class="online-slot"><div><i class="fa-solid fa-user-plus" style="font-size:1.1rem; margin-bottom:6px;"></i><br>Place libre</div></div>`);
+                }
+                slots.innerHTML = html.join('');
+            }
+            if (text) text.textContent = list.length < 3 ? `Il manque ${3 - list.length} joueur${3 - list.length > 1 ? 's' : ''}.` : (odIsHost(room) ? 'Tout le monde est prêt. Tu peux lancer la partie.' : 'La salle est complète. L’hôte va lancer la partie.');
+            if (button) {
+                button.classList.toggle('online-hidden', !odIsHost(room));
+                button.disabled = list.length !== 3 || odBusy;
+            }
+        }
+
+        function odCreateDeck() {
+            const deck = [];
+            for (let a = 0; a <= 6; a++) for (let b = a; b <= 6; b++) deck.push(`d_${a}_${b}`);
+            return deck;
+        }
+        function odShuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                let r;
+                if (window.crypto && window.crypto.getRandomValues) {
+                    const x = new Uint32Array(1); window.crypto.getRandomValues(x); r = x[0] % (i + 1);
+                } else r = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[r]] = [arr[r], arr[i]];
+            }
+            return arr;
+        }
+        function odParseTile(tileId) {
+            const parts = String(tileId).split('_');
+            return { id: tileId, a: Number(parts[1]), b: Number(parts[2]) };
+        }
+        function odTilePoints(tileId) { const t = odParseTile(tileId); return t.a + t.b; }
+        function odHandPoints(hand) { return (hand || []).reduce((sum, id) => sum + odTilePoints(id), 0); }
+        function odChooseOpening(playerIds, hands) {
+            let best = null;
+            playerIds.forEach((pid, playerIndex) => {
+                (hands[odPlayerKey(pid)] || []).forEach(tileId => {
+                    const t = odParseTile(tileId);
+                    const candidate = { playerId: pid, tileId, isDouble: t.a === t.b, value: t.a + t.b, doubleValue: t.a === t.b ? t.a : -1, playerIndex };
+                    if (!best ||
+                        (candidate.isDouble && !best.isDouble) ||
+                        (candidate.isDouble === best.isDouble && candidate.doubleValue > best.doubleValue) ||
+                        (candidate.isDouble === best.isDouble && candidate.doubleValue === best.doubleValue && candidate.value > best.value) ||
+                        (candidate.isDouble === best.isDouble && candidate.doubleValue === best.doubleValue && candidate.value === best.value && candidate.playerIndex < best.playerIndex)) best = candidate;
+                });
+            });
+            return best;
+        }
+        function odBuildRound(playerIds, roundWins = {}, roundNumber = 1, starterId = null) {
+            const deck = odShuffle(odCreateDeck());
+            const hands = {};
+            playerIds.forEach(id => hands[odPlayerKey(id)] = []);
+            for (let i = 0; i < 21; i++) hands[odPlayerKey(playerIds[i % playerIds.length])].push(deck[i]);
+            Object.values(hands).forEach(hand => hand.sort((x, y) => odTilePoints(y) - odTilePoints(x)));
+            let opening = null;
+            if (starterId === null || starterId === undefined) opening = odChooseOpening(playerIds, hands);
+            const chosenStarter = starterId !== null && starterId !== undefined ? starterId : opening.playerId;
+            return {
+                roundNumber,
+                playerOrder: [...playerIds],
+                roundWins: { ...roundWins },
+                hands,
+                unusedTiles: deck.slice(21),
+                board: { placements: [], leftEnd: null, rightEnd: null },
+                starterId: chosenStarter,
+                currentTurnId: chosenStarter,
+                forcedOpeningTileId: opening ? opening.tileId : null,
+                consecutivePasses: 0,
+                roundStatus: 'playing',
+                roundResult: null,
+                matchResult: null,
+                lastAction: { type: 'round-start', at: odNow() }
+            };
+        }
+
+        async function odStartOnlineMatch(isRematch = false) {
+            if (odBusy || !odCurrentRoom || (!isRematch && !odIsHost())) return;
+            const room = odCurrentRoom;
+            const list = odRoomPlayers(room);
+            if (list.length !== 3) return odSetError('Il faut exactement trois joueurs.', 'odRoomError');
+            const playerIds = list.map(p => p.playerId);
+            const game = odBuildRound(playerIds, {}, 1, null);
+            const matchId = `${odNow()}_${odRandomId(8)}`;
+            odSetBusy(true);
+            try {
+                const result = await odRoomsRef.child(room.code).transaction(current => {
+                    if (!current) return;
+                    if (!isRematch && current.hostToken !== odClientToken) return;
+                    if (!isRematch && current.status !== 'waiting') return;
+                    if (isRematch && current.status !== 'finished') return;
+                    const currentIds = odRoomPlayers(current).map(p => String(p.playerId)).sort().join(',');
+                    const preparedIds = playerIds.map(String).sort().join(',');
+                    if (currentIds !== preparedIds) return;
+                    if (isRematch) {
+                        current.hostToken = odClientToken;
+                        Object.values(current.players || {}).forEach(p => { p.isHost = p.token === odClientToken; });
+                    }
+                    current.status = 'playing';
+                    current.matchId = matchId;
+                    current.matchStartedAt = odNow();
+                    current.roundLog = [];
+                    current.game = game;
+                    current.updatedAt = odNow();
+                    return current;
+                });
+                if (!result.committed) throw new Error('La salle a changé.');
+                odSelectedTileId = null;
+                showToast('La partie commence !', 'success');
+            } catch (error) {
+                console.error(error);
+                odSetError(error.message || 'Démarrage impossible.', 'odRoomError');
+            } finally {
+                odSetBusy(false);
+            }
+        }
+
+        function odValidSides(tileId, board) {
+            const tile = odParseTile(tileId);
+            const placements = (board && board.placements) || [];
+            if (!placements.length) return ['left', 'right'];
+            const sides = [];
+            if (tile.a === board.leftEnd || tile.b === board.leftEnd) sides.push('left');
+            if (tile.a === board.rightEnd || tile.b === board.rightEnd) sides.push('right');
+            return sides;
+        }
+        function odHasPlayableTile(game, playerId) {
+            const hand = (game.hands && game.hands[odPlayerKey(playerId)]) || [];
+            if (!hand.length) return false;
+            if (!(game.board?.placements || []).length && game.forcedOpeningTileId) return hand.includes(game.forcedOpeningTileId);
+            return hand.some(id => odValidSides(id, game.board).length > 0);
+        }
+        function odAdvanceTurn(game) {
+            const order = game.playerOrder || [];
+            const index = order.findIndex(id => String(id) === String(game.currentTurnId));
+            game.currentTurnId = order[(index + 1 + order.length) % order.length];
+        }
+        function odPlaceTile(board, tileId, side, playerId) {
+            const tile = odParseTile(tileId);
+            board.placements = board.placements || [];
+            if (!board.placements.length) {
+                board.leftEnd = tile.a;
+                board.rightEnd = tile.b;
+                board.placements.push({ tileId, left: tile.a, right: tile.b, side: 'start', playerId, playedAt: odNow() });
+                return;
+            }
+            if (side === 'left') {
+                let left, right;
+                if (tile.b === board.leftEnd) { left = tile.a; right = tile.b; }
+                else { left = tile.b; right = tile.a; }
+                board.leftEnd = left;
+                board.placements.unshift({ tileId, left, right, side: 'left', playerId, playedAt: odNow() });
+            } else {
+                let left, right;
+                if (tile.a === board.rightEnd) { left = tile.a; right = tile.b; }
+                else { left = tile.b; right = tile.a; }
+                board.rightEnd = right;
+                board.placements.push({ tileId, left, right, side: 'right', playerId, playedAt: odNow() });
+            }
+        }
+
+        function odFinishRoundInRoom(room, winnerId, cause, details = {}) {
+            const game = room.game;
+            const key = odPlayerKey(winnerId);
+            game.roundWins = game.roundWins || {};
+            game.roundWins[key] = Number(game.roundWins[key] || 0) + 1;
+            game.roundStatus = 'ended';
+            game.roundResult = {
+                type: 'winner', winnerId, cause,
+                points: details.points ?? 0,
+                handPoints: details.handPoints || null,
+                at: odNow()
+            };
+            room.roundLog = room.roundLog || [];
+            room.roundLog.push({
+                roundNumber: game.roundNumber,
+                type: 'winner', winnerId, cause,
+                points: details.points ?? 0,
+                scores: { ...game.roundWins },
+                at: odNow()
+            });
+            const playerIds = game.playerOrder || [];
+            if (Number(game.roundWins[key]) >= 3) {
+                const cochonIds = playerIds.filter(id => String(id) !== String(winnerId) && Number(game.roundWins[odPlayerKey(id)] || 0) === 0);
+                game.matchResult = {
+                    type: 'victory', winnerId, cochonIds, savedId: null,
+                    scores: { ...game.roundWins }, at: odNow()
+                };
+                room.status = 'finished';
+                room.endedAt = odNow();
+            } else if (playerIds.every(id => Number(game.roundWins[odPlayerKey(id)] || 0) > 0)) {
+                game.matchResult = {
+                    type: 'cancelled', winnerId: null, cochonIds: [], savedId: winnerId,
+                    scores: { ...game.roundWins }, at: odNow()
+                };
+                room.status = 'finished';
+                room.endedAt = odNow();
+            }
+            game.lastAction = { type: 'round-win', playerId: winnerId, cause, at: odNow() };
+            room.updatedAt = odNow();
+        }
+
+        function odCancelRoundInRoom(room, reason, handPoints = {}) {
+            const game = room.game;
+            game.roundStatus = 'ended';
+            game.roundResult = { type: 'annulled', reason, handPoints, at: odNow() };
+            room.roundLog = room.roundLog || [];
+            room.roundLog.push({
+                roundNumber: game.roundNumber,
+                type: 'annulled', reason, handPoints,
+                scores: { ...(game.roundWins || {}) }, at: odNow()
+            });
+            game.lastAction = { type: 'round-annulled', reason, at: odNow() };
+            room.updatedAt = odNow();
+        }
+
+        async function odPlaySelectedTile(side) {
+            if (!odSelectedTileId) return;
+            await odPlayTile(odSelectedTileId, side);
+        }
+
+        async function odPlayTile(tileId, side) {
+            if (odBusy || !odCurrentRoom) return;
+            const me = odFindMyPlayer();
+            if (!me) return odSetError('Tu n’es pas identifié dans cette salle.', 'odRoomError');
+            odSetBusy(true);
+            let reason = '';
+            try {
+                const result = await odRoomsRef.child(odCurrentRoom.code).transaction(room => {
+                    if (!room || room.status !== 'playing' || !room.game || room.game.roundStatus !== 'playing') { reason = 'La manche n’est pas active.'; return; }
+                    const game = room.game;
+                    if (String(game.currentTurnId) !== String(me.playerId)) { reason = 'Ce n’est pas ton tour.'; return; }
+                    const handKey = odPlayerKey(me.playerId);
+                    const hand = game.hands?.[handKey] || [];
+                    if (!hand.includes(tileId)) { reason = 'Ce domino n’est plus dans ta main.'; return; }
+                    if (!(game.board?.placements || []).length && game.forcedOpeningTileId && tileId !== game.forcedOpeningTileId) { reason = 'Tu dois commencer avec le domino imposé.'; return; }
+                    const validSides = odValidSides(tileId, game.board);
+                    if (!validSides.includes(side)) { reason = 'Ce domino ne peut pas être joué de ce côté.'; return; }
+                    game.hands[handKey] = hand.filter(id => id !== tileId);
+                    odPlaceTile(game.board, tileId, side, me.playerId);
+                    game.forcedOpeningTileId = null;
+                    game.consecutivePasses = 0;
+                    game.lastAction = { type: 'play', playerId: me.playerId, tileId, side, at: odNow() };
+                    if (game.hands[handKey].length === 0) odFinishRoundInRoom(room, me.playerId, 'empty', { points: 0 });
+                    else odAdvanceTurn(game);
+                    room.updatedAt = odNow();
+                    return room;
+                });
+                if (!result.committed) throw new Error(reason || 'Le coup a été refusé.');
+                odSelectedTileId = null;
+            } catch (error) {
+                console.error(error);
+                showToast(error.message || 'Impossible de jouer ce domino.', 'warning');
+            } finally {
+                odSetBusy(false);
+            }
+        }
+
+        async function odPassTurn() {
+            if (odBusy || !odCurrentRoom) return;
+            const me = odFindMyPlayer();
+            if (!me) return;
+            odSetBusy(true);
+            let reason = '';
+            try {
+                const result = await odRoomsRef.child(odCurrentRoom.code).transaction(room => {
+                    if (!room || room.status !== 'playing' || !room.game || room.game.roundStatus !== 'playing') { reason = 'La manche n’est pas active.'; return; }
+                    const game = room.game;
+                    if (String(game.currentTurnId) !== String(me.playerId)) { reason = 'Ce n’est pas ton tour.'; return; }
+                    if (odHasPlayableTile(game, me.playerId)) { reason = 'Tu possèdes au moins un domino jouable.'; return; }
+                    game.consecutivePasses = Number(game.consecutivePasses || 0) + 1;
+                    game.lastAction = { type: 'pass', playerId: me.playerId, at: odNow() };
+                    if (game.consecutivePasses >= (game.playerOrder || []).length) {
+                        const totals = {};
+                        game.playerOrder.forEach(id => totals[odPlayerKey(id)] = odHandPoints(game.hands?.[odPlayerKey(id)] || []));
+                        const values = Object.values(totals).map(Number);
+                        const minimum = Math.min(...values);
+                        const candidates = game.playerOrder.filter(id => Number(totals[odPlayerKey(id)]) === minimum);
+                        if (minimum < 7 && candidates.length === 1) {
+                            odFinishRoundInRoom(room, candidates[0], 'blocked', { points: minimum, handPoints: totals });
+                        } else {
+                            const why = candidates.length > 1 ? 'égalité sur le plus petit total' : 'plus petit total égal ou supérieur à 7';
+                            odCancelRoundInRoom(room, why, totals);
+                        }
+                    } else {
+                        odAdvanceTurn(game);
+                        room.updatedAt = odNow();
+                    }
+                    return room;
+                });
+                if (!result.committed) throw new Error(reason || 'Le passage a été refusé.');
+            } catch (error) {
+                console.error(error);
+                showToast(error.message || 'Impossible de passer.', 'warning');
+            } finally {
+                odSetBusy(false);
+            }
+        }
+
+        async function odStartNextRound() {
+            if (odBusy || !odCurrentRoom || !odFindMyPlayer()) return;
+            const current = odCurrentRoom;
+            if (current.status !== 'playing' || !current.game || current.game.roundStatus !== 'ended') return;
+            const starterId = current.game.roundResult?.type === 'winner' ? current.game.roundResult.winnerId : null;
+            const nextGame = odBuildRound(current.game.playerOrder, current.game.roundWins, Number(current.game.roundNumber || 0) + 1, starterId);
+            odSetBusy(true);
+            try {
+                const result = await odRoomsRef.child(current.code).transaction(room => {
+                    if (!room || room.status !== 'playing' || room.game?.roundStatus !== 'ended') return;
+                    room.game = nextGame;
+                    room.updatedAt = odNow();
+                    return room;
+                });
+                if (!result.committed) throw new Error('La salle a changé.');
+                odSelectedTileId = null;
+                showToast('Nouvelle manche distribuée', 'success');
+            } catch (error) {
+                console.error(error);
+                showToast(error.message || 'Impossible de lancer la manche.', 'warning');
+            } finally {
+                odSetBusy(false);
+            }
+        }
+
+        function odPipsHtml(value) {
+            const active = {
+                0: [], 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8],
+                5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8]
+            }[Number(value)] || [];
+            return Array.from({ length: 9 }, (_, i) => `<span class="pip-cell">${active.includes(i) ? '<span class="pip-dot"></span>' : ''}</span>`).join('');
+        }
+        function odDominoHtml(left, right, extraClass = '', tileId = '') {
+            return `<button type="button" class="domino-tile ${extraClass}" ${tileId ? `data-tile-id="${odEsc(tileId)}"` : ''} aria-label="Domino ${left}-${right}"><span class="domino-half">${odPipsHtml(left)}</span><span class="domino-half">${odPipsHtml(right)}</span></button>`;
+        }
+        function odPlayerName(room, id) {
+            const p = odRoomPlayers(room).find(x => String(x.playerId) === String(id));
+            return p ? p.name : `Joueur ${id}`;
+        }
+
+        function odRenderOnlineGame(room) {
+            const game = room.game;
+            if (!game) return;
+            const me = odFindMyPlayer(room);
+            const title = document.getElementById('odRoundTitle');
+            const stateLabel = document.getElementById('odGameStateLabel');
+            const turnBanner = document.getElementById('odTurnBanner');
+            if (title) title.textContent = `Manche ${game.roundNumber || 1}`;
+            if (stateLabel) stateLabel.textContent = room.status === 'finished' ? 'Partie terminée' : (game.roundStatus === 'ended' ? 'Manche terminée' : 'En cours');
+            if (turnBanner) {
+                if (room.status === 'finished') turnBanner.textContent = 'La partie est terminée';
+                else if (game.roundStatus === 'ended') turnBanner.textContent = 'Manche terminée';
+                else {
+                    const currentName = odPlayerName(room, game.currentTurnId);
+                    turnBanner.textContent = me && String(me.playerId) === String(game.currentTurnId) ? '🎯 À toi de jouer' : `Tour de ${currentName}`;
+                }
+            }
+            odRenderBoard(game);
+            odRenderHand(room, game, me);
+            odRenderRoundResult(room, game);
+        }
+
+        function odRenderBoard(game) {
+            const boardEl = document.getElementById('odBoard');
+            if (!boardEl) return;
+            const placements = game.board?.placements || [];
+            if (!placements.length) {
+                boardEl.innerHTML = `<div class="online-empty-board"><i class="fa-solid fa-circle-dot" style="font-size:1.4rem; margin-bottom:8px;"></i><br>Le plateau attend le premier domino</div>`;
+                return;
+            }
+            boardEl.innerHTML = placements.map(p => odDominoHtml(p.left, p.right, 'board-tile')).join('');
+            const scroll = boardEl.parentElement;
+            if (scroll) setTimeout(() => { scroll.scrollLeft = Math.max(0, (scroll.scrollWidth - scroll.clientWidth) / 2); }, 0);
+        }
+
+        function odRenderHand(room, game, me) {
+            const zone = document.getElementById('odHandZone');
+            const handEl = document.getElementById('odHand');
+            const pointsEl = document.getElementById('odHandPoints');
+            const passBtn = document.getElementById('odPassBtn');
+            const actions = document.getElementById('odPlayActions');
+            if (!zone || !handEl || !pointsEl || !passBtn || !actions) return;
+            if (!me) {
+                zone.classList.add('online-hidden');
+                return;
+            }
+            zone.classList.remove('online-hidden');
+            const hand = game.hands?.[odPlayerKey(me.playerId)] || [];
+            pointsEl.textContent = `${hand.length} domino${hand.length > 1 ? 's' : ''} · ${odHandPoints(hand)} points`;
+            const myTurn = room.status === 'playing' && game.roundStatus === 'playing' && String(game.currentTurnId) === String(me.playerId);
+            handEl.innerHTML = hand.map(id => {
+                const t = odParseTile(id);
+                let playable = myTurn && odValidSides(id, game.board).length > 0;
+                if (!(game.board?.placements || []).length && game.forcedOpeningTileId) playable = myTurn && id === game.forcedOpeningTileId;
+                const classes = `hand-tile ${playable ? '' : 'unplayable'} ${odSelectedTileId === id ? 'selected' : ''}`;
+                return odDominoHtml(t.a, t.b, classes, id);
+            }).join('');
+            handEl.querySelectorAll('[data-tile-id]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.tileId;
+                    if (!myTurn) return showToast('Ce n’est pas ton tour.', 'warning');
+                    let sides = odValidSides(id, game.board);
+                    if (!(game.board?.placements || []).length && game.forcedOpeningTileId && id !== game.forcedOpeningTileId) sides = [];
+                    if (!sides.length) return showToast('Ce domino n’est pas jouable.', 'warning');
+                    odSelectedTileId = id;
+                    odRenderHand(room, game, me);
+                    if (sides.length === 1) odPlayTile(id, sides[0]);
+                });
+            });
+            let selectedSides = odSelectedTileId ? odValidSides(odSelectedTileId, game.board) : [];
+            if (!(game.board?.placements || []).length && game.forcedOpeningTileId && odSelectedTileId !== game.forcedOpeningTileId) selectedSides = [];
+            actions.classList.toggle('online-hidden', !myTurn || !odSelectedTileId || selectedSides.length < 2);
+            const leftBtn = document.getElementById('odPlayLeftBtn');
+            const rightBtn = document.getElementById('odPlayRightBtn');
+            if (leftBtn) leftBtn.disabled = !selectedSides.includes('left');
+            if (rightBtn) rightBtn.disabled = !selectedSides.includes('right');
+            passBtn.disabled = !myTurn || odHasPlayableTile(game, me.playerId) || game.roundStatus !== 'playing';
+            passBtn.classList.toggle('online-hidden', game.roundStatus !== 'playing' || room.status !== 'playing');
+        }
+
+        function odRenderRoundResult(room, game) {
+            const container = document.getElementById('odRoundResult');
+            if (!container) return;
+            if (room.status === 'finished' && game.matchResult) {
+                const result = game.matchResult;
+                if (result.type === 'victory') {
+                    const winner = odPlayerName(room, result.winnerId);
+                    const cochons = (result.cochonIds || []).map(id => odPlayerName(room, id));
+                    container.innerHTML = `<div class="online-result-card"><div class="online-result-icon">🏆</div><div class="online-result-title">${odEsc(winner)} gagne la partie</div><div class="online-result-copy">Score final : ${odScoreText(room, result.scores)}${cochons.length ? `<br>🐷 Cochon${cochons.length > 1 ? 's' : ''} : <strong>${cochons.map(odEsc).join(' et ')}</strong>` : ''}</div>${odFindMyPlayer(room) ? '<button class="online-btn gold" style="width:100%; margin-top:14px;" onclick="odStartOnlineMatch(true)"><i class="fa-solid fa-rotate"></i> Revanche</button>' : ''}</div>`;
+                } else {
+                    const saved = odPlayerName(room, result.savedId);
+                    container.innerHTML = `<div class="online-result-card"><div class="online-result-icon">🛡️</div><div class="online-result-title">Partie annulée</div><div class="online-result-copy">Les trois joueurs ont gagné au moins une manche.<br><strong>${odEsc(saved)}</strong>, gagnant de la dernière manche, est sauvé.</div>${odFindMyPlayer(room) ? '<button class="online-btn gold" style="width:100%; margin-top:14px;" onclick="odStartOnlineMatch(true)"><i class="fa-solid fa-rotate"></i> Revanche</button>' : ''}</div>`;
+                }
+                return;
+            }
+            if (game.roundStatus !== 'ended' || !game.roundResult) {
+                container.innerHTML = '';
+                return;
+            }
+            const result = game.roundResult;
+            if (result.type === 'winner') {
+                const winner = odPlayerName(room, result.winnerId);
+                const reason = result.cause === 'blocked' ? `Jeu bloqué : ${result.points} point${result.points > 1 ? 's' : ''} en main.` : 'Tous ses dominos ont été posés.';
+                container.innerHTML = `<div class="online-round-message"><strong>🏅 ${odEsc(winner)} gagne la manche</strong><span class="online-help">${odEsc(reason)}</span>${odFindMyPlayer(room) ? '<button class="online-btn primary" style="width:100%; margin-top:12px;" onclick="odStartNextRound()"><i class="fa-solid fa-forward-step"></i> Manche suivante</button>' : ''}</div>`;
+            } else {
+                container.innerHTML = `<div class="online-round-message"><strong>🚫 Manche annulée</strong><span class="online-help">${odEsc(result.reason || 'Aucun joueur ne marque.')}</span>${odFindMyPlayer(room) ? '<button class="online-btn primary" style="width:100%; margin-top:12px;" onclick="odStartNextRound()"><i class="fa-solid fa-forward-step"></i> Rejouer une manche</button>' : ''}</div>`;
+            }
+        }
+
+        function odScoreText(room, scores) {
+            return odRoomPlayers(room).map(p => `${p.name} ${Number(scores?.[odPlayerKey(p.playerId)] || 0)}`).join(' · ');
+        }
+
+        async function odEnsureOnlineResultRecorded(room) {
+            const matchId = room.matchId;
+            const result = room.game?.matchResult;
+            if (!matchId || !result || odRecordingMatches.has(matchId)) return;
+            odRecordingMatches.add(matchId);
+            const roomPlayers = odRoomPlayers(room);
+            const historyRecord = {
+                matchId,
+                roomCode: room.code,
+                startedAt: room.matchStartedAt || room.createdAt || odNow(),
+                endedAt: room.endedAt || odNow(),
+                players: roomPlayers.map(p => ({ playerId: p.playerId, name: p.name, avatar: p.avatar || '❓' })),
+                resultType: result.type,
+                winnerId: result.winnerId ?? null,
+                savedId: result.savedId ?? null,
+                cochonIds: result.cochonIds || [],
+                scores: result.scores || {},
+                rounds: room.roundLog || []
+            };
+            try {
+                await Promise.all([
+                    odHistoryRef.child(matchId).transaction(current => current || historyRecord),
+                    odStatsRef.transaction(stats => {
+                        stats = stats || {};
+                        stats._processed = stats._processed || {};
+                        if (stats._processed[matchId]) return;
+                        roomPlayers.forEach(p => {
+                            const key = odPlayerKey(p.playerId);
+                            const current = stats[key] || {};
+                            stats[key] = {
+                                playerId: p.playerId,
+                                name: p.name,
+                                avatar: p.avatar || '❓',
+                                gamesPlayed: Number(current.gamesPlayed || 0) + 1,
+                                gamesWon: Number(current.gamesWon || 0),
+                                gamesCancelled: Number(current.gamesCancelled || 0),
+                                roundsWon: Number(current.roundsWon || 0) + Number(result.scores?.[key] || 0),
+                                cochons: Number(current.cochons || 0),
+                                saved: Number(current.saved || 0),
+                                updatedAt: odNow()
+                            };
+                        });
+                        if (result.type === 'victory') {
+                            const winnerKey = odPlayerKey(result.winnerId);
+                            if (stats[winnerKey]) stats[winnerKey].gamesWon += 1;
+                            (result.cochonIds || []).forEach(id => {
+                                const key = odPlayerKey(id);
+                                if (stats[key]) stats[key].cochons += 1;
+                            });
+                        } else {
+                            roomPlayers.forEach(p => stats[odPlayerKey(p.playerId)].gamesCancelled += 1);
+                            const savedKey = odPlayerKey(result.savedId);
+                            if (stats[savedKey]) stats[savedKey].saved += 1;
+                        }
+                        stats._processed[matchId] = { at: odNow() };
+                        return stats;
+                    })
+                ]);
+            } catch (error) {
+                console.error('Enregistrement du résultat en ligne:', error);
+            } finally {
+                odRecordingMatches.delete(matchId);
+            }
+        }
+
+        function odRenderOnlineRanking() {
+            const container = document.getElementById('odOnlineRanking');
+            if (!container) return;
+            const rows = Object.entries(odStatsCache || {})
+                .filter(([key, value]) => key !== '_processed' && value && typeof value === 'object')
+                .map(([, value]) => value)
+                .sort((a, b) =>
+                    Number(b.gamesWon || 0) - Number(a.gamesWon || 0) ||
+                    Number(b.roundsWon || 0) - Number(a.roundsWon || 0) ||
+                    Number(a.cochons || 0) - Number(b.cochons || 0) ||
+                    String(a.name || '').localeCompare(String(b.name || ''), 'fr')
+                );
+            if (!rows.length) {
+                container.innerHTML = '<p class="online-help">Aucune partie en ligne enregistrée.</p>';
+                return;
+            }
+            container.innerHTML = `<table class="online-ranking"><thead><tr><th>#</th><th>Joueur</th><th>Parties</th><th>Gagnées</th><th>Manches</th><th>🐷</th><th>🛡️</th></tr></thead><tbody>${rows.map((s, index) => `<tr><td>${index + 1}</td><td class="player-cell">${odAvatarMarkup(s.avatar, 'online-mini-avatar')}<strong>${odEsc(s.name)}</strong></td><td>${Number(s.gamesPlayed || 0)}</td><td style="color:var(--gold);">${Number(s.gamesWon || 0)}</td><td>${Number(s.roundsWon || 0)}</td><td style="color:var(--cochon-color);">${Number(s.cochons || 0)}</td><td style="color:var(--blue);">${Number(s.saved || 0)}</td></tr>`).join('')}</tbody></table>`;
+        }
+
+        function odRenderOnlineHistory() {
+            const container = document.getElementById('odOnlineHistory');
+            if (!container) return;
+            if (!odHistoryCache.length) {
+                container.innerHTML = '<p class="online-help">Aucune partie en ligne enregistrée.</p>';
+                return;
+            }
+            container.innerHTML = odHistoryCache.slice(0, 30).map(h => {
+                const names = {};
+                (h.players || []).forEach(p => names[String(p.playerId)] = p.name);
+                const date = h.endedAt ? new Date(h.endedAt).toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : 'Date inconnue';
+                let resultText;
+                if (h.resultType === 'victory') {
+                    const winner = names[String(h.winnerId)] || 'Joueur';
+                    const cochons = (h.cochonIds || []).map(id => names[String(id)] || `#${id}`);
+                    resultText = `🏆 <strong>${odEsc(winner)}</strong> gagne${cochons.length ? ` · 🐷 ${cochons.map(odEsc).join(' et ')}` : ''}`;
+                } else {
+                    const saved = names[String(h.savedId)] || 'Joueur';
+                    resultText = `🛡️ Partie annulée · <strong>${odEsc(saved)}</strong> sauvé`;
+                }
+                const scoreText = (h.players || []).map(p => `${p.name} ${Number(h.scores?.[odPlayerKey(p.playerId)] || 0)}`).join(' · ');
+                return `<div class="online-history-item"><div class="online-history-top"><span>${odEsc(date)}</span><span>Salle ${odEsc(h.roomCode || '-----')}</span></div><div class="online-history-result">${resultText}<br><span style="color:var(--text-muted); font-size:.7rem;">${odEsc(scoreText)}</span></div></div>`;
+            }).join('');
+        }
+
+
         // renderHome(); (Appelé automatiquement après le chargement des données)
     </script>
+<!-- Version sécurisée données historiques : 2026-08-06b -->
 </body>
 </html>
