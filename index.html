@@ -1323,32 +1323,41 @@
         .online-presence { position:absolute; width:9px; height:9px; border-radius:50%; right:7px; top:7px; background:#64748b; box-shadow:0 0 0 2px rgba(6,6,15,.8); }
         .online-presence.on { background:#22c55e; }
         .online-table {
-            min-height:190px; border-radius:24px; padding:18px 12px; margin:14px 0;
+            min-height:390px; border-radius:24px; padding:14px 12px 20px; margin:14px 0;
             background:
               radial-gradient(circle at 50% 35%, rgba(16,185,129,.1), transparent 44%),
               linear-gradient(145deg,#09261f,#071913 70%);
             border:1px solid rgba(52,211,153,.18); box-shadow:inset 0 0 55px rgba(0,0,0,.35), 0 16px 45px rgba(0,0,0,.25);
-            display:flex; flex-direction:column; justify-content:center;
+            display:flex; flex-direction:column; justify-content:flex-start;
         }
-        .online-turn-banner { text-align:center; font-size:.8rem; color:#a7f3d0; font-weight:800; min-height:22px; }
-        .online-board-scroll { width:100%; overflow-x:auto; padding:18px 4px 8px; }
-        .online-board { display:flex; align-items:center; justify-content:flex-start; min-width:max-content; gap:3px; margin:0 auto; }
-        .online-empty-board { text-align:center; color:rgba(255,255,255,.35); font-size:.8rem; padding:26px 8px; }
+        .online-turn-banner { text-align:center; font-size:.8rem; color:#a7f3d0; font-weight:800; min-height:22px; margin:0 0 8px; flex:0 0 auto; }
+        .online-board-scroll { width:100%; overflow:hidden; padding:0 2px; flex:1; display:flex; align-items:center; justify-content:center; }
+        .online-board { width:100%; height:100%; min-height:330px; display:block; overflow:visible; }
+        .online-empty-board { width:100%; text-align:center; color:rgba(255,255,255,.35); font-size:.8rem; padding:26px 8px; }
         .domino-tile {
-            display:inline-flex; flex-shrink:0; background:linear-gradient(145deg,#fffdf4,#e7e1d1); border:1px solid rgba(0,0,0,.34);
-            border-radius:9px; padding:3px; box-shadow:0 5px 10px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.9); color:#111;
+            display:inline-flex; flex-shrink:0; background:linear-gradient(145deg,#fffef5 0%,#fff7d7 52%,#e2c477 100%); border:3px solid #d6a12b;
+            border-radius:12px; padding:4px; box-shadow:0 7px 14px rgba(0,0,0,.42), inset 0 3px 3px rgba(255,255,255,.98), inset 0 -3px 4px rgba(132,84,8,.3),0 0 0 1px rgba(255,224,125,.55); color:#111;
             position:relative; user-select:none;
         }
         .domino-tile.hand-tile { cursor:pointer; transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease; }
         .domino-tile.hand-tile:hover, .domino-tile.hand-tile.selected { transform:translateY(-7px); box-shadow:0 12px 22px rgba(0,0,0,.35),0 0 0 2px var(--gold); }
-        .domino-tile.hand-tile.unplayable { opacity:.35; cursor:not-allowed; filter:grayscale(.4); }
+        .domino-tile.hand-tile.unplayable { opacity:.58; cursor:not-allowed; filter:none; }
         .domino-half { width:34px; height:34px; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); padding:3px; position:relative; }
-        .domino-half + .domino-half { border-left:2px solid rgba(0,0,0,.45); }
+        .domino-half + .domino-half { border-left:4px solid #8f5b13; box-shadow:-1px 0 0 #f6d370; }
+        .domino-tile::after { content:""; position:absolute; left:50%; top:50%; width:11px; height:11px; border-radius:50%; transform:translate(-50%,-50%); background:radial-gradient(circle at 32% 25%,#fff8bf,#f0b622 46%,#805008 100%); border:1px solid #9c6810; box-shadow:0 2px 3px rgba(0,0,0,.55),inset 0 1px 1px rgba(255,255,255,.75); z-index:2; }
+        .domino-tile.is-double { flex-direction:column; }
+        .domino-tile.is-double .domino-half + .domino-half { border-left:0; border-top:4px solid #8f5b13; box-shadow:0 -1px 0 #f6d370; }
         .pip-cell { display:flex; align-items:center; justify-content:center; }
-        .pip-dot { width:6px; height:6px; background:#111827; border-radius:50%; box-shadow:inset 0 1px 1px rgba(255,255,255,.25); }
+        .pip-dot { width:7px; height:7px; background:radial-gradient(circle at 35% 28%,#4b4b4b 0%,#161616 48%,#000 100%); border:1px solid #050505; border-radius:50%; box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 1px 1px rgba(99,62,10,.35); }
+        .od-svg-tile { filter:drop-shadow(0 7px 7px rgba(0,0,0,.38)); }
+        .od-svg-tile .tile-body { fill:url(#odIvoryGradient); stroke:#d6a12b; stroke-width:3; }
+        .od-svg-tile .tile-divider { stroke:#8f5b13; stroke-width:5; }
+        .od-svg-tile .tile-divider-highlight { stroke:#f6d370; stroke-width:1.2; }
+        .od-svg-tile .tile-pip { fill:url(#odPipGradient); stroke:#050505; stroke-width:1.2; }
+        .od-svg-tile .tile-rivet { fill:url(#odGoldGradient); stroke:#9c6810; stroke-width:1.4; }
         .online-hand-zone { margin-top:14px; }
         .online-hand-title { display:flex; justify-content:space-between; align-items:center; gap:10px; color:var(--text-secondary); font-size:.74rem; margin-bottom:10px; }
-        .online-hand { display:flex; gap:8px; overflow-x:auto; padding:10px 5px 16px; min-height:85px; }
+        .online-hand { display:flex; align-items:flex-start; gap:8px; overflow-x:auto; padding:10px 5px 16px; min-height:85px; }
         .online-play-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
         .online-round-message { padding:14px; border-radius:15px; background:rgba(251,191,36,.07); border:1px solid rgba(251,191,36,.16); margin-top:12px; text-align:center; }
         .online-round-message strong { color:var(--gold); display:block; margin-bottom:5px; }
@@ -1362,8 +1371,8 @@
         .online-rules-list { display:grid; gap:7px; margin-top:10px; }
         .online-rule { display:flex; gap:9px; align-items:flex-start; color:var(--text-secondary); font-size:.75rem; line-height:1.45; }
         .online-rule span:first-child { flex:0 0 22px; height:22px; border-radius:7px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.06); }
-        .online-ranking-wrap { overflow-x:auto; }
-        .online-ranking { width:100%; border-collapse:collapse; min-width:590px; }
+        .online-ranking-wrap { overflow:auto; }
+        .online-ranking { width:100%; border-collapse:collapse; min-width:760px; }
         .online-ranking th { color:var(--text-muted); font-size:.65rem; text-transform:uppercase; letter-spacing:.5px; padding:9px 6px; border-bottom:1px solid rgba(255,255,255,.08); }
         .online-ranking td { text-align:center; padding:11px 6px; border-bottom:1px solid rgba(255,255,255,.04); font-size:.78rem; font-weight:650; }
         .online-ranking td.player-cell { text-align:left; display:flex; align-items:center; gap:8px; }
@@ -1372,6 +1381,9 @@
         .online-history-item { padding:13px; border-radius:14px; border:1px solid rgba(255,255,255,.055); background:rgba(255,255,255,.018); margin-bottom:9px; }
         .online-history-top { display:flex; justify-content:space-between; gap:10px; color:var(--text-muted); font-size:.68rem; margin-bottom:6px; }
         .online-history-result { font-size:.81rem; line-height:1.5; }
+        .online-summary-card { height:420px; min-height:0; display:flex; flex-direction:column; }
+        .online-summary-card .online-card-title { flex:0 0 auto; }
+        .online-summary-scroll { flex:1 1 auto; min-height:0; overflow:auto; padding-right:4px; scrollbar-width:thin; scrollbar-color:rgba(148,163,184,.38) transparent; }
         .online-inline-note { color:var(--text-muted); text-align:center; font-size:.7rem; margin-top:9px; }
         .online-hidden { display:none !important; }
         .online-error { color:#fca5a5; font-size:.74rem; font-weight:700; min-height:18px; margin-top:8px; text-align:center; }
@@ -1382,8 +1394,8 @@
             .online-grid.two { grid-template-columns:1fr 1fr; }
             .online-actions { grid-template-columns:1fr 1fr; }
             .online-card { padding:22px; }
-            .online-table { min-height:245px; padding:24px; }
-            .domino-half { width:40px; height:40px; }
+            .online-table { min-height:420px; padding:14px 20px 22px; }
+            .domino-tile.hand-tile .domino-half { width:40px; height:40px; }
             .pip-dot { width:7px; height:7px; }
         }
 
@@ -1392,9 +1404,11 @@
             .online-player-row, .online-waiting-slots { gap:5px; }
             .online-player-chip { padding:9px 4px; }
             .online-player-avatar { width:36px; height:36px; }
-            .domino-half { width:31px; height:31px; }
+            .online-table { min-height:350px; padding-left:7px; padding-right:7px; }
+            .domino-tile.hand-tile .domino-half { width:31px; height:31px; }
             .pip-dot { width:5px; height:5px; }
             .online-play-actions { grid-template-columns:1fr; }
+            .online-summary-card { height:360px; }
         }
 
     </style>
@@ -1595,7 +1609,7 @@
 
                         <div class="online-table">
                             <div id="odTurnBanner" class="online-turn-banner"></div>
-                            <div class="online-board-scroll"><div id="odBoard" class="online-board"></div></div>
+                            <div class="online-board-scroll"><svg id="odBoard" class="online-board" viewBox="0 0 1400 1040" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Plateau de dominos"></svg></div>
                         </div>
 
                         <div id="odHandZone" class="online-hand-zone">
@@ -1605,7 +1619,7 @@
                                 <button id="odPlayLeftBtn" class="online-btn blue" onclick="odPlaySelectedTile('left')"><i class="fa-solid fa-arrow-left"></i> Jouer à gauche</button>
                                 <button id="odPlayRightBtn" class="online-btn primary" onclick="odPlaySelectedTile('right')">Jouer à droite <i class="fa-solid fa-arrow-right"></i></button>
                             </div>
-                            <button id="odPassBtn" class="online-btn ghost" style="width:100%; margin-top:8px;" onclick="odPassTurn()"><i class="fa-solid fa-forward"></i> Je passe</button>
+                            <button id="odPassBtn" class="online-btn ghost" style="width:100%; margin-top:8px;" onclick="odPassTurn()"><i class="fa-solid fa-forward"></i> Boudééé</button>
                         </div>
 
                         <div id="odRoundResult"></div>
@@ -1614,13 +1628,13 @@
             </section>
 
             <div class="online-grid two" style="margin-top:16px;">
-                <section class="online-card">
+                <section class="online-card online-summary-card">
                     <div class="online-card-title"><i class="fa-solid fa-ranking-star" style="color:var(--gold);"></i> Classement en ligne</div>
-                    <div id="odOnlineRanking" class="online-ranking-wrap"><p class="online-help">Aucune partie en ligne enregistrée.</p></div>
+                    <div id="odOnlineRanking" class="online-ranking-wrap online-summary-scroll"><p class="online-help">Aucune partie en ligne enregistrée.</p></div>
                 </section>
-                <section class="online-card">
+                <section class="online-card online-summary-card">
                     <div class="online-card-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--blue);"></i> Historique en ligne</div>
-                    <div id="odOnlineHistory"><p class="online-help">Aucune partie en ligne enregistrée.</p></div>
+                    <div id="odOnlineHistory" class="online-summary-scroll"><p class="online-help">Aucune partie en ligne enregistrée.</p></div>
                 </section>
             </div>
         </div>
@@ -2704,9 +2718,12 @@
         const odStatsRef = odRoot.child('stats');
         const odHistoryRef = odRoot.child('history');
 
-        let odCurrentRoomCode = localStorage.getItem('od_room_code') || '';
-        let odSelectedPlayerId = localStorage.getItem('od_player_id') || '';
-        let odClientToken = localStorage.getItem('od_client_token') || '';
+        // Une identité distincte par onglet permet notamment de tester les trois
+        // joueurs sur un même navigateur. sessionStorage survit aux actualisations,
+        // mais n'est pas partagé entre plusieurs onglets.
+        let odCurrentRoomCode = sessionStorage.getItem('od_room_code') || '';
+        let odSelectedPlayerId = sessionStorage.getItem('od_player_id') || '';
+        let odClientToken = sessionStorage.getItem('od_client_token') || '';
         let odRoomListenerRef = null;
         let odDisconnectRef = null;
         let odCurrentRoom = null;
@@ -2720,7 +2737,7 @@
 
         if (!odClientToken) {
             odClientToken = odRandomId(24);
-            localStorage.setItem('od_client_token', odClientToken);
+            sessionStorage.setItem('od_client_token', odClientToken);
         }
 
         function odRandomId(length = 10) {
@@ -2784,7 +2801,7 @@
         }
         function odSaveSelectedProfile(value) {
             odSelectedPlayerId = String(value || '');
-            if (odSelectedPlayerId) localStorage.setItem('od_player_id', odSelectedPlayerId);
+            if (odSelectedPlayerId) sessionStorage.setItem('od_player_id', odSelectedPlayerId);
         }
         function odRoomPlayers(room) {
             return Object.values((room && room.players) || {}).sort((a, b) => (a.joinedAt || 0) - (b.joinedAt || 0));
@@ -2838,6 +2855,7 @@
                     const value = snap.val() || {};
                     odHistoryCache = Object.values(value).sort((a, b) => (b.endedAt || 0) - (a.endedAt || 0));
                     odRenderOnlineHistory();
+                    odRenderOnlineRanking();
                 }, err => console.error('Historique en ligne:', err));
             }
         }
@@ -2970,7 +2988,7 @@
                 odDisconnectRef = null;
             }
             odCurrentRoomCode = code;
-            localStorage.setItem('od_room_code', code);
+            sessionStorage.setItem('od_room_code', code);
             odRenderResumeButton();
             odRoomListenerRef = odRoomsRef.child(code);
             odRoomListenerRef.on('value', snap => {
@@ -2984,7 +3002,7 @@
                 const me = odFindMyPlayer(room);
                 if (me) {
                     odSelectedPlayerId = String(me.playerId);
-                    localStorage.setItem('od_player_id', odSelectedPlayerId);
+                    sessionStorage.setItem('od_player_id', odSelectedPlayerId);
                     const myRef = odRoomListenerRef.child(`players/${odPlayerKey(me.playerId)}/connected`);
                     if (!odDisconnectRef || odDisconnectRef.toString() !== myRef.toString()) {
                         odDisconnectRef = myRef;
@@ -3017,7 +3035,7 @@
             }
             if (clearSaved) {
                 odCurrentRoomCode = '';
-                localStorage.removeItem('od_room_code');
+                sessionStorage.removeItem('od_room_code');
             }
             document.getElementById('odRoomView')?.classList.add('online-hidden');
             document.getElementById('odLobbyView')?.classList.remove('online-hidden');
@@ -3171,7 +3189,9 @@
                 board: { placements: [], leftEnd: null, rightEnd: null },
                 starterId: chosenStarter,
                 currentTurnId: chosenStarter,
-                forcedOpeningTileId: opening ? opening.tileId : null,
+                // Première manche : le meilleur double est imposé. Manches suivantes :
+                // le gagnant démarre et choisit librement n'importe quel domino.
+                forcedOpeningTileId: starterId === null || starterId === undefined ? opening.tileId : null,
                 consecutivePasses: 0,
                 roundStatus: 'playing',
                 roundResult: null,
@@ -3230,7 +3250,13 @@
             if (tile.a === board.rightEnd || tile.b === board.rightEnd) sides.push('right');
             return sides;
         }
+        function odEnsureBoard(game) {
+            if (!game.board || typeof game.board !== 'object') game.board = {};
+            if (!Array.isArray(game.board.placements)) game.board.placements = [];
+            return game.board;
+        }
         function odHasPlayableTile(game, playerId) {
+            odEnsureBoard(game);
             const hand = (game.hands && game.hands[odPlayerKey(playerId)]) || [];
             if (!hand.length) return false;
             if (!(game.board?.placements || []).length && game.forcedOpeningTileId) return hand.includes(game.forcedOpeningTileId);
@@ -3241,28 +3267,268 @@
             const index = order.findIndex(id => String(id) === String(game.currentTurnId));
             game.currentTurnId = order[(index + 1 + order.length) % order.length];
         }
-        function odPlaceTile(board, tileId, side, playerId) {
+        const OD_SVG_BOARD = Object.freeze({
+            width: 1400, height: 1040, centerX: 700, centerY: 520,
+            tileLength: 120, tileWidth: 60, margin: 8, layoutVersion: 7
+        });
+
+        function odSvgDirectionAngle(direction) {
+            return Math.atan2(direction.dy, direction.dx) * 180 / Math.PI;
+        }
+        function odSvgTurnDirection(direction, turnSign) {
+            return turnSign === 1
+                ? { dx: -direction.dy, dy: direction.dx }
+                : { dx: direction.dy, dy: -direction.dx };
+        }
+        function odSvgPlacementBounds(placement) {
+            const vertical = Math.abs(Math.round(Number(placement.angle || 0) / 90)) % 2 === 1;
+            const width = vertical ? OD_SVG_BOARD.tileWidth : OD_SVG_BOARD.tileLength;
+            const height = vertical ? OD_SVG_BOARD.tileLength : OD_SVG_BOARD.tileWidth;
+            return {
+                left: Number(placement.cx) - width / 2,
+                right: Number(placement.cx) + width / 2,
+                top: Number(placement.cy) - height / 2,
+                bottom: Number(placement.cy) + height / 2
+            };
+        }
+        function odSvgBoundsOverlap(a, b) {
+            const epsilon = 0.5;
+            return a.left < b.right - epsilon && a.right > b.left + epsilon &&
+                a.top < b.bottom - epsilon && a.bottom > b.top + epsilon;
+        }
+        function odSvgCanPlace(board, candidate, extraPlacements = []) {
+            const bounds = odSvgPlacementBounds(candidate);
+            const m = OD_SVG_BOARD.margin;
+            if (bounds.left < m || bounds.right > OD_SVG_BOARD.width - m ||
+                bounds.top < m || bounds.bottom > OD_SVG_BOARD.height - m) return false;
+            return [...(board.placements || []), ...extraPlacements].every(existing =>
+                !Number.isFinite(Number(existing.cx)) || !odSvgBoundsOverlap(bounds, odSvgPlacementBounds(existing))
+            );
+        }
+        function odSvgStraightCandidate(port, faceA, faceB) {
+            const L = OD_SVG_BOARD.tileLength;
+            return {
+                cx: port.x + port.dx * L / 2,
+                cy: port.y + port.dy * L / 2,
+                angle: odSvgDirectionAngle(port), faceA, faceB,
+                nextPort: { ...port, x: port.x + port.dx * L, y: port.y + port.dy * L, afterDouble: false }
+            };
+        }
+        function odSvgDoubleCandidate(port, value) {
+            const W = OD_SVG_BOARD.tileWidth;
+            return {
+                cx: port.x + port.dx * W / 2,
+                cy: port.y + port.dy * W / 2,
+                angle: odSvgDirectionAngle(port) + 90,
+                faceA: value, faceB: value,
+                nextPort: { ...port, x: port.x + port.dx * W, y: port.y + port.dy * W, afterDouble: true }
+            };
+        }
+        function odSvgTurnCandidate(port, faceA, faceB, turnSign = port.turnSign || 1) {
+            const W = OD_SVG_BOARD.tileWidth;
+            const L = OD_SVG_BOARD.tileLength;
+            const nextDirection = odSvgTurnDirection(port, turnSign);
+            const outerHalfX = port.x - port.dx * L / 4;
+            const outerHalfY = port.y - port.dy * L / 4;
+            const turnOffset = W / 2 + L / 2;
+            const cx = outerHalfX + nextDirection.dx * turnOffset;
+            const cy = outerHalfY + nextDirection.dy * turnOffset;
+            return {
+                cx, cy, angle: odSvgDirectionAngle(nextDirection), faceA, faceB,
+                nextPort: {
+                    x: cx + nextDirection.dx * L / 2,
+                    y: cy + nextDirection.dy * L / 2,
+                    dx: nextDirection.dx, dy: nextDirection.dy, turnSign,
+                    branch: port.branch, afterDouble: false
+                }
+            };
+        }
+        function odSvgOutwardTurnSign(port) {
+            const outwardDy = port.branch === 'left' ? -1 : 1;
+            return outwardDy / Number(port.dx || 1);
+        }
+        function odSvgRowTurnSign(port) {
+            const rowDx = Number(port.x) < OD_SVG_BOARD.centerX ? 1 : -1;
+            return rowDx === -Number(port.dy) ? 1 : -1;
+        }
+        function odSvgCornerDoubleCandidate(port, value, forcedTurnSign = null) {
+            const verticalPort = Math.abs(Number(port.dy)) === 1;
+            const turnSign = forcedTurnSign ?? (verticalPort ? odSvgRowTurnSign(port) : odSvgOutwardTurnSign(port));
+            const direction = odSvgTurnDirection(port, turnSign);
+            const L = OD_SVG_BOARD.tileLength;
+            const W = OD_SVG_BOARD.tileWidth;
+            const outerHalfX = port.x - port.dx * L / 4;
+            const outerHalfY = port.y - port.dy * L / 4;
+            const turnOffset = W / 2 + L / 2;
+            const cx = outerHalfX + direction.dx * turnOffset;
+            const cy = outerHalfY + direction.dy * turnOffset;
+            return {
+                cx, cy,
+                angle: odSvgDirectionAngle(direction),
+                faceA: value, faceB: value,
+                nextPort: {
+                    x: cx + direction.dx * L / 2,
+                    y: cy + direction.dy * L / 2,
+                    dx: direction.dx, dy: direction.dy,
+                    turnSign, branch: port.branch, afterDouble: true
+                }
+            };
+        }
+        function odSvgDoubleWithSafeExit(board, port, value, extraPlacements = []) {
+            const candidates = [
+                odSvgDoubleCandidate(port, value),
+                odSvgCornerDoubleCandidate(port, value)
+            ];
+            for (const candidate of candidates) {
+                if (!odSvgCanPlace(board, candidate, extraPlacements)) continue;
+                const occupied = [...extraPlacements, candidate];
+                const exit = odSvgStraightCandidate(candidate.nextPort, value, value);
+                if (odSvgCanPlace(board, exit, occupied)) return candidate;
+            }
+            return null;
+        }
+        function odSvgCanFinishNormalPath(board, port, value, extraPlacements, steps) {
+            if (steps <= 0) return true;
+            const preferredSign = Math.abs(Number(port.dy)) === 1
+                ? odSvgRowTurnSign(port)
+                : odSvgOutwardTurnSign(port);
+            const candidates = [
+                odSvgStraightCandidate(port, value, value),
+                odSvgTurnCandidate(port, value, value, preferredSign),
+                odSvgTurnCandidate(port, value, value, -preferredSign)
+            ];
+            return candidates.some(next =>
+                odSvgCanPlace(board, next, extraPlacements) &&
+                odSvgCanFinishNormalPath(board, next.nextPort, value, [...extraPlacements, next], steps - 1)
+            );
+        }
+        function odSvgChooseCandidate(board, port, faceA, faceB, isDouble) {
+            const rowTiles = Number(port.rowTiles || 0);
+            const rowLimit = Number(port.lane || 0) === 0 ? 4 : 8;
+            const verticalPort = Math.abs(Number(port.dy)) === 1;
+            let candidate;
+
+            if (isDouble) {
+                // Au bout d'une rangée, le double forme lui-même le coin.
+                const preferCorner = !verticalPort && rowTiles >= rowLimit;
+                const preferredSign = verticalPort ? odSvgRowTurnSign(port) : odSvgOutwardTurnSign(port);
+                const standardDouble = { candidate: odSvgDoubleCandidate(port, faceA), isCorner: false };
+                const preferredCorner = { candidate: odSvgCornerDoubleCandidate(port, faceA, preferredSign), isCorner: true };
+                const oppositeCorner = { candidate: odSvgCornerDoubleCandidate(port, faceA, -preferredSign), isCorner: true };
+                const doubleCandidates = preferCorner
+                    ? [preferredCorner, standardDouble, oppositeCorner]
+                    : [standardDouble, preferredCorner, oppositeCorner];
+                for (const option of doubleCandidates) {
+                    candidate = option.candidate;
+                    const isCorner = option.isCorner;
+                    candidate.nextPort.rowTiles = isCorner ? 0 : rowTiles + (verticalPort ? 0 : 1);
+                    candidate.nextPort.lane = Number(port.lane || 0) + (isCorner ? 1 : 0);
+                    const exit = odSvgStraightCandidate(candidate.nextPort, faceA, faceA);
+                    const hasSafeExit = odSvgCanPlace(board, exit, [candidate]);
+                    const placedCount = (board.placements || []).length;
+                    const remainingAfterExit = Math.max(0, 19 - placedCount);
+                    const hasContinuation = odSvgCanFinishNormalPath(
+                        board, exit.nextPort, faceA, [candidate, exit], Math.min(3, remainingAfterExit)
+                    );
+                    if (odSvgCanPlace(board, candidate) &&
+                        (placedCount >= 20 || (hasSafeExit && hasContinuation))) return candidate;
+                }
+                throw new Error('Le double ne peut pas être placé perpendiculairement sans chevauchement.');
+            }
+
+            // Un double traverse la chaîne : le domino suivant doit sortir
+            // tout droit par son côté opposé avant tout nouveau virage.
+            const preferredSign = verticalPort ? odSvgRowTurnSign(port) : odSvgOutwardTurnSign(port);
+            const straightOption = { candidate: odSvgStraightCandidate(port, faceA, faceB), kind: 'straight' };
+            const preferredOption = { candidate: odSvgTurnCandidate(port, faceA, faceB, preferredSign), kind: 'turn' };
+            const oppositeOption = { candidate: odSvgTurnCandidate(port, faceA, faceB, -preferredSign), kind: 'turn' };
+            let options;
+            if (port.afterDouble) options = [straightOption];
+            else if (verticalPort || rowTiles >= rowLimit) options = [preferredOption, straightOption, oppositeOption];
+            else options = [straightOption, preferredOption, oppositeOption];
+
+            const placedCount = (board.placements || []).length;
+            const remaining = Math.max(0, 20 - placedCount);
+            const lookAhead = placedCount >= 17 ? Math.min(3, remaining) : Math.min(1, remaining);
+            for (const option of options) {
+                candidate = option.candidate;
+                const isTurn = option.kind === 'turn';
+                candidate.nextPort.rowTiles = isTurn ? (verticalPort ? 1 : 0) : rowTiles + (verticalPort ? 0 : 1);
+                candidate.nextPort.lane = Number(port.lane || 0) + (isTurn && !verticalPort ? 1 : 0);
+                if (odSvgCanPlace(board, candidate) &&
+                    odSvgCanFinishNormalPath(board, candidate.nextPort, faceB, [candidate], lookAhead)) return candidate;
+            }
+            if (port.afterDouble) throw new Error('La sortie du double ne dispose pas de la place nécessaire.');
+            throw new Error('Le plateau ne dispose plus d’un emplacement valide.');
+        }
+        function odBoardHasSvgLayout(board) {
+            const placements = board && board.placements;
+            if (!Array.isArray(placements) || !placements.length) return true;
+            return Number(board.layoutVersion) === OD_SVG_BOARD.layoutVersion &&
+                board.leftPort && board.rightPort && placements.every(p =>
+                    Number.isFinite(Number(p.cx)) && Number.isFinite(Number(p.cy)) && Number.isFinite(Number(p.angle))
+                );
+        }
+        function odPlaceTileCore(board, tileId, side, playerId, playedAt = odNow()) {
             const tile = odParseTile(tileId);
             board.placements = board.placements || [];
+            board.layoutVersion = OD_SVG_BOARD.layoutVersion;
             if (!board.placements.length) {
+                const isDouble = tile.a === tile.b;
+                const angle = isDouble ? 90 : 0;
+                const placement = {
+                    tileId, left: tile.a, right: tile.b, side: 'start', playerId, playedAt,
+                    cx: OD_SVG_BOARD.centerX, cy: OD_SVG_BOARD.centerY, angle,
+                    faceA: tile.a, faceB: tile.b
+                };
                 board.leftEnd = tile.a;
                 board.rightEnd = tile.b;
-                board.placements.push({ tileId, left: tile.a, right: tile.b, side: 'start', playerId, playedAt: odNow() });
+                const halfSpan = isDouble ? OD_SVG_BOARD.tileWidth / 2 : OD_SVG_BOARD.tileLength / 2;
+                board.leftPort = { x: placement.cx - halfSpan, y: placement.cy, dx: -1, dy: 0, turnSign: 1, branch: 'left', rowTiles: 0, lane: 0 };
+                board.rightPort = { x: placement.cx + halfSpan, y: placement.cy, dx: 1, dy: 0, turnSign: 1, branch: 'right', rowTiles: 0, lane: 0 };
+                board.placements.push(placement);
                 return;
             }
-            if (side === 'left') {
-                let left, right;
-                if (tile.b === board.leftEnd) { left = tile.a; right = tile.b; }
-                else { left = tile.b; right = tile.a; }
-                board.leftEnd = left;
-                board.placements.unshift({ tileId, left, right, side: 'left', playerId, playedAt: odNow() });
+
+            const playLeft = side === 'left';
+            const matchedValue = playLeft ? board.leftEnd : board.rightEnd;
+            const outerValue = tile.a === matchedValue ? tile.b : tile.a;
+            const portKey = playLeft ? 'leftPort' : 'rightPort';
+            const port = board[portKey];
+            if (!port) throw new Error('Extrémité graphique du plateau absente.');
+            const candidate = odSvgChooseCandidate(board, port, matchedValue, outerValue, tile.a === tile.b);
+            const placement = {
+                tileId,
+                left: playLeft ? outerValue : matchedValue,
+                right: playLeft ? matchedValue : outerValue,
+                side: playLeft ? 'left' : 'right', playerId, playedAt,
+                cx: candidate.cx, cy: candidate.cy, angle: candidate.angle,
+                faceA: candidate.faceA, faceB: candidate.faceB
+            };
+            board[portKey] = candidate.nextPort;
+            if (playLeft) {
+                board.leftEnd = outerValue;
+                board.placements.unshift(placement);
             } else {
-                let left, right;
-                if (tile.a === board.rightEnd) { left = tile.a; right = tile.b; }
-                else { left = tile.b; right = tile.a; }
-                board.rightEnd = right;
-                board.placements.push({ tileId, left, right, side: 'right', playerId, playedAt: odNow() });
+                board.rightEnd = outerValue;
+                board.placements.push(placement);
             }
+        }
+        function odMigrateBoardSvgLayout(board) {
+            if (!board || !Array.isArray(board.placements) || !board.placements.length || odBoardHasSvgLayout(board)) return board;
+            const chronological = board.placements.map((p, index) => ({ ...p, _index: index }))
+                .sort((a, b) => Number(a.playedAt || 0) - Number(b.playedAt || 0) || a._index - b._index);
+            board.placements = [];
+            delete board.leftPort; delete board.rightPort;
+            chronological.forEach((p, index) =>
+                odPlaceTileCore(board, p.tileId, index === 0 ? 'start' : p.side, p.playerId, p.playedAt || odNow() + index)
+            );
+            return board;
+        }
+        function odPlaceTile(board, tileId, side, playerId) {
+            board.placements = board.placements || [];
+            if (board.placements.length && !odBoardHasSvgLayout(board)) odMigrateBoardSvgLayout(board);
+            odPlaceTileCore(board, tileId, side, playerId);
         }
 
         function odFinishRoundInRoom(room, winnerId, cause, details = {}) {
@@ -3336,14 +3602,15 @@
                     if (!room || room.status !== 'playing' || !room.game || room.game.roundStatus !== 'playing') { reason = 'La manche n’est pas active.'; return; }
                     const game = room.game;
                     if (String(game.currentTurnId) !== String(me.playerId)) { reason = 'Ce n’est pas ton tour.'; return; }
+                    const board = odEnsureBoard(game);
                     const handKey = odPlayerKey(me.playerId);
                     const hand = game.hands?.[handKey] || [];
                     if (!hand.includes(tileId)) { reason = 'Ce domino n’est plus dans ta main.'; return; }
                     if (!(game.board?.placements || []).length && game.forcedOpeningTileId && tileId !== game.forcedOpeningTileId) { reason = 'Tu dois commencer avec le domino imposé.'; return; }
-                    const validSides = odValidSides(tileId, game.board);
+                    const validSides = odValidSides(tileId, board);
                     if (!validSides.includes(side)) { reason = 'Ce domino ne peut pas être joué de ce côté.'; return; }
                     game.hands[handKey] = hand.filter(id => id !== tileId);
-                    odPlaceTile(game.board, tileId, side, me.playerId);
+                    odPlaceTile(board, tileId, side, me.playerId);
                     game.forcedOpeningTileId = null;
                     game.consecutivePasses = 0;
                     game.lastAction = { type: 'play', playerId: me.playerId, tileId, side, at: odNow() };
@@ -3435,8 +3702,9 @@
             }[Number(value)] || [];
             return Array.from({ length: 9 }, (_, i) => `<span class="pip-cell">${active.includes(i) ? '<span class="pip-dot"></span>' : ''}</span>`).join('');
         }
-        function odDominoHtml(left, right, extraClass = '', tileId = '') {
-            return `<button type="button" class="domino-tile ${extraClass}" ${tileId ? `data-tile-id="${odEsc(tileId)}"` : ''} aria-label="Domino ${left}-${right}"><span class="domino-half">${odPipsHtml(left)}</span><span class="domino-half">${odPipsHtml(right)}</span></button>`;
+        function odDominoHtml(left, right, extraClass = '', tileId = '', inlineStyle = '') {
+            const doubleClass = Number(left) === Number(right) ? 'is-double' : '';
+            return `<button type="button" class="domino-tile ${doubleClass} ${extraClass}" ${tileId ? `data-tile-id="${odEsc(tileId)}"` : ''} ${inlineStyle ? `style="${inlineStyle}"` : ''} aria-label="Domino ${left}-${right}"><span class="domino-half">${odPipsHtml(left)}</span><span class="domino-half">${odPipsHtml(right)}</span></button>`;
         }
         function odPlayerName(room, id) {
             const p = odRoomPlayers(room).find(x => String(x.playerId) === String(id));
@@ -3465,17 +3733,50 @@
             odRenderRoundResult(room, game);
         }
 
+        function odSvgPipsMarkup(value, halfCenterX) {
+            const active = {
+                0: [], 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8],
+                5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8]
+            }[Number(value)] || [];
+            return active.map(index => {
+                const column = index % 3;
+                const row = Math.floor(index / 3);
+                const cx = halfCenterX + (column - 1) * 16;
+                const cy = (row - 1) * 16;
+                return `<circle class="tile-pip" cx="${cx}" cy="${cy}" r="6.4"/>`;
+            }).join('');
+        }
+        function odSvgDominoMarkup(placement) {
+            const faceA = Number.isFinite(Number(placement.faceA)) ? Number(placement.faceA) : Number(placement.left);
+            const faceB = Number.isFinite(Number(placement.faceB)) ? Number(placement.faceB) : Number(placement.right);
+            return `<g class="od-svg-tile" transform="translate(${Number(placement.cx)} ${Number(placement.cy)}) rotate(${Number(placement.angle)})" role="img" aria-label="Domino ${faceA}-${faceB}">
+                <rect class="tile-body" x="-59" y="-29" width="118" height="58" rx="10"/>
+                <line class="tile-divider" x1="0" y1="-24" x2="0" y2="24"/>
+                <line class="tile-divider-highlight" x1="2" y1="-23" x2="2" y2="23"/>
+                ${odSvgPipsMarkup(faceA, -30)}${odSvgPipsMarkup(faceB, 30)}
+                <circle class="tile-rivet" cx="0" cy="0" r="7"/>
+            </g>`;
+        }
+        function odSvgDefinitionsMarkup() {
+            return `<defs>
+                <linearGradient id="odIvoryGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffef5"/><stop offset=".52" stop-color="#fff7d7"/><stop offset="1" stop-color="#e2c477"/></linearGradient>
+                <radialGradient id="odPipGradient" cx="35%" cy="28%"><stop offset="0" stop-color="#5a5a5a"/><stop offset=".46" stop-color="#171717"/><stop offset="1" stop-color="#000"/></radialGradient>
+                <radialGradient id="odGoldGradient" cx="32%" cy="25%"><stop offset="0" stop-color="#fff8bf"/><stop offset=".46" stop-color="#f0b622"/><stop offset="1" stop-color="#805008"/></radialGradient>
+            </defs>`;
+        }
         function odRenderBoard(game) {
             const boardEl = document.getElementById('odBoard');
             if (!boardEl) return;
-            const placements = game.board?.placements || [];
+            const sourceBoard = game.board || { placements: [] };
+            const renderBoard = odBoardHasSvgLayout(sourceBoard)
+                ? sourceBoard
+                : odMigrateBoardSvgLayout(JSON.parse(JSON.stringify(sourceBoard)));
+            const placements = renderBoard.placements || [];
             if (!placements.length) {
-                boardEl.innerHTML = `<div class="online-empty-board"><i class="fa-solid fa-circle-dot" style="font-size:1.4rem; margin-bottom:8px;"></i><br>Le plateau attend le premier domino</div>`;
+                boardEl.innerHTML = `${odSvgDefinitionsMarkup()}<g aria-hidden="true"><circle cx="700" cy="300" r="12" fill="rgba(255,255,255,.28)"/><text x="700" y="345" text-anchor="middle" fill="rgba(255,255,255,.38)" font-size="22" font-family="Inter, sans-serif">Le plateau attend le premier domino</text></g>`;
                 return;
             }
-            boardEl.innerHTML = placements.map(p => odDominoHtml(p.left, p.right, 'board-tile')).join('');
-            const scroll = boardEl.parentElement;
-            if (scroll) setTimeout(() => { scroll.scrollLeft = Math.max(0, (scroll.scrollWidth - scroll.clientWidth) / 2); }, 0);
+            boardEl.innerHTML = odSvgDefinitionsMarkup() + placements.map(odSvgDominoMarkup).join('');
         }
 
         function odRenderHand(room, game, me) {
@@ -3621,6 +3922,22 @@
             }
         }
 
+        function odOnlineWinRate(stat) {
+            const played = Number(stat.gamesPlayed || 0);
+            return played > 0 ? Number(stat.gamesWon || 0) / played : -1;
+        }
+
+        function odOnlineCurrentStreak(playerId) {
+            let streak = 0;
+            for (const match of odHistoryCache || []) {
+                const participated = (match.players || []).some(p => String(p.playerId) === String(playerId));
+                if (!participated) continue;
+                if (match.resultType === 'victory' && String(match.winnerId) === String(playerId)) streak++;
+                else break;
+            }
+            return streak;
+        }
+
         function odRenderOnlineRanking() {
             const container = document.getElementById('odOnlineRanking');
             if (!container) return;
@@ -3628,6 +3945,8 @@
                 .filter(([key, value]) => key !== '_processed' && value && typeof value === 'object')
                 .map(([, value]) => value)
                 .sort((a, b) =>
+                    odOnlineWinRate(b) - odOnlineWinRate(a) ||
+                    (Number(b.roundsWon || 0) - Number(b.cochons || 0)) - (Number(a.roundsWon || 0) - Number(a.cochons || 0)) ||
                     Number(b.gamesWon || 0) - Number(a.gamesWon || 0) ||
                     Number(b.roundsWon || 0) - Number(a.roundsWon || 0) ||
                     Number(a.cochons || 0) - Number(b.cochons || 0) ||
@@ -3637,7 +3956,16 @@
                 container.innerHTML = '<p class="online-help">Aucune partie en ligne enregistrée.</p>';
                 return;
             }
-            container.innerHTML = `<table class="online-ranking"><thead><tr><th>#</th><th>Joueur</th><th>Parties</th><th>Gagnées</th><th>Manches</th><th>🐷</th><th>🛡️</th></tr></thead><tbody>${rows.map((s, index) => `<tr><td>${index + 1}</td><td class="player-cell">${odAvatarMarkup(s.avatar, 'online-mini-avatar')}<strong>${odEsc(s.name)}</strong></td><td>${Number(s.gamesPlayed || 0)}</td><td style="color:var(--gold);">${Number(s.gamesWon || 0)}</td><td>${Number(s.roundsWon || 0)}</td><td style="color:var(--cochon-color);">${Number(s.cochons || 0)}</td><td style="color:var(--blue);">${Number(s.saved || 0)}</td></tr>`).join('')}</tbody></table>`;
+            container.innerHTML = `<table class="online-ranking"><thead><tr><th>#</th><th>Joueur</th><th>% Vic</th><th>Score</th><th>Vic</th><th>Manches</th><th>Coch</th><th>Série</th><th>Sauvé</th><th>Jouées</th></tr></thead><tbody>${rows.map((s, index) => {
+                const played = Number(s.gamesPlayed || 0);
+                const won = Number(s.gamesWon || 0);
+                const rounds = Number(s.roundsWon || 0);
+                const cochons = Number(s.cochons || 0);
+                const winRate = played > 0 ? Math.round((won / played) * 100) : 0;
+                const score = rounds - cochons;
+                const streak = odOnlineCurrentStreak(s.playerId);
+                return `<tr><td><strong>#${index + 1}</strong></td><td class="player-cell">${odAvatarMarkup(s.avatar, 'online-mini-avatar')}<strong>${odEsc(s.name)}</strong></td><td>${winRate}%</td><td style="color:#ff4444;font-weight:900;">${score}</td><td style="color:var(--gold);">${won}</td><td>${rounds}</td><td style="color:var(--cochon-color);">${cochons}</td><td>🔥 ${streak}</td><td style="color:var(--blue);">${Number(s.saved || 0)}</td><td>${played}</td></tr>`;
+            }).join('')}</tbody></table>`;
         }
 
         function odRenderOnlineHistory() {
