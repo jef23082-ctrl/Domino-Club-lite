@@ -1323,16 +1323,21 @@
         .online-presence { position:absolute; width:9px; height:9px; border-radius:50%; right:7px; top:7px; background:#64748b; box-shadow:0 0 0 2px rgba(6,6,15,.8); }
         .online-presence.on { background:#22c55e; }
         .online-table {
-            min-height:390px; border-radius:24px; padding:14px 12px 20px; margin:14px 0;
+            height:390px; min-height:390px; border-radius:24px; padding:14px 12px 12px; margin:14px 0;
             background:
               radial-gradient(circle at 50% 35%, rgba(16,185,129,.1), transparent 44%),
               linear-gradient(145deg,#09261f,#071913 70%);
             border:1px solid rgba(52,211,153,.18); box-shadow:inset 0 0 55px rgba(0,0,0,.35), 0 16px 45px rgba(0,0,0,.25);
-            display:flex; flex-direction:column; justify-content:flex-start;
+            display:flex; flex-direction:column; justify-content:flex-start; overflow:hidden;
+            transition:border-color .25s ease, box-shadow .25s ease;
         }
-        .online-turn-banner { text-align:center; font-size:.8rem; color:#a7f3d0; font-weight:800; min-height:22px; margin:0 0 8px; flex:0 0 auto; }
-        .online-board-scroll { width:100%; overflow:hidden; padding:0 2px; flex:1; display:flex; align-items:center; justify-content:center; }
-        .online-board { width:100%; height:100%; min-height:330px; display:block; overflow:visible; }
+        .online-table.my-turn-alert { animation:odMyTurnPulse 1.15s ease-in-out infinite; }
+        @keyframes odMyTurnPulse {
+            0%,100% { border-color:rgba(251,191,36,.38); box-shadow:inset 0 0 55px rgba(0,0,0,.35),0 0 0 1px rgba(251,191,36,.12),0 12px 36px rgba(0,0,0,.25); }
+            50% { border-color:#fbbf24; box-shadow:inset 0 0 55px rgba(0,0,0,.28),0 0 0 3px rgba(251,191,36,.32),0 0 30px rgba(251,191,36,.42); }
+        }
+        .online-board-scroll { width:100%; overflow:hidden; padding:0 2px; flex:1 1 auto; min-height:0; display:flex; align-items:center; justify-content:center; }
+        .online-board { width:100%; height:100%; min-height:0; display:block; overflow:visible; }
         .online-empty-board { width:100%; text-align:center; color:rgba(255,255,255,.35); font-size:.8rem; padding:26px 8px; }
         .domino-tile {
             display:inline-flex; flex-shrink:0; background:linear-gradient(145deg,#fffef5 0%,#fff7d7 52%,#e2c477 100%); border:3px solid #d6a12b;
@@ -1355,9 +1360,14 @@
         .od-svg-tile .tile-divider-highlight { stroke:#f6d370; stroke-width:1.2; }
         .od-svg-tile .tile-pip { fill:url(#odPipGradient); stroke:#050505; stroke-width:1.2; }
         .od-svg-tile .tile-rivet { fill:url(#odGoldGradient); stroke:#9c6810; stroke-width:1.4; }
-        .online-hand-zone { margin-top:14px; }
-        .online-hand-title { display:flex; justify-content:space-between; align-items:center; gap:10px; color:var(--text-secondary); font-size:.74rem; margin-bottom:10px; }
-        .online-hand { display:flex; align-items:flex-start; gap:8px; overflow-x:auto; padding:10px 5px 16px; min-height:85px; }
+        .online-hand-zone { flex:0 0 auto; min-height:103px; padding-top:8px; border-top:3px solid #d6a12b; box-shadow:inset 0 1px 0 #f6d370; }
+        .online-hand-status { position:relative; min-height:22px; display:flex; align-items:center; justify-content:center; padding:0 112px; }
+        .online-turn-banner { text-align:center; font-size:.8rem; color:#a7f3d0; font-weight:850; line-height:22px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .online-hand-points { position:absolute; right:4px; top:50%; transform:translateY(-50%); color:var(--text-secondary); font-size:.7rem; white-space:nowrap; }
+        .online-hand { display:flex; align-items:flex-start; justify-content:center; gap:8px; overflow-x:auto; padding:8px 5px 5px; min-height:73px; scrollbar-width:thin; scrollbar-color:rgba(214,161,43,.55) transparent; }
+        .online-hand-zone .domino-tile.hand-tile .domino-half { width:32px; height:32px; }
+        .online-hand-zone .pip-dot { width:6px; height:6px; }
+        .online-game-controls { margin-top:8px; }
         .online-play-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
         .online-round-message { padding:14px; border-radius:15px; background:rgba(251,191,36,.07); border:1px solid rgba(251,191,36,.16); margin-top:12px; text-align:center; }
         .online-round-message strong { color:var(--gold); display:block; margin-bottom:5px; }
@@ -1394,8 +1404,7 @@
             .online-grid.two { grid-template-columns:1fr 1fr; }
             .online-actions { grid-template-columns:1fr 1fr; }
             .online-card { padding:22px; }
-            .online-table { min-height:420px; padding:14px 20px 22px; }
-            .domino-tile.hand-tile .domino-half { width:40px; height:40px; }
+            .online-table { height:420px; min-height:420px; padding:14px 20px 12px; }
             .pip-dot { width:7px; height:7px; }
         }
 
@@ -1404,8 +1413,11 @@
             .online-player-row, .online-waiting-slots { gap:5px; }
             .online-player-chip { padding:9px 4px; }
             .online-player-avatar { width:36px; height:36px; }
-            .online-table { min-height:350px; padding-left:7px; padding-right:7px; }
-            .domino-tile.hand-tile .domino-half { width:31px; height:31px; }
+            .online-table { height:350px; min-height:350px; padding-left:7px; padding-right:7px; }
+            .online-hand-status { padding:0 4px; flex-direction:column; min-height:36px; }
+            .online-hand-points { position:static; transform:none; font-size:.62rem; }
+            .online-hand { justify-content:flex-start; }
+            .online-hand-zone .domino-tile.hand-tile .domino-half { width:29px; height:29px; }
             .pip-dot { width:5px; height:5px; }
             .online-play-actions { grid-template-columns:1fr; }
             .online-summary-card { height:360px; }
@@ -1451,7 +1463,7 @@
     <header>
         <h1>Le Roi du Cochon</h1>
         <div class="subtitle">👑 Domino Club Élite</div>
-        <div id="legacyDataStatus" style="font-size:.66rem;color:var(--text-muted);margin-top:7px;">Sauvegarde historique intégrée : 10 joueurs · 79 manches</div>
+        <div id="legacyDataStatus" style="font-size:.66rem;color:var(--text-muted);margin-top:7px;">10 joueurs · 79 manches normales · 0 partie en ligne · sauvegarde intégrée</div>
     </header>
 
     <!-- PAGE: HOME -->
@@ -1608,13 +1620,17 @@
                         </div>
 
                         <div class="online-table">
-                            <div id="odTurnBanner" class="online-turn-banner"></div>
                             <div class="online-board-scroll"><svg id="odBoard" class="online-board" viewBox="0 0 1400 1040" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Plateau de dominos"></svg></div>
+                            <div id="odHandZone" class="online-hand-zone">
+                                <div class="online-hand-status">
+                                    <div id="odTurnBanner" class="online-turn-banner"></div>
+                                    <span id="odHandPoints" class="online-hand-points"></span>
+                                </div>
+                                <div id="odHand" class="online-hand"></div>
+                            </div>
                         </div>
 
-                        <div id="odHandZone" class="online-hand-zone">
-                            <div class="online-hand-title"><span><i class="fa-solid fa-hand"></i> Tes dominos</span><span id="odHandPoints"></span></div>
-                            <div id="odHand" class="online-hand"></div>
+                        <div class="online-game-controls">
                             <div id="odPlayActions" class="online-play-actions online-hidden">
                                 <button id="odPlayLeftBtn" class="online-btn blue" onclick="odPlaySelectedTile('left')"><i class="fa-solid fa-arrow-left"></i> Jouer à gauche</button>
                                 <button id="odPlayRightBtn" class="online-btn primary" onclick="odPlaySelectedTile('right')">Jouer à droite <i class="fa-solid fa-arrow-right"></i></button>
@@ -1754,6 +1770,7 @@
         let legacyDataReady = false;
         let legacyDataExists = false;
         let legacyBackupPromise = null;
+        let onlineHistoryCount = 0;
         // Sauvegarde intégrée depuis l'export Firebase fourni le 6 août 2026.
         // Elle garantit l'affichage des anciens joueurs et des 79 manches même si Firebase
         // est temporairement inaccessible, vide ou bloqué par ses règles de sécurité.
@@ -1839,6 +1856,15 @@
             return JSON.parse(JSON.stringify(value));
         }
 
+        function renderCombinedDataStatus() {
+            const status = document.getElementById('legacyDataStatus');
+            if (!status) return;
+            const sourceText = legacyUsingEmbeddedData ? 'sauvegarde intégrée' : 'Firebase synchronisé';
+            const sourceIcon = legacyUsingEmbeddedData ? '⚠️' : '✅';
+            status.textContent = `${sourceIcon} ${players.length} joueurs · ${history.length} manches normales · ${onlineHistoryCount} partie${onlineHistoryCount > 1 ? 's' : ''} en ligne · ${sourceText}`;
+            status.style.color = legacyUsingEmbeddedData ? 'var(--gold)' : 'var(--green)';
+        }
+
         function legacyApplyData(data, source = 'firebase') {
             const safeData = legacyHasUsefulData(data) ? data : LEGACY_EMBEDDED_DATA;
             players = legacyToArray(safeData.players).map(player => legacyDeepClone(player));
@@ -1846,11 +1872,7 @@
             history = legacyToArray(safeData.history).map(item => legacyDeepClone(item));
             legacyUsingEmbeddedData = source !== 'firebase';
             recalculateStats({ preserveStoredWhenHistoryEmpty: true });
-            const status = document.getElementById('legacyDataStatus');
-            if (status) {
-                status.textContent = `${players.length} joueurs · ${history.length} manches · ${legacyUsingEmbeddedData ? 'sauvegarde intégrée' : 'Firebase synchronisé'}`;
-                status.style.color = legacyUsingEmbeddedData ? 'var(--gold)' : 'var(--green)';
-            }
+            renderCombinedDataStatus();
         }
 
         async function legacyRestoreEmbeddedDataIfDatabaseEmpty() {
@@ -2084,12 +2106,7 @@
         }
 
         function renderHome() {
-            const dataStatus = document.getElementById('legacyDataStatus');
-            if (dataStatus) {
-                dataStatus.textContent = legacyDataReady && legacyDataExists
-                    ? `✅ Données réelles Firebase chargées : ${players.length} joueurs · ${history.length} manches`
-                    : (legacyDataReady ? '⚠️ Mode de secours : base historique vide' : '⏳ Chargement des anciennes données…');
-            }
+            renderCombinedDataStatus();
             let sorted = [...players].sort((a,b) => ((Number(b.vic || 0) - Number(b.coch || 0)) - (Number(a.vic || 0) - Number(a.coch || 0))) || (Number(b.vic || 0) - Number(a.vic || 0)));
             const grid = document.getElementById("mainGrid");
             grid.innerHTML = "";
@@ -2733,6 +2750,7 @@
         let odStatsCache = {};
         let odHistoryCache = [];
         let odBusy = false;
+        let odAudioContext = null;
         const odRecordingMatches = new Set();
 
         if (!odClientToken) {
@@ -2761,6 +2779,69 @@
             return `<span class="${className}">${odEsc(avatar || '❓')}</span>`;
         }
         function odNow() { return Date.now(); }
+        function odGetAudioContext() {
+            if (!odAudioContext) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) odAudioContext = new AudioContextClass();
+            }
+            return odAudioContext;
+        }
+        function odUnlockAudio() {
+            const context = odGetAudioContext();
+            if (context && context.state === 'suspended') context.resume().catch(() => {});
+        }
+        function odPlayOnlineSound(kind) {
+            const context = odGetAudioContext();
+            if (!context || context.state !== 'running') return;
+            const now = context.currentTime;
+            if (kind === 'placement') {
+                const oscillator = context.createOscillator();
+                const gain = context.createGain();
+                oscillator.type = 'triangle';
+                oscillator.frequency.setValueAtTime(190, now);
+                oscillator.frequency.exponentialRampToValueAtTime(92, now + .095);
+                gain.gain.setValueAtTime(.0001, now);
+                gain.gain.exponentialRampToValueAtTime(.16, now + .008);
+                gain.gain.exponentialRampToValueAtTime(.0001, now + .12);
+                oscillator.connect(gain).connect(context.destination);
+                oscillator.start(now);
+                oscillator.stop(now + .13);
+                return;
+            }
+            [523.25, 659.25, 783.99].forEach((frequency, index) => {
+                const start = now + index * .11;
+                const oscillator = context.createOscillator();
+                const gain = context.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(frequency, start);
+                gain.gain.setValueAtTime(.0001, start);
+                gain.gain.exponentialRampToValueAtTime(.105, start + .018);
+                gain.gain.exponentialRampToValueAtTime(.0001, start + .18);
+                oscillator.connect(gain).connect(context.destination);
+                oscillator.start(start);
+                oscillator.stop(start + .2);
+            });
+        }
+        function odLatestPlacementStamp(room) {
+            return Math.max(0, ...((room?.game?.board?.placements || []).map(p => Number(p.playedAt || 0))));
+        }
+        function odTurnStateKey(room) {
+            const game = room?.game;
+            if (!game) return '';
+            return `${room.matchId || ''}|${game.roundNumber || 0}|${game.roundStatus || ''}|${game.currentTurnId ?? ''}`;
+        }
+        function odHandleRoomFeedback(previousRoom, room, me) {
+            if (!previousRoom || !room) return;
+            if (odLatestPlacementStamp(room) > odLatestPlacementStamp(previousRoom)) {
+                odPlayOnlineSound('placement');
+            }
+            const activeTurn = room.status === 'playing' && room.game?.roundStatus === 'playing';
+            const becameMyTurn = activeTurn && me && String(room.game.currentTurnId) === String(me.playerId) &&
+                odTurnStateKey(room) !== odTurnStateKey(previousRoom);
+            if (becameMyTurn) setTimeout(() => odPlayOnlineSound('turn'), 170);
+        }
+        document.addEventListener('pointerdown', odUnlockAudio, { passive: true });
+        document.addEventListener('keydown', odUnlockAudio, { passive: true });
         function odWithTimeout(promise, timeoutMs = 12000, message = 'Firebase ne répond pas.') {
             let timer;
             const timeout = new Promise((_, reject) => {
@@ -2851,9 +2932,11 @@
             }
             if (!odHistoryBound) {
                 odHistoryBound = true;
-                odHistoryRef.limitToLast(50).on('value', snap => {
+                odHistoryRef.on('value', snap => {
                     const value = snap.val() || {};
                     odHistoryCache = Object.values(value).sort((a, b) => (b.endedAt || 0) - (a.endedAt || 0));
+                    onlineHistoryCount = odHistoryCache.length;
+                    renderCombinedDataStatus();
                     odRenderOnlineHistory();
                     odRenderOnlineRanking();
                 }, err => console.error('Historique en ligne:', err));
@@ -2998,6 +3081,7 @@
                     odDetachRoom(true);
                     return;
                 }
+                const previousRoom = odCurrentRoom;
                 odCurrentRoom = room;
                 const me = odFindMyPlayer(room);
                 if (me) {
@@ -3010,6 +3094,7 @@
                         myRef.onDisconnect().set(false);
                     }
                 }
+                odHandleRoomFeedback(previousRoom, room, me);
                 odRenderRoom(room);
                 if (room.status === 'finished' && odFindMyPlayer(room)) odEnsureOnlineResultRecorded(room);
             }, error => {
@@ -3718,14 +3803,17 @@
             const title = document.getElementById('odRoundTitle');
             const stateLabel = document.getElementById('odGameStateLabel');
             const turnBanner = document.getElementById('odTurnBanner');
+            const table = document.querySelector('#odGamePanel .online-table');
+            const myTurn = room.status === 'playing' && game.roundStatus === 'playing' && me && String(me.playerId) === String(game.currentTurnId);
             if (title) title.textContent = `Manche ${game.roundNumber || 1}`;
             if (stateLabel) stateLabel.textContent = room.status === 'finished' ? 'Partie terminée' : (game.roundStatus === 'ended' ? 'Manche terminée' : 'En cours');
+            if (table) table.classList.toggle('my-turn-alert', !!myTurn);
             if (turnBanner) {
                 if (room.status === 'finished') turnBanner.textContent = 'La partie est terminée';
                 else if (game.roundStatus === 'ended') turnBanner.textContent = 'Manche terminée';
                 else {
                     const currentName = odPlayerName(room, game.currentTurnId);
-                    turnBanner.textContent = me && String(me.playerId) === String(game.currentTurnId) ? '🎯 À toi de jouer' : `Tour de ${currentName}`;
+                    turnBanner.textContent = myTurn ? '🎯 À toi de jouer' : `Tour de ${currentName}`;
                 }
             }
             odRenderBoard(game);
@@ -3792,6 +3880,7 @@
             }
             zone.classList.remove('online-hidden');
             const hand = game.hands?.[odPlayerKey(me.playerId)] || [];
+            const boardIsEmpty = !(game.board?.placements || []).length;
             pointsEl.textContent = `${hand.length} domino${hand.length > 1 ? 's' : ''} · ${odHandPoints(hand)} points`;
             const myTurn = room.status === 'playing' && game.roundStatus === 'playing' && String(game.currentTurnId) === String(me.playerId);
             handEl.innerHTML = hand.map(id => {
@@ -3809,13 +3898,17 @@
                     if (!(game.board?.placements || []).length && game.forcedOpeningTileId && id !== game.forcedOpeningTileId) sides = [];
                     if (!sides.length) return showToast('Ce domino n’est pas jouable.', 'warning');
                     odSelectedTileId = id;
+                    if (boardIsEmpty) {
+                        odPlayTile(id, 'right');
+                        return;
+                    }
                     odRenderHand(room, game, me);
                     if (sides.length === 1) odPlayTile(id, sides[0]);
                 });
             });
             let selectedSides = odSelectedTileId ? odValidSides(odSelectedTileId, game.board) : [];
             if (!(game.board?.placements || []).length && game.forcedOpeningTileId && odSelectedTileId !== game.forcedOpeningTileId) selectedSides = [];
-            actions.classList.toggle('online-hidden', !myTurn || !odSelectedTileId || selectedSides.length < 2);
+            actions.classList.toggle('online-hidden', boardIsEmpty || !myTurn || !odSelectedTileId || selectedSides.length < 2);
             const leftBtn = document.getElementById('odPlayLeftBtn');
             const rightBtn = document.getElementById('odPlayRightBtn');
             if (leftBtn) leftBtn.disabled = !selectedSides.includes('left');
@@ -3886,12 +3979,16 @@
                         roomPlayers.forEach(p => {
                             const key = odPlayerKey(p.playerId);
                             const current = stats[key] || {};
+                            const victories = Number(current.victories ?? current.gamesWon ?? 0);
                             stats[key] = {
                                 playerId: p.playerId,
                                 name: p.name,
                                 avatar: p.avatar || '❓',
                                 gamesPlayed: Number(current.gamesPlayed || 0) + 1,
-                                gamesWon: Number(current.gamesWon || 0),
+                                victories,
+                                // Conservé pour la compatibilité avec une ancienne page
+                                // encore ouverte, mais représente désormais les mêmes victoires.
+                                gamesWon: victories,
                                 gamesCancelled: Number(current.gamesCancelled || 0),
                                 roundsWon: Number(current.roundsWon || 0) + Number(result.scores?.[key] || 0),
                                 cochons: Number(current.cochons || 0),
@@ -3901,7 +3998,11 @@
                         });
                         if (result.type === 'victory') {
                             const winnerKey = odPlayerKey(result.winnerId);
-                            if (stats[winnerKey]) stats[winnerKey].gamesWon += 1;
+                            const victoryCredits = (result.cochonIds || []).length >= 2 ? 2 : 1;
+                            if (stats[winnerKey]) {
+                                stats[winnerKey].victories += victoryCredits;
+                                stats[winnerKey].gamesWon = stats[winnerKey].victories;
+                            }
                             (result.cochonIds || []).forEach(id => {
                                 const key = odPlayerKey(id);
                                 if (stats[key]) stats[key].cochons += 1;
@@ -3922,9 +4023,13 @@
             }
         }
 
+        function odOnlineVictories(stat) {
+            return Number(stat.victories ?? stat.gamesWon ?? 0);
+        }
+
         function odOnlineWinRate(stat) {
             const played = Number(stat.gamesPlayed || 0);
-            return played > 0 ? Number(stat.gamesWon || 0) / played : -1;
+            return played > 0 ? odOnlineVictories(stat) / played : -1;
         }
 
         function odOnlineCurrentStreak(playerId) {
@@ -3938,17 +4043,52 @@
             return streak;
         }
 
+        function odOnlineStatsFromHistory() {
+            const calculated = {};
+            [...(odHistoryCache || [])].reverse().forEach(match => {
+                (match.players || []).forEach(player => {
+                    const key = odPlayerKey(player.playerId);
+                    const current = calculated[key] || {
+                        playerId: player.playerId,
+                        name: player.name,
+                        avatar: player.avatar || '❓',
+                        gamesPlayed: 0,
+                        victories: 0,
+                        cochons: 0,
+                        saved: 0
+                    };
+                    current.name = player.name || current.name;
+                    current.avatar = player.avatar || current.avatar;
+                    current.gamesPlayed += 1;
+                    calculated[key] = current;
+                });
+                if (match.resultType === 'victory') {
+                    const winnerKey = odPlayerKey(match.winnerId);
+                    if (calculated[winnerKey]) {
+                        calculated[winnerKey].victories += (match.cochonIds || []).length >= 2 ? 2 : 1;
+                    }
+                    (match.cochonIds || []).forEach(id => {
+                        const key = odPlayerKey(id);
+                        if (calculated[key]) calculated[key].cochons += 1;
+                    });
+                } else {
+                    const savedKey = odPlayerKey(match.savedId);
+                    if (calculated[savedKey]) calculated[savedKey].saved += 1;
+                }
+            });
+            return Object.values(calculated);
+        }
+
         function odRenderOnlineRanking() {
             const container = document.getElementById('odOnlineRanking');
             if (!container) return;
-            const rows = Object.entries(odStatsCache || {})
+            const storedRows = Object.entries(odStatsCache || {})
                 .filter(([key, value]) => key !== '_processed' && value && typeof value === 'object')
-                .map(([, value]) => value)
-                .sort((a, b) =>
+                .map(([, value]) => value);
+            const rows = (odHistoryCache.length ? odOnlineStatsFromHistory() : storedRows).sort((a, b) =>
                     odOnlineWinRate(b) - odOnlineWinRate(a) ||
-                    (Number(b.roundsWon || 0) - Number(b.cochons || 0)) - (Number(a.roundsWon || 0) - Number(a.cochons || 0)) ||
-                    Number(b.gamesWon || 0) - Number(a.gamesWon || 0) ||
-                    Number(b.roundsWon || 0) - Number(a.roundsWon || 0) ||
+                    (odOnlineVictories(b) - Number(b.cochons || 0)) - (odOnlineVictories(a) - Number(a.cochons || 0)) ||
+                    odOnlineVictories(b) - odOnlineVictories(a) ||
                     Number(a.cochons || 0) - Number(b.cochons || 0) ||
                     String(a.name || '').localeCompare(String(b.name || ''), 'fr')
                 );
@@ -3956,15 +4096,14 @@
                 container.innerHTML = '<p class="online-help">Aucune partie en ligne enregistrée.</p>';
                 return;
             }
-            container.innerHTML = `<table class="online-ranking"><thead><tr><th>#</th><th>Joueur</th><th>% Vic</th><th>Score</th><th>Vic</th><th>Manches</th><th>Coch</th><th>Série</th><th>Sauvé</th><th>Jouées</th></tr></thead><tbody>${rows.map((s, index) => {
+            container.innerHTML = `<table class="online-ranking"><thead><tr><th>#</th><th>Joueur</th><th>% Vic</th><th>Score</th><th>Vic</th><th>Coch</th><th>Série</th><th>Sauvé</th><th>Jouées</th></tr></thead><tbody>${rows.map((s, index) => {
                 const played = Number(s.gamesPlayed || 0);
-                const won = Number(s.gamesWon || 0);
-                const rounds = Number(s.roundsWon || 0);
+                const won = odOnlineVictories(s);
                 const cochons = Number(s.cochons || 0);
                 const winRate = played > 0 ? Math.round((won / played) * 100) : 0;
-                const score = rounds - cochons;
+                const score = won - cochons;
                 const streak = odOnlineCurrentStreak(s.playerId);
-                return `<tr><td><strong>#${index + 1}</strong></td><td class="player-cell">${odAvatarMarkup(s.avatar, 'online-mini-avatar')}<strong>${odEsc(s.name)}</strong></td><td>${winRate}%</td><td style="color:#ff4444;font-weight:900;">${score}</td><td style="color:var(--gold);">${won}</td><td>${rounds}</td><td style="color:var(--cochon-color);">${cochons}</td><td>🔥 ${streak}</td><td style="color:var(--blue);">${Number(s.saved || 0)}</td><td>${played}</td></tr>`;
+                return `<tr><td><strong>#${index + 1}</strong></td><td class="player-cell">${odAvatarMarkup(s.avatar, 'online-mini-avatar')}<strong>${odEsc(s.name)}</strong></td><td>${winRate}%</td><td style="color:#ff4444;font-weight:900;">${score}</td><td style="color:var(--gold);">${won}</td><td style="color:var(--cochon-color);">${cochons}</td><td>🔥 ${streak}</td><td style="color:var(--blue);">${Number(s.saved || 0)}</td><td>${played}</td></tr>`;
             }).join('')}</tbody></table>`;
         }
 
@@ -3993,6 +4132,9 @@
             }).join('');
         }
 
+        // Le compteur supérieur distingue immédiatement les résultats réels
+        // des parties en ligne, même avant l'ouverture de l'onglet En ligne.
+        odBindOnlineFeeds();
 
         // renderHome(); (Appelé automatiquement après le chargement des données)
     </script>
