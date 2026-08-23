@@ -1328,7 +1328,7 @@
               radial-gradient(circle at 50% 35%, rgba(16,185,129,.1), transparent 44%),
               linear-gradient(145deg,#09261f,#071913 70%);
             border:1px solid rgba(52,211,153,.18); box-shadow:inset 0 0 55px rgba(0,0,0,.35), 0 16px 45px rgba(0,0,0,.25);
-            display:flex; flex-direction:column; justify-content:flex-start; overflow:hidden;
+            display:flex; flex-direction:column; justify-content:flex-start; overflow:hidden; position:relative;
             transition:border-color .25s ease, box-shadow .25s ease;
         }
         .online-table.my-turn-alert { animation:odMyTurnPulse 1.15s ease-in-out infinite; }
@@ -1360,7 +1360,10 @@
         .od-svg-tile .tile-divider-highlight { stroke:#f6d370; stroke-width:1.2; }
         .od-svg-tile .tile-pip { fill:url(#odPipGradient); stroke:#050505; stroke-width:1.2; }
         .od-svg-tile .tile-rivet { fill:url(#odGoldGradient); stroke:#9c6810; stroke-width:1.4; }
-        .online-hand-zone { flex:0 0 auto; min-height:103px; padding-top:8px; border-top:3px solid #d6a12b; box-shadow:inset 0 1px 0 #f6d370; }
+        .online-hand-zone {
+            flex:0 0 auto; min-height:103px; padding-top:8px;
+            border-top:3px solid #d6a12b; box-shadow:inset 0 1px 0 #f6d370;
+        }
         .online-hand-status { position:relative; min-height:22px; display:flex; align-items:center; justify-content:center; padding:0 112px; }
         .online-turn-banner { text-align:center; font-size:.8rem; color:#a7f3d0; font-weight:850; line-height:22px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
         .online-hand-points { position:absolute; right:4px; top:50%; transform:translateY(-50%); color:var(--text-secondary); font-size:.7rem; white-space:nowrap; }
@@ -1369,6 +1372,21 @@
         .online-hand-zone .pip-dot { width:6px; height:6px; }
         .online-game-controls { margin-top:8px; }
         .online-play-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+        .online-game-player-strip {
+            width:100%; height:46px; margin-top:8px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+            overflow:hidden; border-radius:13px; background:rgba(255,255,255,.055); border:1px solid var(--glass-border);
+        }
+        .online-game-player-strip-item {
+            min-width:0; padding:3px 7px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+            position:relative; text-align:center; transition:background .2s ease, box-shadow .2s ease;
+        }
+        .online-game-player-strip-item + .online-game-player-strip-item::before {
+            content:""; position:absolute; left:0; top:8px; bottom:8px; width:1px; background:rgba(214,161,43,.3);
+        }
+        .online-game-player-strip-item.turn { background:rgba(251,191,36,.09); box-shadow:inset 0 0 0 1px rgba(251,191,36,.32); }
+        .online-game-player-strip-name { width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#f8fafc; font-size:.67rem; line-height:1.1; font-weight:900; }
+        .online-game-player-strip-stats { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:3px; color:var(--text-secondary); font-size:.59rem; line-height:1; white-space:nowrap; }
+        .online-game-player-strip-score { color:var(--gold); font-weight:950; }
         .online-round-message { padding:14px; border-radius:15px; background:rgba(251,191,36,.07); border:1px solid rgba(251,191,36,.16); margin-top:12px; text-align:center; }
         .online-round-message strong { color:var(--gold); display:block; margin-bottom:5px; }
         .online-result-card { padding:18px; border-radius:18px; background:linear-gradient(145deg,rgba(251,191,36,.1),rgba(255,255,255,.025)); border:1px solid rgba(251,191,36,.2); text-align:center; margin-top:14px; }
@@ -1420,6 +1438,8 @@
             .online-hand-zone .domino-tile.hand-tile .domino-half { width:29px; height:29px; }
             .pip-dot { width:5px; height:5px; }
             .online-play-actions { grid-template-columns:1fr; }
+            .online-game-player-strip-item { padding-left:3px; padding-right:3px; }
+            .online-game-player-strip-stats { gap:3px; font-size:.54rem; }
             .online-summary-card { height:360px; }
         }
 
@@ -1620,7 +1640,7 @@
                         </div>
 
                         <div class="online-table">
-                            <div class="online-board-scroll"><svg id="odBoard" class="online-board" viewBox="0 0 1400 1040" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Plateau de dominos"></svg></div>
+                            <div class="online-board-scroll"><svg id="odBoard" class="online-board" viewBox="0 0 1500 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Plateau de dominos"></svg></div>
                             <div id="odHandZone" class="online-hand-zone">
                                 <div class="online-hand-status">
                                     <div id="odTurnBanner" class="online-turn-banner"></div>
@@ -1636,6 +1656,7 @@
                                 <button id="odPlayRightBtn" class="online-btn primary" onclick="odPlaySelectedTile('right')">Jouer à droite <i class="fa-solid fa-arrow-right"></i></button>
                             </div>
                             <button id="odPassBtn" class="online-btn ghost" style="width:100%; margin-top:8px;" onclick="odPassTurn()"><i class="fa-solid fa-forward"></i> Boudééé</button>
+                            <div id="odGamePlayerStrip" class="online-game-player-strip" aria-label="Joueurs, dominos restants et scores actuels"></div>
                         </div>
 
                         <div id="odRoundResult"></div>
@@ -3353,8 +3374,8 @@
             game.currentTurnId = order[(index + 1 + order.length) % order.length];
         }
         const OD_SVG_BOARD = Object.freeze({
-            width: 1400, height: 1040, centerX: 700, centerY: 520,
-            tileLength: 120, tileWidth: 60, margin: 8, layoutVersion: 7
+            width: 1500, height: 440, centerX: 750, centerY: 220,
+            tileLength: 120, tileWidth: 70, margin: 8, layoutVersion: 12
         });
 
         function odSvgDirectionAngle(direction) {
@@ -3455,7 +3476,7 @@
                     x: cx + direction.dx * L / 2,
                     y: cy + direction.dy * L / 2,
                     dx: direction.dx, dy: direction.dy,
-                    turnSign, branch: port.branch, afterDouble: true
+                    turnSign, branch: port.branch, afterDouble: false
                 }
             };
         }
@@ -3489,7 +3510,7 @@
         }
         function odSvgChooseCandidate(board, port, faceA, faceB, isDouble) {
             const rowTiles = Number(port.rowTiles || 0);
-            const rowLimit = Number(port.lane || 0) === 0 ? 4 : 8;
+            const rowLimit = Number(port.lane || 0) === 0 ? 5 : 10;
             const verticalPort = Math.abs(Number(port.dy)) === 1;
             let candidate;
 
@@ -3508,11 +3529,18 @@
                     const isCorner = option.isCorner;
                     candidate.nextPort.rowTiles = isCorner ? 0 : rowTiles + (verticalPort ? 0 : 1);
                     candidate.nextPort.lane = Number(port.lane || 0) + (isCorner ? 1 : 0);
-                    const exit = odSvgStraightCandidate(candidate.nextPort, faceA, faceA);
-                    const hasSafeExit = odSvgCanPlace(board, exit, [candidate]);
+                    const exitOptions = isCorner ? [
+                        odSvgTurnCandidate(candidate.nextPort, faceA, faceA,
+                            odSvgRowTurnSign(candidate.nextPort)),
+                        odSvgStraightCandidate(candidate.nextPort, faceA, faceA),
+                        odSvgTurnCandidate(candidate.nextPort, faceA, faceA,
+                            -odSvgRowTurnSign(candidate.nextPort))
+                    ] : [odSvgStraightCandidate(candidate.nextPort, faceA, faceA)];
+                    const exit = exitOptions.find(option => odSvgCanPlace(board, option, [candidate]));
+                    const hasSafeExit = !!exit;
                     const placedCount = (board.placements || []).length;
                     const remainingAfterExit = Math.max(0, 19 - placedCount);
-                    const hasContinuation = odSvgCanFinishNormalPath(
+                    const hasContinuation = exit && odSvgCanFinishNormalPath(
                         board, exit.nextPort, faceA, [candidate, exit], Math.min(3, remainingAfterExit)
                     );
                     if (odSvgCanPlace(board, candidate) &&
@@ -3818,7 +3846,30 @@
             }
             odRenderBoard(game);
             odRenderHand(room, game, me);
+            odRenderGamePlayerStrip(room, game);
             odRenderRoundResult(room, game);
+        }
+
+        function odRenderGamePlayerStrip(room, game) {
+            const container = document.getElementById('odGamePlayerStrip');
+            if (!container) return;
+            const scores = game.roundWins || {};
+            const hands = game.hands || {};
+            container.innerHTML = odRoomPlayers(room).slice(0, 3).map(player => {
+                const key = odPlayerKey(player.playerId);
+                const remaining = Array.isArray(hands[key]) ? hands[key].length : 0;
+                const score = Number(scores[key] || 0);
+                const isTurn = room.status === 'playing' && game.roundStatus === 'playing' &&
+                    String(game.currentTurnId) === String(player.playerId);
+                const dominoLabel = remaining === 1 ? 'domino' : 'dominos';
+                return `<div class="online-game-player-strip-item ${isTurn ? 'turn' : ''}" title="${odEsc(player.name)} : ${remaining} ${dominoLabel}, score ${score}/3">
+                    <div class="online-game-player-strip-name">${odEsc(player.name)}</div>
+                    <div class="online-game-player-strip-stats">
+                        <span>${remaining} ${dominoLabel}</span>
+                        <span class="online-game-player-strip-score">${score}/3</span>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function odSvgPipsMarkup(value, halfCenterX) {
@@ -3838,9 +3889,9 @@
             const faceA = Number.isFinite(Number(placement.faceA)) ? Number(placement.faceA) : Number(placement.left);
             const faceB = Number.isFinite(Number(placement.faceB)) ? Number(placement.faceB) : Number(placement.right);
             return `<g class="od-svg-tile" transform="translate(${Number(placement.cx)} ${Number(placement.cy)}) rotate(${Number(placement.angle)})" role="img" aria-label="Domino ${faceA}-${faceB}">
-                <rect class="tile-body" x="-59" y="-29" width="118" height="58" rx="10"/>
-                <line class="tile-divider" x1="0" y1="-24" x2="0" y2="24"/>
-                <line class="tile-divider-highlight" x1="2" y1="-23" x2="2" y2="23"/>
+                <rect class="tile-body" x="-59" y="-34" width="118" height="68" rx="10"/>
+                <line class="tile-divider" x1="0" y1="-29" x2="0" y2="29"/>
+                <line class="tile-divider-highlight" x1="2" y1="-28" x2="2" y2="28"/>
                 ${odSvgPipsMarkup(faceA, -30)}${odSvgPipsMarkup(faceB, 30)}
                 <circle class="tile-rivet" cx="0" cy="0" r="7"/>
             </g>`;
@@ -3861,7 +3912,7 @@
                 : odMigrateBoardSvgLayout(JSON.parse(JSON.stringify(sourceBoard)));
             const placements = renderBoard.placements || [];
             if (!placements.length) {
-                boardEl.innerHTML = `${odSvgDefinitionsMarkup()}<g aria-hidden="true"><circle cx="700" cy="300" r="12" fill="rgba(255,255,255,.28)"/><text x="700" y="345" text-anchor="middle" fill="rgba(255,255,255,.38)" font-size="22" font-family="Inter, sans-serif">Le plateau attend le premier domino</text></g>`;
+                boardEl.innerHTML = `${odSvgDefinitionsMarkup()}<g aria-hidden="true"><circle cx="750" cy="200" r="12" fill="rgba(255,255,255,.28)"/><text x="750" y="245" text-anchor="middle" fill="rgba(255,255,255,.38)" font-size="22" font-family="Inter, sans-serif">Le plateau attend le premier domino</text></g>`;
                 return;
             }
             boardEl.innerHTML = odSvgDefinitionsMarkup() + placements.map(odSvgDominoMarkup).join('');
