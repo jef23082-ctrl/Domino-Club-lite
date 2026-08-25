@@ -1384,9 +1384,55 @@
             content:""; position:absolute; left:0; top:8px; bottom:8px; width:1px; background:rgba(214,161,43,.3);
         }
         .online-game-player-strip-item.turn { background:rgba(251,191,36,.09); box-shadow:inset 0 0 0 1px rgba(251,191,36,.32); }
-        .online-game-player-strip-name { width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#f8fafc; font-size:.67rem; line-height:1.1; font-weight:900; }
-        .online-game-player-strip-stats { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:3px; color:var(--text-secondary); font-size:.59rem; line-height:1; white-space:nowrap; }
+        .online-game-player-strip-name { width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#fff; font-size:.78rem; line-height:1.1; font-weight:950; }
+        .online-game-player-strip-stats { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:3px; color:#dbe4f0; font-size:.68rem; line-height:1; font-weight:850; white-space:nowrap; }
         .online-game-player-strip-score { color:var(--gold); font-weight:950; }
+        .online-identity-summary { display:flex; align-items:center; gap:11px; min-height:58px; padding:9px 11px; border-radius:13px; background:rgba(16,185,129,.075); border:1px solid rgba(16,185,129,.18); }
+        .online-identity-avatar { width:40px; height:40px; flex:0 0 40px; border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); font-size:1.2rem; }
+        .online-identity-avatar img { width:100%; height:100%; object-fit:cover; }
+        .online-identity-name { color:#fff; font-size:.86rem; font-weight:950; }
+        .online-identity-copy { color:var(--text-secondary); font-size:.64rem; margin-top:2px; }
+        .online-live-list { display:grid; gap:8px; max-height:230px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.18) transparent; }
+        .online-connected-item { display:flex; align-items:center; gap:9px; min-width:0; padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.055); }
+        .online-connected-dot { width:9px; height:9px; flex:0 0 9px; border-radius:50%; background:#22c55e; box-shadow:0 0 10px rgba(34,197,94,.55); }
+        .online-connected-name { min-width:0; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.72rem; font-weight:850; }
+        .online-connected-state { color:var(--text-muted); font-size:.59rem; white-space:nowrap; }
+        .online-active-game { padding:10px; border-radius:13px; background:rgba(59,130,246,.065); border:1px solid rgba(59,130,246,.16); }
+        .online-active-game-title { color:#bfdbfe; font-size:.7rem; font-weight:900; }
+        .online-active-game-players { margin-top:4px; color:#fff; font-size:.71rem; line-height:1.35; }
+        .online-active-game-actions { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; }
+        .online-spectator-count { color:var(--text-muted); font-size:.58rem; }
+        .online-invite-item { display:flex; align-items:center; justify-content:space-between; gap:9px; padding:9px; border-radius:12px; background:rgba(251,191,36,.065); border:1px solid rgba(251,191,36,.16); }
+        .online-invite-copy { min-width:0; color:var(--text-secondary); font-size:.66rem; line-height:1.35; }
+        .online-invite-copy strong { color:#fff; }
+        .online-invite-actions { display:flex; gap:5px; flex:0 0 auto; }
+        .online-invite-targets { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin-top:10px; }
+        .online-invite-target { display:flex; align-items:center; justify-content:space-between; gap:7px; min-width:0; padding:8px 9px; border-radius:11px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.06); }
+        .online-invite-target-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.67rem; font-weight:800; }
+        .online-room-stage { width:min(1316px,calc(100vw - 28px)); position:relative; left:50%; transform:translateX(-50%); display:grid; grid-template-columns:minmax(0,980px) 320px; gap:16px; align-items:start; }
+        .online-room-main { min-width:0; }
+        .online-chat-panel { height:560px; position:sticky; top:14px; display:flex; flex-direction:column; padding:14px; }
+        .online-chat-panel .online-card-title { font-size:.94rem; font-weight:950; }
+        .online-chat-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+        .online-chat-role { padding:4px 7px; border-radius:999px; color:#a7f3d0; background:rgba(16,185,129,.09); border:1px solid rgba(16,185,129,.16); font-size:.66rem; font-weight:950; }
+        .online-chat-messages { flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:8px; padding:3px 3px 8px; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.18) transparent; }
+        .online-chat-empty { margin:auto; color:var(--text-muted); font-size:.8rem; font-weight:750; text-align:center; line-height:1.45; }
+        .online-chat-message { padding:8px 9px; border-radius:12px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.055); }
+        .online-chat-message.mine { background:rgba(16,185,129,.075); border-color:rgba(16,185,129,.15); }
+        .online-chat-message.pending { opacity:.68; }
+        .online-chat-meta { display:flex; justify-content:space-between; gap:8px; color:#aab5c7; font-size:.66rem; font-weight:800; }
+        .online-chat-author { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--gold); font-weight:950; }
+        .online-chat-text { margin-top:4px; color:#f1f5f9; font-size:.82rem; font-weight:750; line-height:1.48; overflow-wrap:anywhere; }
+        .online-emoji-picker { display:flex; flex-wrap:wrap; gap:5px; padding:8px; margin-bottom:7px; border-radius:12px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.07); }
+        .online-emoji-choice { width:30px; height:30px; padding:0; border:0; border-radius:8px; background:rgba(255,255,255,.055); cursor:pointer; font-size:1rem; transition:transform .15s ease, background .15s ease; }
+        .online-emoji-choice:hover { transform:scale(1.12); background:rgba(251,191,36,.14); }
+        .online-chat-form { display:grid; grid-template-columns:auto 1fr auto; gap:7px; padding-top:9px; border-top:1px solid rgba(255,255,255,.07); }
+        .online-chat-input { min-width:0; height:40px; padding:9px 10px; border-radius:11px; border:1px solid var(--glass-border); background:rgba(255,255,255,.05); color:#fff; outline:none; font-size:.82rem; font-weight:750; }
+        .online-chat-input:focus { border-color:var(--green); box-shadow:0 0 0 2px rgba(16,185,129,.09); }
+        .online-chat-emoji, .online-chat-send { width:40px; height:40px; border:0; border-radius:11px; color:#fff; cursor:pointer; font-size:.9rem; }
+        .online-chat-emoji { background:rgba(251,191,36,.14); border:1px solid rgba(251,191,36,.24); }
+        .online-chat-send { background:linear-gradient(135deg,#10b981,#059669); }
+        .online-spectator-banner { color:#bfdbfe; }
         .online-round-message { padding:14px; border-radius:15px; background:rgba(251,191,36,.07); border:1px solid rgba(251,191,36,.16); margin-top:12px; text-align:center; }
         .online-round-message strong { color:var(--gold); display:block; margin-bottom:5px; }
         .online-result-card { padding:18px; border-radius:18px; background:linear-gradient(145deg,rgba(251,191,36,.1),rgba(255,255,255,.025)); border:1px solid rgba(251,191,36,.2); text-align:center; margin-top:14px; }
@@ -1426,6 +1472,11 @@
             .pip-dot { width:7px; height:7px; }
         }
 
+        @media (max-width: 1240px) {
+            .online-room-stage { width:100%; left:auto; transform:none; grid-template-columns:1fr; }
+            .online-chat-panel { position:static; height:360px; margin-top:16px; }
+        }
+
         @media (max-width: 430px) {
             .online-room-code { font-size:1.25rem; letter-spacing:5px; }
             .online-player-row, .online-waiting-slots { gap:5px; }
@@ -1439,7 +1490,10 @@
             .pip-dot { width:5px; height:5px; }
             .online-play-actions { grid-template-columns:1fr; }
             .online-game-player-strip-item { padding-left:3px; padding-right:3px; }
-            .online-game-player-strip-stats { gap:3px; font-size:.54rem; }
+            .online-game-player-strip-name { font-size:.7rem; }
+            .online-game-player-strip-stats { gap:3px; font-size:.63rem; }
+            .online-invite-targets { grid-template-columns:1fr; }
+            .online-chat-panel { height:330px; padding:11px; }
             .online-summary-card { height:360px; }
         }
 
@@ -1461,10 +1515,10 @@
     <div id="lock-screen-global" class="lock-screen">
         <div class="lock-box">
             <h1>🎯 Accès au Club</h1>
-            <p style="font-size: 0.8rem; color: var(--text-muted);">Entre le mot de passe général</p>
-            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="•••••" oninput="checkGlobalPassword()">
-            <button class="btn-primary" onclick="checkGlobalPassword()" style="margin-top: 10px; width: 100%;">Valider</button>
-            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none; margin-top: 10px;">Mot de passe incorrect</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Entre ton mot de passe personnel</p>
+            <input type="password" id="globalPasswordInput" class="lock-input" placeholder="prénom++" autocomplete="current-password" oninput="checkGlobalPassword(false)" onkeydown="if(event.key==='Enter')checkGlobalPassword(true)">
+            <button class="btn-primary" onclick="checkGlobalPassword(true)" style="margin-top: 10px; width: 100%;">Se connecter</button>
+            <div id="globalLockError" style="color: var(--cochon-color); font-size: 0.8rem; font-weight: 600; display: none; margin-top: 10px;">Mot de passe personnel inconnu</div>
         </div>
     </div>
 
@@ -1579,8 +1633,7 @@
                 <div class="online-grid two">
                     <div class="online-card">
                         <div class="online-card-title"><i class="fa-solid fa-user-check" style="color:var(--green);"></i> Ton identité</div>
-                        <label class="online-label" for="odProfileSelect">Choisis ton profil du club</label>
-                        <select id="odProfileSelect" class="online-select" onchange="odSaveSelectedProfile(this.value)"></select>
+                        <div id="odIdentitySummary" class="online-identity-summary"></div>
                         <div class="online-actions">
                             <button id="odCreateRoomBtn" class="online-btn primary" onclick="odCreateRoom()"><i class="fa-solid fa-plus"></i> Créer une salle</button>
                             <button id="odResumeRoomBtn" class="online-btn ghost online-hidden" onclick="odResumeSavedRoom()"><i class="fa-solid fa-rotate-right"></i> Reprendre la salle</button>
@@ -1597,6 +1650,19 @@
                     </div>
                 </div>
 
+                <div class="online-grid two" style="margin-top:16px;">
+                    <div class="online-card">
+                        <div class="online-card-title"><i class="fa-solid fa-signal" style="color:var(--green);"></i> Joueurs connectés</div>
+                        <div id="odConnectedPlayers" class="online-live-list"><p class="online-help">Connexion des joueurs…</p></div>
+                    </div>
+                    <div class="online-card">
+                        <div class="online-card-title"><i class="fa-solid fa-envelope-open-text" style="color:var(--gold);"></i> Tes invitations</div>
+                        <div id="odInvitationsList" class="online-live-list"><p class="online-help">Aucune invitation.</p></div>
+                        <div class="online-card-title" style="margin-top:16px;"><i class="fa-solid fa-eye" style="color:var(--blue);"></i> Parties en cours</div>
+                        <div id="odActiveGames" class="online-live-list"><p class="online-help">Aucune partie en cours.</p></div>
+                    </div>
+                </div>
+
                 <div class="online-card" style="margin-top:16px;">
                     <div class="online-card-title"><i class="fa-solid fa-book-open" style="color:var(--gold);"></i> Règles intégrées</div>
                     <div class="online-rules-list">
@@ -1608,7 +1674,8 @@
                 </div>
             </section>
 
-            <section id="odRoomView" class="online-hidden">
+            <section id="odRoomView" class="online-room-stage online-hidden">
+                <div class="online-room-main">
                 <div class="online-card">
                     <div class="online-room-header">
                         <div>
@@ -1616,9 +1683,10 @@
                             <div id="odRoomCodeDisplay" class="online-room-code">-----</div>
                         </div>
                         <div style="display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end;">
-                            <span id="odRoomStatus" class="online-status-pill">Connexion…</span>
-                            <button class="online-btn ghost small" onclick="odCopyRoomCode()"><i class="fa-regular fa-copy"></i> Copier</button>
-                            <button class="online-btn danger small" onclick="odLeaveRoomView()"><i class="fa-solid fa-arrow-left"></i> Quitter</button>
+                             <span id="odRoomStatus" class="online-status-pill">Connexion…</span>
+                             <button class="online-btn ghost small" onclick="odCopyRoomCode()"><i class="fa-regular fa-copy"></i> Copier</button>
+                             <button id="odCancelRoomBtn" class="online-btn danger small online-hidden" onclick="odCancelOnlineRoom()"><i class="fa-solid fa-ban"></i> Annuler la partie</button>
+                             <button class="online-btn danger small" onclick="odLeaveRoomView()"><i class="fa-solid fa-arrow-left"></i> Quitter</button>
                         </div>
                     </div>
                     <div id="odRoomPlayers" class="online-player-row"></div>
@@ -1629,6 +1697,7 @@
                     <div class="online-card-title"><i class="fa-solid fa-hourglass-half" style="color:var(--gold);"></i> En attente des joueurs</div>
                     <div id="odWaitingSlots" class="online-waiting-slots"></div>
                     <p id="odWaitingText" class="online-help" style="text-align:center;">Partage le code avec deux collègues.</p>
+                    <div id="odInviteTargets"></div>
                     <button id="odStartMatchBtn" class="online-btn gold" style="width:100%; margin-top:14px;" onclick="odStartOnlineMatch()" disabled><i class="fa-solid fa-play"></i> Lancer la partie</button>
                 </div>
 
@@ -1658,10 +1727,24 @@
                             <button id="odPassBtn" class="online-btn ghost" style="width:100%; margin-top:8px;" onclick="odPassTurn()"><i class="fa-solid fa-forward"></i> Boudééé</button>
                             <div id="odGamePlayerStrip" class="online-game-player-strip" aria-label="Joueurs, dominos restants et scores actuels"></div>
                         </div>
-
                         <div id="odRoundResult"></div>
                     </div>
                 </div>
+                </div>
+
+                <aside id="odChatPanel" class="online-card online-chat-panel">
+                    <div class="online-chat-heading">
+                        <div class="online-card-title" style="margin:0;"><i class="fa-solid fa-comments" style="color:var(--green);"></i> Discussion</div>
+                        <span id="odChatRole" class="online-chat-role">Joueur</span>
+                    </div>
+                    <div id="odChatMessages" class="online-chat-messages" aria-live="polite"><div class="online-chat-empty">Les joueurs et les spectateurs peuvent discuter ici.</div></div>
+                    <div id="odEmojiPicker" class="online-emoji-picker online-hidden" aria-label="Choisir un emoji"></div>
+                    <form id="odChatForm" class="online-chat-form" onsubmit="return odSendChatMessage(event)">
+                        <button class="online-chat-emoji" type="button" onclick="odToggleEmojiPicker()" aria-label="Ajouter un emoji">😊</button>
+                        <input id="odChatInput" class="online-chat-input" maxlength="300" autocomplete="off" placeholder="Écrire un message…" aria-label="Message">
+                        <button class="online-chat-send" type="submit" aria-label="Envoyer"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </aside>
             </section>
 
             <div class="online-grid two" style="margin-top:16px;">
@@ -1812,18 +1895,60 @@
 
         // --- MOTS DE PASSE SECURISE ---
         let isAdminUnlocked = false;
+        let clubAuthenticatedPlayerId = sessionStorage.getItem('club_player_id') || '';
 
-        function checkGlobalPassword() {
-            const input = document.getElementById("globalPasswordInput").value.trim().toLowerCase();
-            const errorDiv = document.getElementById("globalLockError");
-            if (input === "laposte") {
-                document.getElementById("lock-screen-global").style.display = "none";
-                errorDiv.style.display = "none";
-            } else if (input.length >= 7) {
-                errorDiv.style.display = "block";
-            } else {
-                errorDiv.style.display = "none";
+        function clubPasswordForProfile(profile) {
+            return `${String(profile?.name || '').trim()}++`.toLocaleLowerCase('fr-FR');
+        }
+
+        function clubGetAuthenticatedProfile() {
+            return players.find(player => String(player.id) === String(clubAuthenticatedPlayerId)) || null;
+        }
+
+        function clubCompleteLogin(profile, { restored = false } = {}) {
+            if (!profile) return false;
+            clubAuthenticatedPlayerId = String(profile.id);
+            sessionStorage.setItem('club_player_id', clubAuthenticatedPlayerId);
+            odSelectedPlayerId = clubAuthenticatedPlayerId;
+            sessionStorage.setItem('od_player_id', clubAuthenticatedPlayerId);
+
+            const lock = document.getElementById('lock-screen-global');
+            const input = document.getElementById('globalPasswordInput');
+            const error = document.getElementById('globalLockError');
+            if (lock) lock.style.display = 'none';
+            if (input) input.value = '';
+            if (error) error.style.display = 'none';
+
+            odRenderAuthenticatedIdentity();
+            odStartGlobalPresence(profile);
+            odBindLiveOnlineFeeds();
+            if (!restored) showToast(`Bienvenue ${profile.name}`, 'success');
+            return true;
+        }
+
+        function checkGlobalPassword(force = false) {
+            const inputEl = document.getElementById('globalPasswordInput');
+            const errorDiv = document.getElementById('globalLockError');
+            const input = String(inputEl?.value || '').trim().toLocaleLowerCase('fr-FR');
+            const profile = players.find(player => clubPasswordForProfile(player) === input);
+            if (profile) {
+                clubCompleteLogin(profile);
+                return;
             }
+            if (errorDiv) errorDiv.style.display = force || input.endsWith('++') ? 'block' : 'none';
+        }
+
+        function clubRestoreSession() {
+            const profile = clubGetAuthenticatedProfile();
+            if (profile) {
+                clubCompleteLogin(profile, { restored: true });
+                return;
+            }
+            clubAuthenticatedPlayerId = '';
+            sessionStorage.removeItem('club_player_id');
+            sessionStorage.removeItem('od_player_id');
+            const lock = document.getElementById('lock-screen-global');
+            if (lock) lock.style.display = 'flex';
         }
 
         function checkAdminPassword() {
@@ -2755,23 +2880,40 @@
         const odRoomsRef = odRoot.child('rooms');
         const odStatsRef = odRoot.child('stats');
         const odHistoryRef = odRoot.child('history');
-
+        const odPresenceRef = odRoot.child('presence');
+        const odInvitesRef = odRoot.child('invites');
+        const odChatsRef = odRoot.child('chats');
         // Une identité distincte par onglet permet notamment de tester les trois
         // joueurs sur un même navigateur. sessionStorage survit aux actualisations,
         // mais n'est pas partagé entre plusieurs onglets.
         let odCurrentRoomCode = sessionStorage.getItem('od_room_code') || '';
         let odSelectedPlayerId = sessionStorage.getItem('od_player_id') || '';
         let odClientToken = sessionStorage.getItem('od_client_token') || '';
+        let odRoomRole = sessionStorage.getItem('od_room_role') || 'player';
         let odRoomListenerRef = null;
         let odDisconnectRef = null;
+        let odSpectatorDisconnectRef = null;
+        let odSpectatorRegisteredCode = '';
         let odCurrentRoom = null;
         let odSelectedTileId = null;
         let odStatsBound = false;
         let odHistoryBound = false;
+        let odPresenceBound = false;
+        let odRoomsFeedBound = false;
+        let odPresenceSessionRef = null;
+        let odPresenceHeartbeat = null;
+        let odInviteListenerRef = null;
+        let odInvitesInitialized = false;
+        let odChatListenerRef = null;
+        let odChatRoomCode = '';
+        let odChatMessagesCache = new Map();
         let odStatsCache = {};
         let odHistoryCache = [];
-        let odBusy = false;
-        let odAudioContext = null;
+        let odPresenceCache = {};
+        let odRoomsCache = {};
+         let odInvitesCache = {};
+         let odBusy = false;
+         let odAudioContext = null;
         const odRecordingMatches = new Set();
 
         if (!odClientToken) {
@@ -2813,22 +2955,38 @@
         }
         function odPlayOnlineSound(kind) {
             const context = odGetAudioContext();
-            if (!context || context.state !== 'running') return;
-            const now = context.currentTime;
-            if (kind === 'placement') {
-                const oscillator = context.createOscillator();
-                const gain = context.createGain();
-                oscillator.type = 'triangle';
-                oscillator.frequency.setValueAtTime(190, now);
-                oscillator.frequency.exponentialRampToValueAtTime(92, now + .095);
-                gain.gain.setValueAtTime(.0001, now);
-                gain.gain.exponentialRampToValueAtTime(.16, now + .008);
-                gain.gain.exponentialRampToValueAtTime(.0001, now + .12);
-                oscillator.connect(gain).connect(context.destination);
-                oscillator.start(now);
-                oscillator.stop(now + .13);
-                return;
-            }
+             if (!context || context.state !== 'running') return;
+             const now = context.currentTime;
+             if (kind === 'placement') {
+                 const playDominoImpact = (delay, duration, frequency, volume) => {
+                     const startAt = now + delay;
+                     const frameCount = Math.max(1, Math.floor(context.sampleRate * duration));
+                     const buffer = context.createBuffer(1, frameCount, context.sampleRate);
+                     const samples = buffer.getChannelData(0);
+                     for (let index = 0; index < samples.length; index++) {
+                         const progress = index / samples.length;
+                         const envelope = Math.pow(1 - progress, 3.4);
+                         samples[index] = (Math.random() * 2 - 1) * envelope;
+                     }
+                     const source = context.createBufferSource();
+                     const filter = context.createBiquadFilter();
+                     const gain = context.createGain();
+                     source.buffer = buffer;
+                     filter.type = 'bandpass';
+                     filter.frequency.setValueAtTime(frequency, startAt);
+                     filter.Q.setValueAtTime(.8, startAt);
+                     gain.gain.setValueAtTime(volume, startAt);
+                     gain.gain.exponentialRampToValueAtTime(.0001, startAt + duration);
+                     source.connect(filter).connect(gain).connect(context.destination);
+                     source.start(startAt);
+                     source.stop(startAt + duration);
+                 };
+                 // Deux impacts très courts reproduisent le « clac-clac » d'un domino
+                 // qui touche la table puis se pose à plat, sans tonalité électronique.
+                 playDominoImpact(0, .052, 1250, .34);
+                 playDominoImpact(.055, .072, 760, .25);
+                 return;
+             }
             [523.25, 659.25, 783.99].forEach((frequency, index) => {
                 const start = now + index * .11;
                 const oscillator = context.createOscillator();
@@ -2846,6 +3004,12 @@
         function odLatestPlacementStamp(room) {
             return Math.max(0, ...((room?.game?.board?.placements || []).map(p => Number(p.playedAt || 0))));
         }
+        function odPlacementFeedbackKey(room) {
+            const game = room?.game;
+            const action = game?.lastAction;
+            if (!game || action?.type !== 'play') return '';
+            return `${room.matchId || ''}|${game.roundNumber || 0}|${action.at || odLatestPlacementStamp(room)}|${action.playerId ?? ''}|${action.tileId || ''}`;
+        }
         function odTurnStateKey(room) {
             const game = room?.game;
             if (!game) return '';
@@ -2853,7 +3017,9 @@
         }
         function odHandleRoomFeedback(previousRoom, room, me) {
             if (!previousRoom || !room) return;
-            if (odLatestPlacementStamp(room) > odLatestPlacementStamp(previousRoom)) {
+            const previousPlacementKey = odPlacementFeedbackKey(previousRoom);
+            const currentPlacementKey = odPlacementFeedbackKey(room);
+            if (currentPlacementKey && currentPlacementKey !== previousPlacementKey) {
                 odPlayOnlineSound('placement');
             }
             const activeTurn = room.status === 'playing' && room.game?.roundStatus === 'playing';
@@ -2885,9 +3051,11 @@
             odBusy = value;
             const createBtn = document.getElementById('odCreateRoomBtn');
             if (createBtn) createBtn.disabled = value;
-            const startBtn = document.getElementById('odStartMatchBtn');
-            if (startBtn && value) startBtn.disabled = true;
-            if (!value && odCurrentRoom && odCurrentRoom.status === 'waiting') odRenderWaitingRoom(odCurrentRoom);
+             const startBtn = document.getElementById('odStartMatchBtn');
+             if (startBtn && value) startBtn.disabled = true;
+             const cancelBtn = document.getElementById('odCancelRoomBtn');
+             if (cancelBtn) cancelBtn.disabled = value;
+             if (!value && odCurrentRoom && odCurrentRoom.status === 'waiting') odRenderWaitingRoom(odCurrentRoom);
         }
         function odSetError(message, target = 'odLobbyError') {
             const el = document.getElementById(target);
@@ -2897,9 +3065,7 @@
             return players.find(p => String(p.id) === String(id)) || null;
         }
         function odGetSelectedProfile() {
-            const select = document.getElementById('odProfileSelect');
-            const id = select ? select.value : odSelectedPlayerId;
-            return odGetProfileById(id);
+            return clubGetAuthenticatedProfile();
         }
         function odSaveSelectedProfile(value) {
             odSelectedPlayerId = String(value || '');
@@ -2912,35 +3078,210 @@
             return odRoomPlayers(room).find(p => p.token === odClientToken) || null;
         }
         function odIsHost(room = odCurrentRoom) {
-            return !!room && room.hostToken === odClientToken;
-        }
+             return !!room && room.hostToken === odClientToken;
+         }
+        function odIsCreator(room = odCurrentRoom) {
+             return !!room && (room.creatorToken || room.hostToken) === odClientToken;
+         }
         function odStatusText(status) {
             return ({ waiting: 'En attente', playing: 'Partie en cours', finished: 'Partie terminée' })[status] || 'Connexion';
         }
 
         function setupOnlinePage() {
-            odPopulateProfileSelect();
+            odRenderAuthenticatedIdentity();
             odBindOnlineFeeds();
+            odBindLiveOnlineFeeds();
             odRenderResumeButton();
-            if (odCurrentRoomCode && !odRoomListenerRef) odAttachRoom(odCurrentRoomCode, true);
+            if (odCurrentRoomCode && !odRoomListenerRef) odAttachRoom(odCurrentRoomCode, true, odRoomRole);
         }
 
-        function odPopulateProfileSelect() {
-            const select = document.getElementById('odProfileSelect');
-            if (!select) return;
-            const previous = odSelectedPlayerId || select.value;
-            select.innerHTML = '';
-            players.forEach(p => {
-                const option = document.createElement('option');
-                option.value = p.id;
-                option.textContent = `${p.avatar && !String(p.avatar).startsWith('data:image') ? p.avatar + ' ' : ''}${p.name}`;
-                select.appendChild(option);
-            });
-            if (players.length) {
-                const valid = players.some(p => String(p.id) === String(previous));
-                select.value = valid ? String(previous) : String(players[0].id);
-                odSaveSelectedProfile(select.value);
+        function odRenderAuthenticatedIdentity() {
+            const container = document.getElementById('odIdentitySummary');
+            if (!container) return;
+            const profile = clubGetAuthenticatedProfile();
+            if (!profile) {
+                container.innerHTML = '<div class="online-help">Connecte-toi avec ton mot de passe personnel.</div>';
+                return;
             }
+            container.innerHTML = `${odAvatarMarkup(profile.avatar, 'online-identity-avatar')}<div><div class="online-identity-name">${odEsc(profile.name)}</div><div class="online-identity-copy">Identité reconnue automatiquement sur cet onglet</div></div>`;
+        }
+
+        function odLivePresences() {
+            const latestByPlayer = new Map();
+            const now = odNow();
+            Object.values(odPresenceCache || {}).forEach(item => {
+                if (!item || item.playerId === undefined || item.playerId === null) return;
+                const lastSeen = Number(item.lastSeen || item.connectedAt || 0);
+                if (lastSeen && now - lastSeen > 150000) return;
+                const key = String(item.playerId);
+                const previous = latestByPlayer.get(key);
+                if (!previous || Number(previous.lastSeen || 0) < lastSeen) latestByPlayer.set(key, item);
+            });
+            return [...latestByPlayer.values()].sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'fr'));
+        }
+
+        function odPresenceState(item) {
+            if (!item.roomCode) return 'Disponible';
+            return item.role === 'spectator' ? 'Spectateur' : 'Dans une partie';
+        }
+
+        function odStartGlobalPresence(profile) {
+            if (!profile || !odClientToken) return;
+            const nextRef = odPresenceRef.child(odClientToken);
+            if (odPresenceSessionRef && odPresenceSessionRef.toString() !== nextRef.toString()) {
+                try { odPresenceSessionRef.onDisconnect().cancel(); } catch (_) {}
+                odPresenceSessionRef.remove().catch(() => {});
+            }
+            odPresenceSessionRef = nextRef;
+            const writePresence = () => odPresenceSessionRef.set({
+                playerId: profile.id,
+                name: profile.name,
+                avatar: profile.avatar || '❓',
+                connectedAt: odNow(),
+                lastSeen: firebase.database.ServerValue.TIMESTAMP,
+                roomCode: odCurrentRoomCode || '',
+                role: odCurrentRoomCode ? odRoomRole : 'lobby'
+            }).then(() => odPresenceSessionRef.onDisconnect().remove()).catch(error => console.warn('Présence en ligne :', error));
+            writePresence();
+            if (odPresenceHeartbeat) clearInterval(odPresenceHeartbeat);
+            odPresenceHeartbeat = setInterval(() => {
+                if (!odPresenceSessionRef) return;
+                odPresenceSessionRef.update({
+                    lastSeen: firebase.database.ServerValue.TIMESTAMP,
+                    roomCode: odCurrentRoomCode || '',
+                    role: odCurrentRoomCode ? odRoomRole : 'lobby'
+                }).catch(() => {});
+            }, 45000);
+        }
+
+        function odUpdatePresenceRoom(roomCode = '', role = 'lobby') {
+            if (!odPresenceSessionRef) return;
+            odPresenceSessionRef.update({ roomCode: roomCode || '', role, lastSeen: firebase.database.ServerValue.TIMESTAMP }).catch(() => {});
+        }
+
+        function odBindLiveOnlineFeeds() {
+            const profile = clubGetAuthenticatedProfile();
+            if (!profile) return;
+            if (!odPresenceBound) {
+                odPresenceBound = true;
+                odPresenceRef.on('value', snapshot => {
+                    odPresenceCache = snapshot.val() || {};
+                    odRenderConnectedPlayers();
+                    if (odCurrentRoom?.status === 'waiting') odRenderInviteTargets(odCurrentRoom);
+                }, error => console.warn('Liste des joueurs connectés :', error));
+            }
+            if (!odRoomsFeedBound) {
+                odRoomsFeedBound = true;
+                odRoomsRef.on('value', snapshot => {
+                    odRoomsCache = snapshot.val() || {};
+                    odRenderActiveGames();
+                    odRenderInvitationsList();
+                }, error => console.warn('Liste des parties :', error));
+            }
+            const nextInviteRef = odInvitesRef.child(odPlayerKey(profile.id));
+            if (!odInviteListenerRef || odInviteListenerRef.toString() !== nextInviteRef.toString()) {
+                if (odInviteListenerRef) odInviteListenerRef.off();
+                odInviteListenerRef = nextInviteRef;
+                odInvitesInitialized = false;
+                odInviteListenerRef.on('value', snapshot => {
+                    const previousIds = new Set(Object.keys(odInvitesCache || {}));
+                    odInvitesCache = snapshot.val() || {};
+                    const currentIds = Object.keys(odInvitesCache);
+                    if (odInvitesInitialized && currentIds.some(id => !previousIds.has(id))) showToast('Tu as reçu une invitation.', 'success');
+                    odInvitesInitialized = true;
+                    odRenderInvitationsList();
+                }, error => console.warn('Invitations :', error));
+            }
+            odRenderConnectedPlayers();
+            odRenderActiveGames();
+            odRenderInvitationsList();
+        }
+
+        function odRenderConnectedPlayers() {
+            const container = document.getElementById('odConnectedPlayers');
+            if (!container) return;
+            const list = odLivePresences();
+            if (!list.length) {
+                container.innerHTML = '<p class="online-help">Aucun joueur connecté.</p>';
+                return;
+            }
+            container.innerHTML = list.map(item => `<div class="online-connected-item"><span class="online-connected-dot"></span>${odAvatarMarkup(item.avatar, 'online-mini-avatar')}<span class="online-connected-name">${odEsc(item.name)}</span><span class="online-connected-state">${odEsc(odPresenceState(item))}</span></div>`).join('');
+        }
+
+        function odRenderActiveGames() {
+            const container = document.getElementById('odActiveGames');
+            if (!container) return;
+            const liveRoomCodes = new Set(odLivePresences().filter(item => item.role === 'player' && item.roomCode).map(item => String(item.roomCode)));
+            const rooms = Object.values(odRoomsCache || {}).filter(room => room && room.status === 'playing' &&
+                (liveRoomCodes.has(String(room.code)) || odNow() - Number(room.updatedAt || 0) < 300000));
+            if (!rooms.length) {
+                container.innerHTML = '<p class="online-help">Aucune partie en cours.</p>';
+                return;
+            }
+            rooms.sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0));
+            container.innerHTML = rooms.map(room => {
+                const names = odRoomPlayers(room).map(player => player.name).join(' · ');
+                const isPlayer = odRoomPlayers(room).some(player => player.token === odClientToken);
+                const spectators = Object.keys(room.spectators || {}).length;
+                return `<div class="online-active-game"><div class="online-active-game-title">Partie en cours — ${odEsc(names)}</div><div class="online-active-game-actions"><span class="online-spectator-count">${spectators} spectateur${spectators > 1 ? 's' : ''}</span><button class="online-btn ${isPlayer ? 'primary' : 'blue'} small" onclick="${isPlayer ? 'odAttachRoom' : 'odWatchRoom'}('${odEsc(room.code)}')"><i class="fa-solid fa-${isPlayer ? 'rotate-right' : 'eye'}"></i> ${isPlayer ? 'Reprendre' : 'Regarder'}</button></div></div>`;
+            }).join('');
+        }
+
+        function odRenderInvitationsList() {
+            const container = document.getElementById('odInvitationsList');
+            if (!container) return;
+            const invitations = Object.entries(odInvitesCache || {}).filter(([, invite]) => invite && (!invite.createdAt || odNow() - Number(invite.createdAt) < 3600000));
+            if (!invitations.length) {
+                container.innerHTML = '<p class="online-help">Aucune invitation.</p>';
+                return;
+            }
+            container.innerHTML = invitations.map(([inviteId, invite]) => `<div class="online-invite-item"><div class="online-invite-copy"><strong>${odEsc(invite.fromName || 'Un joueur')}</strong> t’invite dans la salle ${odEsc(invite.roomCode || inviteId)}.</div><div class="online-invite-actions"><button class="online-btn primary small" onclick="odAcceptInvite('${odEsc(inviteId)}','${odEsc(invite.roomCode || inviteId)}')">Accepter</button><button class="online-btn danger small" onclick="odDeclineInvite('${odEsc(inviteId)}')"><i class="fa-solid fa-xmark"></i></button></div></div>`).join('');
+        }
+
+        function odRenderInviteTargets(room) {
+            const container = document.getElementById('odInviteTargets');
+            if (!container) return;
+            if (!room || room.status !== 'waiting' || !odIsHost(room)) {
+                container.innerHTML = '';
+                return;
+            }
+            const roomIds = new Set(odRoomPlayers(room).map(player => String(player.playerId)));
+            const targets = odLivePresences().filter(item => !roomIds.has(String(item.playerId)) && !item.roomCode);
+            if (!targets.length) {
+                container.innerHTML = '<p class="online-inline-note">Aucun autre joueur disponible à inviter.</p>';
+                return;
+            }
+            container.innerHTML = `<div class="online-label" style="margin-top:12px;">Inviter un joueur connecté</div><div class="online-invite-targets">${targets.map(item => `<div class="online-invite-target"><span class="online-invite-target-name">${odEsc(item.name)}</span><button class="online-btn gold small" onclick="odSendInvite('${odEsc(item.playerId)}')"><i class="fa-solid fa-paper-plane"></i> Inviter</button></div>`).join('')}</div>`;
+        }
+
+        async function odSendInvite(playerId) {
+            if (!odCurrentRoom || odCurrentRoom.status !== 'waiting' || !odIsHost(odCurrentRoom)) return;
+            const profile = clubGetAuthenticatedProfile();
+            if (!profile) return;
+            const targetProfile = odGetProfileById(playerId);
+            try {
+                await odInvitesRef.child(`${odPlayerKey(playerId)}/${odCurrentRoom.code}`).set({
+                    roomCode: odCurrentRoom.code,
+                    fromPlayerId: profile.id,
+                    fromName: profile.name,
+                    fromAvatar: profile.avatar || '❓',
+                    toPlayerId: playerId,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                });
+                showToast(`${targetProfile?.name || 'Le joueur'} a été invité.`, 'success');
+            } catch (error) {
+                showToast(odFirebaseErrorMessage(error, 'Invitation impossible'), 'error');
+            }
+        }
+
+        function odAcceptInvite(inviteId, roomCode) {
+            odJoinRoom(roomCode, inviteId);
+        }
+
+        function odDeclineInvite(inviteId) {
+            const profile = clubGetAuthenticatedProfile();
+            if (!profile) return;
+            odInvitesRef.child(`${odPlayerKey(profile.id)}/${inviteId}`).remove().catch(() => {});
         }
 
         function odBindOnlineFeeds() {
@@ -2975,7 +3316,7 @@
             if (odBusy) return;
             odSetError('');
             const profile = odGetSelectedProfile();
-            if (!profile) return odSetError('Choisis d’abord ton profil.');
+            if (!profile) return odSetError('Reconnecte-toi avec ton mot de passe personnel.');
             odSaveSelectedProfile(profile.id);
             odSetBusy(true);
             try {
@@ -2995,10 +3336,11 @@
                     };
                     const initialRoom = {
                         version: 1,
-                        code,
-                        status: 'waiting',
-                        hostToken: odClientToken,
-                        createdAt: now,
+                         code,
+                         status: 'waiting',
+                         hostToken: odClientToken,
+                         creatorToken: odClientToken,
+                         createdAt: now,
                         updatedAt: now,
                         players: { [odPlayerKey(profile.id)]: player }
                     };
@@ -3011,7 +3353,7 @@
                 }
                 if (!createdCode) throw new Error('Impossible de créer une salle unique.');
                 showToast(`Salle ${createdCode} créée`, 'success');
-                odAttachRoom(createdCode);
+                odAttachRoom(createdCode, false, 'player');
             } catch (error) {
                 console.error('Création de salle :', error);
                 const message = odFirebaseErrorMessage(error, 'Création impossible');
@@ -3022,13 +3364,13 @@
             }
         }
 
-        async function odJoinRoom() {
+        async function odJoinRoom(codeOverride = '', inviteId = '') {
             if (odBusy) return;
             odSetError('');
             const profile = odGetSelectedProfile();
             const input = document.getElementById('odJoinCode');
-            const code = String(input ? input.value : '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 5);
-            if (!profile) return odSetError('Choisis d’abord ton profil.');
+            const code = String(codeOverride || (input ? input.value : '')).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 5);
+            if (!profile) return odSetError('Reconnecte-toi avec ton mot de passe personnel.');
             if (code.length !== 5) return odSetError('Le code doit contenir cinq caractères.');
             odSaveSelectedProfile(profile.id);
             odSetBusy(true);
@@ -3070,7 +3412,8 @@
                     throw new Error(messages[reason] || 'Impossible de rejoindre cette salle.');
                 }
                 showToast(`Salle ${code} rejointe`, 'success');
-                odAttachRoom(code);
+                if (inviteId) odInvitesRef.child(`${odPlayerKey(profile.id)}/${inviteId}`).remove().catch(() => {});
+                odAttachRoom(code, false, 'player');
             } catch (error) {
                 console.error('Connexion à la salle :', error);
                 const knownMessage = error && error.message && !String(error.message).includes('Firebase ne répond pas')
@@ -3083,7 +3426,7 @@
             }
         }
 
-        function odAttachRoom(code, silent = false) {
+        function odAttachRoom(code, silent = false, requestedRole = 'auto') {
             code = String(code || '').toUpperCase();
             if (!code) return;
             if (odRoomListenerRef) odRoomListenerRef.off();
@@ -3092,7 +3435,9 @@
                 odDisconnectRef = null;
             }
             odCurrentRoomCode = code;
+            odRoomRole = requestedRole === 'auto' ? (sessionStorage.getItem('od_room_role') || 'player') : requestedRole;
             sessionStorage.setItem('od_room_code', code);
+            sessionStorage.setItem('od_room_role', odRoomRole);
             odRenderResumeButton();
             odRoomListenerRef = odRoomsRef.child(code);
             odRoomListenerRef.on('value', snap => {
@@ -3102,10 +3447,21 @@
                     odDetachRoom(true);
                     return;
                 }
+                if (room.status === 'cancelled') {
+                    const cancelledByMe = room.cancelledBy?.token === odClientToken;
+                    const cancelledByName = room.cancelledBy?.name || 'le créateur';
+                    odDetachRoom(true);
+                    showToast(cancelledByMe
+                        ? 'Partie annulée pour tous les joueurs.'
+                        : `Partie annulée par ${cancelledByName}.`, cancelledByMe ? 'success' : 'warning');
+                    return;
+                }
                 const previousRoom = odCurrentRoom;
                 odCurrentRoom = room;
                 const me = odFindMyPlayer(room);
                 if (me) {
+                    odRoomRole = 'player';
+                    sessionStorage.setItem('od_room_role', odRoomRole);
                     odSelectedPlayerId = String(me.playerId);
                     sessionStorage.setItem('od_player_id', odSelectedPlayerId);
                     const myRef = odRoomListenerRef.child(`players/${odPlayerKey(me.playerId)}/connected`);
@@ -3114,7 +3470,14 @@
                         myRef.set(true);
                         myRef.onDisconnect().set(false);
                     }
+                    odClearSpectatorRegistration(true);
+                } else {
+                    odRoomRole = 'spectator';
+                    sessionStorage.setItem('od_room_role', odRoomRole);
+                    odEnsureSpectatorRegistration(room);
                 }
+                odUpdatePresenceRoom(code, odRoomRole);
+                odAttachChat(code);
                 odHandleRoomFeedback(previousRoom, room, me);
                 odRenderRoom(room);
                 if (room.status === 'finished' && odFindMyPlayer(room)) odEnsureOnlineResultRecorded(room);
@@ -3126,23 +3489,68 @@
             document.getElementById('odRoomView')?.classList.remove('online-hidden');
         }
 
+        function odWatchRoom(code) {
+            const room = odRoomsCache[String(code || '').toUpperCase()];
+            if (room && room.status !== 'playing' && room.status !== 'finished') return showToast('Cette partie n’est pas accessible en spectateur.', 'warning');
+            odAttachRoom(code, false, 'spectator');
+        }
+
+        function odEnsureSpectatorRegistration(room) {
+            if (!room || !odCurrentRoomCode || odFindMyPlayer(room)) return;
+            const profile = clubGetAuthenticatedProfile();
+            if (!profile) return;
+            const spectatorRef = odRoomsRef.child(`${odCurrentRoomCode}/spectators/${odClientToken}`);
+            if (!odSpectatorDisconnectRef || odSpectatorDisconnectRef.toString() !== spectatorRef.toString()) {
+                if (odSpectatorDisconnectRef) {
+                    try { odSpectatorDisconnectRef.onDisconnect().cancel(); } catch (_) {}
+                }
+                odSpectatorDisconnectRef = spectatorRef;
+                odSpectatorRegisteredCode = odCurrentRoomCode;
+                spectatorRef.onDisconnect().remove();
+            }
+            if (!room.spectators?.[odClientToken]) {
+                spectatorRef.set({
+                    playerId: profile.id,
+                    name: profile.name,
+                    avatar: profile.avatar || '❓',
+                    joinedAt: firebase.database.ServerValue.TIMESTAMP
+                }).catch(error => console.warn('Mode spectateur :', error));
+            }
+        }
+
+        function odClearSpectatorRegistration(removeNow = false) {
+            if (odSpectatorDisconnectRef) {
+                try { odSpectatorDisconnectRef.onDisconnect().cancel(); } catch (_) {}
+                if (removeNow) odSpectatorDisconnectRef.remove().catch(() => {});
+            } else if (removeNow && odSpectatorRegisteredCode) {
+                odRoomsRef.child(`${odSpectatorRegisteredCode}/spectators/${odClientToken}`).remove().catch(() => {});
+            }
+            odSpectatorDisconnectRef = null;
+            odSpectatorRegisteredCode = '';
+        }
+
         function odResumeSavedRoom() {
-            if (odCurrentRoomCode) odAttachRoom(odCurrentRoomCode);
+            if (odCurrentRoomCode) odAttachRoom(odCurrentRoomCode, false, odRoomRole);
         }
 
         function odDetachRoom(clearSaved = false) {
             if (odRoomListenerRef) odRoomListenerRef.off();
             odRoomListenerRef = null;
-            odCurrentRoom = null;
-            odSelectedTileId = null;
+            odDetachChat();
+            odClearSpectatorRegistration(true);
+             odCurrentRoom = null;
+             odSelectedTileId = null;
             if (odDisconnectRef) {
                 try { odDisconnectRef.onDisconnect().cancel(); } catch (_) {}
                 odDisconnectRef = null;
             }
             if (clearSaved) {
                 odCurrentRoomCode = '';
+                odRoomRole = 'player';
                 sessionStorage.removeItem('od_room_code');
+                sessionStorage.removeItem('od_room_role');
             }
+            odUpdatePresenceRoom(clearSaved ? '' : odCurrentRoomCode, clearSaved ? 'lobby' : odRoomRole);
             document.getElementById('odRoomView')?.classList.add('online-hidden');
             document.getElementById('odLobbyView')?.classList.remove('online-hidden');
             odRenderResumeButton();
@@ -3151,6 +3559,11 @@
         async function odLeaveRoomView() {
             const room = odCurrentRoom;
             const me = odFindMyPlayer(room);
+            if (room && !me) {
+                odDetachRoom(true);
+                showToast('Mode spectateur quitté.', 'success');
+                return;
+            }
             if (room && me && room.status === 'waiting') {
                 try {
                     await odRoomsRef.child(room.code).transaction(current => {
@@ -3185,11 +3598,181 @@
             }
         }
 
+        async function odCancelOnlineRoom() {
+            const room = odCurrentRoom;
+            if (!room || !odIsCreator(room)) {
+                showToast('Seul le créateur peut annuler cette partie.', 'warning');
+                return;
+            }
+            const confirmed = window.confirm(
+                `Annuler la partie ${room.code} pour tous les joueurs ?\n\nLe salon et sa discussion seront supprimés.`
+            );
+            if (!confirmed) return;
+
+            const roomCode = room.code;
+            const invitedPlayerIds = odRoomPlayers(room).map(player => player.playerId);
+            const creator = odFindMyPlayer(room) || odGetSelectedProfile();
+            odSetBusy(true);
+            try {
+                const committed = await odWithTimeout(new Promise((resolve, reject) => {
+                    odRoomsRef.child(roomCode).transaction(current => {
+                        if (!current || (current.creatorToken || current.hostToken) !== odClientToken) return;
+                        current.status = 'cancelled';
+                        current.cancelledAt = odNow();
+                        current.cancelledBy = {
+                            token: odClientToken,
+                            name: creator?.name || 'le créateur'
+                        };
+                        current.updatedAt = odNow();
+                        return current;
+                    }, (error, didCommit) => error ? reject(error) : resolve(didCommit), false);
+                }), 12000, 'Firebase ne répond pas pendant l’annulation de la partie.');
+                if (!committed) throw new Error('La partie ne peut plus être annulée.');
+
+                await new Promise(resolve => setTimeout(resolve, 450));
+                const cleanups = [
+                    odRoomsRef.child(roomCode).remove(),
+                    odChatsRef.child(roomCode).remove()
+                ];
+                invitedPlayerIds.forEach(playerId => {
+                    cleanups.push(odInvitesRef.child(`${odPlayerKey(playerId)}/${roomCode}`).remove());
+                });
+                await Promise.allSettled(cleanups);
+            } catch (error) {
+                console.error('Annulation de partie :', error);
+                showToast(odFirebaseErrorMessage(error, 'Annulation impossible'), 'error');
+            } finally {
+                odSetBusy(false);
+            }
+        }
+
+        function odAttachChat(roomCode) {
+            roomCode = String(roomCode || '').toUpperCase();
+            if (!roomCode || (odChatListenerRef && odChatRoomCode === roomCode)) return;
+            odDetachChat();
+            odRenderEmojiPicker();
+            odChatRoomCode = roomCode;
+            odChatMessagesCache = new Map();
+            odChatListenerRef = odChatsRef.child(roomCode).limitToLast(80);
+            const updateMessage = snapshot => {
+                odChatMessagesCache.set(snapshot.key, { id: snapshot.key, ...(snapshot.val() || {}) });
+                odRenderChatMessages([...odChatMessagesCache.values()]);
+            };
+            const removeMessage = snapshot => {
+                odChatMessagesCache.delete(snapshot.key);
+                odRenderChatMessages([...odChatMessagesCache.values()]);
+            };
+            const chatError = error => {
+                console.warn('Discussion :', error);
+                const container = document.getElementById('odChatMessages');
+                if (container) container.innerHTML = '<div class="online-chat-empty">La discussion est momentanément indisponible.</div>';
+            };
+            odChatListenerRef.on('child_added', updateMessage, chatError);
+            odChatListenerRef.on('child_changed', updateMessage, chatError);
+            odChatListenerRef.on('child_removed', removeMessage, chatError);
+        }
+
+        function odDetachChat() {
+            if (odChatListenerRef) odChatListenerRef.off();
+            odChatListenerRef = null;
+            odChatRoomCode = '';
+            odChatMessagesCache = new Map();
+            const container = document.getElementById('odChatMessages');
+            if (container) container.innerHTML = '<div class="online-chat-empty">Les joueurs et les spectateurs peuvent discuter ici.</div>';
+            const input = document.getElementById('odChatInput');
+            if (input) input.value = '';
+            document.getElementById('odEmojiPicker')?.classList.add('online-hidden');
+        }
+
+        function odRenderEmojiPicker() {
+            const picker = document.getElementById('odEmojiPicker');
+            if (!picker || picker.childElementCount) return;
+            const emojis = ['😀','😂','😍','😎','🥳','👏','👍','👎','🙏','🔥','🏆','🐷','🎯','🁣','❤️','😜'];
+            picker.innerHTML = emojis.map(emoji => `<button type="button" class="online-emoji-choice" data-emoji="${odEsc(emoji)}" aria-label="Emoji ${odEsc(emoji)}">${odEsc(emoji)}</button>`).join('');
+            picker.querySelectorAll('[data-emoji]').forEach(button => button.addEventListener('click', () => odInsertChatEmoji(button.dataset.emoji || '')));
+        }
+
+        function odToggleEmojiPicker() {
+            odRenderEmojiPicker();
+            document.getElementById('odEmojiPicker')?.classList.toggle('online-hidden');
+        }
+
+        function odInsertChatEmoji(emoji) {
+            const input = document.getElementById('odChatInput');
+            if (!input || !emoji) return;
+            const start = Number.isFinite(input.selectionStart) ? input.selectionStart : input.value.length;
+            const end = Number.isFinite(input.selectionEnd) ? input.selectionEnd : start;
+            input.value = `${input.value.slice(0, start)}${emoji}${input.value.slice(end)}`.slice(0, 300);
+            const cursor = Math.min(start + emoji.length, input.value.length);
+            input.setSelectionRange(cursor, cursor);
+            document.getElementById('odEmojiPicker')?.classList.add('online-hidden');
+            input.focus();
+        }
+
+        function odRenderChatMessages(messages) {
+            const container = document.getElementById('odChatMessages');
+            if (!container) return;
+            messages = [...messages].sort((a, b) => Number(a.createdAt || 0) - Number(b.createdAt || 0) || String(a.id || '').localeCompare(String(b.id || '')));
+            if (!messages.length) {
+                container.innerHTML = '<div class="online-chat-empty">Aucun message pour le moment.<br>Commence la discussion !</div>';
+                return;
+            }
+            container.innerHTML = messages.map(message => {
+                const createdAt = Number(message.createdAt || 0);
+                const time = Number.isFinite(createdAt) && createdAt > 0 ? new Date(createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '';
+                const mine = message.senderToken === odClientToken;
+                return `<div class="online-chat-message ${mine ? 'mine' : ''} ${message.pending ? 'pending' : ''}"><div class="online-chat-meta"><span class="online-chat-author">${odEsc(message.name || 'Joueur')}</span><span>${message.pending ? 'Envoi…' : odEsc(time)}</span></div><div class="online-chat-text">${odEsc(message.text || '')}</div></div>`;
+            }).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function odSendChatMessage(event) {
+            event?.preventDefault();
+            event?.stopPropagation();
+            const input = document.getElementById('odChatInput');
+            const profile = clubGetAuthenticatedProfile();
+            const textValue = String(input?.value || '').trim().slice(0, 300);
+            const roomCode = odChatRoomCode || odCurrentRoomCode;
+            if (!profile || !roomCode || !textValue) return false;
+            if (input) input.value = '';
+            document.getElementById('odEmojiPicker')?.classList.add('online-hidden');
+            try {
+                const messageRef = odChatsRef.child(roomCode).push();
+                const payload = {
+                    messageId: messageRef.key,
+                    senderId: profile.id,
+                    senderToken: odClientToken,
+                    name: profile.name,
+                    avatar: profile.avatar || '❓',
+                    role: odRoomRole,
+                    text: textValue,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                };
+                odChatMessagesCache.set(messageRef.key, { ...payload, id: messageRef.key, createdAt: odNow(), pending: true });
+                odRenderChatMessages([...odChatMessagesCache.values()]);
+                odWithTimeout(messageRef.set(payload), 10000, 'Le message met trop de temps à partir.').catch(error => {
+                    odChatMessagesCache.delete(messageRef.key);
+                    odRenderChatMessages([...odChatMessagesCache.values()]);
+                    if (input && !input.value.trim()) input.value = textValue;
+                    showToast(odFirebaseErrorMessage(error, 'Message non envoyé'), 'error');
+                });
+            } catch (error) {
+                if (input && !input.value.trim()) input.value = textValue;
+                showToast(odFirebaseErrorMessage(error, 'Message non envoyé'), 'error');
+            }
+            requestAnimationFrame(() => input?.focus());
+            return false;
+        }
+
         function odRenderRoom(room) {
             const roomCodeEl = document.getElementById('odRoomCodeDisplay');
             const statusEl = document.getElementById('odRoomStatus');
             if (roomCodeEl) roomCodeEl.textContent = room.code || odCurrentRoomCode;
-            if (statusEl) statusEl.textContent = odStatusText(room.status);
+            if (statusEl) statusEl.textContent = odRoomRole === 'spectator' ? `Spectateur · ${odStatusText(room.status)}` : odStatusText(room.status);
+            const cancelBtn = document.getElementById('odCancelRoomBtn');
+            if (cancelBtn) cancelBtn.classList.toggle('online-hidden', !odIsCreator(room) || room.status === 'finished');
+            const chatRole = document.getElementById('odChatRole');
+            if (chatRole) chatRole.textContent = odRoomRole === 'spectator' ? 'Spectateur' : 'Joueur';
             odRenderRoomPlayers(room);
             const waiting = document.getElementById('odWaitingPanel');
             const gamePanel = document.getElementById('odGamePanel');
@@ -3238,6 +3821,7 @@
                 button.classList.toggle('online-hidden', !odIsHost(room));
                 button.disabled = list.length !== 3 || odBusy;
             }
+            odRenderInviteTargets(room);
         }
 
         function odCreateDeck() {
@@ -3926,7 +4510,12 @@
             const actions = document.getElementById('odPlayActions');
             if (!zone || !handEl || !pointsEl || !passBtn || !actions) return;
             if (!me) {
-                zone.classList.add('online-hidden');
+                zone.classList.remove('online-hidden');
+                pointsEl.textContent = 'Mode spectateur';
+                handEl.innerHTML = '<div class="online-spectator-banner" style="margin:auto; font-size:.72rem; font-weight:850;"><i class="fa-solid fa-eye"></i> Tu regardes cette partie</div>';
+                actions.classList.add('online-hidden');
+                passBtn.classList.add('online-hidden');
+                odSelectedTileId = null;
                 return;
             }
             zone.classList.remove('online-hidden');
@@ -4186,6 +4775,7 @@
         // Le compteur supérieur distingue immédiatement les résultats réels
         // des parties en ligne, même avant l'ouverture de l'onglet En ligne.
         odBindOnlineFeeds();
+        clubRestoreSession();
 
         // renderHome(); (Appelé automatiquement après le chargement des données)
     </script>
