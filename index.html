@@ -1338,6 +1338,9 @@
         }
         .online-board-scroll { width:100%; overflow:hidden; padding:0 2px; flex:1 1 auto; min-height:0; display:flex; align-items:center; justify-content:center; }
         .online-board { width:100%; height:100%; min-height:0; display:block; overflow:visible; }
+        /* Les personnages peuvent dépasser visuellement de la table sans modifier
+           ni ses dimensions, ni celles du plateau et des dominos. */
+        .online-table { overflow:visible; }
         .online-empty-board { width:100%; text-align:center; color:rgba(255,255,255,.35); font-size:.8rem; padding:26px 8px; }
         .domino-tile {
             display:inline-flex; flex-shrink:0; background:linear-gradient(145deg,#fffef5 0%,#fff7d7 52%,#e2c477 100%); border:3px solid #d6a12b;
@@ -1372,21 +1375,132 @@
         .online-hand-zone .pip-dot { width:6px; height:6px; }
         .online-game-controls { margin-top:8px; }
         .online-play-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
-        .online-game-player-strip {
-            width:100%; height:46px; margin-top:8px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
-            overflow:hidden; border-radius:13px; background:rgba(255,255,255,.055); border:1px solid var(--glass-border);
+        /* Les sièges sont des calques absolus : ils n'occupent aucun espace et ne
+           changent donc jamais la taille de la table ou du plateau de dominos. */
+        .online-board-scroll { position:relative; z-index:1; }
+        .online-hand-zone { position:relative; z-index:13; }
+        .online-table-players { position:absolute; inset:0; z-index:12; pointer-events:none; overflow:visible; }
+        .od-player-seat {
+            --seat-accent:#d6a12b;
+            position:absolute; width:116px; display:flex; flex-direction:column; align-items:center;
+            filter:drop-shadow(0 8px 13px rgba(0,0,0,.48)); transform-origin:center;
         }
-        .online-game-player-strip-item {
-            min-width:0; padding:3px 7px; display:flex; flex-direction:column; align-items:center; justify-content:center;
-            position:relative; text-align:center; transition:background .2s ease, box-shadow .2s ease;
+        .od-player-seat.seat-top { top:-76px; left:50%; transform:translateX(-50%); }
+        .od-player-seat.seat-left { left:-40px; top:39%; transform:translateY(-50%); }
+        .od-player-seat.seat-right { right:-40px; top:39%; transform:translateY(-50%); }
+        .od-character-wrap { position:relative; width:66px; height:70px; display:flex; align-items:flex-end; justify-content:center; }
+        .od-character-halo {
+            position:absolute; width:72px; height:72px; left:50%; top:4px; border-radius:50%; transform:translateX(-50%) scale(.72);
+            background:radial-gradient(circle,rgba(251,191,36,.34),rgba(251,191,36,.08) 45%,transparent 72%);
+            opacity:0; transition:opacity .25s ease,transform .25s ease;
         }
-        .online-game-player-strip-item + .online-game-player-strip-item::before {
-            content:""; position:absolute; left:0; top:8px; bottom:8px; width:1px; background:rgba(214,161,43,.3);
+        .od-character-body {
+            position:absolute; bottom:0; width:52px; height:34px; border-radius:25px 25px 9px 9px;
+            background:linear-gradient(145deg,#28364c 0%,#101827 54%,#060a12 100%);
+            border:2px solid rgba(246,211,112,.72); box-shadow:inset 0 2px 4px rgba(255,255,255,.14),0 5px 10px rgba(0,0,0,.38);
         }
-        .online-game-player-strip-item.turn { background:rgba(251,191,36,.09); box-shadow:inset 0 0 0 1px rgba(251,191,36,.32); }
-        .online-game-player-strip-name { width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#fff; font-size:.78rem; line-height:1.1; font-weight:950; }
-        .online-game-player-strip-stats { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:3px; color:#dbe4f0; font-size:.68rem; line-height:1; font-weight:850; white-space:nowrap; }
-        .online-game-player-strip-score { color:var(--gold); font-weight:950; }
+        .od-character-body::before,.od-character-body::after {
+            content:""; position:absolute; top:7px; width:8px; height:25px; border-radius:8px;
+            background:linear-gradient(#33445f,#101827); border:1px solid rgba(246,211,112,.48); transform-origin:top center;
+        }
+        .od-character-body::before { left:-5px; transform:rotate(17deg); }
+        .od-character-body::after { right:-5px; transform:rotate(-17deg); }
+        .od-character-lapel {
+            position:absolute; left:50%; top:3px; width:24px; height:22px; transform:translateX(-50%);
+            clip-path:polygon(0 0,50% 45%,100% 0,72% 100%,28% 100%);
+            background:linear-gradient(145deg,#f8df91,#b37712 72%); opacity:.92;
+        }
+        .od-character-head {
+            position:absolute; z-index:2; top:0; left:50%; width:46px; height:46px; transform:translateX(-50%);
+            display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:50%;
+            background:radial-gradient(circle at 35% 25%,#fff7d6,#e9bd62 72%,#7c4c0b);
+            border:3px solid #f4ce62; box-shadow:inset 0 0 0 2px rgba(255,255,255,.55),0 4px 9px rgba(0,0,0,.45);
+            font-size:1.55rem;
+        }
+        .od-character-head img { width:100%; height:100%; object-fit:cover; }
+        .od-seat-card {
+            position:relative; min-width:104px; max-width:116px; margin-top:3px; padding:5px 7px 6px; text-align:center;
+            border-radius:10px; color:#fff; background:linear-gradient(145deg,rgba(19,27,42,.97),rgba(5,9,17,.96));
+            border:1px solid rgba(246,211,112,.48); box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 5px 12px rgba(0,0,0,.36);
+        }
+        .od-seat-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.69rem; font-weight:950; letter-spacing:.15px; }
+        .od-seat-stats { display:flex; justify-content:center; gap:8px; margin-top:3px; color:#d9e3f2; font-size:.61rem; line-height:1; font-weight:900; white-space:nowrap; }
+        .od-seat-rounds { color:#f8cf57; }
+        .od-seat-dominos { color:#a7f3d0; }
+        .od-turn-chip {
+            position:absolute; z-index:5; top:-4px; left:50%; padding:3px 7px; border-radius:999px; transform:translate(-50%,-100%);
+            color:#1a1100; background:linear-gradient(135deg,#fff1a8,#f5b91c); border:1px solid #fff1a8;
+            box-shadow:0 0 14px rgba(251,191,36,.68); font-size:.51rem; font-weight:1000; letter-spacing:.8px; opacity:0;
+        }
+        .od-player-seat.is-turn .od-character-wrap { animation:odCharacterReady 1.15s ease-in-out infinite; }
+        .od-player-seat.is-turn .od-character-halo { opacity:1; transform:translateX(-50%) scale(1); }
+        .od-player-seat.is-turn .od-seat-card { border-color:#fbbf24; box-shadow:inset 0 0 0 1px rgba(251,191,36,.25),0 0 18px rgba(251,191,36,.4); }
+        .od-player-seat.is-turn .od-turn-chip { opacity:1; animation:odTurnChipPulse 1.15s ease-in-out infinite; }
+        .od-player-seat.is-winner .od-character-halo { opacity:1; background:radial-gradient(circle,rgba(52,211,153,.46),rgba(251,191,36,.17) 48%,transparent 72%); transform:translateX(-50%) scale(1.18); }
+        .od-player-seat.is-winner .od-character-wrap { animation:odWinnerBounce .75s ease-in-out infinite alternate; }
+        .od-player-seat.is-cochon .od-seat-card { border-color:#fb7185; box-shadow:inset 0 0 0 1px rgba(251,113,133,.22),0 0 17px rgba(244,63,94,.34); }
+        @keyframes odCharacterReady { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+        @keyframes odTurnChipPulse { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.22)} }
+        @keyframes odWinnerBounce { from{transform:translateY(0) rotate(-1deg)} to{transform:translateY(-7px) rotate(1deg)} }
+
+        .od-boude-bubble {
+            position:absolute; z-index:9; top:-8px; left:50%; min-width:94px; padding:7px 9px; transform:translate(-50%,-100%) scale(.2) rotate(-8deg);
+            border-radius:14px 14px 14px 3px; color:#fff; background:linear-gradient(145deg,#ef4444,#991b1b);
+            border:2px solid #fecaca; box-shadow:0 6px 20px rgba(239,68,68,.48); font-size:.68rem; font-weight:1000; letter-spacing:.5px;
+            opacity:0;
+        }
+        .od-boude-bubble::after { content:""; position:absolute; left:16px; bottom:-8px; border:5px solid transparent; border-top-color:#991b1b; transform:rotate(20deg); }
+        .od-player-seat.is-boude .od-boude-bubble { animation:odBoudeBubble 4.2s cubic-bezier(.2,.9,.28,1) forwards; }
+        /* Pour le joueur du haut, la bulle s'ouvre vers l'intérieur de la table :
+           elle reste donc visible même lorsque le personnage est placé à l'extérieur. */
+        .od-player-seat.seat-top .od-boude-bubble { top:auto; bottom:-34px; }
+        .od-player-seat.seat-top .od-boude-bubble::after {
+            left:50%; top:-10px; bottom:auto; border-top-color:transparent; border-bottom-color:#ef4444; transform:translateX(-50%);
+        }
+        .od-player-seat.seat-top.is-boude .od-boude-bubble { animation-name:odBoudeBubbleTop; }
+        .od-player-seat.is-boude .od-character-wrap { animation:odCharacterAngry .16s linear 13; }
+        .od-player-seat.is-boude .od-character-body::before { animation:odAngryArmLeft .32s ease-in-out 7 alternate; }
+        .od-player-seat.is-boude .od-character-body::after { animation:odAngryArmRight .32s ease-in-out 7 alternate; }
+        @keyframes odBoudeBubble { 0%{opacity:0;transform:translate(-50%,-82%) scale(.2) rotate(-8deg)} 9%,72%{opacity:1;transform:translate(-50%,-100%) scale(1) rotate(0)} 86%,100%{opacity:0;transform:translate(-50%,-112%) scale(.86)} }
+        @keyframes odBoudeBubbleTop { 0%{opacity:0;transform:translate(-50%,-20%) scale(.2) rotate(-8deg)} 9%,72%{opacity:1;transform:translate(-50%,0) scale(1) rotate(0)} 86%,100%{opacity:0;transform:translate(-50%,16%) scale(.86)} }
+        @keyframes odCharacterAngry { 0%,100%{transform:translateX(0) rotate(0)} 25%{transform:translateX(-3px) rotate(-2deg)} 75%{transform:translateX(3px) rotate(2deg)} }
+        @keyframes odAngryArmLeft { from{transform:rotate(17deg)} to{transform:rotate(112deg)} }
+        @keyframes odAngryArmRight { from{transform:rotate(-17deg)} to{transform:rotate(-112deg)} }
+
+        .od-celebration-layer { position:absolute; inset:0; z-index:24; overflow:hidden; pointer-events:none; border-radius:inherit; }
+        .od-confetti-piece {
+            position:absolute; top:-24px; left:var(--confetti-x); width:9px; height:17px; border-radius:2px;
+            background:var(--confetti-color); box-shadow:0 0 7px color-mix(in srgb,var(--confetti-color) 65%,transparent);
+            animation:odConfettiFall var(--confetti-duration) linear var(--confetti-delay) infinite;
+        }
+        @keyframes odConfettiFall { 0%{top:-28px;transform:translateX(0) rotate(0deg)} 35%{transform:translateX(24px) rotate(260deg)} 72%{transform:translateX(-20px) rotate(590deg)} 100%{top:105%;transform:translateX(12px) rotate(860deg)} }
+        .od-royal-victory {
+            position:absolute; z-index:4; left:50%; top:42%; transform:translate(-50%,-50%); min-width:245px; padding:12px 20px 13px;
+            text-align:center; border-radius:24px; color:#fff8d5; background:radial-gradient(circle at 50% 12%,rgba(251,191,36,.35),rgba(12,18,27,.93) 58%);
+            border:2px solid #f8cf57; box-shadow:0 0 0 5px rgba(251,191,36,.1),0 0 48px rgba(251,191,36,.55),inset 0 1px 0 rgba(255,255,255,.33);
+            animation:odRoyalEntrance .8s cubic-bezier(.16,1.22,.38,1) both,odRoyalFloat 1.6s ease-in-out .8s infinite alternate;
+        }
+        .od-royal-crown { display:block; font-size:4.8rem; line-height:.85; filter:drop-shadow(0 8px 8px rgba(0,0,0,.5)); animation:odCrownShine 1.1s ease-in-out infinite alternate; }
+        .od-royal-title { margin-top:8px; color:#ffe69a; font-size:.72rem; font-weight:1000; letter-spacing:2.4px; text-transform:uppercase; text-shadow:0 2px 7px #000; }
+        .od-royal-name { margin-top:3px; font-size:1.05rem; font-weight:1000; text-shadow:0 2px 7px #000; }
+        @keyframes odRoyalEntrance { from{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(-12deg)} to{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)} }
+        @keyframes odRoyalFloat { from{margin-top:0} to{margin-top:-8px} }
+        @keyframes odCrownShine { from{filter:drop-shadow(0 8px 8px rgba(0,0,0,.5)) brightness(1)} to{filter:drop-shadow(0 0 18px #ffe58a) brightness(1.23)} }
+        .od-running-pig {
+            position:absolute; z-index:6; left:50%; top:79%; font-size:3.35rem; line-height:1;
+            filter:drop-shadow(0 7px 5px rgba(0,0,0,.58)); transform:translate(-50%,-50%) scaleX(var(--pig-facing,1));
+        }
+        .od-running-pig::after { content:"💨"; position:absolute; right:76%; top:38%; font-size:1.25rem; opacity:.78; }
+        .od-running-pig.to-left { animation:odPigRunLeft 9.7s cubic-bezier(.42,0,.28,1) .15s forwards; }
+        .od-running-pig.to-right { animation:odPigRunRight 9.7s cubic-bezier(.42,0,.28,1) .15s forwards; }
+        .od-running-pig.to-top { animation:odPigRunTop 9.7s cubic-bezier(.42,0,.28,1) .15s forwards; }
+        @keyframes odPigRunLeft { 0%{left:50%;top:78%;--pig-facing:1} 18%{left:88%;top:78%;--pig-facing:1} 38%{left:89%;top:20%;--pig-facing:-1} 62%{left:12%;top:18%;--pig-facing:-1} 82%{left:12%;top:72%;--pig-facing:-1} 100%{left:6%;top:40%;--pig-facing:-1} }
+        @keyframes odPigRunRight { 0%{left:50%;top:78%;--pig-facing:-1} 18%{left:12%;top:78%;--pig-facing:-1} 38%{left:11%;top:20%;--pig-facing:1} 62%{left:88%;top:18%;--pig-facing:1} 82%{left:88%;top:72%;--pig-facing:1} 100%{left:94%;top:40%;--pig-facing:1} }
+        @keyframes odPigRunTop { 0%{left:50%;top:78%;--pig-facing:1} 20%{left:88%;top:76%;--pig-facing:1} 43%{left:88%;top:18%;--pig-facing:-1} 67%{left:12%;top:18%;--pig-facing:-1} 84%{left:35%;top:8%;--pig-facing:1} 100%{left:50%;top:5%;--pig-facing:1} }
+        .od-celebration-wait { margin-top:11px; color:#fde68a; font-size:.7rem; font-weight:900; }
+        .od-celebration-progress { width:100%; height:5px; margin-top:7px; overflow:hidden; border-radius:999px; background:rgba(255,255,255,.08); }
+        .od-celebration-progress > span { display:block; width:100%; height:100%; transform-origin:left; background:linear-gradient(90deg,#10b981,#fbbf24,#f97316); animation:odCelebrationProgress var(--celebration-remaining) linear forwards; }
+        @keyframes odCelebrationProgress { from{transform:scaleX(1)} to{transform:scaleX(0)} }
         .online-identity-summary { display:flex; align-items:center; gap:11px; min-height:58px; padding:9px 11px; border-radius:13px; background:rgba(16,185,129,.075); border:1px solid rgba(16,185,129,.18); }
         .online-identity-avatar { width:40px; height:40px; flex:0 0 40px; border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); font-size:1.2rem; }
         .online-identity-avatar img { width:100%; height:100%; object-fit:cover; }
@@ -1489,9 +1603,20 @@
             .online-hand-zone .domino-tile.hand-tile .domino-half { width:29px; height:29px; }
             .pip-dot { width:5px; height:5px; }
             .online-play-actions { grid-template-columns:1fr; }
-            .online-game-player-strip-item { padding-left:3px; padding-right:3px; }
-            .online-game-player-strip-name { font-size:.7rem; }
-            .online-game-player-strip-stats { gap:3px; font-size:.63rem; }
+            .od-player-seat { width:88px; filter:drop-shadow(0 5px 8px rgba(0,0,0,.46)); }
+            .od-player-seat.seat-top { top:-51px; }
+            .od-player-seat.seat-left { left:-25px; top:36%; }
+            .od-player-seat.seat-right { right:-25px; top:36%; }
+            .od-character-wrap { width:53px; height:56px; transform:scale(.82); margin-bottom:-6px; }
+            .od-seat-card { min-width:82px; max-width:88px; padding:4px 3px 5px; }
+            .od-seat-name { font-size:.58rem; }
+            .od-seat-stats { gap:4px; font-size:.53rem; }
+            .od-turn-chip { font-size:.44rem; padding:2px 5px; }
+            .od-boude-bubble { min-width:78px; padding:5px 6px; font-size:.56rem; }
+            .od-royal-victory { min-width:190px; padding:10px 13px; top:39%; }
+            .od-royal-crown { font-size:3.7rem; }
+            .od-royal-title { font-size:.59rem; letter-spacing:1.6px; }
+            .od-running-pig { font-size:2.65rem; }
             .online-invite-targets { grid-template-columns:1fr; }
             .online-chat-panel { height:330px; padding:11px; }
             .online-summary-card { height:360px; }
@@ -1709,6 +1834,8 @@
                         </div>
 
                         <div class="online-table">
+                            <div id="odTablePlayers" class="online-table-players" aria-label="Joueurs placés autour de la table"></div>
+                            <div id="odCelebrationLayer" class="od-celebration-layer" aria-hidden="true"></div>
                             <div class="online-board-scroll"><svg id="odBoard" class="online-board" viewBox="0 0 1500 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Plateau de dominos"></svg></div>
                             <div id="odHandZone" class="online-hand-zone">
                                 <div class="online-hand-status">
@@ -1725,7 +1852,6 @@
                                 <button id="odPlayRightBtn" class="online-btn primary" onclick="odPlaySelectedTile('right')">Jouer à droite <i class="fa-solid fa-arrow-right"></i></button>
                             </div>
                             <button id="odPassBtn" class="online-btn ghost" style="width:100%; margin-top:8px;" onclick="odPassTurn()"><i class="fa-solid fa-forward"></i> Boudééé</button>
-                            <div id="odGamePlayerStrip" class="online-game-player-strip" aria-label="Joueurs, dominos restants et scores actuels"></div>
                         </div>
                         <div id="odRoundResult"></div>
                     </div>
@@ -2907,13 +3033,19 @@
         let odChatListenerRef = null;
         let odChatRoomCode = '';
         let odChatMessagesCache = new Map();
+        let odChatReady = false;
+        let odChatAttachedAt = 0;
         let odStatsCache = {};
         let odHistoryCache = [];
         let odPresenceCache = {};
         let odRoomsCache = {};
-         let odInvitesCache = {};
-         let odBusy = false;
-         let odAudioContext = null;
+        let odInvitesCache = {};
+        let odBusy = false;
+        let odAudioContext = null;
+        let odRenderedCelebrationKey = '';
+        let odCelebrationClearTimer = null;
+        let odCelebrationUnlockTimer = null;
+        const odPlayedCelebrationSounds = new Set();
         const odRecordingMatches = new Set();
 
         if (!odClientToken) {
@@ -2955,38 +3087,84 @@
         }
         function odPlayOnlineSound(kind) {
             const context = odGetAudioContext();
-             if (!context || context.state !== 'running') return;
-             const now = context.currentTime;
-             if (kind === 'placement') {
-                 const playDominoImpact = (delay, duration, frequency, volume) => {
-                     const startAt = now + delay;
-                     const frameCount = Math.max(1, Math.floor(context.sampleRate * duration));
-                     const buffer = context.createBuffer(1, frameCount, context.sampleRate);
-                     const samples = buffer.getChannelData(0);
-                     for (let index = 0; index < samples.length; index++) {
-                         const progress = index / samples.length;
-                         const envelope = Math.pow(1 - progress, 3.4);
-                         samples[index] = (Math.random() * 2 - 1) * envelope;
-                     }
-                     const source = context.createBufferSource();
-                     const filter = context.createBiquadFilter();
-                     const gain = context.createGain();
-                     source.buffer = buffer;
-                     filter.type = 'bandpass';
-                     filter.frequency.setValueAtTime(frequency, startAt);
-                     filter.Q.setValueAtTime(.8, startAt);
-                     gain.gain.setValueAtTime(volume, startAt);
-                     gain.gain.exponentialRampToValueAtTime(.0001, startAt + duration);
-                     source.connect(filter).connect(gain).connect(context.destination);
-                     source.start(startAt);
-                     source.stop(startAt + duration);
-                 };
-                 // Deux impacts très courts reproduisent le « clac-clac » d'un domino
-                 // qui touche la table puis se pose à plat, sans tonalité électronique.
-                 playDominoImpact(0, .052, 1250, .34);
-                 playDominoImpact(.055, .072, 760, .25);
-                 return;
-             }
+            if (!context || context.state !== 'running') return false;
+            const now = context.currentTime;
+            if (kind === 'placement') {
+                const playDominoImpact = (delay, duration, frequency, volume) => {
+                    const startAt = now + delay;
+                    const frameCount = Math.max(1, Math.floor(context.sampleRate * duration));
+                    const buffer = context.createBuffer(1, frameCount, context.sampleRate);
+                    const samples = buffer.getChannelData(0);
+                    for (let index = 0; index < samples.length; index++) {
+                        const progress = index / samples.length;
+                        const envelope = Math.pow(1 - progress, 3.4);
+                        samples[index] = (Math.random() * 2 - 1) * envelope;
+                    }
+                    const source = context.createBufferSource();
+                    const filter = context.createBiquadFilter();
+                    const gain = context.createGain();
+                    source.buffer = buffer;
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(frequency, startAt);
+                    filter.Q.setValueAtTime(.8, startAt);
+                    gain.gain.setValueAtTime(volume, startAt);
+                    gain.gain.exponentialRampToValueAtTime(.0001, startAt + duration);
+                    source.connect(filter).connect(gain).connect(context.destination);
+                    source.start(startAt);
+                    source.stop(startAt + duration);
+                };
+                // Deux impacts très courts reproduisent le « clac-clac » d'un domino
+                // qui touche la table puis se pose à plat, sans tonalité électronique.
+                playDominoImpact(0, .052, 1250, .34);
+                playDominoImpact(.055, .072, 760, .25);
+                return true;
+            }
+            if (kind === 'message') {
+                // Carillon cristallin à deux notes, court et distinct du son de tour.
+                [{ delay:0, frequency:880 }, { delay:.095, frequency:1318.5 }].forEach(note => {
+                    const startAt = now + note.delay;
+                    const oscillator = context.createOscillator();
+                    const gain = context.createGain();
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(note.frequency, startAt);
+                    gain.gain.setValueAtTime(.0001, startAt);
+                    gain.gain.exponentialRampToValueAtTime(.095, startAt + .012);
+                    gain.gain.exponentialRampToValueAtTime(.0001, startAt + .24);
+                    oscillator.connect(gain).connect(context.destination);
+                    oscillator.start(startAt);
+                    oscillator.stop(startAt + .26);
+                });
+                return true;
+            }
+            if (kind === 'pig') {
+                // Suite de grognements nasaux répartis sur l'animation de dix secondes.
+                [
+                    { delay:.25, start:235, peak:315, end:132, duration:.42 },
+                    { delay:2.15, start:205, peak:285, end:118, duration:.48 },
+                    { delay:4.35, start:245, peak:330, end:140, duration:.4 },
+                    { delay:6.55, start:198, peak:272, end:112, duration:.5 },
+                    { delay:8.55, start:228, peak:305, end:126, duration:.44 }
+                ].forEach(grunt => {
+                    const startAt = now + grunt.delay;
+                    const oscillator = context.createOscillator();
+                    const filter = context.createBiquadFilter();
+                    const gain = context.createGain();
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.setValueAtTime(grunt.start, startAt);
+                    oscillator.frequency.exponentialRampToValueAtTime(grunt.peak, startAt + grunt.duration * .28);
+                    oscillator.frequency.exponentialRampToValueAtTime(grunt.end, startAt + grunt.duration);
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(720, startAt);
+                    filter.Q.setValueAtTime(1.7, startAt);
+                    gain.gain.setValueAtTime(.0001, startAt);
+                    gain.gain.exponentialRampToValueAtTime(.115, startAt + .045);
+                    gain.gain.exponentialRampToValueAtTime(.0001, startAt + grunt.duration);
+                    oscillator.connect(filter).connect(gain).connect(context.destination);
+                    oscillator.start(startAt);
+                    oscillator.stop(startAt + grunt.duration + .03);
+                });
+                return true;
+            }
             [523.25, 659.25, 783.99].forEach((frequency, index) => {
                 const start = now + index * .11;
                 const oscillator = context.createOscillator();
@@ -3000,6 +3178,7 @@
                 oscillator.start(start);
                 oscillator.stop(start + .2);
             });
+            return true;
         }
         function odLatestPlacementStamp(room) {
             return Math.max(0, ...((room?.game?.board?.placements || []).map(p => Number(p.playedAt || 0))));
@@ -3537,6 +3716,16 @@
             if (odRoomListenerRef) odRoomListenerRef.off();
             odRoomListenerRef = null;
             odDetachChat();
+            if (odCelebrationClearTimer) clearTimeout(odCelebrationClearTimer);
+            if (odCelebrationUnlockTimer) clearTimeout(odCelebrationUnlockTimer);
+            odCelebrationClearTimer = null;
+            odCelebrationUnlockTimer = null;
+            odRenderedCelebrationKey = '';
+            odPlayedCelebrationSounds.clear();
+            const celebrationLayer = document.getElementById('odCelebrationLayer');
+            if (celebrationLayer) celebrationLayer.innerHTML = '';
+            const tablePlayers = document.getElementById('odTablePlayers');
+            if (tablePlayers) tablePlayers.innerHTML = '';
             odClearSpectatorRegistration(true);
              odCurrentRoom = null;
              odSelectedTileId = null;
@@ -3653,10 +3842,19 @@
             odRenderEmojiPicker();
             odChatRoomCode = roomCode;
             odChatMessagesCache = new Map();
+            odChatReady = false;
+            odChatAttachedAt = odNow();
             odChatListenerRef = odChatsRef.child(roomCode).limitToLast(80);
-            const updateMessage = snapshot => {
-                odChatMessagesCache.set(snapshot.key, { id: snapshot.key, ...(snapshot.val() || {}) });
+            const updateMessage = (snapshot, notify = false) => {
+                const existed = odChatMessagesCache.has(snapshot.key);
+                const message = { id: snapshot.key, ...(snapshot.val() || {}) };
+                odChatMessagesCache.set(snapshot.key, message);
                 odRenderChatMessages([...odChatMessagesCache.values()]);
+                const createdAt = Number(message.createdAt || 0);
+                if (notify && odChatReady && !existed && message.senderToken !== odClientToken &&
+                    createdAt >= odChatAttachedAt - 1500) {
+                    odPlayOnlineSound('message');
+                }
             };
             const removeMessage = snapshot => {
                 odChatMessagesCache.delete(snapshot.key);
@@ -3667,9 +3865,14 @@
                 const container = document.getElementById('odChatMessages');
                 if (container) container.innerHTML = '<div class="online-chat-empty">La discussion est momentanément indisponible.</div>';
             };
-            odChatListenerRef.on('child_added', updateMessage, chatError);
-            odChatListenerRef.on('child_changed', updateMessage, chatError);
+            odChatListenerRef.on('child_added', snapshot => updateMessage(snapshot, true), chatError);
+            odChatListenerRef.on('child_changed', snapshot => updateMessage(snapshot, false), chatError);
             odChatListenerRef.on('child_removed', removeMessage, chatError);
+            odChatListenerRef.once('value').then(() => {
+                if (odChatRoomCode === roomCode) setTimeout(() => {
+                    if (odChatRoomCode === roomCode) odChatReady = true;
+                }, 160);
+            }).catch(() => {});
         }
 
         function odDetachChat() {
@@ -3677,6 +3880,8 @@
             odChatListenerRef = null;
             odChatRoomCode = '';
             odChatMessagesCache = new Map();
+            odChatReady = false;
+            odChatAttachedAt = 0;
             const container = document.getElementById('odChatMessages');
             if (container) container.innerHTML = '<div class="online-chat-empty">Les joueurs et les spectateurs peuvent discuter ici.</div>';
             const input = document.getElementById('odChatInput');
@@ -3893,6 +4098,10 @@
         async function odStartOnlineMatch(isRematch = false) {
             if (odBusy || !odCurrentRoom || (!isRematch && !odIsHost())) return;
             const room = odCurrentRoom;
+            if (isRematch && odCelebrationWaitMs(room) > 0) {
+                showToast('La cérémonie doit se terminer avant la revanche.', 'warning');
+                return;
+            }
             const list = odRoomPlayers(room);
             if (list.length !== 3) return odSetError('Il faut exactement trois joueurs.', 'odRoomError');
             const playerIds = list.map(p => p.playerId);
@@ -3905,6 +4114,7 @@
                     if (!isRematch && current.hostToken !== odClientToken) return;
                     if (!isRematch && current.status !== 'waiting') return;
                     if (isRematch && current.status !== 'finished') return;
+                    if (isRematch && odCelebrationWaitMs(current) > 0) return;
                     const currentIds = odRoomPlayers(current).map(p => String(p.playerId)).sort().join(',');
                     const preparedIds = playerIds.map(String).sort().join(',');
                     if (currentIds !== preparedIds) return;
@@ -4371,12 +4581,17 @@
             if (odBusy || !odCurrentRoom || !odFindMyPlayer()) return;
             const current = odCurrentRoom;
             if (current.status !== 'playing' || !current.game || current.game.roundStatus !== 'ended') return;
+            if (odCelebrationWaitMs(current) > 0) {
+                showToast('La célébration doit se terminer avant la prochaine manche.', 'warning');
+                return;
+            }
             const starterId = current.game.roundResult?.type === 'winner' ? current.game.roundResult.winnerId : null;
             const nextGame = odBuildRound(current.game.playerOrder, current.game.roundWins, Number(current.game.roundNumber || 0) + 1, starterId);
             odSetBusy(true);
             try {
                 const result = await odRoomsRef.child(current.code).transaction(room => {
                     if (!room || room.status !== 'playing' || room.game?.roundStatus !== 'ended') return;
+                    if (odCelebrationWaitMs(room) > 0) return;
                     room.game = nextGame;
                     room.updatedAt = odNow();
                     return room;
@@ -4408,6 +4623,46 @@
             return p ? p.name : `Joueur ${id}`;
         }
 
+        const OD_CELEBRATION_DURATION = 10000;
+
+        function odCelebrationState(room, game = room?.game) {
+            if (!room || !game) return null;
+            let type = '';
+            let eventAt = 0;
+            let winnerId = null;
+            let cochonIds = [];
+            if (room.status === 'finished' && game.matchResult) {
+                eventAt = Number(game.matchResult.at || game.roundResult?.at || 0);
+                winnerId = game.matchResult.type === 'victory' ? game.matchResult.winnerId : game.roundResult?.winnerId;
+                cochonIds = game.matchResult.type === 'victory' ? (game.matchResult.cochonIds || []) : [];
+                type = game.matchResult.type === 'victory' ? 'match' : (winnerId !== null && winnerId !== undefined ? 'round' : '');
+            } else if (game.roundStatus === 'ended' && game.roundResult?.type === 'winner') {
+                eventAt = Number(game.roundResult.at || 0);
+                winnerId = game.roundResult.winnerId;
+                type = 'round';
+            }
+            if (!type || !eventAt || winnerId === null || winnerId === undefined) return null;
+            const elapsed = Math.max(0, odNow() - eventAt);
+            return {
+                type,
+                eventAt,
+                winnerId,
+                cochonIds,
+                elapsed,
+                remaining: Math.max(0, OD_CELEBRATION_DURATION - elapsed),
+                key: `${room.matchId || room.code}|${type}|${eventAt}|${winnerId}`
+            };
+        }
+
+        function odCelebrationWaitMs(room) {
+            return odCelebrationState(room)?.remaining || 0;
+        }
+
+        function odSeatForPlayer(room, playerId) {
+            const index = odRoomPlayers(room).slice(0, 3).findIndex(player => String(player.playerId) === String(playerId));
+            return ['top', 'left', 'right'][Math.max(0, index)] || 'top';
+        }
+
         function odRenderOnlineGame(room) {
             const game = room.game;
             if (!game) return;
@@ -4430,30 +4685,103 @@
             }
             odRenderBoard(game);
             odRenderHand(room, game, me);
-            odRenderGamePlayerStrip(room, game);
+            odRenderTablePlayers(room, game);
+            odRenderTableCelebration(room, game);
             odRenderRoundResult(room, game);
         }
 
-        function odRenderGamePlayerStrip(room, game) {
-            const container = document.getElementById('odGamePlayerStrip');
+        function odRenderTablePlayers(room, game) {
+            const container = document.getElementById('odTablePlayers');
             if (!container) return;
             const scores = game.roundWins || {};
             const hands = game.hands || {};
-            container.innerHTML = odRoomPlayers(room).slice(0, 3).map(player => {
+            const celebration = odCelebrationState(room, game);
+            const lastAction = game.lastAction || {};
+            const passIsFresh = lastAction.type === 'pass' && odNow() - Number(lastAction.at || 0) < 4300;
+            container.innerHTML = odRoomPlayers(room).slice(0, 3).map((player, index) => {
                 const key = odPlayerKey(player.playerId);
                 const remaining = Array.isArray(hands[key]) ? hands[key].length : 0;
                 const score = Number(scores[key] || 0);
                 const isTurn = room.status === 'playing' && game.roundStatus === 'playing' &&
                     String(game.currentTurnId) === String(player.playerId);
-                const dominoLabel = remaining === 1 ? 'domino' : 'dominos';
-                return `<div class="online-game-player-strip-item ${isTurn ? 'turn' : ''}" title="${odEsc(player.name)} : ${remaining} ${dominoLabel}, score ${score}/3">
-                    <div class="online-game-player-strip-name">${odEsc(player.name)}</div>
-                    <div class="online-game-player-strip-stats">
-                        <span>${remaining} ${dominoLabel}</span>
-                        <span class="online-game-player-strip-score">${score}/3</span>
+                const isBoude = passIsFresh && String(lastAction.playerId) === String(player.playerId);
+                const isWinner = celebration?.remaining > 0 && String(celebration.winnerId) === String(player.playerId);
+                const isCochon = celebration?.remaining > 0 && celebration.cochonIds.some(id => String(id) === String(player.playerId));
+                const classes = [
+                    'od-player-seat', `seat-${['top', 'left', 'right'][index] || 'top'}`,
+                    isTurn ? 'is-turn' : '', isBoude ? 'is-boude' : '', isWinner ? 'is-winner' : '', isCochon ? 'is-cochon' : ''
+                ].filter(Boolean).join(' ');
+                const dominoLabel = remaining === 1 ? 'domino restant' : 'dominos restants';
+                return `<div class="${classes}" title="${odEsc(player.name)} : ${score} manche${score > 1 ? 's' : ''}, ${remaining} ${dominoLabel}">
+                    <div class="od-turn-chip">À TOI</div>
+                    <div class="od-boude-bubble">💢 BOUDÉÉÉ !</div>
+                    <div class="od-character-wrap">
+                        <div class="od-character-halo"></div>
+                        <div class="od-character-body"><span class="od-character-lapel"></span></div>
+                        ${odAvatarMarkup(player.avatar, 'od-character-head')}
+                    </div>
+                    <div class="od-seat-card">
+                        <div class="od-seat-name">${odEsc(player.name)}</div>
+                        <div class="od-seat-stats">
+                            <span class="od-seat-rounds">🏆 ${score}/3</span>
+                            <span class="od-seat-dominos">🁣 ${remaining}</span>
+                        </div>
                     </div>
                 </div>`;
             }).join('');
+        }
+
+        function odConfettiMarkup(elapsed) {
+            const colors = ['#fbbf24','#f97316','#34d399','#60a5fa','#f472b6','#fde68a','#ffffff'];
+            return Array.from({ length: 64 }, (_, index) => {
+                const x = (index * 37 + 11) % 100;
+                const duration = 2.65 + (index % 8) * .23;
+                const delay = (index % 12) * .11 - elapsed / 1000;
+                const color = colors[index % colors.length];
+                return `<span class="od-confetti-piece" style="--confetti-x:${x}%;--confetti-color:${color};--confetti-duration:${duration.toFixed(2)}s;--confetti-delay:${delay.toFixed(2)}s"></span>`;
+            }).join('');
+        }
+
+        function odRenderTableCelebration(room, game) {
+            const layer = document.getElementById('odCelebrationLayer');
+            if (!layer) return;
+            const celebration = odCelebrationState(room, game);
+            if (!celebration || celebration.remaining <= 0) {
+                if (odRenderedCelebrationKey) layer.innerHTML = '';
+                odRenderedCelebrationKey = '';
+                if (odCelebrationClearTimer) clearTimeout(odCelebrationClearTimer);
+                odCelebrationClearTimer = null;
+                return;
+            }
+
+            if (celebration.type === 'match' && celebration.cochonIds.length &&
+                !odPlayedCelebrationSounds.has(celebration.key) && odPlayOnlineSound('pig')) {
+                odPlayedCelebrationSounds.add(celebration.key);
+            }
+            if (odRenderedCelebrationKey === celebration.key) return;
+            odRenderedCelebrationKey = celebration.key;
+            const winnerName = odPlayerName(room, celebration.winnerId);
+            const royalMarkup = celebration.type === 'match' ? `<div class="od-royal-victory">
+                <span class="od-royal-crown">👑</span>
+                <div class="od-royal-title">Le Roi de la table</div>
+                <div class="od-royal-name">${odEsc(winnerName)}</div>
+            </div>` : '';
+            const pigsMarkup = celebration.cochonIds.map((playerId, index) => {
+                const seat = odSeatForPlayer(room, playerId);
+                return `<div class="od-running-pig to-${seat}" style="animation-delay:${(.15 + index * .22).toFixed(2)}s" title="Cochon pour ${odEsc(odPlayerName(room, playerId))}">🐖</div>`;
+            }).join('');
+            const me = odFindMyPlayer(room);
+            const confettiMarkup = me && String(me.playerId) === String(celebration.winnerId)
+                ? odConfettiMarkup(celebration.elapsed)
+                : '';
+            layer.innerHTML = `${confettiMarkup}${royalMarkup}${pigsMarkup}`;
+            if (odCelebrationClearTimer) clearTimeout(odCelebrationClearTimer);
+            odCelebrationClearTimer = setTimeout(() => {
+                if (odRenderedCelebrationKey !== celebration.key) return;
+                layer.innerHTML = '';
+                odRenderedCelebrationKey = '';
+                if (odCurrentRoom?.game) odRenderTablePlayers(odCurrentRoom, odCurrentRoom.game);
+            }, celebration.remaining + 60);
         }
 
         function odSvgPipsMarkup(value, halfCenterX) {
@@ -4557,18 +4885,46 @@
             passBtn.classList.toggle('online-hidden', game.roundStatus !== 'playing' || room.status !== 'playing');
         }
 
+        function odCelebrationActionMarkup(room, action) {
+            if (!odFindMyPlayer(room)) return '';
+            const remaining = odCelebrationWaitMs(room);
+            const seconds = Math.max(1, Math.ceil(remaining / 1000));
+            const isRematch = action === 'rematch';
+            const buttonClass = isRematch ? 'gold' : 'primary';
+            const icon = isRematch ? 'fa-rotate' : 'fa-forward-step';
+            const label = isRematch ? 'Revanche' : (action === 'replay-round' ? 'Rejouer une manche' : 'Manche suivante');
+            const waitMarkup = remaining > 0 ? `<div class="od-celebration-wait">✨ Cérémonie en cours · ${seconds} s</div>
+                <div class="od-celebration-progress"><span style="--celebration-remaining:${Math.ceil(remaining)}ms"></span></div>` : '';
+            return `${waitMarkup}<button class="online-btn ${buttonClass}" style="width:100%; margin-top:${remaining > 0 ? 9 : 14}px;" onclick="${isRematch ? 'odStartOnlineMatch(true)' : 'odStartNextRound()'}" ${remaining > 0 ? 'disabled aria-disabled="true"' : ''}><i class="fa-solid ${icon}"></i> ${remaining > 0 ? 'Patiente…' : label}</button>`;
+        }
+
+        function odScheduleCelebrationUnlock(room, game) {
+            if (odCelebrationUnlockTimer) clearTimeout(odCelebrationUnlockTimer);
+            odCelebrationUnlockTimer = null;
+            const celebration = odCelebrationState(room, game);
+            if (!celebration || celebration.remaining <= 0) return;
+            odCelebrationUnlockTimer = setTimeout(() => {
+                const current = odCurrentRoom;
+                if (!current?.game || current.code !== room.code) return;
+                odRenderRoundResult(current, current.game);
+                odRenderTableCelebration(current, current.game);
+                odRenderTablePlayers(current, current.game);
+            }, celebration.remaining + 80);
+        }
+
         function odRenderRoundResult(room, game) {
             const container = document.getElementById('odRoundResult');
             if (!container) return;
+            odScheduleCelebrationUnlock(room, game);
             if (room.status === 'finished' && game.matchResult) {
                 const result = game.matchResult;
                 if (result.type === 'victory') {
                     const winner = odPlayerName(room, result.winnerId);
                     const cochons = (result.cochonIds || []).map(id => odPlayerName(room, id));
-                    container.innerHTML = `<div class="online-result-card"><div class="online-result-icon">🏆</div><div class="online-result-title">${odEsc(winner)} gagne la partie</div><div class="online-result-copy">Score final : ${odScoreText(room, result.scores)}${cochons.length ? `<br>🐷 Cochon${cochons.length > 1 ? 's' : ''} : <strong>${cochons.map(odEsc).join(' et ')}</strong>` : ''}</div>${odFindMyPlayer(room) ? '<button class="online-btn gold" style="width:100%; margin-top:14px;" onclick="odStartOnlineMatch(true)"><i class="fa-solid fa-rotate"></i> Revanche</button>' : ''}</div>`;
+                    container.innerHTML = `<div class="online-result-card"><div class="online-result-icon">🏆</div><div class="online-result-title">${odEsc(winner)} gagne la partie</div><div class="online-result-copy">Score final : ${odScoreText(room, result.scores)}${cochons.length ? `<br>🐷 Cochon${cochons.length > 1 ? 's' : ''} : <strong>${cochons.map(odEsc).join(' et ')}</strong>` : ''}</div>${odCelebrationActionMarkup(room, 'rematch')}</div>`;
                 } else {
                     const saved = odPlayerName(room, result.savedId);
-                    container.innerHTML = `<div class="online-result-card"><div class="online-result-icon">🛡️</div><div class="online-result-title">Partie annulée</div><div class="online-result-copy">Les trois joueurs ont gagné au moins une manche.<br><strong>${odEsc(saved)}</strong>, gagnant de la dernière manche, est sauvé.</div>${odFindMyPlayer(room) ? '<button class="online-btn gold" style="width:100%; margin-top:14px;" onclick="odStartOnlineMatch(true)"><i class="fa-solid fa-rotate"></i> Revanche</button>' : ''}</div>`;
+                    container.innerHTML = `<div class="online-result-card"><div class="online-result-icon">🛡️</div><div class="online-result-title">Partie annulée</div><div class="online-result-copy">Les trois joueurs ont gagné au moins une manche.<br><strong>${odEsc(saved)}</strong>, gagnant de la dernière manche, est sauvé.</div>${odCelebrationActionMarkup(room, 'rematch')}</div>`;
                 }
                 return;
             }
@@ -4580,9 +4936,9 @@
             if (result.type === 'winner') {
                 const winner = odPlayerName(room, result.winnerId);
                 const reason = result.cause === 'blocked' ? `Jeu bloqué : ${result.points} point${result.points > 1 ? 's' : ''} en main.` : 'Tous ses dominos ont été posés.';
-                container.innerHTML = `<div class="online-round-message"><strong>🏅 ${odEsc(winner)} gagne la manche</strong><span class="online-help">${odEsc(reason)}</span>${odFindMyPlayer(room) ? '<button class="online-btn primary" style="width:100%; margin-top:12px;" onclick="odStartNextRound()"><i class="fa-solid fa-forward-step"></i> Manche suivante</button>' : ''}</div>`;
+                container.innerHTML = `<div class="online-round-message"><strong>🏅 ${odEsc(winner)} gagne la manche</strong><span class="online-help">${odEsc(reason)}</span>${odCelebrationActionMarkup(room, 'next-round')}</div>`;
             } else {
-                container.innerHTML = `<div class="online-round-message"><strong>🚫 Manche annulée</strong><span class="online-help">${odEsc(result.reason || 'Aucun joueur ne marque.')}</span>${odFindMyPlayer(room) ? '<button class="online-btn primary" style="width:100%; margin-top:12px;" onclick="odStartNextRound()"><i class="fa-solid fa-forward-step"></i> Rejouer une manche</button>' : ''}</div>`;
+                container.innerHTML = `<div class="online-round-message"><strong>🚫 Manche annulée</strong><span class="online-help">${odEsc(result.reason || 'Aucun joueur ne marque.')}</span>${odCelebrationActionMarkup(room, 'replay-round')}</div>`;
             }
         }
 
