@@ -1582,6 +1582,8 @@
         @keyframes odReactionImpact { 0%{opacity:0;transform:translate(-50%,-8px) scale(.3)} 12%,76%{opacity:1;transform:translate(-50%,0) scale(1)} 86%{transform:translate(-50%,0) scale(1.08) rotate(-2deg)} 100%{opacity:0;transform:translate(-50%,10px) scale(.82)} }
 
         .od-celebration-layer { position:absolute; inset:0; z-index:24; overflow:hidden; pointer-events:none; border-radius:inherit; }
+        .od-final-flash { position:absolute; inset:0; z-index:12; background:#fff; opacity:0; animation:odCameraFlash 1.4s ease-out 7.8s 1; }
+        .od-final-photo-label { position:absolute; z-index:13; left:50%; bottom:17px; transform:translateX(-50%); padding:6px 13px; border-radius:999px; color:#fff5c2; background:rgba(7,12,20,.82); border:1px solid #fbbf24; font-size:.62rem; font-weight:950; letter-spacing:.5px; opacity:0; animation:odPhotoLabel 1.9s ease 7.95s forwards; }
         .od-confetti-piece {
             position:absolute; top:-24px; left:var(--confetti-x); width:9px; height:17px; border-radius:2px;
             background:var(--confetti-color); box-shadow:0 0 7px color-mix(in srgb,var(--confetti-color) 65%,transparent);
@@ -1615,6 +1617,8 @@
         .od-celebration-progress { width:100%; height:5px; margin-top:7px; overflow:hidden; border-radius:999px; background:rgba(255,255,255,.08); }
         .od-celebration-progress > span { display:block; width:100%; height:100%; transform-origin:left; background:linear-gradient(90deg,#10b981,#fbbf24,#f97316); animation:odCelebrationProgress var(--celebration-remaining) linear forwards; }
         @keyframes odCelebrationProgress { from{transform:scaleX(1)} to{transform:scaleX(0)} }
+        @keyframes odCameraFlash { 0%,100%{opacity:0} 8%{opacity:.94} 26%{opacity:.08} 38%{opacity:.68} 58%{opacity:0} }
+        @keyframes odPhotoLabel { 0%{opacity:0;transform:translate(-50%,8px)} 25%,80%{opacity:1;transform:translate(-50%,0)} 100%{opacity:0;transform:translate(-50%,-4px)} }
         .online-identity-summary { display:flex; align-items:center; gap:11px; min-height:58px; padding:9px 11px; border-radius:13px; background:rgba(16,185,129,.075); border:1px solid rgba(16,185,129,.18); }
         .online-identity-avatar { width:40px; height:40px; flex:0 0 40px; border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); font-size:1.2rem; }
         .online-identity-avatar img { width:100%; height:100%; object-fit:cover; }
@@ -1744,6 +1748,169 @@
             .online-summary-card { height:360px; }
         }
 
+        /* ========== PERSONNAGES 2,5D — CALQUE VISUEL UNIQUEMENT ========== */
+        .od-character-wrap {
+            perspective:180px; animation:odIdleBreath 3.8s ease-in-out infinite;
+            transform-style:preserve-3d;
+        }
+        .od-player-seat.idle-1 .od-character-wrap { animation-delay:-1.2s; animation-duration:4.3s; }
+        .od-player-seat.idle-2 .od-character-wrap { animation-delay:-2.35s; animation-duration:3.35s; }
+        .od-character-shadow {
+            position:absolute; left:50%; bottom:-1px; width:54px; height:10px; transform:translateX(-50%);
+            border-radius:50%; background:rgba(0,0,0,.5); filter:blur(3px); opacity:.72;
+        }
+        .od-character-body { overflow:visible; background:linear-gradient(135deg,var(--od-jacket-light,#374b68),var(--od-jacket,#111827) 58%,#05070d); }
+        .od-character-body::before,.od-character-body::after { display:none; }
+        .od-character-shirt {
+            position:absolute; left:50%; top:3px; width:18px; height:25px; transform:translateX(-50%);
+            clip-path:polygon(0 0,50% 28%,100% 0,76% 100%,24% 100%);
+            background:linear-gradient(145deg,#fff8e7,#cfaa58); opacity:.96;
+        }
+        .od-character-lapel { z-index:2; width:30px; height:25px; background:linear-gradient(145deg,var(--od-accent,#f8df91),#9a630b 76%); }
+        .od-character-badge {
+            position:absolute; z-index:5; right:4px; top:11px; width:14px; height:14px; border-radius:50%; overflow:hidden;
+            display:flex; align-items:center; justify-content:center; background:#111827; border:1px solid #f8d66a; font-size:.56rem;
+            box-shadow:0 2px 4px rgba(0,0,0,.45);
+        }
+        .od-character-badge img { width:100%; height:100%; object-fit:cover; }
+        .od-character-arm {
+            position:absolute; z-index:1; bottom:2px; width:10px; height:31px; border-radius:9px 9px 7px 7px;
+            background:linear-gradient(90deg,var(--od-jacket,#111827),var(--od-jacket-light,#374b68),#080d17);
+            border:1px solid rgba(246,211,112,.48); transform-origin:50% 7%; transition:transform .28s ease;
+        }
+        .od-character-arm.left { left:3px; transform:rotate(18deg); }
+        .od-character-arm.right { right:3px; transform:rotate(-18deg); }
+        .od-character-hand {
+            position:absolute; left:50%; bottom:-4px; width:10px; height:11px; transform:translateX(-50%); border-radius:55% 55% 48% 48%;
+            background:linear-gradient(145deg,var(--od-skin-light,#f3c7a5),var(--od-skin,#bf7f5a)); box-shadow:inset 1px 1px 2px rgba(255,255,255,.32),0 2px 3px rgba(0,0,0,.35);
+        }
+        .od-character-face {
+            position:absolute; z-index:4; top:0; left:50%; width:46px; height:46px; transform:translateX(-50%);
+            border-radius:48% 48% 46% 46%; overflow:visible; transform-origin:50% 85%;
+            background:radial-gradient(circle at 35% 23%,var(--od-skin-light,#f3c7a5),var(--od-skin,#bf7f5a) 72%,var(--od-skin-shadow,#80503a));
+            border:2px solid rgba(255,221,150,.82); box-shadow:inset 3px 2px 5px rgba(255,255,255,.2),inset -4px -4px 7px rgba(83,35,20,.22),0 5px 8px rgba(0,0,0,.45);
+            transition:transform .3s ease,filter .25s ease;
+        }
+        .od-character-hair {
+            position:absolute; z-index:6; left:2px; right:2px; top:-2px; height:15px; border-radius:50% 52% 24% 18%;
+            background:linear-gradient(145deg,var(--od-hair-light,#5d4037),var(--od-hair,#20150f) 70%);
+            box-shadow:inset 0 2px 3px rgba(255,255,255,.12);
+        }
+        .od-character-ear { position:absolute; top:19px; width:7px; height:11px; border-radius:50%; background:var(--od-skin,#bf7f5a); }
+        .od-character-ear.left { left:-4px; } .od-character-ear.right { right:-4px; }
+        .od-character-brow { position:absolute; z-index:7; top:17px; width:10px; height:2px; border-radius:2px; background:var(--od-hair,#20150f); }
+        .od-character-brow.left { left:8px; transform:rotate(-4deg); } .od-character-brow.right { right:8px; transform:rotate(4deg); }
+        .od-character-eye { position:absolute; z-index:7; top:20px; width:8px; height:6px; border-radius:50%; overflow:hidden; background:#fff; box-shadow:0 0 0 1px rgba(55,30,20,.18); }
+        .od-character-eye.left { left:9px; } .od-character-eye.right { right:9px; }
+        .od-character-pupil { position:absolute; left:3px; top:2px; width:3px; height:3px; border-radius:50%; background:#17120f; animation:odEyeTrack 7s ease-in-out infinite; }
+        .od-character-lid { position:absolute; z-index:9; inset:-1px; border-radius:50%; background:var(--od-skin,#bf7f5a); transform:scaleY(0); transform-origin:top; animation:odBlink 5.6s linear infinite; }
+        .od-character-nose { position:absolute; z-index:7; left:50%; top:25px; width:4px; height:7px; transform:translateX(-50%) skewX(-8deg); border-right:1px solid rgba(105,54,36,.45); border-bottom:1px solid rgba(105,54,36,.3); border-radius:0 0 3px 0; }
+        .od-character-mouth { position:absolute; z-index:7; left:50%; top:34px; width:11px; height:5px; transform:translateX(-50%); border-bottom:2px solid #733d37; border-radius:0 0 50% 50%; }
+        .od-character-cheek { position:absolute; z-index:6; top:29px; width:8px; height:4px; border-radius:50%; background:rgba(239,121,111,.16); filter:blur(1px); }
+        .od-character-cheek.left { left:5px; } .od-character-cheek.right { right:5px; }
+        .od-character-table-hands { position:absolute; z-index:6; left:50%; bottom:-2px; width:30px; height:8px; transform:translateX(-50%); opacity:.15; transition:opacity .25s ease,transform .25s ease; }
+        .od-character-table-hands::before,.od-character-table-hands::after { content:""; position:absolute; top:0; width:12px; height:7px; border-radius:50%; background:var(--od-skin-light,#f3c7a5); box-shadow:0 2px 3px rgba(0,0,0,.35); }
+        .od-character-table-hands::before { left:0; transform:rotate(8deg); } .od-character-table-hands::after { right:0; transform:rotate(-8deg); }
+        .od-character-logo { display:none !important; }
+        .od-player-seat.is-interactive:hover .od-character-face { filter:brightness(1.08); transform:translateX(-50%) scale(1.035); }
+        .od-player-seat.is-next .od-character-face { animation:odLookToTurn 2.4s ease-in-out infinite alternate; }
+        .od-player-seat.is-turn .od-character-wrap { animation:odCharacterReady 1.45s ease-in-out infinite; }
+        .od-player-seat.is-turn .od-character-face { transform:translateX(-50%) rotateX(-7deg) translateY(2px); }
+        .od-player-seat.is-turn .od-character-table-hands { opacity:1; transform:translateX(-50%) translateY(2px) scale(1.12); }
+        .od-player-seat.is-turn .od-character-arm.left { transform:rotate(36deg) translate(2px,1px); }
+        .od-player-seat.is-turn .od-character-arm.right { transform:rotate(-36deg) translate(-2px,1px); }
+        .od-player-seat.is-impatient .od-character-hand { animation:odFingerTap .34s ease-in-out infinite alternate; }
+        .od-player-seat.is-waiting-impatient .od-character-hand { animation:odFingerTap .46s ease-in-out infinite alternate; }
+        .od-player-seat.is-impatient .od-character-brow.left { transform:rotate(10deg); }
+        .od-player-seat.is-impatient .od-character-brow.right { transform:rotate(-10deg); }
+        .od-player-seat.is-leading .od-character-mouth { height:7px; border-bottom-width:3px; }
+        .od-player-seat.is-worried .od-character-mouth { top:37px; border-bottom:0; border-top:2px solid #733d37; border-radius:50% 50% 0 0; }
+        .od-player-seat.is-placing .od-character-arm.right { animation:odPlaceArm .95s cubic-bezier(.25,.9,.2,1) both; }
+        .od-player-seat.is-watching-play .od-character-face { animation:odWatchDomino 1.15s ease-in-out both; }
+        .od-player-seat.is-boude.variant-0 .od-character-arm.left { transform:rotate(65deg) translate(10px,-2px); }
+        .od-player-seat.is-boude.variant-0 .od-character-arm.right { transform:rotate(-65deg) translate(-10px,-2px); }
+        .od-player-seat.is-boude.variant-1 .od-character-arm.right { animation:odSoftFist .28s ease-in-out 7 alternate; }
+        .od-player-seat.is-boude.variant-2 .od-character-arm.left { transform:rotate(145deg); }
+        .od-player-seat.is-boude.variant-2 .od-character-arm.right { transform:rotate(-145deg); }
+        .od-player-seat.is-boude.variant-3 .od-character-face { animation:odShakeHead .18s linear 12; }
+        .od-player-seat.is-boude.variant-4 .od-character-table-hands { opacity:1; animation:odPushDominos .45s ease-in-out 5 alternate; }
+        .od-player-seat.is-gesture-clock .od-character-arm.left { animation:odCheckWatch .55s ease-in-out 5 alternate; }
+        .od-player-seat.is-gesture-loser .od-character-arm.right { animation:odLoserHand .48s ease-in-out 5 alternate; }
+        .od-player-seat.is-gesture-boss .od-character-wrap,.od-player-seat.is-gesture-respect .od-character-wrap { animation:odRespectBow .8s ease-in-out 3; }
+        .od-player-seat.is-gesture-applause .od-character-arm.left { animation:odClapLeft .28s ease-in-out 9 alternate; }
+        .od-player-seat.is-gesture-applause .od-character-arm.right { animation:odClapRight .28s ease-in-out 9 alternate; }
+        .od-player-seat.is-gesture-taunt .od-character-face { animation:odTaunt .72s ease-in-out 4 alternate; }
+        .od-player-seat.is-gesture-wow .od-character-arm.left,.od-player-seat.is-emotion-panic .od-character-arm.left { transform:rotate(145deg); }
+        .od-player-seat.is-gesture-wow .od-character-arm.right,.od-player-seat.is-emotion-panic .od-character-arm.right { transform:rotate(-145deg); }
+        .od-player-seat.is-emotion-cry .od-character-face,.od-player-seat.is-emotion-angry .od-character-face,.od-player-seat.is-emotion-happy .od-character-face,.od-player-seat.is-emotion-panic .od-character-face,.od-player-seat.is-emotion-doubtful .od-character-face,.od-player-seat.is-emotion-cool .od-character-face,.od-player-seat.is-emotion-pray .od-character-face { opacity:0; }
+        .od-player-seat.is-emotion-angry .od-character-arm.left { transform:rotate(55deg); } .od-player-seat.is-emotion-angry .od-character-arm.right { transform:rotate(-55deg); }
+        .od-player-seat.is-emotion-happy .od-character-wrap { animation:odBodyJump .46s ease-in-out infinite alternate; }
+        .od-player-seat.is-emotion-pray .od-character-arm.left { transform:rotate(78deg) translate(10px,-7px); } .od-player-seat.is-emotion-pray .od-character-arm.right { transform:rotate(-78deg) translate(-10px,-7px); }
+        .od-player-seat.is-winner .od-character-wrap { animation:odWinnerCelebrate .58s ease-in-out infinite alternate; }
+        .od-player-seat.is-winner .od-character-arm.left { transform:rotate(145deg); } .od-player-seat.is-winner .od-character-arm.right { transform:rotate(-145deg); }
+        .od-player-seat.is-game-winner .od-character-throne { opacity:1; transform:translate(-50%,0) scale(1); }
+        .od-character-throne { position:absolute; z-index:-1; left:50%; bottom:-5px; width:70px; height:64px; transform:translate(-50%,8px) scale(.7); opacity:0; transition:.55s ease; border-radius:30px 30px 10px 10px; background:linear-gradient(135deg,#9a3412,#6b1d0d 55%,#2f0b06); border:2px solid #fbbf24; box-shadow:0 0 22px rgba(251,191,36,.4); }
+        .od-character-crown { position:absolute; z-index:12; left:50%; top:-24px; transform:translateX(-50%) scale(0); font-size:2rem; filter:drop-shadow(0 3px 4px #000); }
+        .od-player-seat.is-game-winner .od-character-crown { animation:odSeatCrown .75s cubic-bezier(.2,1.3,.3,1) .15s forwards,odCrownShine 1.1s ease-in-out .9s infinite alternate; }
+        .od-player-seat.is-saved .od-character-hand { animation:odReliefWipe 1s ease-in-out 6; }
+        .od-player-seat.is-final-pose:not(.is-game-winner) .od-character-wrap { animation:odFinalPose 1.4s ease-in-out infinite alternate; }
+        .od-seat-chat-bubble { position:absolute; z-index:25; left:50%; bottom:-29px; max-width:150px; min-width:72px; padding:6px 8px; transform:translateX(-50%); border-radius:11px; background:#fff; color:#172033; border:2px solid #93c5fd; box-shadow:0 8px 20px rgba(0,0,0,.45); font-size:.58rem; font-weight:900; line-height:1.2; text-align:center; animation:odChatBubbleIn .25s ease-out both; }
+        .od-seat-chat-bubble::before { content:""; position:absolute; left:50%; top:-7px; width:10px; height:10px; transform:translateX(-50%) rotate(45deg); background:#fff; border-left:2px solid #93c5fd; border-top:2px solid #93c5fd; }
+        .od-player-seat.seat-top .od-seat-chat-bubble { bottom:auto; top:calc(100% + 5px); }
+        .od-player-seat.seat-left .od-seat-chat-bubble { left:100%; bottom:6px; transform:none; }
+        .od-player-seat.seat-right .od-seat-chat-bubble { left:auto; right:100%; bottom:6px; transform:none; }
+        .od-player-seat.is-chatting .od-character-face { animation:odChatTurn 1.1s ease-in-out 3 alternate; }
+        .od-player-seat.is-chat-emoji .od-character-mouth { width:15px; height:8px; }
+        .od-character-action-layer { position:absolute; inset:0; z-index:21; overflow:visible; pointer-events:none; }
+        .od-flying-domino { position:absolute; left:var(--fly-from-x); top:var(--fly-from-y); width:58px; height:31px; border-radius:7px; transform:translate(-50%,-50%) scale(.68) rotate(var(--fly-rotate,-9deg)); background:linear-gradient(145deg,#fffdf3,#e8cf8b); border:2px solid #d6a12b; box-shadow:0 8px 18px rgba(0,0,0,.52),inset 0 0 7px rgba(255,255,255,.8); animation:odDominoFly 1.02s cubic-bezier(.2,.76,.28,1) forwards; }
+        .od-flying-domino::after { content:""; position:absolute; left:50%; top:3px; bottom:3px; width:2px; transform:translateX(-50%); background:#a66c08; }
+        .od-flying-domino span { position:absolute; top:50%; transform:translate(-50%,-50%); color:#111; font-size:.7rem; font-weight:1000; } .od-flying-domino .left { left:25%; } .od-flying-domino .right { left:75%; }
+        .online-typing-status { min-height:17px; padding:2px 4px 3px; color:#93c5fd; font-size:.61rem; font-weight:800; }
+        .od-character-emotion.effect-cool { animation:odEmotionDoubtful .8s ease-in-out infinite alternate; background:radial-gradient(circle at 35% 25%,#f8fafc,#60a5fa 74%,#172554); }
+        .od-character-emotion.effect-pray { animation:odEmotionHappy .62s ease-in-out infinite alternate; background:radial-gradient(circle at 35% 25%,#fffbea,#f5c86a 72%,#7c4c0b); }
+        .od-reaction-impact.effect-applause { --reaction-color:#34d399; }
+        .od-reaction-impact.effect-respect { --reaction-color:#a7f3d0; }
+        .od-reaction-impact.effect-taunt { --reaction-color:#c084fc; }
+        .od-reaction-impact.effect-wow { --reaction-color:#38bdf8; }
+        .online-typing-status.active::after { content:" …"; display:inline-block; width:14px; overflow:hidden; vertical-align:bottom; animation:odTypingDots 1s steps(4,end) infinite; }
+        .online-lobby-chat { min-height:360px; display:flex; flex-direction:column; }
+        .online-lobby-chat .online-chat-messages { min-height:230px; max-height:330px; }
+        .od-admin-online-item { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; margin-bottom:8px; border-radius:13px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.07); }
+        .od-admin-online-main { min-width:0; } .od-admin-online-title { color:#fff; font-size:.78rem; font-weight:950; } .od-admin-online-meta { margin-top:4px; color:var(--text-muted); font-size:.66rem; }
+        .od-admin-online-actions { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
+        @keyframes odIdleBreath { 0%,100%{translate:0 0;scale:1} 50%{translate:0 -1px;scale:1.012} }
+        @keyframes odBlink { 0%,43%,46%,100%{transform:scaleY(0)} 44%,45%{transform:scaleY(1)} }
+        @keyframes odEyeTrack { 0%,20%,100%{transform:translateX(0)} 38%,49%{transform:translateX(1.5px)} 64%,74%{transform:translateX(-1.5px)} }
+        @keyframes odLookToTurn { from{transform:translateX(-50%) rotateY(-8deg)} to{transform:translateX(-50%) rotateY(8deg)} }
+        @keyframes odFingerTap { from{transform:translateX(-50%) translateY(0)} to{transform:translateX(-50%) translateY(4px)} }
+        @keyframes odPlaceArm { 0%{transform:rotate(-18deg)} 42%,68%{transform:rotate(-106deg) translate(-10px,-8px) scaleY(1.18)} 100%{transform:rotate(-18deg)} }
+        @keyframes odWatchDomino { 0%,100%{transform:translateX(-50%)} 45%,70%{transform:translateX(-50%) rotateX(-10deg) translateY(2px)} }
+        @keyframes odSoftFist { from{transform:rotate(-20deg)} to{transform:rotate(-100deg) translateY(-6px)} }
+        @keyframes odShakeHead { 0%,100%{transform:translateX(-50%) rotate(0)} 25%{transform:translateX(calc(-50% - 3px)) rotate(-5deg)} 75%{transform:translateX(calc(-50% + 3px)) rotate(5deg)} }
+        @keyframes odPushDominos { from{transform:translateX(-50%) translateY(0)} to{transform:translateX(-50%) translateY(7px) scaleX(1.2)} }
+        @keyframes odCheckWatch { from{transform:rotate(18deg)} to{transform:rotate(92deg) translate(8px,-7px)} }
+        @keyframes odLoserHand { from{transform:rotate(-18deg)} to{transform:rotate(-130deg) translate(-3px,-10px)} }
+        @keyframes odRespectBow { 0%,100%{transform:rotateX(0)} 45%,70%{transform:rotateX(18deg) translateY(4px)} }
+        @keyframes odClapLeft { from{transform:rotate(18deg)} to{transform:rotate(74deg) translate(8px,-6px)} } @keyframes odClapRight { from{transform:rotate(-18deg)} to{transform:rotate(-74deg) translate(-8px,-6px)} }
+        @keyframes odTaunt { from{transform:translateX(-50%) rotateY(-8deg)} to{transform:translateX(-50%) rotateY(8deg) translateY(-2px)} }
+        @keyframes odBodyJump { from{transform:translateY(0)} to{transform:translateY(-8px)} }
+        @keyframes odWinnerCelebrate { from{transform:translateY(0) rotate(-2deg)} to{transform:translateY(-9px) rotate(2deg)} }
+        @keyframes odSeatCrown { to{transform:translateX(-50%) scale(1)} }
+        @keyframes odReliefWipe { 0%,100%{transform:translateX(-50%)} 45%{transform:translate(5px,-29px)} }
+        @keyframes odFinalPose { from{transform:rotate(-2deg)} to{transform:rotate(2deg) translateY(-2px)} }
+        @keyframes odChatBubbleIn { from{opacity:0;scale:.45} to{opacity:1;scale:1} }
+        @keyframes odChatTurn { from{transform:translateX(-50%) rotateY(-4deg)} to{transform:translateX(-50%) rotateY(12deg)} }
+        @keyframes odDominoFly { 0%{left:var(--fly-from-x);top:var(--fly-from-y);opacity:0;transform:translate(-50%,-50%) scale(.55) rotate(-12deg)} 12%{opacity:1} 55%{left:var(--fly-mid-x);top:var(--fly-mid-y);transform:translate(-50%,-50%) scale(1.08) rotate(5deg)} 100%{left:var(--fly-to-x);top:var(--fly-to-y);opacity:0;transform:translate(-50%,-50%) scale(.82) rotate(0)} }
+        @keyframes odTypingDots { 0%{width:0} 100%{width:14px} }
+
+        @media (max-width:760px) {
+            .od-character-face { transform:translateX(-50%) scale(.86); transform-origin:50% 100%; }
+            .od-player-seat.is-turn .od-character-face { transform:translateX(-50%) scale(.86) rotateX(-7deg); }
+            .od-character-arm { height:27px; }
+            .od-seat-chat-bubble { max-width:105px; font-size:.51rem; }
+            .online-lobby-chat { min-height:330px; }
+            .od-admin-online-item { align-items:flex-start; flex-direction:column; }
+        }
     </style>
 </head>
 <body>
@@ -1910,14 +2077,19 @@
                     </div>
                 </div>
 
-                <div class="online-card" style="margin-top:16px;">
-                    <div class="online-card-title"><i class="fa-solid fa-book-open" style="color:var(--gold);"></i> Règles intégrées</div>
-                    <div class="online-rules-list">
-                        <div class="online-rule"><span>🁣</span><div>Trois joueurs, jeu double-six, sept dominos chacun et aucune pioche.</div></div>
-                        <div class="online-rule"><span>🚫</span><div>Quand personne ne peut jouer, le plus petit total en main gagne seulement s’il est strictement inférieur à 7. Une égalité au minimum ou un minimum de 7 et plus annule la manche.</div></div>
-                        <div class="online-rule"><span>🏆</span><div>Le premier joueur à remporter trois manches gagne la partie. Les adversaires restés à zéro manche prennent un cochon.</div></div>
-                        <div class="online-rule"><span>🛡️</span><div>Dès que les trois joueurs ont chacun remporté au moins une manche, la partie est annulée et le gagnant de la dernière manche est déclaré sauvé.</div></div>
+                <div class="online-card online-lobby-chat" style="margin-top:16px;">
+                    <div class="online-chat-heading">
+                        <div class="online-card-title" style="margin:0;"><i class="fa-solid fa-comments" style="color:var(--green);"></i> Discussion générale</div>
+                        <span class="online-chat-role">Salon en ligne</span>
                     </div>
+                    <div id="odLobbyChatMessages" class="online-chat-messages" aria-live="polite"><div class="online-chat-empty">Discute avec les joueurs connectés avant de créer une partie.</div></div>
+                    <div id="odLobbyTyping" class="online-typing-status" aria-live="polite"></div>
+                    <div id="odLobbyEmojiPicker" class="online-emoji-picker online-hidden" aria-label="Choisir un emoji"></div>
+                    <form id="odLobbyChatForm" class="online-chat-form" onsubmit="return odSendLobbyChatMessage(event)">
+                        <button class="online-chat-emoji" type="button" onclick="odToggleLobbyEmojiPicker()" aria-label="Ajouter un emoji">😊</button>
+                        <input id="odLobbyChatInput" class="online-chat-input" maxlength="300" autocomplete="off" placeholder="Écrire dans le salon général…" aria-label="Message général" oninput="odMarkTyping('lobby')">
+                        <button class="online-chat-send" type="submit" aria-label="Envoyer"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
                 </div>
             </section>
 
@@ -1958,6 +2130,7 @@
                         <div class="online-table">
                             <div id="odTablePlayers" class="online-table-players" aria-label="Joueurs placés autour de la table"></div>
                             <div id="odReactionLayer" class="od-reaction-layer" aria-live="polite" aria-atomic="true"></div>
+                            <div id="odCharacterActionLayer" class="od-character-action-layer" aria-hidden="true"></div>
                             <div id="odCelebrationLayer" class="od-celebration-layer" aria-hidden="true"></div>
                             <div class="online-board-scroll"><svg id="odBoard" class="online-board" viewBox="0 0 1500 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Plateau de dominos"></svg></div>
                             <div id="odHandZone" class="online-hand-zone">
@@ -1987,10 +2160,11 @@
                         <span id="odChatRole" class="online-chat-role">Joueur</span>
                     </div>
                     <div id="odChatMessages" class="online-chat-messages" aria-live="polite"><div class="online-chat-empty">Les joueurs et les spectateurs peuvent discuter ici.</div></div>
+                    <div id="odRoomTyping" class="online-typing-status" aria-live="polite"></div>
                     <div id="odEmojiPicker" class="online-emoji-picker online-hidden" aria-label="Choisir un emoji"></div>
                     <form id="odChatForm" class="online-chat-form" onsubmit="return odSendChatMessage(event)">
                         <button class="online-chat-emoji" type="button" onclick="odToggleEmojiPicker()" aria-label="Ajouter un emoji">😊</button>
-                        <input id="odChatInput" class="online-chat-input" maxlength="300" autocomplete="off" placeholder="Écrire un message…" aria-label="Message">
+                        <input id="odChatInput" class="online-chat-input" maxlength="300" autocomplete="off" placeholder="Écrire un message…" aria-label="Message" oninput="odMarkTyping('room')">
                         <button class="online-chat-send" type="submit" aria-label="Envoyer"><i class="fa-solid fa-paper-plane"></i></button>
                     </form>
                 </aside>
@@ -2043,6 +2217,18 @@
             <h2><i class="fa-solid fa-screwdriver-wrench"></i> Corriger l'Historique (Suppression)</h2>
             <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">En supprimant une manche ci-dessous, les scores, séries et cochons des joueurs associés seront nettoyés automatiquement.</p>
             <div id="adminHistoryList"></div>
+        </section>
+
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-globe" style="color:var(--green);"></i> Gérer les parties en ligne</h2>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Annule une salle bloquée ou supprime une salle terminée, sans toucher au classement des parties normales.</p>
+            <div id="odAdminRoomsList"><p style="text-align:center; color:var(--text-muted); padding:20px;">Chargement des salles…</p></div>
+        </section>
+
+        <section class="card-panel">
+            <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--blue);"></i> Historique en ligne</h2>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">La suppression recalcule automatiquement le classement en ligne et ne modifie aucun autre classement.</p>
+            <div id="odAdminHistoryList"><p style="text-align:center; color:var(--text-muted); padding:20px;">Chargement de l’historique…</p></div>
         </section>
     </main>
 
@@ -2945,6 +3131,10 @@
             });
             loadPlayerToEdit("new");
             renderAdminHistory();
+            odBindOnlineFeeds();
+            odBindLiveOnlineFeeds();
+            odRenderAdminOnlineRooms();
+            odRenderAdminOnlineHistory();
         }
 
         function loadPlayerToEdit(val) {
@@ -3133,6 +3323,7 @@
         const odInvitesRef = odRoot.child('invites');
         const odChatsRef = odRoot.child('chats');
         const odReactionsRef = odRoot.child('reactions');
+        const odTypingRef = odRoot.child('typing');
         // Une identité distincte par onglet permet notamment de tester les trois
         // joueurs sur un même navigateur. sessionStorage survit aux actualisations,
         // mais n'est pas partagé entre plusieurs onglets.
@@ -3161,6 +3352,19 @@
         let odChatMessagesCache = new Map();
         let odChatReady = false;
         let odChatAttachedAt = 0;
+        let odLobbyChatListenerRef = null;
+        let odLobbyChatMessagesCache = new Map();
+        let odTypingListenerRef = null;
+        let odLobbyTypingListenerRef = null;
+        let odTypingCache = {};
+        let odLobbyTypingCache = {};
+        let odTypingRemoveTimer = null;
+        let odSeatChatBubble = null;
+        let odSeatChatBubbleTimer = null;
+        let odCharacterClockTimer = null;
+        let odPlacementAnimationTimer = null;
+        let odLastAnimatedPlacementKey = '';
+        let odPlacementAnimationPlayerId = null;
         let odStatsCache = {};
         let odHistoryCache = [];
         let odPresenceCache = {};
@@ -3358,12 +3562,43 @@
             if (!game) return '';
             return `${room.matchId || ''}|${game.roundNumber || 0}|${game.roundStatus || ''}|${game.currentTurnId ?? ''}`;
         }
+        function odAnimateDominoPlacement(room) {
+            const key = odPlacementFeedbackKey(room);
+            if (!key || key === odLastAnimatedPlacementKey) return;
+            odLastAnimatedPlacementKey = key;
+            const action = room.game?.lastAction || {};
+            odPlacementAnimationPlayerId = action.playerId;
+            if (odCurrentRoom?.game) odRenderTablePlayers(odCurrentRoom, odCurrentRoom.game);
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                const layer = document.getElementById('odCharacterActionLayer');
+                const table = layer?.closest('.online-table');
+                const board = document.getElementById('odBoard');
+                const seat = document.querySelector(`#odTablePlayers .od-player-seat[data-player-id="${CSS.escape(String(action.playerId))}"]`);
+                const placement = [...(room.game?.board?.placements || [])].reverse().find(item => String(item.tileId) === String(action.tileId)) || (room.game?.board?.placements || []).at(-1);
+                if (!layer || !table || !board || !seat || !placement) return;
+                const tableRect = table.getBoundingClientRect(), seatRect = seat.getBoundingClientRect();
+                const point = board.createSVGPoint(); point.x = Number(placement.x ?? 750); point.y = Number(placement.y ?? 220);
+                const screenPoint = point.matrixTransform(board.getScreenCTM());
+                const fromX = seatRect.left + seatRect.width / 2 - tableRect.left;
+                const fromY = seatRect.top + 38 - tableRect.top;
+                const toX = screenPoint.x - tableRect.left, toY = screenPoint.y - tableRect.top;
+                const parsed = odParseTile(action.tileId);
+                layer.innerHTML = `<div class="od-flying-domino" style="--fly-from-x:${fromX}px;--fly-from-y:${fromY}px;--fly-mid-x:${(fromX + toX) / 2}px;--fly-mid-y:${Math.min(fromY, toY) - 30}px;--fly-to-x:${toX}px;--fly-to-y:${toY}px"><span class="left">${parsed.a}</span><span class="right">${parsed.b}</span></div>`;
+            }));
+            if (odPlacementAnimationTimer) clearTimeout(odPlacementAnimationTimer);
+            odPlacementAnimationTimer = setTimeout(() => {
+                odPlacementAnimationPlayerId = null;
+                const layer = document.getElementById('odCharacterActionLayer'); if (layer) layer.innerHTML = '';
+                if (odCurrentRoom?.game) odRenderTablePlayers(odCurrentRoom, odCurrentRoom.game);
+            }, 1120);
+        }
         function odHandleRoomFeedback(previousRoom, room, me) {
             if (!previousRoom || !room) return;
             const previousPlacementKey = odPlacementFeedbackKey(previousRoom);
             const currentPlacementKey = odPlacementFeedbackKey(room);
             if (currentPlacementKey && currentPlacementKey !== previousPlacementKey) {
                 odPlayOnlineSound('placement');
+                odAnimateDominoPlacement(room);
             }
             const activeTurn = room.status === 'playing' && room.game?.roundStatus === 'playing';
             const becameMyTurn = activeTurn && me && String(room.game.currentTurnId) === String(me.playerId) &&
@@ -3439,6 +3674,7 @@
             odRenderAuthenticatedIdentity();
             odBindOnlineFeeds();
             odBindLiveOnlineFeeds();
+            odAttachLobbyChat();
             odRenderResumeButton();
             if (odCurrentRoomCode && !odRoomListenerRef) odAttachRoom(odCurrentRoomCode, true, odRoomRole);
         }
@@ -3524,6 +3760,7 @@
                     odRoomsCache = snapshot.val() || {};
                     odRenderActiveGames();
                     odRenderInvitationsList();
+                    odRenderAdminOnlineRooms();
                 }, error => console.warn('Liste des parties :', error));
             }
             const nextInviteRef = odInvitesRef.child(odPlayerKey(profile.id));
@@ -3649,6 +3886,7 @@
                     renderCombinedDataStatus();
                     odRenderOnlineHistory();
                     odRenderOnlineRanking();
+                    odRenderAdminOnlineHistory();
                 }, err => console.error('Historique en ligne:', err));
             }
         }
@@ -3893,10 +4131,21 @@
             odCelebrationUnlockTimer = null;
             odRenderedCelebrationKey = '';
             odPlayedCelebrationSounds.clear();
+            if (odCharacterClockTimer) clearInterval(odCharacterClockTimer);
+            if (odPlacementAnimationTimer) clearTimeout(odPlacementAnimationTimer);
+            if (odSeatChatBubbleTimer) clearTimeout(odSeatChatBubbleTimer);
+            odCharacterClockTimer = null;
+            odPlacementAnimationTimer = null;
+            odSeatChatBubbleTimer = null;
+            odPlacementAnimationPlayerId = null;
+            odSeatChatBubble = null;
+            odLastAnimatedPlacementKey = '';
             const celebrationLayer = document.getElementById('odCelebrationLayer');
             if (celebrationLayer) celebrationLayer.innerHTML = '';
             const tablePlayers = document.getElementById('odTablePlayers');
             if (tablePlayers) tablePlayers.innerHTML = '';
+            const actionLayer = document.getElementById('odCharacterActionLayer');
+            if (actionLayer) actionLayer.innerHTML = '';
             odOpenActionPlayerId = null;
             odHandSuppressClickUntil = 0;
             odClearSpectatorRegistration(true);
@@ -4015,14 +4264,20 @@
             pig: { icon:'🐷', label:'Cochon !' },
             clock: { icon:'⏰', label:'On t’attend !' },
             loser: { icon:'😜', label:'Loser !' },
-            boss: { icon:'👑', label:'Tu es un boss !' }
+            boss: { icon:'👑', label:'Tu es un boss !' },
+            applause: { icon:'👏', label:'Bien joué !' },
+            respect: { icon:'🤝', label:'Respect !' },
+            taunt: { icon:'😏', label:'Provocation' },
+            wow: { icon:'🫣', label:'Quel coup !' }
         });
         const OD_SELF_EMOTIONS = Object.freeze({
             cry: { icon:'😭', label:'Je pleure' },
             angry: { icon:'😡', label:'Énervé' },
             happy: { icon:'😄', label:'Content' },
             panic: { icon:'😱', label:'En panique' },
-            doubtful: { icon:'🤔', label:'Dubitatif' }
+            doubtful: { icon:'🤔', label:'Dubitatif' },
+            cool: { icon:'😎', label:'Lunettes' },
+            pray: { icon:'🙏', label:'Croiser les doigts' }
         });
 
         function odDetachReactions() {
@@ -4069,7 +4324,9 @@
                 angry: ['😡','💢','🔥'],
                 happy: ['😄','✨','🎉'],
                 panic: ['😱','💦','❗'],
-                doubtful: ['🤔','❓','❔']
+                doubtful: ['🤔','❓','❔'],
+                cool: ['😎','✨','🕶️'],
+                pray: ['🙏','✨','🍀']
             }[effect];
             if (!content) return '';
             return `<div class="od-character-emotion effect-${effect}" aria-hidden="true"><span class="od-emotion-face">${content[0]}</span><span class="od-emotion-particle one">${content[1]}</span><span class="od-emotion-particle two">${content[2]}</span></div>`;
@@ -4081,7 +4338,7 @@
             const actions = mine ? OD_SELF_EMOTIONS : OD_OPPONENT_REACTIONS;
             const kind = mine ? 'emotion' : 'opponent';
             const title = mine ? 'Exprimer un sentiment' : `Réagir à ${player.name}`;
-            return `<div class="od-seat-action-menu" role="menu" aria-label="${odEsc(title)}" style="--action-count:${Object.keys(actions).length}">${Object.entries(actions).map(([effect, action]) => `<button type="button" class="od-seat-action-btn" role="menuitem" data-reaction-kind="${kind}" data-reaction-effect="${effect}" data-reaction-target="${odEsc(player.playerId)}" title="${odEsc(action.label)}"><span class="od-seat-action-icon">${action.icon}</span><span class="od-seat-action-label">${odEsc(action.label)}</span></button>`).join('')}</div>`;
+            return `<div class="od-seat-action-menu" role="menu" aria-label="${odEsc(title)}" style="--action-count:${mine ? 4 : 4}">${Object.entries(actions).map(([effect, action]) => `<button type="button" class="od-seat-action-btn" role="menuitem" data-reaction-kind="${kind}" data-reaction-effect="${effect}" data-reaction-target="${odEsc(player.playerId)}" title="${odEsc(action.label)}"><span class="od-seat-action-icon">${action.icon}</span><span class="od-seat-action-label">${odEsc(action.label)}</span></button>`).join('')}</div>`;
         }
 
         function odBindPlayerSeatActions(container, room, game, me) {
@@ -4197,6 +4454,119 @@
             }, fresh.remaining + 40);
         }
 
+        function odRenderChatInto(containerId, messages, emptyText = 'Aucun message pour le moment.') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            messages = [...messages].sort((a, b) => Number(a.createdAt || 0) - Number(b.createdAt || 0) || String(a.id || '').localeCompare(String(b.id || '')));
+            if (!messages.length) {
+                container.innerHTML = `<div class="online-chat-empty">${odEsc(emptyText)}<br>Commence la discussion !</div>`;
+                return;
+            }
+            container.innerHTML = messages.map(message => {
+                const createdAt = Number(message.createdAt || 0);
+                const time = Number.isFinite(createdAt) && createdAt > 0 ? new Date(createdAt).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' }) : '';
+                const mine = message.senderToken === odClientToken;
+                return `<div class="online-chat-message ${mine ? 'mine' : ''} ${message.pending ? 'pending' : ''}"><div class="online-chat-meta"><span class="online-chat-author">${odEsc(message.name || 'Joueur')}</span><span>${message.pending ? 'Envoi…' : odEsc(time)}</span></div><div class="online-chat-text">${odEsc(message.text || '')}</div></div>`;
+            }).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function odShowSeatChatBubble(message) {
+            if (!message?.senderId || !odCurrentRoom?.game || !odRoomPlayers(odCurrentRoom).some(player => String(player.playerId) === String(message.senderId))) return;
+            odSeatChatBubble = { playerId:message.senderId, text:String(message.text || '').slice(0, 90), at:odNow() };
+            if (odSeatChatBubbleTimer) clearTimeout(odSeatChatBubbleTimer);
+            odRenderTablePlayers(odCurrentRoom, odCurrentRoom.game);
+            odSeatChatBubbleTimer = setTimeout(() => {
+                odSeatChatBubble = null;
+                if (odCurrentRoom?.game) odRenderTablePlayers(odCurrentRoom, odCurrentRoom.game);
+            }, 4300);
+        }
+
+        function odAttachLobbyChat() {
+            if (odLobbyChatListenerRef) return;
+            odRenderLobbyEmojiPicker();
+            odLobbyChatMessagesCache = new Map();
+            odLobbyChatListenerRef = odChatsRef.child('GENERAL').limitToLast(80);
+            const update = snapshot => {
+                odLobbyChatMessagesCache.set(snapshot.key, { id:snapshot.key, ...(snapshot.val() || {}) });
+                odRenderChatInto('odLobbyChatMessages', [...odLobbyChatMessagesCache.values()], 'Aucun message dans le salon général.');
+            };
+            const remove = snapshot => { odLobbyChatMessagesCache.delete(snapshot.key); odRenderChatInto('odLobbyChatMessages', [...odLobbyChatMessagesCache.values()]); };
+            odLobbyChatListenerRef.on('child_added', update);
+            odLobbyChatListenerRef.on('child_changed', update);
+            odLobbyChatListenerRef.on('child_removed', remove);
+            odLobbyTypingListenerRef = odTypingRef.child('GENERAL');
+            odLobbyTypingListenerRef.on('value', snapshot => { odLobbyTypingCache = snapshot.val() || {}; odRenderTypingStatus('lobby'); });
+        }
+
+        function odRenderLobbyEmojiPicker() {
+            const picker = document.getElementById('odLobbyEmojiPicker');
+            if (!picker || picker.childElementCount) return;
+            const emojis = ['😀','😂','😍','😎','🥳','👏','👍','👎','🙏','🔥','🏆','🐷','🎯','🁣','❤️','😜'];
+            picker.innerHTML = emojis.map(emoji => `<button type="button" class="online-emoji-choice" data-lobby-emoji="${odEsc(emoji)}">${odEsc(emoji)}</button>`).join('');
+            picker.querySelectorAll('[data-lobby-emoji]').forEach(button => button.addEventListener('click', () => odInsertLobbyChatEmoji(button.dataset.lobbyEmoji || '')));
+        }
+
+        function odToggleLobbyEmojiPicker() { odRenderLobbyEmojiPicker(); document.getElementById('odLobbyEmojiPicker')?.classList.toggle('online-hidden'); }
+        function odInsertLobbyChatEmoji(emoji) {
+            const input = document.getElementById('odLobbyChatInput');
+            if (!input || !emoji) return;
+            const start = Number.isFinite(input.selectionStart) ? input.selectionStart : input.value.length;
+            input.value = `${input.value.slice(0, start)}${emoji}${input.value.slice(Number.isFinite(input.selectionEnd) ? input.selectionEnd : start)}`.slice(0, 300);
+            input.setSelectionRange(start + emoji.length, start + emoji.length);
+            document.getElementById('odLobbyEmojiPicker')?.classList.add('online-hidden');
+            input.focus();
+            odMarkTyping('lobby');
+        }
+
+        function odSendLobbyChatMessage(event) {
+            event?.preventDefault();
+            const input = document.getElementById('odLobbyChatInput');
+            const profile = clubGetAuthenticatedProfile();
+            const textValue = String(input?.value || '').trim().slice(0, 300);
+            if (!profile || !textValue) return false;
+            if (input) input.value = '';
+            odClearTyping('lobby');
+            const messageRef = odChatsRef.child('GENERAL').push();
+            const payload = { messageId:messageRef.key, senderId:profile.id, senderToken:odClientToken, name:profile.name, avatar:profile.avatar || '❓', role:'lobby', text:textValue, createdAt:firebase.database.ServerValue.TIMESTAMP };
+            odLobbyChatMessagesCache.set(messageRef.key, { ...payload, id:messageRef.key, createdAt:odNow(), pending:true });
+            odRenderChatInto('odLobbyChatMessages', [...odLobbyChatMessagesCache.values()]);
+            odWithTimeout(messageRef.set(payload), 10000, 'Le message met trop de temps à partir.').catch(error => {
+                odLobbyChatMessagesCache.delete(messageRef.key);
+                if (input && !input.value.trim()) input.value = textValue;
+                showToast(odFirebaseErrorMessage(error, 'Message non envoyé'), 'error');
+            });
+            return false;
+        }
+
+        function odTypingPath(scope) {
+            if (scope === 'lobby') return 'GENERAL';
+            return odChatRoomCode || odCurrentRoomCode || '';
+        }
+        function odMarkTyping(scope) {
+            const profile = clubGetAuthenticatedProfile();
+            const path = odTypingPath(scope);
+            if (!profile || !path) return;
+            const ref = odTypingRef.child(`${path}/${odClientToken}`);
+            ref.set({ playerId:profile.id, name:profile.name, at:firebase.database.ServerValue.TIMESTAMP }).then(() => ref.onDisconnect().remove()).catch(() => {});
+            if (odTypingRemoveTimer) clearTimeout(odTypingRemoveTimer);
+            odTypingRemoveTimer = setTimeout(() => ref.remove().catch(() => {}), 1800);
+        }
+        function odClearTyping(scope) {
+            if (odTypingRemoveTimer) clearTimeout(odTypingRemoveTimer);
+            odTypingRemoveTimer = null;
+            const path = odTypingPath(scope);
+            if (path) odTypingRef.child(`${path}/${odClientToken}`).remove().catch(() => {});
+        }
+        function odRenderTypingStatus(scope) {
+            const cache = scope === 'lobby' ? odLobbyTypingCache : odTypingCache;
+            const target = document.getElementById(scope === 'lobby' ? 'odLobbyTyping' : 'odRoomTyping');
+            if (!target) return;
+            const names = Object.entries(cache || {}).filter(([token, item]) => token !== odClientToken && item && odNow() - Number(item.at || 0) < 6000).map(([, item]) => item.name).filter(Boolean);
+            target.textContent = names.length ? `${names.slice(0, 2).join(' et ')} ${names.length > 1 ? 'écrivent' : 'écrit'}` : '';
+            target.classList.toggle('active', names.length > 0);
+        }
+
         function odAttachChat(roomCode) {
             roomCode = String(roomCode || '').toUpperCase();
             if (!roomCode || (odChatListenerRef && odChatRoomCode === roomCode)) return;
@@ -4216,6 +4586,7 @@
                 if (notify && odChatReady && !existed && message.senderToken !== odClientToken &&
                     createdAt >= odChatAttachedAt - 1500) {
                     odPlayOnlineSound('message');
+                    odShowSeatChatBubble(message);
                 }
             };
             const removeMessage = snapshot => {
@@ -4235,15 +4606,22 @@
                     if (odChatRoomCode === roomCode) odChatReady = true;
                 }, 160);
             }).catch(() => {});
+            odTypingListenerRef = odTypingRef.child(roomCode);
+            odTypingListenerRef.on('value', snapshot => { odTypingCache = snapshot.val() || {}; odRenderTypingStatus('room'); });
         }
 
         function odDetachChat() {
             if (odChatListenerRef) odChatListenerRef.off();
             odChatListenerRef = null;
+            odClearTyping('room');
             odChatRoomCode = '';
             odChatMessagesCache = new Map();
             odChatReady = false;
             odChatAttachedAt = 0;
+            if (odTypingListenerRef) odTypingListenerRef.off();
+            odTypingListenerRef = null;
+            odTypingCache = {};
+            odRenderTypingStatus('room');
             const container = document.getElementById('odChatMessages');
             if (container) container.innerHTML = '<div class="online-chat-empty">Les joueurs et les spectateurs peuvent discuter ici.</div>';
             const input = document.getElementById('odChatInput');
@@ -4277,20 +4655,7 @@
         }
 
         function odRenderChatMessages(messages) {
-            const container = document.getElementById('odChatMessages');
-            if (!container) return;
-            messages = [...messages].sort((a, b) => Number(a.createdAt || 0) - Number(b.createdAt || 0) || String(a.id || '').localeCompare(String(b.id || '')));
-            if (!messages.length) {
-                container.innerHTML = '<div class="online-chat-empty">Aucun message pour le moment.<br>Commence la discussion !</div>';
-                return;
-            }
-            container.innerHTML = messages.map(message => {
-                const createdAt = Number(message.createdAt || 0);
-                const time = Number.isFinite(createdAt) && createdAt > 0 ? new Date(createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '';
-                const mine = message.senderToken === odClientToken;
-                return `<div class="online-chat-message ${mine ? 'mine' : ''} ${message.pending ? 'pending' : ''}"><div class="online-chat-meta"><span class="online-chat-author">${odEsc(message.name || 'Joueur')}</span><span>${message.pending ? 'Envoi…' : odEsc(time)}</span></div><div class="online-chat-text">${odEsc(message.text || '')}</div></div>`;
-            }).join('');
-            container.scrollTop = container.scrollHeight;
+            odRenderChatInto('odChatMessages', messages);
         }
 
         function odSendChatMessage(event) {
@@ -4302,6 +4667,7 @@
             const roomCode = odChatRoomCode || odCurrentRoomCode;
             if (!profile || !roomCode || !textValue) return false;
             if (input) input.value = '';
+            odClearTyping('room');
             document.getElementById('odEmojiPicker')?.classList.add('online-hidden');
             try {
                 const messageRef = odChatsRef.child(roomCode).push();
@@ -4315,6 +4681,7 @@
                     text: textValue,
                     createdAt: firebase.database.ServerValue.TIMESTAMP
                 };
+                odShowSeatChatBubble({ ...payload, text:textValue });
                 odChatMessagesCache.set(messageRef.key, { ...payload, id: messageRef.key, createdAt: odNow(), pending: true });
                 odRenderChatMessages([...odChatMessagesCache.values()]);
                 odWithTimeout(messageRef.set(payload), 10000, 'Le message met trop de temps à partir.').catch(error => {
@@ -5052,9 +5419,47 @@
             odRenderRoundResult(room, game);
         }
 
+        function odCharacterHash(value) {
+            return [...String(value || '')].reduce((hash, char) => ((hash * 31) + char.charCodeAt(0)) >>> 0, 17);
+        }
+
+        function odCharacterStyle(player) {
+            const hash = odCharacterHash(player.playerId ?? player.name);
+            const skins = [
+                ['#ffd8b8','#c98d68','#80503a'], ['#efc09d','#b87650','#74432f'], ['#c98b64','#915735','#58301f'],
+                ['#a96d48','#724126','#442414'], ['#f1c6a7','#bc805c','#744531']
+            ];
+            const jackets = [['#354b6a','#111827','#f8df91'],['#30554f','#102a26','#6ee7b7'],['#5a3d65','#25132e','#d8b4fe'],['#604632','#2b1d12','#fdba74'],['#3d4862','#171e31','#93c5fd']];
+            const hairs = [['#5d4037','#1f130d'],['#876342','#2d1d11'],['#2f3037','#0b0d11'],['#855b38','#3b2414']];
+            const skin = skins[hash % skins.length], jacket = jackets[(hash >>> 3) % jackets.length], hair = hairs[(hash >>> 6) % hairs.length];
+            return `--od-skin-light:${skin[0]};--od-skin:${skin[1]};--od-skin-shadow:${skin[2]};--od-jacket-light:${jacket[0]};--od-jacket:${jacket[1]};--od-accent:${jacket[2]};--od-hair-light:${hair[0]};--od-hair:${hair[1]}`;
+        }
+
+        function odCharacterMarkup(player, emotion, isGameWinner = false) {
+            return `<div class="od-character-wrap" style="${odCharacterStyle(player)}">
+                <div class="od-character-halo"></div><div class="od-character-shadow"></div>
+                <div class="od-character-throne"></div><div class="od-character-crown">${isGameWinner ? '👑' : ''}</div>
+                <div class="od-character-body"><span class="od-character-shirt"></span><span class="od-character-lapel"></span><span class="od-character-badge">${odAvatarMarkup(player.avatar, '')}</span></div>
+                <span class="od-character-arm left"><span class="od-character-hand"></span></span><span class="od-character-arm right"><span class="od-character-hand"></span></span>
+                <div class="od-character-face"><span class="od-character-ear left"></span><span class="od-character-ear right"></span><span class="od-character-hair"></span><span class="od-character-brow left"></span><span class="od-character-brow right"></span><span class="od-character-eye left"><span class="od-character-pupil"></span><span class="od-character-lid"></span></span><span class="od-character-eye right"><span class="od-character-pupil"></span><span class="od-character-lid"></span></span><span class="od-character-nose"></span><span class="od-character-mouth"></span><span class="od-character-cheek left"></span><span class="od-character-cheek right"></span></div>
+                <div class="od-character-table-hands"></div>${emotion ? odEmotionMarkup(emotion) : ''}
+            </div>`;
+        }
+
+        function odEnsureCharacterClock(room, game) {
+            if (room.status === 'playing' && game.roundStatus === 'playing') {
+                if (!odCharacterClockTimer) odCharacterClockTimer = setInterval(() => {
+                    if (odCurrentRoom?.game) odRenderTablePlayers(odCurrentRoom, odCurrentRoom.game);
+                }, 1200);
+            } else if (odCharacterClockTimer) {
+                clearInterval(odCharacterClockTimer); odCharacterClockTimer = null;
+            }
+        }
+
         function odRenderTablePlayers(room, game) {
             const container = document.getElementById('odTablePlayers');
             if (!container) return;
+            odEnsureCharacterClock(room, game);
             const scores = game.roundWins || {};
             const hands = game.hands || {};
             const celebration = odCelebrationState(room, game);
@@ -5062,7 +5467,12 @@
             const passIsFresh = lastAction.type === 'pass' && odNow() - Number(lastAction.at || 0) < 4300;
             const me = odFindMyPlayer(room);
             const activeReaction = odFreshReaction();
-            container.innerHTML = odRoomPlayers(room).slice(0, 3).map((player, index) => {
+            const roomPlayers = odRoomPlayers(room).slice(0, 3);
+            const currentIndex = roomPlayers.findIndex(player => String(player.playerId) === String(game.currentTurnId));
+            const nextTurnId = currentIndex >= 0 ? roomPlayers[(currentIndex + 1) % roomPlayers.length]?.playerId : null;
+            const maxScore = Math.max(0, ...Object.values(scores).map(Number));
+            const turnAge = odNow() - Number(lastAction.at || 0);
+            container.innerHTML = roomPlayers.map((player, index) => {
                 const key = odPlayerKey(player.playerId);
                 const remaining = Array.isArray(hands[key]) ? hands[key].length : 0;
                 const score = Number(scores[key] || 0);
@@ -5071,26 +5481,36 @@
                 const isBoude = passIsFresh && String(lastAction.playerId) === String(player.playerId);
                 const isWinner = celebration?.remaining > 0 && String(celebration.winnerId) === String(player.playerId);
                 const isCochon = celebration?.remaining > 0 && celebration.cochonIds.some(id => String(id) === String(player.playerId));
+                const isGameWinner = room.status === 'finished' && game.matchResult?.type === 'victory' && String(game.matchResult.winnerId) === String(player.playerId);
+                const isSaved = room.status === 'finished' && game.matchResult?.type !== 'victory' && String(game.matchResult?.savedId) === String(player.playerId);
                 const emotion = activeReaction?.kind === 'emotion' && String(activeReaction.targetId) === String(player.playerId)
                     ? activeReaction.effect : '';
+                const isGestureSender = activeReaction?.kind === 'opponent' && String(activeReaction.senderId) === String(player.playerId);
+                const gesture = isGestureSender ? activeReaction.effect : '';
+                const isChatting = odSeatChatBubble && odNow() - Number(odSeatChatBubble.at || 0) < 4500 && String(odSeatChatBubble.playerId) === String(player.playerId);
+                const chatHasEmoji = isChatting && /[\p{Extended_Pictographic}]/u.test(odSeatChatBubble.text || '');
+                const passVariant = isBoude ? Math.abs(Number(lastAction.at || 0)) % 5 : 0;
                 const menuOpen = me && String(odOpenActionPlayerId) === String(player.playerId) &&
                     room.status === 'playing' && game.roundStatus === 'playing';
                 const classes = [
                     'od-player-seat', `seat-${['top', 'right', 'left'][index] || 'top'}`,
+                    `idle-${odCharacterHash(player.playerId) % 3}`,
                     isTurn ? 'is-turn' : '', isBoude ? 'is-boude' : '', isWinner ? 'is-winner' : '', isCochon ? 'is-cochon' : '',
-                    emotion ? `is-emotion-${emotion}` : '', menuOpen ? 'is-menu-open' : ''
+                    isTurn && turnAge > 12000 ? 'is-impatient' : '', String(nextTurnId) === String(player.playerId) ? 'is-next' : '',
+                    !isTurn && turnAge > 16000 ? 'is-waiting-impatient' : '',
+                    odPlacementAnimationPlayerId !== null && String(odPlacementAnimationPlayerId) === String(player.playerId) ? 'is-placing' : '',
+                    odPlacementAnimationPlayerId !== null && String(odPlacementAnimationPlayerId) !== String(player.playerId) ? 'is-watching-play' : '',
+                    score === maxScore && score > 0 ? 'is-leading' : '', score === 0 && Number(game.roundNumber || 1) > 1 ? 'is-worried' : '',
+                    isBoude ? `variant-${passVariant}` : '', emotion ? `is-emotion-${emotion}` : '', gesture ? `is-gesture-${gesture}` : '',
+                    isChatting ? 'is-chatting' : '', chatHasEmoji ? 'is-chat-emoji' : '', isGameWinner ? 'is-game-winner' : '', isSaved ? 'is-saved' : '',
+                    room.status === 'finished' ? 'is-final-pose' : '', menuOpen ? 'is-menu-open' : ''
                 ].filter(Boolean).join(' ');
                 const dominoLabel = remaining === 1 ? 'domino restant' : 'dominos restants';
                 const clickHint = me ? (String(me.playerId) === String(player.playerId) ? 'Exprimer un sentiment' : `Réagir à ${player.name}`) : '';
                 return `<div class="${classes}" data-player-id="${odEsc(player.playerId)}" aria-label="${odEsc(player.name)} : ${clickHint}" title="${odEsc(player.name)} : ${score} manche${score > 1 ? 's' : ''}, ${remaining} ${dominoLabel}${clickHint ? ` · ${clickHint}` : ''}">
                     <div class="od-turn-chip">À TOI</div>
                     <div class="od-boude-bubble">💢 BOUDÉÉÉ !</div>
-                    <div class="od-character-wrap">
-                        <div class="od-character-halo"></div>
-                        <div class="od-character-body"><span class="od-character-lapel"></span></div>
-                        ${odAvatarMarkup(player.avatar, 'od-character-head od-character-logo')}
-                        ${emotion ? odEmotionMarkup(emotion) : ''}
-                    </div>
+                    ${odCharacterMarkup(player, emotion, isGameWinner)}
                     <div class="od-seat-card">
                         <div class="od-seat-name">${odEsc(player.name)}</div>
                         <div class="od-seat-stats">
@@ -5098,6 +5518,7 @@
                             <span class="od-seat-dominos">🁣 ${remaining}</span>
                         </div>
                     </div>
+                    ${isChatting ? `<div class="od-seat-chat-bubble">${odEsc(odSeatChatBubble.text)}</div>` : ''}
                     ${menuOpen ? odSeatActionMenuMarkup(player, me) : ''}
                 </div>`;
             }).join('');
@@ -5147,7 +5568,8 @@
             const confettiMarkup = me && String(me.playerId) === String(celebration.winnerId)
                 ? odConfettiMarkup(celebration.elapsed)
                 : '';
-            layer.innerHTML = `${confettiMarkup}${royalMarkup}${pigsMarkup}`;
+            const photoMarkup = celebration.type === 'match' ? '<div class="od-final-flash"></div><div class="od-final-photo-label">📸 Pose souvenir</div>' : '';
+            layer.innerHTML = `${confettiMarkup}${royalMarkup}${pigsMarkup}${photoMarkup}`;
             if (odCelebrationClearTimer) clearTimeout(odCelebrationClearTimer);
             odCelebrationClearTimer = setTimeout(() => {
                 if (odRenderedCelebrationKey !== celebration.key) return;
@@ -5373,6 +5795,7 @@
 
         function odCelebrationActionMarkup(room, action) {
             if (!odFindMyPlayer(room)) return '';
+            if (action === 'rematch') return '<div class="od-celebration-wait">Partie terminée · chacun peut quitter la salle lorsqu’il le souhaite.</div>';
             const remaining = odCelebrationWaitMs(room);
             const seconds = Math.max(1, Math.ceil(remaining / 1000));
             const isRematch = action === 'rematch';
@@ -5612,6 +6035,101 @@
                 const scoreText = (h.players || []).map(p => `${p.name} ${Number(h.scores?.[odPlayerKey(p.playerId)] || 0)}`).join(' · ');
                 return `<div class="online-history-item"><div class="online-history-top"><span>${odEsc(date)}</span><span>Salle ${odEsc(h.roomCode || '-----')}</span></div><div class="online-history-result">${resultText}<br><span style="color:var(--text-muted); font-size:.7rem;">${odEsc(scoreText)}</span></div></div>`;
             }).join('');
+        }
+
+        function odRenderAdminOnlineRooms() {
+            const container = document.getElementById('odAdminRoomsList');
+            if (!container) return;
+            const rooms = Object.values(odRoomsCache || {}).filter(Boolean).sort((a, b) => Number(b.updatedAt || b.createdAt || 0) - Number(a.updatedAt || a.createdAt || 0));
+            if (!rooms.length) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:20px;">Aucune salle en ligne.</p>';
+                return;
+            }
+            container.innerHTML = rooms.map(room => {
+                const names = odRoomPlayers(room).map(player => player.name).join(', ') || 'Aucun joueur';
+                const date = new Date(Number(room.updatedAt || room.createdAt || odNow())).toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+                return `<div class="od-admin-online-item"><div class="od-admin-online-main"><div class="od-admin-online-title">Salle ${odEsc(room.code || '-----')} · ${odEsc(odStatusText(room.status))}</div><div class="od-admin-online-meta">${odEsc(names)} · Manche ${Number(room.game?.roundNumber || 0)} · ${odEsc(date)}</div></div><div class="od-admin-online-actions"><button class="btn-danger" onclick="odAdminDeleteRoom('${odEsc(room.code)}','${odEsc(room.status)}')"><i class="fa-solid fa-${room.status === 'finished' ? 'trash' : 'ban'}"></i> ${room.status === 'finished' ? 'Supprimer' : 'Annuler'}</button></div></div>`;
+            }).join('');
+        }
+
+        async function odAdminDeleteRoom(roomCode, status) {
+            if (!isAdminUnlocked) return;
+            const room = odRoomsCache?.[roomCode] || null;
+            const matchId = room?.matchId || '';
+            const verb = status === 'finished' ? 'supprimer cette partie terminée' : 'annuler et supprimer cette partie en ligne';
+            const consequence = status === 'finished' && matchId
+                ? 'Son historique et son influence sur le classement en ligne seront également supprimés.'
+                : 'Aucun résultat déjà enregistré ne sera modifié.';
+            if (!confirm(`Veux-tu vraiment ${verb} ?\n\n${consequence}`)) return;
+            try {
+                const deletions = [
+                    odRoomsRef.child(roomCode).remove(), odChatsRef.child(roomCode).remove(),
+                    odReactionsRef.child(roomCode).remove(), odTypingRef.child(roomCode).remove()
+                ];
+                if (status === 'finished' && matchId) deletions.push(odHistoryRef.child(matchId).remove());
+                await Promise.all(deletions);
+                if (status === 'finished' && matchId) await odRebuildOnlineStatsFromFirebase();
+                showToast(status === 'finished' && matchId ? 'Partie, historique et classement en ligne corrigés.' : (status === 'finished' ? 'Salle en ligne supprimée.' : 'Partie en ligne annulée.'), 'success');
+            } catch (error) {
+                showToast(odFirebaseErrorMessage(error, 'Suppression impossible'), 'error');
+            }
+        }
+
+        function odRenderAdminOnlineHistory() {
+            const container = document.getElementById('odAdminHistoryList');
+            if (!container) return;
+            if (!odHistoryCache.length) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:20px;">Aucun résultat en ligne.</p>';
+                return;
+            }
+            container.innerHTML = odHistoryCache.map(match => {
+                const names = (match.players || []).map(player => player.name).join(', ');
+                const winner = (match.players || []).find(player => String(player.playerId) === String(match.winnerId))?.name;
+                const result = match.resultType === 'victory' ? `🏆 ${winner || 'Victoire'}` : '🛡️ Partie annulée';
+                const date = new Date(Number(match.endedAt || odNow())).toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+                return `<div class="od-admin-online-item"><div class="od-admin-online-main"><div class="od-admin-online-title">${odEsc(result)} · ${odEsc(names)}</div><div class="od-admin-online-meta">${odEsc(date)} · Salle ${odEsc(match.roomCode || '-----')}</div></div><button class="btn-danger" onclick="odAdminDeleteOnlineHistory('${odEsc(match.matchId)}')"><i class="fa-solid fa-trash"></i></button></div>`;
+            }).join('');
+        }
+
+        function odStatsPayloadFromHistory(historyRows) {
+            const stats = { _processed:{} };
+            [...historyRows].sort((a, b) => Number(a.endedAt || 0) - Number(b.endedAt || 0)).forEach(match => {
+                (match.players || []).forEach(player => {
+                    const key = odPlayerKey(player.playerId);
+                    stats[key] = stats[key] || { playerId:player.playerId, name:player.name, avatar:player.avatar || '❓', gamesPlayed:0, victories:0, gamesWon:0, gamesCancelled:0, roundsWon:0, cochons:0, saved:0 };
+                    stats[key].name = player.name || stats[key].name; stats[key].avatar = player.avatar || stats[key].avatar;
+                    stats[key].gamesPlayed += 1;
+                    stats[key].roundsWon += Number(match.scores?.[key] || 0);
+                    stats[key].updatedAt = odNow();
+                });
+                if (match.resultType === 'victory') {
+                    const winner = stats[odPlayerKey(match.winnerId)];
+                    if (winner) { winner.victories += (match.cochonIds || []).length >= 2 ? 2 : 1; winner.gamesWon = winner.victories; }
+                    (match.cochonIds || []).forEach(id => { const row = stats[odPlayerKey(id)]; if (row) row.cochons += 1; });
+                } else {
+                    (match.players || []).forEach(player => { const row = stats[odPlayerKey(player.playerId)]; if (row) row.gamesCancelled += 1; });
+                    const saved = stats[odPlayerKey(match.savedId)]; if (saved) saved.saved += 1;
+                }
+                if (match.matchId) stats._processed[match.matchId] = { at:Number(match.endedAt || odNow()) };
+            });
+            return stats;
+        }
+
+        async function odRebuildOnlineStatsFromFirebase() {
+            const snapshot = await odHistoryRef.once('value');
+            const remaining = Object.values(snapshot.val() || {});
+            await odStatsRef.set(odStatsPayloadFromHistory(remaining));
+        }
+
+        async function odAdminDeleteOnlineHistory(matchId) {
+            if (!isAdminUnlocked || !confirm('Supprimer ce résultat en ligne ? Le classement en ligne sera recalculé automatiquement.')) return;
+            try {
+                await odHistoryRef.child(matchId).remove();
+                await odRebuildOnlineStatsFromFirebase();
+                showToast('Résultat supprimé et classement en ligne recalculé.', 'success');
+            } catch (error) {
+                showToast(odFirebaseErrorMessage(error, 'Suppression impossible'), 'error');
+            }
         }
 
         // Le compteur supérieur distingue immédiatement les résultats réels
