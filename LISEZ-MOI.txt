@@ -1,0 +1,9 @@
+Domino Club V3 — 1.2.0
+
+Publier le contenu de ce dossier sur GitHub Pages. Ouvrir index.html via HTTP/HTTPS, pas par double-clic. Après connexion, les six menus du club sont accessibles depuis Accueil.
+
+En ligne : créer une salle, inviter ou accepter une invitation. La barre inférieure est masquée pendant le jeu. Retour au menu ouvre En ligne sans quitter la salle ; Revenir à la table reprend la scène synchronisée.
+
+Un clic joue la première pièce ou la pièce avec une seule extrémité possible. Glisser reste réservé au rangement. Les tours suivent haut, droite, gauche ; le joueur actif porte une bordure jaune animée (fixe en mode mouvements réduits). Les salles sans joueurs connectés ne sont plus comptées comme parties actives, sans suppression de leurs données.
+
+Firebase reprend la base existante : profils et manches physiques du club, salons et résultats en ligne séparés. Les modifications physiques créent une sauvegarde préalable. Les tests et démonstrations sont exclus de ce paquet. Le verrou administrateur conserve la limite de sécurité côté navigateur de la V2 et ne remplace pas Firebase Auth ni des règles serveur.

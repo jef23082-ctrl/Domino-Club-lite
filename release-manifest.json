@@ -1,0 +1,426 @@
+{
+  "version": "20260902T015215899",
+  "generatedAt": "2026-09-02T01:52:17.039Z",
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 4250,
+      "sha256": "96d2f2dd64678dedbdc7c8fbd7068b5ef7dcf7865bb95dc34adff576c0d60aa6"
+    },
+    {
+      "path": "styles/foundation.css",
+      "bytes": 942,
+      "sha256": "d86db0fcfd69e4d1b7ff0e4288fd9b59b24962ba4f057a80f2470f7183e88dc9"
+    },
+    {
+      "path": "styles/casino-scene.css",
+      "bytes": 2249,
+      "sha256": "0aa2c2284557085d938371b81d4ae0e144896873162b4699f340cdcf4d7cd4bb"
+    },
+    {
+      "path": "styles/dominoes.css",
+      "bytes": 3740,
+      "sha256": "d8a5b13283ee52a61c7908e1613ec3dfc9731b17a26759103aef690a60d3aa51"
+    },
+    {
+      "path": "styles/interface.css",
+      "bytes": 7054,
+      "sha256": "dcd115d7d1f2b595a2b3975fa0869d1f9b419073e4d89860cb60eda4d84898a1"
+    },
+    {
+      "path": "styles/responsive.css",
+      "bytes": 589,
+      "sha256": "7653b9ba9b7b3dcc4dcf133dc499d9bd46610053794baf791c461447433ed7ff"
+    },
+    {
+      "path": "styles/online.css",
+      "bytes": 12836,
+      "sha256": "43d7ed2855fe8a7d4ed1ecdae59788ca8c83ec497bb09215b4dab359e2cd8252"
+    },
+    {
+      "path": "styles/portal.css",
+      "bytes": 9334,
+      "sha256": "0374660abdfe480999aa866e5916b99ec7875cc22068006cd962e2da2dbe8eb2"
+    },
+    {
+      "path": "assets/scene/casino-base-v1.png",
+      "bytes": 1949276,
+      "sha256": "a76c4a71d2e73f8c162854bc9abec8448f67abbf1ec313f96bea27bb6c6970dd"
+    },
+    {
+      "path": "src/main.js",
+      "bytes": 167,
+      "sha256": "653c5439c6cf111b53d40fe2501a0fc1eb5cdb82a441fee8c2d64641c8f504ae"
+    },
+    {
+      "path": "src/ui/app-shell.js",
+      "bytes": 1077,
+      "sha256": "c069259bc5db623f92f54bcf4c6339d623809d32202928e9ee9016bec35706fc"
+    },
+    {
+      "path": "src/online/online-app.js",
+      "bytes": 49581,
+      "sha256": "53c62a0064b6718b9bd582b31075b03608dbbad88360ef6351151fb67d1284b7"
+    },
+    {
+      "path": "src/game/engine.js",
+      "bytes": 19299,
+      "sha256": "967d7095fcc58df3e789a5114318e650f34e9818351551be06bfb12ca0ec7dde"
+    },
+    {
+      "path": "src/game/room-state.js",
+      "bytes": 7734,
+      "sha256": "53a8d8d23c969a4c6ce87327d03cf8e05cc756603083cd26be01a789f879627c"
+    },
+    {
+      "path": "src/config/player-assets.js",
+      "bytes": 4362,
+      "sha256": "9cfbe39d815a9160ec81736cb6747109f92ff142389388e505ba39c2aac180ae"
+    },
+    {
+      "path": "src/config/reactions.js",
+      "bytes": 1868,
+      "sha256": "fff7d7fdeb209d4d25d83e81be72d0c7898077f17d46715ca199e58cb1eaa2d6"
+    },
+    {
+      "path": "src/ui/domino-renderer.js",
+      "bytes": 7242,
+      "sha256": "3d074b35ee027443bff961d0ebfeed5dafda6e001ae464fb9895054a62c0ffb8"
+    },
+    {
+      "path": "src/online/display-name.js",
+      "bytes": 191,
+      "sha256": "39d4acebd27646ef414a29749cb5d1a63e71e987d40cfb5bb9bd2f0ee2f873c5"
+    },
+    {
+      "path": "src/ui/scene-renderer.js",
+      "bytes": 657,
+      "sha256": "7f35e50dcd12a70d6398521f6df85d44be11a38541f33cb5a3d4ddcc090cb8f3"
+    },
+    {
+      "path": "src/ui/sound-player.js",
+      "bytes": 3494,
+      "sha256": "b3b19f859acb4966de98bd7a79911cb364eafdb71604aed3ed650261e07c68c5"
+    },
+    {
+      "path": "src/ui/hand-order.js",
+      "bytes": 1686,
+      "sha256": "c1384acb49eafea28e7658908820bbab7d3b775711765ba29cadbf7f53f57ef7"
+    },
+    {
+      "path": "src/ui/hand-interactions.js",
+      "bytes": 6146,
+      "sha256": "12acd97416fb0db1d7cf3114106113e1cd594c6eced81ec878bdba37323294af"
+    },
+    {
+      "path": "src/services/chat-repository.js",
+      "bytes": 2242,
+      "sha256": "b92d8e5e385cff6acd1c66f4d917831e6e77cea254c73fd873d1d56d78aa9ef6"
+    },
+    {
+      "path": "src/config/firebase.js",
+      "bytes": 1074,
+      "sha256": "b815c6f4fed5d1eb4b1818a326df90c1932ae38d4d98a2874b3e7ec98e9d6929"
+    },
+    {
+      "path": "src/services/firebase-runtime.js",
+      "bytes": 486,
+      "sha256": "72b6d8b160c88f4a1ca22dc6835d61fd98cd0d6fe3429726d309f2c96315927d"
+    },
+    {
+      "path": "src/services/invitation-repository.js",
+      "bytes": 1023,
+      "sha256": "67a5e1cef69c1ae863b7206fa10d9e4adf620d66a923c8f97c6c9ccedbd1f830"
+    },
+    {
+      "path": "src/services/ids.js",
+      "bytes": 418,
+      "sha256": "9fbc1d3508aeaebf9b16b4656177d15f0a2eb4fe11ff60c0da575d7c4d3b18ba"
+    },
+    {
+      "path": "src/services/profile-auth.js",
+      "bytes": 496,
+      "sha256": "dadd1a0ff371418115cdc15042674f9d419615ca0b66cec4f65c053953a67143"
+    },
+    {
+      "path": "src/services/presence-service.js",
+      "bytes": 2768,
+      "sha256": "20f058decd0f374172b5cb45de6d8a554b371dfe1c7f8552a3908dd51c6950fe"
+    },
+    {
+      "path": "src/services/profile-repository.js",
+      "bytes": 619,
+      "sha256": "5e141ba9ac2afb140f3c25f8e3f247a7f74250f01e4080e55f4d792c2401d505"
+    },
+    {
+      "path": "src/services/reaction-repository.js",
+      "bytes": 1106,
+      "sha256": "1c4f835bfefbbbcdd780abbaae7c84c9a475d42b5f92f9603105d28ce5256671"
+    },
+    {
+      "path": "src/services/room-repository.js",
+      "bytes": 3492,
+      "sha256": "446331e3beec6f412f3c3e94fb908e506a5ada42d2094475c006ac0495f8c688"
+    },
+    {
+      "path": "src/services/live-transaction.js",
+      "bytes": 596,
+      "sha256": "0825574354f06d5de27cb95d886c79343151e871f6570335d9e9859f9560d7d3"
+    },
+    {
+      "path": "src/services/session-store.js",
+      "bytes": 1229,
+      "sha256": "2aeb4815cc1448161bd2a4496671c62f38dc320e2c9e7d14d2d4f3ad0a47db9f"
+    },
+    {
+      "path": "src/services/spectator-service.js",
+      "bytes": 1452,
+      "sha256": "85891ee7996ba6871615d5576ab89833a2fcfdb1529350ad76c4edcf6d283211"
+    },
+    {
+      "path": "src/services/stats-repository.js",
+      "bytes": 1455,
+      "sha256": "3797224603f8db6c83c6fb507668f17c7c7584ceab637a48eb9c47ccd3886dea"
+    },
+    {
+      "path": "src/game/online-stats.js",
+      "bytes": 3401,
+      "sha256": "b051cb38e0c52f8fb62b00be53456693a82751eb04c35b76d08d1f238f173909"
+    },
+    {
+      "path": "src/services/online-records.js",
+      "bytes": 2480,
+      "sha256": "fa5887fc57be494ad17b3148039834d7f3aae42f01901c9103b038e2b29fbbf0"
+    },
+    {
+      "path": "src/services/admin-access.js",
+      "bytes": 1161,
+      "sha256": "be1e74879b3de281193fe950b9d36ec345bd2bbca961c20a0d3839559b916d22"
+    },
+    {
+      "path": "src/services/admin-repository.js",
+      "bytes": 2626,
+      "sha256": "91251f96c677c9efbde6d4be2390484934ac275de27f819b2f1c95faf855eb8f"
+    },
+    {
+      "path": "src/ui/club-portal.js",
+      "bytes": 22306,
+      "sha256": "4ac392d460e272b948223b442026ea9afe4bd9bc86d1187bc1d4ccb5bf6aacc9"
+    },
+    {
+      "path": "src/ui/club-elements.js",
+      "bytes": 2743,
+      "sha256": "b955bf2918601a663dde7a13d0e3a6ec33db9f2bc94074f270cb793a76da2fd2"
+    },
+    {
+      "path": "src/game/club-state.js",
+      "bytes": 6222,
+      "sha256": "a352b985696972e75a3b80411a07c1500647c1335e7fd7ba9d628d1393aa976c"
+    },
+    {
+      "path": "src/online/club-presentation.js",
+      "bytes": 2414,
+      "sha256": "107674800438840c1ffa4902b122cc7d3ce535d306645c2e28201673251c7713"
+    },
+    {
+      "path": "src/ui/chat-composer.js",
+      "bytes": 3343,
+      "sha256": "a942f8fb01ccef7fd6f9a41230e75a68f399ea5dc33fc4b81df7fe846e306a51"
+    },
+    {
+      "path": "src/ui/chat-renderer.js",
+      "bytes": 1255,
+      "sha256": "ab1d3d836e10adc47e235b806f1e57c23e9afbaa2a2df59bb99ae77bd70b60af"
+    },
+    {
+      "path": "src/online/profile-map.js",
+      "bytes": 658,
+      "sha256": "20f4afeea603987f30579658ec66eaa086685c9a99729dc9289bc8e0cbc4a9d0"
+    },
+    {
+      "path": "src/ui/navigation-icon.js",
+      "bytes": 1268,
+      "sha256": "d99df583dacfc1c7b598858d5d614a3dceb223b4e412d45f8fe3d7267eb63321"
+    },
+    {
+      "path": "src/online/room-activity.js",
+      "bytes": 886,
+      "sha256": "ae842aebee16385bbd9bde948b8a105354447a86fbe27ab3bf86ba295cb1e980"
+    },
+    {
+      "path": "src/services/physical-club-repository.js",
+      "bytes": 4694,
+      "sha256": "1f42e3b5c71a0104eeef54cee960c039936f48d231fd6c1da3a73a3e686bf183"
+    },
+    {
+      "path": "src/services/connection-service.js",
+      "bytes": 485,
+      "sha256": "88236109dc357c098dc764168ccf7223469e83292c2cf384bf8fcbc8a61f61c2"
+    },
+    {
+      "path": "src/online/play-intent.js",
+      "bytes": 508,
+      "sha256": "ce3b7ac2355eb76ca4acff749dc205e215ac7d4d5b355e795f6748bea805fd98"
+    },
+    {
+      "path": "src/online/seat-order.js",
+      "bytes": 593,
+      "sha256": "bd50a9110c3df63bfe4592526072dcf431161db466be958e7fc4e85fb6f1d1be"
+    },
+    {
+      "path": "src/online/presentation.js",
+      "bytes": 3823,
+      "sha256": "48fcdcb6e0cce1f8b58b37f6cca86ed6886ad10b324eff84988405ac945e02b2"
+    },
+    {
+      "path": "assets/players/khalil/khalil-top-scene-v2.png",
+      "bytes": 1846315,
+      "sha256": "519f2c708736cb7f27bdab4ff699dc2cc68a778e6ecf07765255239dbfb25e2d"
+    },
+    {
+      "path": "assets/players/khalil/khalil-left-scene-v2.png",
+      "bytes": 1990501,
+      "sha256": "9ef36a13708f1ceb2ca6ff4e7683095f467c81bed4ab2f9e4c406b58ba666fa5"
+    },
+    {
+      "path": "assets/players/khalil/khalil-right-scene-v2.png",
+      "bytes": 1854716,
+      "sha256": "6917d4488704ace28ec0684510d63e227e5d2d216adff3ca0ae6a893b417ddb1"
+    },
+    {
+      "path": "assets/players/thomas/thomas-top-scene-v1.png",
+      "bytes": 1930162,
+      "sha256": "5db1f98fd9f87d42b213e4bd6fe14fbd1f91286ecf44e95242a85cd04c0c0f0f"
+    },
+    {
+      "path": "assets/players/thomas/thomas-left-scene-v1.png",
+      "bytes": 1977990,
+      "sha256": "38f5a28be4cd954d7b9374f286706bc650e4b99da1224c8a173746f546deacb4"
+    },
+    {
+      "path": "assets/players/thomas/thomas-right-scene-v1.png",
+      "bytes": 1956925,
+      "sha256": "d99c3dce0a07f0c9fd1c95581dbcf822b52f182be1be288155eea78c28099b9a"
+    },
+    {
+      "path": "assets/players/eddy/eddy-top-scene-v1.png",
+      "bytes": 2017253,
+      "sha256": "13c050ec95234f991b728c5517ac2e9b9e8a293681c831af734836f172549ac2"
+    },
+    {
+      "path": "assets/players/eddy/eddy-left-scene-v1.png",
+      "bytes": 2075020,
+      "sha256": "e964e1af463311b39449ed34879dabb440177ad60b3b8b146895d4209706677b"
+    },
+    {
+      "path": "assets/players/eddy/eddy-right-scene-v1.png",
+      "bytes": 1963032,
+      "sha256": "e6aefa9288fe4651b71e17f1a279cf7120cef226315a58531f8890b48ce435bd"
+    },
+    {
+      "path": "assets/players/alexis/alexis-top-scene-v1.png",
+      "bytes": 1956785,
+      "sha256": "03946c3d1efda1cae98ede80b15fefaa9dc4275b4141eee4e4e48a0b8487a726"
+    },
+    {
+      "path": "assets/players/alexis/alexis-left-scene-v1.png",
+      "bytes": 1971894,
+      "sha256": "dbf019973a26812016bd4ba201803de638e66fa9d917f4a19d2326aeef03daf9"
+    },
+    {
+      "path": "assets/players/alexis/alexis-right-scene-v1.png",
+      "bytes": 1850336,
+      "sha256": "d170ab9400ac1881e9b0786fe6fae3471d77d13a2ef6d589b6f153acf4e00f8c"
+    },
+    {
+      "path": "assets/players/cedric/cedric-top-scene-v1.png",
+      "bytes": 1924932,
+      "sha256": "5568783570cbbcc26953293767fe1a8882c5c83c2383d27b8d135b71365d3663"
+    },
+    {
+      "path": "assets/players/cedric/cedric-left-scene-v1.png",
+      "bytes": 1867417,
+      "sha256": "3e5f00837fa3c9a416807efa9c2b459ce10ad86e0906d7b2372c0427e276227d"
+    },
+    {
+      "path": "assets/players/cedric/cedric-right-scene-v1.png",
+      "bytes": 1901711,
+      "sha256": "d2a85728b1230de96485d503bf0c7e99b9831f5b4a1f812571c42cb82e7e57e9"
+    },
+    {
+      "path": "assets/players/christopher/christopher-top-scene-v1.png",
+      "bytes": 1985582,
+      "sha256": "661bf825071bbf3cd0aa6d1f04c148727db1a03d25ee5f656bb7aee28c66ae88"
+    },
+    {
+      "path": "assets/players/christopher/christopher-left-scene-v1.png",
+      "bytes": 1978223,
+      "sha256": "9ecb13724874fae14ad7effe21d03d40344cd5a6f51ef9839366b2721ecd5a60"
+    },
+    {
+      "path": "assets/players/christopher/christopher-right-scene-v1.png",
+      "bytes": 1804645,
+      "sha256": "6c70180da033f4280af8e0428af33c7ed6a96225be5e4e8380dd288e5a6b7ddf"
+    },
+    {
+      "path": "assets/players/jean-claude/jean-claude-top-scene-v1.png",
+      "bytes": 2008043,
+      "sha256": "1e0937c45ed27c8bffac376dadd763dd5583cc7fe162511e325154319c6cf055"
+    },
+    {
+      "path": "assets/players/jean-claude/jean-claude-left-scene-v1.png",
+      "bytes": 2008245,
+      "sha256": "cd4582e5af63a91f3c3b6cafb0680aa6d363c8c86c3336c9957009af2f2da55f"
+    },
+    {
+      "path": "assets/players/jean-claude/jean-claude-right-scene-v1.png",
+      "bytes": 1826830,
+      "sha256": "dd6d8ff9330228f32bb2be8417a14619c8eea9a11b0187748cdf85539ad0df80"
+    },
+    {
+      "path": "assets/players/emmanuelle/emmanuelle-top-scene-v1.png",
+      "bytes": 1948666,
+      "sha256": "d3f500109d99583ada7bb663bea84127c40bfb6c66291a9042f1ad119d98d957"
+    },
+    {
+      "path": "assets/players/emmanuelle/emmanuelle-left-scene-v1.png",
+      "bytes": 1945679,
+      "sha256": "3016ab47459f577f1a833d49948b9e4136d118ef7c6e8a44c8bf7a9ebe36933d"
+    },
+    {
+      "path": "assets/players/emmanuelle/emmanuelle-right-scene-v1.png",
+      "bytes": 1913590,
+      "sha256": "19b8f2a34025c4745bfbe1d64d376c5dc34ef571e5eb5aab549e68d0546fc237"
+    },
+    {
+      "path": "assets/players/ryad/ryad-top-scene-v1.png",
+      "bytes": 2032209,
+      "sha256": "de6ee38524adeae7fcb1444d590d639451d4e63b49b4c2d32969379fc1498aa4"
+    },
+    {
+      "path": "assets/players/ryad/ryad-left-scene-v1.png",
+      "bytes": 2017843,
+      "sha256": "0478aa9129e2928fbc3fa696fa0ae79280cada148dd2a209b4edf5bf480f4681"
+    },
+    {
+      "path": "assets/players/ryad/ryad-right-scene-v1.png",
+      "bytes": 1984823,
+      "sha256": "8a30604fe8c0e2943a1d2021f2b2f316d65a474c71cbee40e62b40d1fd24cb68"
+    },
+    {
+      "path": "assets/players/kyllian/kyllian-top-scene-v1.png",
+      "bytes": 1981437,
+      "sha256": "d62e0f6ab9a35a600d49536c6fbbf37d187587d3a186442cc21840b8b5d2d2cd"
+    },
+    {
+      "path": "assets/players/kyllian/kyllian-left-scene-v1.png",
+      "bytes": 1845286,
+      "sha256": "a6ccb011e36c7445a26f0c837f1c39a81cf42ec2f80982e5b8813c72e8c702e6"
+    },
+    {
+      "path": "assets/players/kyllian/kyllian-right-scene-v1.png",
+      "bytes": 1928646,
+      "sha256": "2f6b27629280c97d2665dcf1223d4d8e7d033b40fbac01f64a8d5a7dc9d8e548"
+    }
+  ]
+}
