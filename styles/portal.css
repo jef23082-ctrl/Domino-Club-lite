@@ -1,0 +1,99 @@
+/* Club navigation is a sibling of the untouched casino scene, never an overlay on its table. */
+.club-portal[hidden], .portal-page[hidden], .game-shell[hidden], .portal-emojis[hidden] { display:none; }
+.club-portal { position:fixed; inset:0; background:radial-gradient(ellipse at 50% 0,#17372b 0,#091710 43%,#040a07 100%); color:#ede3c8; }
+.portal-scroll { height:calc(100dvh - 72px); overflow:auto; overscroll-behavior:contain; padding:28px max(20px,calc((100vw - 1200px)/2)) 40px; scrollbar-color:#716038 #0a1711; }
+.portal-header { text-align:center; margin:0 0 30px; }
+.portal-kicker { color:#bca36b; font-size:10px; font-weight:700; letter-spacing:.25em; margin:0 0 10px; }
+.portal-header h1 { font:700 clamp(28px,4vw,42px) Georgia,serif; color:#f0d79e; margin:0 0 10px; }
+.portal-data-status { color:#8ca092; font-size:12px; }
+.portal-page { display:grid; gap:22px; min-width:0; }
+.portal-nav { position:fixed; bottom:0; left:0; right:0; z-index:90; height:72px; display:flex; justify-content:space-around; align-items:center; padding:0 max(4px,calc((100vw - 950px)/2)); background:#07130feb; border-top:1px solid #88714270; backdrop-filter:blur(24px); }
+.portal-nav .portal-nav-item { width:16.3%; height:62px; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:3px; position:relative; border:0; border-radius:8px; background:none; color:#8e9d94; box-shadow:none; font:600 11px system-ui; padding:4px; }
+.portal-nav-icon { font-size:23px; height:27px; line-height:27px; }
+.portal-nav-icon svg { width:23px; height:23px; }
+.portal-nav .active { color:#edce85; background:#af853310; }
+.portal-nav .active::after { content:''; position:absolute; bottom:2px; width:24px; height:3px; background:#d4b16a; border-radius:2px; }
+.portal-nav .online-action:hover { color:#ffe4a5; background:#b5964118; }
+.portal-card { padding:24px; min-width:0; border:1px solid #92733c65; border-radius:16px; background:linear-gradient(135deg,#10251bed,#08130ef5); box-shadow:0 14px 36px #0003,inset 0 1px #ffe4a509; }
+.portal-card h2 { font:700 21px Georgia,serif; color:#edcf91; margin:0 0 20px; }
+.portal-card h3 { color:#efdfb5; }
+.portal-card p { line-height:1.5; }
+.portal-muted { color:#9dab9e; font-size:13px; line-height:1.5; }
+.portal-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.portal-grid:has(> :nth-child(3)) { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.portal-players { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; }
+.portal-players .portal-player-card { position:relative; min-height:183px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:20px 10px; background:linear-gradient(150deg,#163529,#0a1712); border:1px solid #927d4655; border-radius:15px; color:#e9dcb9; }
+.portal-player-card:hover { border-color:#d6b473; transform:translateY(-2px); }
+.portal-player-card strong { font:700 18px Georgia,serif; }
+.portal-avatar { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:60px; height:60px; border:1px solid #bd975b80; border-radius:50%; background:#020b06; font-size:28px; overflow:hidden; vertical-align:middle; }
+.portal-avatar img { width:100%; height:100%; object-fit:cover; }
+.portal-rank { position:absolute; top:10px; left:12px; font-size:10px; color:#aa9a73; }
+.portal-player-stats { font-size:11px; color:#b1bba9; }
+.portal-at-table { font-size:10px; color:#bbd0b5; padding:3px 8px; border:1px solid #708b50; border-radius:20px; }
+.portal-streak { position:absolute; right:7px; top:9px; font-size:10px; }
+.portal-current-table { display:flex; justify-content:center; gap:50px; padding:10px 0 25px; }
+.portal-current-table > div { display:grid; justify-items:center; gap:10px; }
+.portal-actions { display:flex; gap:12px; }
+.portal-actions > button { flex:1; }
+.portal-table-wrap { overflow:auto; }
+.portal-ranking { border-collapse:collapse; width:100%; white-space:nowrap; font-size:13px; }
+.portal-ranking th { border-bottom:1px solid #92764488; text-align:left; }
+.portal-ranking th .online-action { border:0; background:none; padding:10px 8px; min-height:0; color:#c3ad7c; font-size:11px; }
+.portal-ranking td { padding:14px 8px; border-bottom:1px solid #ecdfb710; }
+.portal-ranking td:nth-child(4) { color:#e5bd75; font-weight:800; }
+.portal-ranking .portal-avatar { width:27px; height:27px; font-size:16px; margin-right:7px; }
+.portal-profile-heading { display:flex; align-items:center; gap:18px; margin:28px 0; flex-wrap:wrap; }
+.portal-profile-heading .portal-avatar { width:85px; height:85px; font-size:40px; }
+.portal-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.portal-stat { display:flex; flex-direction:column; gap:12px; padding:24px; background:#ffffff03; border:1px solid #99753e44; border-radius:12px; }
+.portal-stat > span { color:#b1b8a5; font-size:12px; }
+.portal-stat strong { font:700 30px Georgia,serif; color:#e9c87d; }
+.portal-stat small { color:#98ab9b; line-height:1.5; }
+.portal-history-row { padding:12px 0 20px; border-bottom:1px solid #c6ad7622; }
+.portal-history-row p { margin:7px 0; font-size:13px; }
+.portal-list-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:12px 0; border-bottom:1px solid #c6ad7622; font-size:13px; line-height:1.5; }
+.portal-list-row > span { flex:1; min-width:120px; }
+.portal-online-panel { position:static; display:block; padding:0; background:none; backdrop-filter:none; }
+.portal-online-panel .online-hub__frame { width:100%; max-height:none; overflow:visible; border-color:#92733c65; border-radius:16px; padding:24px; box-shadow:none; }
+.portal-online-panel .online-hub__title { font-size:24px; }
+.portal-online-panel .online-hub__eyebrow { display:none; }
+.portal-online-panel .online-lobby-actions { grid-template-columns:1fr 1fr; gap:24px; align-items:end; }
+.portal-online-panel .online-join { align-items:end; }
+.portal-online-panel .online-label { gap:9px; }
+.portal-lobby-card { display:grid; gap:14px; }
+.portal-lobby-card > p { margin:0; }
+.portal-online-hero p { margin-bottom:0; color:#9daf9f; font-size:14px; }
+.portal-online-records { max-height:430px; overflow:auto; }
+.portal-chat { margin-bottom:20px; }
+.portal-chat-messages { height:240px; overflow:auto; padding:0 4px 14px; display:flex; flex-direction:column; gap:12px; }
+.portal-chat .chat-message { min-height:44px; grid-template-columns:36px 1fr 42px; gap:12px; }
+.portal-chat .chat-message p { font-size:13px; padding:12px 14px; }
+.portal-chat .chat-message time { font-size:10px; }
+.portal-chat-form { display:grid; grid-template-columns:46px 1fr auto; gap:10px; }
+.portal-typing { height:18px; margin:0 0 8px; font-size:11px; color:#bba97b; }
+.portal-emojis { display:flex; flex-wrap:wrap; gap:7px; padding:10px 0; }
+.portal-emojis button { min-height:32px; padding:6px; }
+.portal-admin-login, .portal-card > .online-label { display:grid; gap:10px; margin-bottom:16px; }
+.portal-admin-login { max-width:440px; }
+.portal-avatar-preview { margin:12px 0; }
+.portal-card > button { margin:6px 8px 0 0; }
+.portal-admin-online { display:grid; gap:22px; }
+.portal-dialog { width:min(620px,94vw); max-height:90dvh; overflow:auto; padding:28px; border:1px solid #d0a760; border-radius:17px; background:#0b1d14; color:#ece1c5; box-shadow:0 30px 100px #000b; }
+.portal-dialog::backdrop { background:#020704ce; backdrop-filter:blur(7px); }
+.portal-dialog h2 { margin-top:0; font:700 26px Georgia,serif; color:#eac781; }
+.portal-dialog h3 { font-size:14px; color:#dccca1; }
+.portal-dialog p { line-height:1.6; }
+.portal-dialog > button { margin:18px 10px 0 0; }
+.portal-choices { display:flex; flex-wrap:wrap; gap:8px; }
+.portal-choices .portal-choice { min-height:38px; padding:8px 12px; font-size:12px; }
+.portal-choices .selected { background:#70541e; border-color:#f1d084; color:#fff2c5; }
+.portal-choice-group { margin:20px 0; }
+.scene-typing { min-height:12px; margin:0 0 3px; font-size:clamp(7px,.65vw,11px); color:#c2b184; }
+.chat-form.has-emojis { grid-template-columns:14% 1fr 16%; }
+.scene-chat-emoji { min-width:0; padding:0; font-size:clamp(10px,1vw,16px); }
+.scene-emoji-picker { position:absolute; bottom:18%; left:6%; right:6%; display:flex; flex-wrap:wrap; gap:6px; padding:10px; border:1px solid #c3a466; border-radius:9px; background:#081a12f5; }
+.scene-emoji-choice { padding:4px; background:none; border:0; cursor:pointer; }
+.scene-emoji-picker[hidden], .chat-panel.is-collapsed .scene-typing, .chat-panel.is-collapsed .scene-emoji-picker { display:none; }
+.club-portal :focus-visible, .portal-dialog :focus-visible { outline:2px solid #e8ca83; outline-offset:3px; }
+@media (max-width:900px) { .portal-players{grid-template-columns:repeat(3,minmax(0,1fr))}.portal-grid:has(> :nth-child(3)){grid-template-columns:1fr}.portal-stats{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:580px) { .portal-scroll{padding:20px 12px 28px}.portal-players{grid-template-columns:repeat(2,minmax(0,1fr))}.portal-grid,.portal-online-panel .online-lobby-actions{grid-template-columns:1fr}.portal-card{padding:18px}.portal-current-table{gap:16px}.portal-nav .portal-nav-item{font-size:9px}.portal-chat-form{grid-template-columns:40px 1fr}.portal-chat-form > button:last-child{grid-column:2}.portal-stats{grid-template-columns:1fr} }
