@@ -120,11 +120,9 @@
   transition: transform .18s ease, filter .18s ease;
 }
 
-.hand-domino:hover,
-.hand-domino.is-selected {
-  transform: translateY(-8%);
-  filter: brightness(1.06);
-}
+.hand-domino:not(.is-unplayable):hover { transform:translateY(-4%); filter:brightness(1.035); border-color:#ebca82; }
+.hand-domino.is-selected:not(.is-unplayable) { transform:translateY(-8%); filter:brightness(1.055); outline:1px solid #f1d390; outline-offset:2px; box-shadow:0 14px 12px #0009,inset 2px 2px 2px #fff6,inset -2px -3px 4px #5e3b0b47,2px 2px 0 #7a5728; }
+.hand-domino.is-unplayable:hover { transform:none; }
 
 .player-hand.is-reordering { cursor: grabbing; }
 .hand-domino.is-dragging {

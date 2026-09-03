@@ -153,10 +153,10 @@
   left: 50%;
   top: 27%;
   transform: translateX(-50%);
-  width: min(46rem, 62%);
+  width: min(35rem, 62%);
   max-height: 42%;
   overflow: auto;
-  padding: .65rem;
+  padding: clamp(10px,1.2vw,20px);
   border: 1px solid rgba(210, 168, 78, .88);
   border-radius: .9rem;
   background: linear-gradient(155deg, rgba(7, 24, 19, .98), rgba(2, 8, 6, .98));
@@ -164,12 +164,17 @@
   animation: reactionMenuIn .2s ease-out both;
 }
 
-.reaction-menu__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: .45rem; color: #ebd7a6; font: 700 clamp(10px, .85vw, 15px) Georgia, serif; }
+.reaction-menu__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: .45rem; color: #ebd7a6; font: 700 clamp(16px, 1.3vw, 23px) Georgia, serif; }
 .reaction-menu__close { width: 1.8rem; aspect-ratio: 1; border: 0; background: transparent; color: #d5b873; font-size: 1.35rem; cursor: pointer; }
-.reaction-menu__grid { max-height: min(15rem, 27vh); overflow: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
-.reaction-menu__action { min-width: 0; padding: .55rem; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: .4rem; border: 1px solid rgba(190, 148, 67, .22); border-radius: .5rem; background: rgba(255, 255, 255, .03); color: #d6ddd8; cursor: pointer; text-align: left; font-size: clamp(12px, .92vw, 16px); font-weight: 700; }
+.reaction-menu__grid { max-height: min(15rem, 23vh); overflow: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; scrollbar-color:#b28e52 #07130e; }
+.reaction-menu__recipient { margin:4px 0 10px; color:#c9b478; font-size:clamp(11px,.9vw,15px); }
+.reaction-menu__tabs { display:flex; gap:4px; margin-bottom:10px; border-bottom:1px solid #bd975b60; }
+.reaction-menu__tabs button { flex:1; min-width:0; padding:8px 5px; min-height:32px; border:0; border-radius:5px 5px 0 0; font-size:clamp(11px,.85vw,14px); background:transparent; }
+.reaction-menu__tabs [aria-pressed="true"] { background:#c5a05b1f; box-shadow:inset 0 -2px #d8b773; color:#f3d393; }
+.reaction-menu :focus-visible { outline:2px solid #f3d393; outline-offset:-2px; }
+.reaction-menu__action { min-width: 0; padding: .65rem; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: .5rem; border: 1px solid rgba(190, 148, 67, .32); border-radius: .5rem; background: rgba(255, 255, 255, .03); color: #e7ddc5; cursor: pointer; text-align: left; font-size: clamp(14px, 1.05vw, 18px); font-weight: 600; }
 .reaction-menu__action:hover { border-color: rgba(221, 184, 101, .62); background: rgba(202, 160, 75, .1); }
-.reaction-menu__icon { font-size: 1.8em; }
+.reaction-menu__icon { font-size: 2em; }
 
 .online-result-card {
   pointer-events: auto;
@@ -195,10 +200,31 @@
 .online-result-card__icon { color: #e5bd61; font: 700 clamp(1.6rem, 2.4vw, 3rem) Georgia, serif; text-shadow: 0 0 1rem rgba(222, 179, 79, .44); }
 .online-result-card__copy { min-width: 0; display: grid; gap: .14rem; }
 .online-result-card__copy strong { color: #f2ddaa; font: 700 clamp(12px, .9vw, 16px) Georgia, serif; }
-.online-result-card__copy span, .online-result-card__copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #b9c5bf; font-size: clamp(9px, .6vw, 11px); }
+.online-result-card__copy > span, .online-result-card__copy > small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #b9c5bf; font-size: clamp(9px, .6vw, 11px); }
 .online-result-card__copy small { color: #c9ac69; }
 .online-result-card__action { min-height: 2.2rem; padding: .42rem .65rem; border: 1px solid rgba(219, 179, 89, .72); border-radius: .55rem; background: linear-gradient(180deg, #8b6527, #4d3212); color: #fff0c5; font-size: clamp(10px, .65vw, 12px); font-weight: 800; cursor: pointer; }
 .online-result-card__action:disabled { cursor: wait; opacity: .62; }
+.online-result-controls { display:grid; gap:5px; }
+.online-result-card__back { background:transparent; border-color:#a38b5866; font-weight:500; }
+.online-result-card__icon { position:relative; }
+.online-result-card__icon .portal-avatar { width:clamp(34px,4vw,65px); height:clamp(34px,4vw,65px); }
+.result-crown { position:absolute; top:-35%; left:50%; transform:translateX(-50%); font-size:1.6rem; }
+.online-result-card.match-victory { border-color:#efcc82; box-shadow:0 1rem 2.5rem #0009,0 0 2rem #cfa64a2b,inset 0 1px #edce8544; }
+.online-result-scores { display:none; }
+.online-result-card.is-ceremony { top:12%; width:min(440px,52%); max-height:76%; overflow:auto; grid-template-columns:1fr; justify-items:center; padding:clamp(14px,2vw,32px); gap:12px; text-align:center; }
+.online-result-card.is-ceremony .online-result-card__icon { margin-top:12px; }
+.online-result-card.is-ceremony .portal-avatar { width:clamp(80px,11vw,155px); height:clamp(80px,11vw,155px); }
+.online-result-card.is-ceremony .result-crown { top:-16%; font-size:2rem; }
+.online-result-card.is-ceremony .online-result-card__copy { width:100%; gap:9px; }
+.online-result-card.is-ceremony .online-result-card__copy > strong { font-size:clamp(17px,1.8vw,29px); }
+.online-result-card.is-ceremony .online-result-card__copy > span { white-space:normal; font-size:clamp(11px,1vw,16px); }
+.online-result-card.is-ceremony .online-result-card__copy > small { display:none; }
+.online-result-card.is-ceremony .online-result-scores { display:grid; width:100%; margin-top:8px; }
+.online-result-scores > div { display:flex; align-items:center; gap:10px; padding:8px 12px; border-bottom:1px solid #c4a26550; text-align:left; font-size:clamp(12px,1vw,17px); }
+.online-result-scores > div > span:first-child { flex:1; }
+.online-result-card.is-ceremony .online-result-controls { width:100%; grid-template-columns:1fr 1fr; }
+.online-result-card.is-ceremony .online-result-card__action { min-height:38px; }
+.online-result-dismiss { position:absolute; right:10px; top:8px; border:0; background:transparent; color:#f3d393; font-size:24px; cursor:pointer; }
 
 .seat-crown,
 .seat-pig {
@@ -235,7 +261,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .reaction-projectile, .reaction-impact, .seat-emotion, .pass-bubble,
-  .online-result-card, .seat-crown, .seat-pig, .board-domino.is-just-played { animation: none !important; }
+  .online-result-card, .seat-crown, .seat-pig, .reaction-menu, .board-domino.is-just-played { animation: none !important; }
   .reaction-projectile { display: none; }
   .reaction-impact { opacity: 1; }
 }

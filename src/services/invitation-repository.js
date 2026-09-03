@@ -14,9 +14,10 @@ export class InvitationRepository {
     return () => reference.off('value', listener);
   }
 
-  send({ roomCode, fromProfile, toPlayerId }) {
+  send({ roomCode, fromProfile, toPlayerId, roomTitle = '' }) {
     return this.root.child(`${playerKey(toPlayerId)}/${roomCode}`).set({
       roomCode,
+      ...(roomTitle ? {roomTitle} : {}),
       fromPlayerId: fromProfile.id,
       fromName: fromProfile.name,
       fromAvatar: fromProfile.avatar || '❓',

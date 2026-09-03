@@ -36,6 +36,17 @@ export class PhysicalClubRepository {
     return clubData(result.snapshot.val());
   }
   start(ids) { const at = Date.now(); return this.change('nouvelle partie physique', data => startPhysicalGame(data, ids, at)); }
+  cancel(expectedTable, expectedVersion) {
+    return this.change('annulation partie physique', data => {
+      if (!data.currentTable.length) throw new Error('Aucune partie physique à annuler.');
+      if (!expectedVersion || JSON.stringify(data.currentTable)!==JSON.stringify(expectedTable)
+        || data.matchStartTime!==expectedVersion.startedAt || JSON.stringify(data.history[0]||null)!==JSON.stringify(expectedVersion.head)) {
+        throw new Error('La partie physique a changé : ouvre à nouveau la confirmation.');
+      }
+      // Return only these fields: neither player scores, history nor online branches are rewritten.
+      return {currentTable:[],matchStartTime:null};
+    });
+  }
   record(selection, expectedTable, expectedVersion = null) {
     const at = Date.now();
     return this.change('fin de manche physique', data => {

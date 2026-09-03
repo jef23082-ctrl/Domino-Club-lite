@@ -52,9 +52,11 @@
   z-index: 2;
   pointer-events: none;
   background:
+    radial-gradient(ellipse at 17% 13%,rgba(232,173,79,.07),transparent 22%),
+    radial-gradient(ellipse at 82% 13%,rgba(232,173,79,.07),transparent 22%),
     linear-gradient(180deg, rgba(0, 0, 0, .03) 50%, rgba(0, 0, 0, .15)),
     radial-gradient(ellipse at 50% 44%, transparent 47%, rgba(0, 0, 0, .2) 100%);
-  mix-blend-mode: multiply;
+  mix-blend-mode: soft-light;
 }
 
 .player-seat {

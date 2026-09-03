@@ -14,7 +14,8 @@ export const OPPONENT_REACTIONS = Object.freeze({
   cvousquifait: { icon: '👉🤨', label: 'C vous qui fait !' },
   chattard: { icon: '🃏😼', label: 'Chattard !' },
   enculax: { icon: '🧴😌', label: 'Enculax la crème qui relax' },
-  sakamache: { icon: '👋', label: 'Saka maché', description: 'Bonjour !' }
+  sakamache: { icon: '👋', label: 'Saka maché', description: 'Bonjour !' },
+  catherine: { icon: '👑', label: 'Catherine de Médicis' }
 });
 
 export const SELF_EMOTIONS = Object.freeze({

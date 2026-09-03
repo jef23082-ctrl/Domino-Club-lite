@@ -8,6 +8,7 @@ const CHARACTER_ALIASES = Object.freeze({
   jeanclaude: 'jean-claude',
   khalil: 'khalil',
   killian: 'kyllian',
+  kylian: 'kyllian',
   killyan: 'kyllian',
   kyllian: 'kyllian',
   ryad: 'ryad',
@@ -23,5 +24,8 @@ export function normalizeProfileName(name) {
 }
 
 export function characterIdForProfile(profile) {
-  return CHARACTER_ALIASES[normalizeProfileName(profile?.name)] || 'khalil';
+  return knownCharacterIdForProfile(profile) || 'khalil';
+}
+export function knownCharacterIdForProfile(profile) {
+  return CHARACTER_ALIASES[normalizeProfileName(profile?.name)] || null;
 }

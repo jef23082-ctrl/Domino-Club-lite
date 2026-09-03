@@ -1,9 +1,15 @@
-Domino Club V3 — 1.2.0
+Domino Club V3 — 1.3.3
 
 Publier le contenu de ce dossier sur GitHub Pages. Ouvrir index.html via HTTP/HTTPS, pas par double-clic. Après connexion, les six menus du club sont accessibles depuis Accueil.
 
-En ligne : créer une salle, inviter ou accepter une invitation. La barre inférieure est masquée pendant le jeu. Retour au menu ouvre En ligne sans quitter la salle ; Revenir à la table reprend la scène synchronisée.
+En ligne : créer une salle, inviter ou accepter une invitation. Deux salles par page et un chat commun permanent à droite. La même discussion est visible et utilisable à la table, joueurs et spectateurs compris. Noms des expéditeurs et messages en gras, sans chevauchement. Les salles portent le prénom du créateur et une ville ; le code reste uniquement technique.
+
+Classement : neuf colonnes, tous les joueurs accessibles par défilement, sans pagination. Accueil : Annuler ferme la partie physique après confirmation, sans retirer les manches enregistrées ni les scores. Les compteurs sont agrandis et en gras ; les durées en ligne proviennent des horaires enregistrés. Profils : point vert à côté du prénom connecté et portrait Kyllian reconnu sous ses variantes historiques.
+
+La barre inférieure est masquée pendant le jeu. Retour au menu ouvre En ligne sans quitter la salle ; Revenir à la table reprend la scène synchronisée.
 
 Un clic joue la première pièce ou la pièce avec une seule extrémité possible. Glisser reste réservé au rangement. Les tours suivent haut, droite, gauche ; le joueur actif porte une bordure jaune animée (fixe en mode mouvements réduits). Les salles sans joueurs connectés ne sont plus comptées comme parties actives, sans suppression de leurs données.
+
+Remise à zéro du chat commun : après deux minutes sans présence ni activité, la première connexion suivante efface les messages communs avant affichage. Aucun traitement ne peut tourner une fois tous les navigateurs fermés. Les anciennes discussions séparées ne sont pas rendues publiques et ne sont pas supprimées par ce mécanisme. Tous les joueurs doivent utiliser cette nouvelle version pour partager le même chat.
 
 Firebase reprend la base existante : profils et manches physiques du club, salons et résultats en ligne séparés. Les modifications physiques créent une sauvegarde préalable. Les tests et démonstrations sont exclus de ce paquet. Le verrou administrateur conserve la limite de sécurité côté navigateur de la V2 et ne remplace pas Firebase Auth ni des règles serveur.

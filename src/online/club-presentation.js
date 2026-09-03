@@ -38,6 +38,13 @@ export function formatMatchDate(value) {
   return value && Number.isFinite(date.getTime()) ? date.toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Date inconnue';
 }
 
+export function formatMatchDuration(match) {
+  const start=Number(match.startedAt),end=Number(match.endedAt);
+  if(!Number.isFinite(start)||!Number.isFinite(end)||start<=0||end<start)return 'Durée indisponible';
+  const seconds=Math.floor((end-start)/1000),hours=Math.floor(seconds/3600),minutes=Math.floor(seconds%3600/60);
+  return hours?`${hours} h ${String(minutes).padStart(2,'0')} min`:`${minutes} min ${String(seconds%60).padStart(2,'0')} s`;
+}
+
 export function roomDeletionTarget(room) {
   return { code: room.code, status: room.status, matchId: room.matchId || '', createdAt: Number(room.createdAt || 0) };
 }

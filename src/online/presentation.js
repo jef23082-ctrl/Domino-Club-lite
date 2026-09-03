@@ -61,7 +61,7 @@ export function resultPresentation(room) {
         title: `${playerName(room, result.winnerId)} gagne la partie`,
         detail: cochons.length ? `Cochon${cochons.length > 1 ? 's' : ''} : ${cochons.join(' et ')}` : 'Victoire sans cochon.',
         action: 'rematch',
-        actionLabel: 'Revanche'
+        actionLabel: 'Rejouer ensemble'
       };
     }
     return {
@@ -70,7 +70,7 @@ export function resultPresentation(room) {
       title: 'Partie annulée',
       detail: `${playerName(room, result.savedId)} est sauvé après avoir gagné la dernière manche.`,
       action: 'rematch',
-      actionLabel: 'Revanche'
+      actionLabel: 'Rejouer ensemble'
     };
   }
   if (game.roundStatus !== 'ended' || !game.roundResult) return null;

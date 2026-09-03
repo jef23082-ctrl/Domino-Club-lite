@@ -1,13 +1,14 @@
 import { hasPlayableTile, playerKey, validSides } from '../game/engine.js';
 import { roomPlayers } from '../game/room-state.js';
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260902T015215899';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260903T071755351';
 import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js';
-import { renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque } from '../ui/domino-renderer.js?v=20260902T015215899';
-import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20260902T015215899';
+import { renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque } from '../ui/domino-renderer.js?v=20260903T071755351';
+import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20260903T071755351';
 import { playSound, unlockSound } from '../ui/sound-player.js';
 import { HandOrderStore, handOrderKey, moveHandTile } from '../ui/hand-order.js';
 import { bindHandInteractions } from '../ui/hand-interactions.js';
 import { ChatRepository } from '../services/chat-repository.js';
+import { ClubChatSession, CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js';
 import { createFirebaseRuntime } from '../services/firebase-runtime.js';
 import { InvitationRepository } from '../services/invitation-repository.js';
 import { randomId } from '../services/ids.js';
@@ -15,27 +16,31 @@ import { authenticateProfile } from '../services/profile-auth.js';
 import { PresenceService } from '../services/presence-service.js';
 import { ProfileRepository } from '../services/profile-repository.js';
 import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js';
-import { RoomRepository } from '../services/room-repository.js?v=20260902T015215899';
+import { RoomRepository } from '../services/room-repository.js?v=20260903T071755351';
 import { SessionStore } from '../services/session-store.js';
-import { SpectatorService } from '../services/spectator-service.js?v=20260902T015215899';
+import { SpectatorService } from '../services/spectator-service.js?v=20260903T071755351';
 import { StatsRepository } from '../services/stats-repository.js';
 import { AdminAccess } from '../services/admin-access.js';
-import { AdminRepository } from '../services/admin-repository.js?v=20260902T015215899';
-import { createClubPortal } from '../ui/club-portal.js?v=20260902T015215899';
-import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20260902T015215899';
+import { AdminRepository } from '../services/admin-repository.js?v=20260903T071755351';
+import { createClubPortal } from '../ui/club-portal.js?v=20260903T071755351';
+import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20260903T071755351';
 import { renderChatMessage } from '../ui/chat-renderer.js';
 import { ConnectionService } from '../services/connection-service.js';
 import { characterIdForProfile } from './profile-map.js';
 import { tileIntent } from './play-intent.js';
 import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js';
 import { displayName } from './display-name.js';
+import { avatar } from '../ui/club-elements.js';
+import { reactionPicker } from '../ui/reaction-picker.js';
+import { premiumConfirm } from '../ui/premium-confirm.js';
+import { loungeTitle } from './lounge-name.js';
 import {
   actionKey,
   celebrationState,
   freshReaction,
   remainingTileCount,
   resultPresentation
-} from './presentation.js?v=20260902T015215899';
+} from './presentation.js?v=20260903T071755351';
 
 const FIREBASE_SCRIPTS = Object.freeze([
   'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js',
@@ -134,6 +139,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   let portal;
   let connection;
   let pendingPlay = false;
+  let invitePending = false;
 
   function canWrite(showError = true) {
     try { connection.require(); return true; }
@@ -270,7 +276,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         error.hidden = false;
         return;
       }
-      await completeLogin(profile);
+      try { await completeLogin(profile); } catch (failure) {error.textContent=failure.message;error.hidden=false;}
     });
     ui.content.append(form);
     input.focus();
@@ -321,11 +327,13 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       await repositories.rooms.join(invitation.roomCode, { profile: state.networkProfile, clientToken: state.clientToken });
       await repositories.invitations.remove(state.profile.id, id);
       await attachRoom(invitation.roomCode, 'player');
-    } catch (error) { toast(error.message, 'error'); }
+      return true;
+    } catch (error) { toast(error.message, 'error'); return false; }
   }
 
   function renderLobby() {
     state.view = 'lobby';
+    ui.hub.dataset.view = 'lobby';
     showHub(true);
     ui.menu.hidden = true;
     setStatus(`${state.profile.name} · ${livePresences().length} joueur(s) connecté(s)`);
@@ -347,35 +355,9 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       }
     });
 
-    const joinForm = node('form', 'online-join');
-    const codeInput = node('input', 'online-input');
-    codeInput.placeholder = 'CODE';
-    codeInput.maxLength = 5;
-    codeInput.setAttribute('aria-label', 'Code de la salle');
-    codeInput.addEventListener('input', () => { codeInput.value = codeInput.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
-    codeInput.autocomplete = 'off';
-    const join = actionButton('Rejoindre la salle', 'online-action');
-    join.type = 'submit';
-    joinForm.append(codeInput, join);
-    joinForm.addEventListener('submit', async event => {
-      event.preventDefault();
-      if (!canWrite()) return;
-      const code = codeInput.value.trim().toUpperCase();
-      if (!code) return;
-      try {
-        await repositories.rooms.join(code, {
-          profile: state.networkProfile, clientToken: state.clientToken
-        });
-        await attachRoom(code, 'player');
-      } catch (error) { toast(error.message, 'error'); }
-    });
     const identityCard = node('section', 'portal-lobby-card');
     identityCard.append(node('h2', 'online-section__title', 'Ton identité'), node('p', 'online-summary', state.profile.name), create);
-    const joinCard = node('section', 'portal-lobby-card');
-    const codeLabel = node('label', 'online-label', 'Code de la salle');
-    codeInput.id = 'join-room-code'; codeLabel.htmlFor = codeInput.id;
-    joinCard.append(node('h2', 'online-section__title', 'Rejoindre des collègues'), codeLabel, joinForm, node('p', 'portal-muted', 'Une salle accueille exactement trois joueurs.'));
-    actions.append(identityCard, joinCard);
+    actions.append(identityCard);
     ui.content.append(actions);
 
   }
@@ -388,19 +370,19 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
 
   function renderWaitingRoom() {
     state.view = 'waiting';
+    ui.hub.dataset.view = 'waiting';
     showHub(true);
     ui.menu.hidden = true;
     const players = roomPlayers(state.room);
-    setStatus(`Salle ${state.roomCode} · ${players.length}/3 joueurs`);
+    setStatus(`${loungeTitle(state.room)} · ${players.length}/3 joueurs`);
     clearContent();
-    const code = node('div', 'online-room-code', state.roomCode);
+    const name = node('div', 'online-room-name', loungeTitle(state.room));
     const list = node('ol', 'online-player-list');
     for (const player of players) {
-      list.append(node('li', '', `${player.name}${player.isHost ? ' · hôte' : ''}`));
+      const seat=node('li','');seat.append(avatar(player),node('strong','',`${player.name}${player.isHost ? ' · hôte' : ''}`));list.append(seat);
     }
     for (let index = players.length; index < 3; index++) list.append(node('li', 'portal-muted', 'Place disponible'));
-    ui.content.append(node('h2', 'online-section__title', 'En attente des joueurs'), code, list);
-    ui.content.append(copyCodeButton());
+    ui.content.append(node('h2', 'online-section__title', 'En attente des joueurs'), name, list);
 
     const controls = node('div', 'online-controls');
     if (isHost()) {
@@ -430,8 +412,10 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     if (isCreator()) {
       const cancel = actionButton('Annuler la partie', 'online-action online-action--danger');
       cancel.addEventListener('click', async () => {
-        if (!canWrite() || !globalThis.confirm('Annuler cette salle pour tous les joueurs ?')) return;
-        try { await repositories.rooms.cancel(state.roomCode, { clientToken: state.clientToken, creatorName: state.profile.name }); }
+        const code=state.roomCode;
+        if (!canWrite() || !await premiumConfirm('Annuler ce salon ?', 'Cette annulation concerne tous les joueurs présents.')) return;
+        if(code!==state.roomCode||state.room?.status!=='waiting')return toast('Le salon a changé. Vérifie son état avant de réessayer.','error');
+        try { await repositories.rooms.cancel(code, { clientToken: state.clientToken, creatorName: state.profile.name }); }
         catch (error) { toast(error.message, 'error'); }
       });
       controls.append(cancel);
@@ -442,23 +426,24 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       const currentIds = new Set(players.map(player => String(player.playerId)));
       const targets = livePresences().filter(item => !item.roomCode && !currentIds.has(String(item.playerId)));
       if (targets.length) {
-        const inviteSection = node('section', 'online-section');
-        inviteSection.append(node('h2', 'online-section__title', 'Inviter un joueur connecté'));
+        const inviteSection = node('details', 'online-section online-invite-chooser');
+        inviteSection.append(node('summary', 'online-action', 'Inviter un joueur connecté'));
+        const inviteOptions = node('div', 'online-invite-options');inviteSection.append(inviteOptions);
         for (const target of targets) {
           const row = node('div', 'online-row');
-          row.append(node('span', '', target.name));
+          row.append(avatar(target),node('span', '', target.name));
           const invite = actionButton('Inviter', 'online-action online-action--small');
           invite.addEventListener('click', async () => {
       if (!canWrite()) return;
             try {
               await repositories.invitations.send({
-                roomCode: state.roomCode, fromProfile: state.networkProfile, toPlayerId: target.playerId
+                roomCode: state.roomCode, fromProfile: state.networkProfile, toPlayerId: target.playerId, roomTitle: loungeTitle(state.room)
               });
               toast(`Invitation envoyée à ${target.name}`);
             } catch (error) { toast(error.message, 'error'); }
           });
           row.append(invite);
-          inviteSection.append(row);
+          inviteOptions.append(row);
         }
         ui.content.append(inviteSection);
       } else ui.content.append(node('p', 'portal-muted', 'Aucun autre joueur disponible à inviter.'));
@@ -466,13 +451,14 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   }
 
   function renderPlayingPanel() {
+    ui.hub.dataset.view = 'playing';
     showHub(true);
     clearContent();
-    setStatus(`${state.role === 'spectator' ? 'Spectateur' : 'Joueur'} · salle ${state.roomCode}`);
+    setStatus(`${state.role === 'spectator' ? 'Spectateur' : 'Joueur'} · ${loungeTitle(state.room)}`);
     const players = node('p', 'online-summary', roomPlayers(state.room).map(player => player.name).join(' · '));
     const close = actionButton('Revenir à la table', 'online-action online-action--primary');
     close.addEventListener('click', () => portal.showTable());
-    ui.content.append(players, close, copyCodeButton());
+    ui.content.append(players, close);
     const leave = actionButton('Quitter');
     leave.addEventListener('click', () => {
       if (state.role === 'spectator' || state.room?.status === 'finished') returnToLobby('Salle quittée.');
@@ -482,24 +468,18 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     if (state.room?.status === 'playing' && isCreator()) {
       const cancel = actionButton('Annuler la partie', 'online-action online-action--danger');
       cancel.addEventListener('click', async () => {
-        if (!canWrite() || !globalThis.confirm('Annuler cette partie pour tous les joueurs ?')) return;
-        try { await repositories.rooms.cancel(state.roomCode, { clientToken: state.clientToken, creatorName: state.profile.name }); }
+        const code=state.roomCode,matchId=state.room?.matchId;
+        if (!canWrite() || !await premiumConfirm('Annuler cette partie ?', 'La partie sera arrêtée pour tous les joueurs. Pour revenir au menu en conservant ta place, ferme cette fenêtre.')) return;
+        if(code!==state.roomCode||matchId!==state.room?.matchId||state.room?.status!=='playing')return toast('La partie a changé. Vérifie son état avant de réessayer.','error');
+        try { await repositories.rooms.cancel(code, { clientToken: state.clientToken, creatorName: state.profile.name }); }
         catch (error) { toast(error.message, 'error'); }
       });
       ui.content.append(cancel);
     }
   }
 
-  function copyCodeButton() {
-    const copy = actionButton('Copier le code', 'online-action online-action--small');
-    copy.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(state.roomCode); toast('Code copié !'); }
-      catch (_) { toast(`Code de la salle : ${state.roomCode}`); }
-    });
-    return copy;
-  }
-
-  function bindChat(roomCode) {
+  function bindChat() {
+    const roomCode=CLUB_CHAT_CHANNEL;
     state.stopChat?.();
     const messages = new Map();
     const container = document.querySelector('.chat-messages');
@@ -516,7 +496,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       added: message => {
         messages.set(message.id, message);
         render();
-        if (Number(message.createdAt || 0) >= state.chatBoundAt - 800 && message.senderToken !== state.clientToken) {
+        if (!document.querySelector('#game-shell').hidden && Number(message.createdAt || 0) >= state.chatBoundAt - 800 && message.senderToken !== state.clientToken) {
           playSound('message');
         }
       },
@@ -546,8 +526,11 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   }
 
   function closeReactionMenu() {
+    const playerId=state.openReactionPlayerId;
+    const focused=ui.actionLayer.contains(document.activeElement);
     state.openReactionPlayerId = '';
     ui.actionLayer.replaceChildren();
+    if(focused)document.querySelector(`#seat-${seatForPlayer(playerId)}`)?.focus({preventScroll:true});
   }
 
   async function sendReaction(kind, effect, target) {
@@ -581,24 +564,9 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     if (!me) return;
     const mine = String(me.playerId) === String(player.playerId);
     const actions = mine ? SELF_EMOTIONS : OPPONENT_REACTIONS;
-    const menu = node('section', 'reaction-menu');
-    menu.setAttribute('aria-label', mine ? 'Exprimer une émotion' : `Réagir à ${player.name}`);
-    const header = node('header', 'reaction-menu__header');
-    header.append(node('strong', '', mine ? 'Mon humeur' : `Pour ${player.name}`));
-    const close = actionButton('×', 'reaction-menu__close');
-    close.setAttribute('aria-label', 'Fermer les réactions');
-    close.addEventListener('click', closeReactionMenu);
-    header.append(close);
-    const grid = node('div', 'reaction-menu__grid');
-    Object.entries(actions).forEach(([effect, meta]) => {
-      const button = actionButton('', 'reaction-menu__action');
-      button.title = meta.label;
-      button.append(node('span', 'reaction-menu__icon', meta.icon), node('span', '', meta.label));
-      button.addEventListener('click', () => sendReaction(mine ? 'emotion' : 'opponent', effect, player));
-      grid.append(button);
-    });
-    menu.append(header, grid);
+    const menu=reactionPicker({mine,player,sender:me,actions,onClose:closeReactionMenu,onSend:effect=>sendReaction(mine?'emotion':'opponent',effect,player)});
     ui.actionLayer.append(menu);
+    menu.querySelector('button').focus({preventScroll:true});
   }
 
   function renderReaction(reaction = state.activeReaction) {
@@ -716,11 +684,25 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     const celebration = celebrationState(room);
     const card = node('section', `online-result-card ${presentation.kind}`);
     const icon = node('span', 'online-result-card__icon', presentation.icon);
+    const winner=roomPlayers(room).find(p=>String(p.playerId)===String(celebration?.winnerId));
+    if(winner){icon.replaceChildren(avatar(winner),node('span','result-crown',presentation.icon));}
     const copy = node('div', 'online-result-card__copy');
     copy.append(node('strong', '', presentation.title), node('span', '', presentation.detail));
-    if (room.game?.matchResult?.scores) copy.append(node('small', '', scoreText(room, room.game.matchResult.scores)));
+    copy.append(node('small', '', scoreText(room, room.game?.matchResult?.scores || room.game?.roundWins)));
     const action = actionButton(presentation.actionLabel, 'online-result-card__action');
     const remaining = Number(celebration?.remaining || 0);
+    if(remaining>0&&winner&&state.dismissedCelebrationKey!==celebration.key){
+      card.classList.add('is-ceremony');
+      const dismiss=actionButton('×','online-result-dismiss');dismiss.setAttribute('aria-label','Revoir la table');
+      dismiss.addEventListener('click',()=>{state.dismissedCelebrationKey=celebration.key;renderResult(state.room);});card.append(dismiss);
+    }
+    const scores=node('div','online-result-scores');
+    for(const player of roomPlayers(room)){
+      const row=node('div','');row.append(node('span','',player.name),node('strong','',Number((room.game.matchResult?.scores||room.game.roundWins)?.[playerKey(player.playerId)]||0)));
+      if((room.game.matchResult?.cochonIds||[]).some(id=>String(id)===String(player.playerId)))row.append(node('span','', '🐷'));
+      scores.append(row);
+    }
+    copy.append(scores);
     action.disabled = remaining > 0;
     action.textContent = remaining > 0 ? `Cérémonie · ${Math.max(1, Math.ceil(remaining / 1000))} s` : presentation.actionLabel;
     action.addEventListener('click', async () => {
@@ -741,7 +723,9 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       }
     });
     card.append(icon, copy);
-    if (state.role === 'player') card.append(action);
+    const controls=node('div','online-result-controls');
+    if (state.role === 'player') controls.append(action);
+    const back=actionButton('Retour au salon','online-result-card__action online-result-card__back');back.addEventListener('click',()=>portal.open('online'));controls.append(back);card.append(controls);
     ui.resultLayer.append(card);
     renderOutcomeBadges(room);
 
@@ -866,7 +850,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     if (role === 'spectator') await repositories.spectators.register(state.roomCode, state.clientToken, state.networkProfile);
     state.view = 'loading-room';
     showHub(true);
-    setStatus(`Connexion à la salle ${state.roomCode}…`);
+    setStatus('Connexion à la salle…');
     clearContent();
     if (!restored) portal.open('online');
     state.stopRoom = repositories.rooms.watch(state.roomCode, room => {
@@ -984,7 +968,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     let lastTyping = 0, clearTypingTimer;
     document.querySelector('#chat-input').addEventListener('input', () => {
       if (!state.roomCode || !canWrite(false)) return;
-      const code = state.roomCode;
+      const code = CLUB_CHAT_CHANNEL;
       clearTimeout(clearTypingTimer);
       clearTypingTimer = setTimeout(() => { if (canWrite(false)) repositories.chat.clearTyping(code, state.clientToken).catch(() => {}); }, 1800);
       if (Date.now()-lastTyping<1200) return; lastTyping=Date.now();
@@ -997,7 +981,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       const input = document.querySelector('#chat-input');
       const text = input.value.trim();
       if (!text || !state.roomCode || chatSending) return;
-      const channel = state.roomCode;
+      const channel = CLUB_CHAT_CHANNEL;
       chatSending = true;
       try {
         await repositories.chat.send(channel, {
@@ -1030,11 +1014,12 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         if (connected) ensureResultRecorded(state.room);
       }
     });
+    const chatSession = new ClubChatSession(runtime.database,{serverTimestamp:runtime.serverTimestamp});
     repositories = {
       session,
       profiles: new ProfileRepository(runtime.database),
       rooms: new RoomRepository(runtime.database),
-      presence: new PresenceService(runtime.database, { serverTimestamp: runtime.serverTimestamp }),
+      presence: new PresenceService(runtime.database, { serverTimestamp: runtime.serverTimestamp, publishPresence:(token,presence)=>chatSession.enter(token,presence),onHeartbeat:()=>chatSession.heartbeat() }),
       invitations: new InvitationRepository(runtime.database, { serverTimestamp: runtime.serverTimestamp }),
       spectators: new SpectatorService(runtime.database, { serverTimestamp: runtime.serverTimestamp }),
       chat: new ChatRepository(runtime.database, { serverTimestamp: runtime.serverTimestamp }),
@@ -1049,6 +1034,8 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       identity: () => ({ profile: state.networkProfile, clientToken: state.clientToken, role: state.role }), canWrite, notify: toast,
       onData: value => { state.profiles = value.players; },
       actions: { renderOnline: renderCurrentPanel, acceptInvite, watchRoom: attachRoom,
+        joinRoom:async code=>{if(!canWrite())return;try{if(state.room&&['waiting','playing'].includes(state.room.status)&&state.role==='player'&&state.roomCode!==code)throw new Error('Quitte ta salle d’attente ou termine ta partie avant de rejoindre une autre salle.');await repositories.rooms.join(code,{profile:state.networkProfile,clientToken:state.clientToken});await attachRoom(code,'player');}catch(error){toast(error.message,'error');}},
+        inviteProfile:async profile=>{if(!canWrite()||invitePending)return;invitePending=true;try{if(state.room&&(state.room.status!=='waiting'||!isHost()))throw new Error('Crée un salon libre ou retourne dans ton salon d’attente pour inviter.');if(!state.room){const code=await repositories.rooms.create({profile:state.networkProfile,clientToken:state.clientToken});await attachRoom(code,'player');}await repositories.invitations.send({roomCode:state.roomCode,fromProfile:state.networkProfile,toPlayerId:profile.id,roomTitle:state.room?loungeTitle(state.room):''});portal.open('online');toast(`Invitation envoyée à ${profile.name}`);}catch(error){toast(error.message,'error');}finally{invitePending=false;}},
         declineInvite: async id => { if (!canWrite()) return; try { await repositories.invitations.remove(state.profile.id, id); } catch (error) { toast(error.message, 'error'); } } }
     });
     state.profiles = await repositories.profiles.list();

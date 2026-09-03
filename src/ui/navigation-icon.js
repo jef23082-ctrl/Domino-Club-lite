@@ -1,5 +1,8 @@
 // Local vector equivalents of the principal page's house, globe, list, users, history and user-gear icons.
 const PATHS = {
+  domino: ['M6 2h12v20H6Z','M6 12h12','M9 6h.1M15 9h.1M9 16h.1M15 19h.1'],
+  trophy: ['M7 3h10v7a5 5 0 0 1-10 0Z','M7 5H3v3a5 5 0 0 0 5 5M17 5h4v3a5 5 0 0 1-5 5','M12 15v6M8 22h8'],
+  flame: ['M13 2c1 6-5 6-4 11 0 0-3-1-3-4-5 9 0 14 6 14 7 0 10-7 6-12 0 4-2 5-2 5 1-5-1-9-3-14Z','M12 14c-4 5-3 8 0 8s5-4 0-8Z'],
   home: ['M3 10.5 12 3l9 7.5','M5 9v11h5v-7h4v7h5V9'],
   online: ['M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z','M3 12h18','M12 3c-5 5-5 13 0 18 5-5 5-13 0-18Z'],
   ranking: ['M9 5h12M9 12h12M9 19h12','M3 4h1v3M2.5 11c0-2 4-2 3 0l-3 3h3M3 18h2l-1 1c3 0 2 3-1 2'],

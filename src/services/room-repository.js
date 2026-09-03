@@ -12,6 +12,7 @@ import {
 } from '../game/room-state.js';
 import { randomId } from './ids.js';
 import { liveTransaction } from './live-transaction.js';
+import { createLoungeName } from '../online/lounge-name.js';
 
 export class RoomRepository {
   constructor(database) {
@@ -23,6 +24,7 @@ export class RoomRepository {
     for (let attempt = 0; attempt < 8; attempt += 1) {
       const code = randomId(5);
       const room = createInitialRoom({ code, profile, clientToken, at });
+      room.lounge = createLoungeName(profile);
       const result = await this.rooms.child(code).transaction(current => current ? undefined : room, undefined, false);
       if (result.committed) return code;
     }

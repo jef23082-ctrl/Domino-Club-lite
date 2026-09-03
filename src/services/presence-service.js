@@ -1,7 +1,7 @@
 import { FIREBASE_PATHS } from '../config/firebase.js';
 
 export class PresenceService {
-  constructor(database, { heartbeatMs = 45000, serverTimestamp = () => Date.now() } = {}) {
+  constructor(database, { heartbeatMs = 45000, serverTimestamp = () => Date.now(), publishPresence = null, onHeartbeat = null } = {}) {
     this.database = database;
     this.root = database.ref(FIREBASE_PATHS.presence);
     this.heartbeatMs = heartbeatMs;
@@ -12,6 +12,7 @@ export class PresenceService {
     this.role = 'lobby';
     this.stopConnection = null;
     this.connected = false;
+    this.publishPresence = publishPresence;this.onHeartbeat = onHeartbeat;
   }
 
   async connect({ clientToken, profile, roomCode = '', role = 'lobby' }) {
@@ -20,7 +21,7 @@ export class PresenceService {
     this.role = role;
     this.reference = this.root.child(clientToken);
     const reference = this.reference;
-    const write = () => reference.set({
+    const write = () => {const payload={
       playerId: profile.id,
       name: profile.name,
       avatar: profile.avatar || '❓',
@@ -28,7 +29,8 @@ export class PresenceService {
       lastSeen: this.serverTimestamp(),
       roomCode: this.roomCode,
       role: this.role
-    });
+    };return this.publishPresence?this.publishPresence(reference.key,payload):reference.set(payload);};
+    let resolveReady,rejectReady;const ready=new Promise((resolve,reject)=>{resolveReady=resolve;rejectReady=reject;});
     const connection = this.database.ref('.info/connected');
     const reconnect = async snapshot => {
       this.connected = snapshot.val() === true;
@@ -37,8 +39,8 @@ export class PresenceService {
         // onDisconnect registrations are consumed by a disconnect: renew before
         // restoring the complete profile, not just its heartbeat fields.
         await reference.onDisconnect().remove();
-        if (this.reference === reference && this.connected) await write();
-      } catch (_) {}
+        if (this.reference === reference && this.connected) {await write();resolveReady();}
+      } catch (error) {rejectReady(error);}
     };
     connection.on('value', reconnect);
     this.stopConnection = () => connection.off('value', reconnect);
@@ -49,7 +51,9 @@ export class PresenceService {
         roomCode: this.roomCode,
         role: this.role
       }).catch(() => {});
+      this.onHeartbeat?.().catch(() => {});
     }, this.heartbeatMs);
+    try {await ready;} catch (error) {if(this.reference===reference)await this.disconnect();throw error;}
   }
 
   updateRoom(roomCode = '', role = 'lobby') {
