@@ -9,7 +9,7 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js';
+} from './engine.js?v=20260906T072753858';
 
 export class GameRuleError extends Error {
   constructor(message, code) {

@@ -3,8 +3,8 @@ import {
   setLoungeMusicVolume,
   syncLoungeMusicControls,
   toggleLoungeMusic
-} from './lounge-music.js?v=20260906T072017857';
-import { setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20260906T072017857';
+} from './lounge-music.js?v=20260906T072753858';
+import { setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20260906T072753858';
 
 export async function requestAppFullscreen() {
   if (document.fullscreenElement) return true;

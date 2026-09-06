@@ -1,6 +1,6 @@
-import { FIREBASE_PATHS } from '../config/firebase.js';
-import { rebuiltStats, validFirebaseKey } from './online-records.js';
-import { liveTransaction } from './live-transaction.js';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260906T072753858';
+import { rebuiltStats, validFirebaseKey } from './online-records.js?v=20260906T072753858';
+import { liveTransaction } from './live-transaction.js?v=20260906T072753858';
 
 export class AdminRepository {
   constructor(database, access) {

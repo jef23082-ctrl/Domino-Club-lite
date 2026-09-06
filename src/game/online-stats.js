@@ -1,4 +1,4 @@
-import { playerKey } from './engine.js';
+import { playerKey } from './engine.js?v=20260906T072753858';
 
 export function victories(stat) {
   return Number(stat?.victories ?? stat?.gamesWon ?? 0);

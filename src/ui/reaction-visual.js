@@ -1,4 +1,4 @@
-import { createWorkBeacon } from './work-beacon.js';
+import { createWorkBeacon } from './work-beacon.js?v=20260906T072753858';
 
 const PREMIUM_EFFECTS = new Set(['pig', 'applause', 'smallkeeper', 'cool', 'catherine', 'working']);
 let visualSequence = 0;

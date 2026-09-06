@@ -1,17 +1,17 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260906T072017857';
-import { profileDetails } from '../game/club-state.js';
-import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js';
-import { roomPlayers } from '../game/room-state.js';
-import { createChatComposer } from './chat-composer.js?v=20260906T072017857';
-import { navigationIcon } from './navigation-icon.js';
-import { activeRooms, waitingRooms } from '../online/room-activity.js';
-import { displayName } from '../online/display-name.js';
-import { clubRankings } from '../online/combined-ranking.js';
-import { paginate } from './pagination.js';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260906T072017857';
-import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js';
-import { requestAppFullscreen } from './app-shell.js';
-import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260906T072753858';
+import { profileDetails } from '../game/club-state.js?v=20260906T072753858';
+import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260906T072753858';
+import { roomPlayers } from '../game/room-state.js?v=20260906T072753858';
+import { createChatComposer } from './chat-composer.js?v=20260906T072753858';
+import { navigationIcon } from './navigation-icon.js?v=20260906T072753858';
+import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260906T072753858';
+import { displayName } from '../online/display-name.js?v=20260906T072753858';
+import { clubRankings } from '../online/combined-ranking.js?v=20260906T072753858';
+import { paginate } from './pagination.js?v=20260906T072753858';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260906T072753858';
+import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260906T072753858';
+import { requestAppFullscreen } from './app-shell.js?v=20260906T072753858';
+import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260906T072753858';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
 export function createClubPortal({ ui, physical, access, stats, admin, chat, identity, canWrite, notify, actions, onData }) {
