@@ -1,4 +1,4 @@
-Domino Club V3 — 1.6.0
+Domino Club V3 — 1.7.0
 
 Publier le contenu de ce dossier sur GitHub Pages. Ouvrir index.html via HTTP/HTTPS, pas par double-clic.
 
@@ -18,6 +18,6 @@ Salons et profils : chaque page ouverte possède un identifiant de présence dis
 
 Chat : lorsqu’il est replié sur la table, une pastille vive compte les nouveaux messages reçus. Le compteur est propre à l’appareil et revient à zéro dès la réouverture.
 
-Interactions premium : cette version contient six prototypes fonctionnels intégrés — cochon mécanique, mains d’aide Dédoudez moin, bouclier des petits dominos, chevalier Mat Attack, camée Catherine de Médicis et gyrophare Je travaille. Les interactions envoyées affichent l’expéditeur dans une capsule adaptative et suivent brièvement le pourtour de la table avec une traînée dorée. Chaque prototype possède une signature sonore synthétisée ; les effets ont leur propre volume et leur propre bouton de coupure. Ces prototypes sont vectoriels SVG/CSS et ne constituent pas encore les futurs rendus PNG photoréalistes.
+Interactions premium : les 14 interactions envoyées et les 14 émotions personnelles utilisent désormais les objets PNG photoréalistes validés. Les interactions envoyées affichent l’expéditeur dans une capsule adaptative et suivent brièvement le pourtour de la table avec une traînée composée de particules PNG dorées. Chaque interaction possède son mouvement et sa signature sonore synthétisée ; les effets ont leur propre volume et leur propre bouton de coupure. « Je travaille » et « Je suis revenu » conservent exactement leur gyrophare synchronisé existant.
 
 Firebase reprend la base existante. Les tests, données de démonstration et scénarios QA sont exclus de ce paquet. Tous les joueurs doivent utiliser la même nouvelle version pour partager les fonctions ajoutées.

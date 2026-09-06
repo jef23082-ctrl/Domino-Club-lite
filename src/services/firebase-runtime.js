@@ -1,4 +1,4 @@
-import { FIREBASE_CONFIG } from '../config/firebase.js?v=20260906T072753858';
+import { FIREBASE_CONFIG } from '../config/firebase.js?v=20260906T181957527';
 
 export function createFirebaseRuntime(firebaseCompat = globalThis.firebase) {
   if (!firebaseCompat) throw new Error('Le SDK Firebase compat n’est pas chargé.');

@@ -1,4 +1,4 @@
-import { duckLoungeMusic } from './lounge-music.js?v=20260906T072753858';
+import { duckLoungeMusic } from './lounge-music.js?v=20260906T181957527';
 
 const MUTE_STORAGE_KEY = 'domino-club-sfx-muted';
 const VOLUME_STORAGE_KEY = 'domino-club-sfx-volume';
@@ -114,34 +114,95 @@ export function playSound(kind) {
     tone(current, 205, .34, .3, .055, 'sawtooth', 118);
   } else if (String(kind).startsWith('reaction-')) {
     const effect = String(kind).slice(9);
-    if (effect === 'clock') [0, .19, .38].forEach(delay => tone(current, 1150, delay, .055, .045, 'square'));
-    else if (effect === 'pig') {
+    const chord = (notes, gap = .1, duration = .55, gain = .04) => notes.forEach((frequency, index) => tone(current, frequency, index * gap, duration, gain, 'sine', frequency * 1.01));
+    if (effect === 'clock') {
+      [0, .3, .6].forEach(delay => tone(current, 980, delay, .09, .035, 'square', 760));
+      tone(current, 520, .9, .5, .06, 'sine', 700);
+    } else if (effect === 'pig') {
       impact(current, 0, .06, 720, .14);
       tone(current, 245, .04, .28, .07, 'sawtooth', 132);
       tone(current, 202, .3, .24, .052, 'sawtooth', 118);
+      chord([740, 1040], .15, .35, .035);
+    } else if (effect === 'loser') {
+      chord([880, 660, 990, 740], .09, .3, .04);
+    } else if (effect === 'boss') {
+      chord([523.25, 659.25, 783.99], .1, .8, .05);
     } else if (effect === 'applause') {
-      [587.33, 698.46, 880].forEach((frequency, index) => tone(current, frequency, index * .09, .28, .038, 'sine'));
+      chord([523.25, 659.25, 783.99], .18, .75, .055);
     } else if (effect === 'smallkeeper') {
       [0, .09, .18].forEach((delay, index) => impact(current, delay, .045, 1320 - index * 150, .12));
       tone(current, 330, .24, .34, .045, 'triangle', 247);
+    } else if (effect === 'unplayable') {
+      impact(current, 0, .55, 900, .055);
+      tone(current, 180, 0, .7, .045, 'sawtooth', 90);
+    } else if (effect === 'pigforever') {
+      impact(current, 0, .09, 920, .14);
+      tone(current, 105, 0, .22, .1, 'triangle', 45);
+      chord([659.25, 783.99], .12, .45, .035);
+    } else if (effect === 'vivalgeria') {
+      chord([392, 523.25, 659.25, 783.99], .12, .9, .045);
+    } else if (effect === 'cvousquifait') {
+      tone(current, 460, 0, .13, .07, 'triangle', 760);
+      tone(current, 920, .14, .28, .04, 'sine', 720);
+    } else if (effect === 'chattard') {
+      chord([783.99, 987.77, 1174.66], .09, .7, .045);
+    } else if (effect === 'enculax') {
+      impact(current, 0, .55, 1400, .035);
+      chord([440, 554.37, 659.25], .11, .8, .035);
+    } else if (effect === 'sakamache') {
+      chord([659.25, 783.99, 987.77], .08, .45, .05);
+    } else if (effect === 'cuthead') {
+      impact(current, 0, .18, 700, .15);
+      tone(current, 70, .03, .22, .1, 'triangle', 40);
+      tone(current, 650, .08, .5, .045, 'sine', 400);
+    } else if (effect === 'cry') {
+      tone(current, 880, 0, 1.1, .05, 'sine', 330);
+      tone(current, 540, .35, .8, .035, 'sine', 260);
+    } else if (effect === 'angry') {
+      tone(current, 95, 0, .8, .07, 'sawtooth', 62);
+      impact(current, .18, .5, 600, .06);
+    } else if (effect === 'happy') {
+      chord([523.25, 659.25, 783.99, 1046.5], .08, .75, .048);
+    } else if (effect === 'panic') {
+      [0, .18, .36, .54].forEach((delay, index) => tone(current, index % 2 ? 760 : 920, delay, .13, .045, 'square', 680));
+    } else if (effect === 'doubtful') {
+      chord([660, 540, 610], .14, .5, .04);
     } else if (effect === 'cool') {
       impact(current, 0, .08, 760, .17);
       tone(current, 174.61, .03, .42, .065, 'triangle', 130.81);
       tone(current, 523.25, .23, .25, .035, 'sine', 659.25);
+    } else if (effect === 'pray') {
+      chord([659.25, 830.61, 987.77], .16, .9, .04);
+    } else if (effect === 'thatsgood') {
+      tone(current, 720, 0, .25, .045, 'triangle', 960);
+      chord([659.25, 783.99, 987.77], .1, .7, .04);
+    } else if (effect === 'hematte') {
+      tone(current, 420, 0, .7, .04, 'sine', 610);
+      tone(current, 620, .18, .7, .035, 'sine', 410);
+    } else if (effect === 'toilet') {
+      impact(current, 0, .25, 1800, .045);
+      chord([880, 1174.66, 1318.51], .1, .45, .035);
     } else if (effect === 'catherine') {
       [523.25, 659.25, 783.99, 1046.5].forEach((frequency, index) => {
         tone(current, frequency, index * .085, .19, .04, 'square');
         tone(current, frequency * 2, index * .085, .12, .012, 'triangle');
       });
+    } else if (effect === 'papy') {
+      tone(current, 233.08, 0, .65, .055, 'sawtooth', 293.66);
+      tone(current, 349.23, .15, .55, .04, 'triangle', 392);
+    } else if (effect === 'suzanne') {
+      chord([523.25, 659.25, 783.99], .13, 1, .045);
+      tone(current, 1046.5, .42, .8, .03, 'sine', 987.77);
+    } else if (effect === 'food') {
+      tone(current, 1450, 0, .35, .045, 'sine', 980);
+      chord([523.25, 659.25, 783.99], .1, .65, .035);
     } else if (effect === 'working') {
       tone(current, 186, 0, .42, .045, 'sawtooth', 248);
       [0, .12, .24].forEach(delay => impact(current, delay, .035, 1020, .08));
     } else if (effect === 'return') {
       impact(current, 0, .05, 900, .09);
       [392, 523.25, 659.25].forEach((frequency, index) => tone(current, frequency, .08 + index * .1, .3, .035));
-    }
-    else if (effect === 'boss') [659.25, 783.99, 987.77].forEach((frequency, index) => tone(current, frequency, index * .08, .25, .045));
-    else tone(current, 420, 0, .32, .05, 'triangle', 175);
+    } else tone(current, 420, 0, .32, .05, 'triangle', 175);
   }
   return true;
 }
