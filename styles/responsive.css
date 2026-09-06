@@ -1,0 +1,26 @@
+@media (max-aspect-ratio: 4 / 3) {
+  body::before {
+    content: "Tournez l’écran en mode paysage pour une expérience optimale";
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    padding: .65rem 1rem;
+    border: 1px solid #8e6a31;
+    border-radius: 999px;
+    background: rgba(4, 9, 7, .92);
+    color: #d9c28d;
+    font-size: .75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
