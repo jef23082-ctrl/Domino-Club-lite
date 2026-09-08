@@ -1,50 +1,50 @@
-import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=20260906T181957527';
-import { roomPlayers } from '../game/room-state.js?v=20260906T181957527';
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260906T181957527';
-import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20260906T181957527';
-import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20260906T181957527';
-import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20260906T181957527';
-import { playSound, unlockSound } from '../ui/sound-player.js?v=20260906T181957527';
-import { createReactionTrailParticle, createReactionVisual, isPremiumReaction } from '../ui/reaction-visual.js?v=20260906T181957527';
-import { HandOrderStore, handOrderKey, moveHandTile } from '../ui/hand-order.js?v=20260906T181957527';
-import { bindHandInteractions } from '../ui/hand-interactions.js?v=20260906T181957527';
-import { ChatRepository } from '../services/chat-repository.js?v=20260906T181957527';
-import { ClubChatSession, CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260906T181957527';
-import { createFirebaseRuntime } from '../services/firebase-runtime.js?v=20260906T181957527';
-import { InvitationRepository } from '../services/invitation-repository.js?v=20260906T181957527';
-import { randomId } from '../services/ids.js?v=20260906T181957527';
-import { authenticateProfile } from '../services/profile-auth.js?v=20260906T181957527';
-import { PresenceService } from '../services/presence-service.js?v=20260906T181957527';
-import { ProfileRepository } from '../services/profile-repository.js?v=20260906T181957527';
-import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js?v=20260906T181957527';
-import { RoomRepository } from '../services/room-repository.js?v=20260906T181957527';
-import { SessionStore } from '../services/session-store.js?v=20260906T181957527';
-import { SpectatorService } from '../services/spectator-service.js?v=20260906T181957527';
-import { StatsRepository } from '../services/stats-repository.js?v=20260906T181957527';
-import { AdminAccess } from '../services/admin-access.js?v=20260906T181957527';
-import { AdminRepository } from '../services/admin-repository.js?v=20260906T181957527';
-import { createClubPortal } from '../ui/club-portal.js?v=20260906T181957527';
-import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20260906T181957527';
-import { renderChatMessage } from '../ui/chat-renderer.js?v=20260906T181957527';
-import { ConnectionService } from '../services/connection-service.js?v=20260906T181957527';
-import { characterIdForProfile } from './profile-map.js?v=20260906T181957527';
-import { tileIntent } from './play-intent.js?v=20260906T181957527';
-import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20260906T181957527';
-import { displayName } from './display-name.js?v=20260906T181957527';
-import { avatar } from '../ui/club-elements.js?v=20260906T181957527';
-import { reactionPicker } from '../ui/reaction-picker.js?v=20260906T181957527';
-import { premiumConfirm } from '../ui/premium-confirm.js?v=20260906T181957527';
-import { requestAppFullscreen } from '../ui/app-shell.js?v=20260906T181957527';
-import { LOUNGE_TRACKS, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20260906T181957527';
-import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20260906T181957527';
-import { loungeTitle } from './lounge-name.js?v=20260906T181957527';
+import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=20260908T233254904';
+import { roomPlayers } from '../game/room-state.js?v=20260908T233254904';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260908T233254904';
+import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20260908T233254904';
+import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20260908T233254904';
+import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20260908T233254904';
+import { playSound, unlockSound } from '../ui/sound-player.js?v=20260908T233254904';
+import { createReactionTrailParticle, createReactionVisual, isPremiumReaction } from '../ui/reaction-visual.js?v=20260908T233254904';
+import { HandOrderStore, handOrderKey, moveHandTile } from '../ui/hand-order.js?v=20260908T233254904';
+import { bindHandInteractions } from '../ui/hand-interactions.js?v=20260908T233254904';
+import { ChatRepository } from '../services/chat-repository.js?v=20260908T233254904';
+import { ClubChatSession, CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260908T233254904';
+import { createFirebaseRuntime } from '../services/firebase-runtime.js?v=20260908T233254904';
+import { InvitationRepository } from '../services/invitation-repository.js?v=20260908T233254904';
+import { randomId } from '../services/ids.js?v=20260908T233254904';
+import { authenticateProfile } from '../services/profile-auth.js?v=20260908T233254904';
+import { PresenceService } from '../services/presence-service.js?v=20260908T233254904';
+import { ProfileRepository } from '../services/profile-repository.js?v=20260908T233254904';
+import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js?v=20260908T233254904';
+import { RoomRepository } from '../services/room-repository.js?v=20260908T233254904';
+import { SessionStore } from '../services/session-store.js?v=20260908T233254904';
+import { SpectatorService } from '../services/spectator-service.js?v=20260908T233254904';
+import { StatsRepository } from '../services/stats-repository.js?v=20260908T233254904';
+import { AdminAccess } from '../services/admin-access.js?v=20260908T233254904';
+import { AdminRepository } from '../services/admin-repository.js?v=20260908T233254904';
+import { createClubPortal } from '../ui/club-portal.js?v=20260908T233254904';
+import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20260908T233254904';
+import { renderChatMessage } from '../ui/chat-renderer.js?v=20260908T233254904';
+import { ConnectionService } from '../services/connection-service.js?v=20260908T233254904';
+import { characterIdForProfile } from './profile-map.js?v=20260908T233254904';
+import { tileIntent } from './play-intent.js?v=20260908T233254904';
+import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20260908T233254904';
+import { displayName } from './display-name.js?v=20260908T233254904';
+import { avatar } from '../ui/club-elements.js?v=20260908T233254904';
+import { reactionPicker } from '../ui/reaction-picker.js?v=20260908T233254904';
+import { premiumConfirm } from '../ui/premium-confirm.js?v=20260908T233254904';
+import { requestAppFullscreen } from '../ui/app-shell.js?v=20260908T233254904';
+import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20260908T233254904';
+import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20260908T233254904';
+import { loungeTitle } from './lounge-name.js?v=20260908T233254904';
 import {
   actionKey,
   celebrationState,
   freshReaction,
   remainingTileCount,
   resultPresentation
-} from './presentation.js?v=20260906T181957527';
+} from './presentation.js?v=20260908T233254904';
 
 const FIREBASE_SCRIPTS = Object.freeze([
   'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js',
@@ -240,6 +240,9 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     ui.reactionLayer.replaceChildren();
     ui.resultLayer.replaceChildren();
     ui.actionLayer.replaceChildren();
+    const spectatorPanel = document.querySelector('#spectator-panel');
+    if (spectatorPanel) spectatorPanel.hidden = true;
+    document.querySelector('#spectator-list')?.replaceChildren();
   }
 
   async function returnToLobby(message) {
@@ -405,38 +408,11 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     showHub(true);
     ui.menu.hidden = true;
     const players = roomPlayers(state.room);
-    setStatus(`${loungeTitle(state.room)} · ${players.length}/3 joueurs`);
+    setStatus('');
     clearContent();
-    const name = node('div', 'online-room-name', loungeTitle(state.room));
-    const list = node('ol', 'online-player-list');
-    for (const player of players) {
-      const seat=node('li','');seat.append(avatar(player),node('strong','',`${player.name}${player.isHost ? ' · hôte' : ''}`));list.append(seat);
-    }
-    for (let index = players.length; index < 3; index++) list.append(node('li', 'portal-muted', 'Place disponible'));
-    ui.content.append(node('h2', 'online-section__title', 'En attente des joueurs'), name, list);
-
+    const controls = node('div', 'online-controls online-waiting-controls');
     if (isHost()) {
-      const musicChoice = node('label', 'online-music-choice');
-      musicChoice.append(node('span', '', 'Musique de la partie'));
-      const select = node('select', 'online-input');
-      LOUNGE_TRACKS.forEach((track, index) => {
-        const option = node('option', '', track.name); option.value = String(index); select.append(option);
-      });
-      select.value = String(Number(state.room.music?.trackIndex || 0));
-      select.addEventListener('change', async () => {
-        select.disabled = true;
-        try {
-          await repositories.rooms.selectMusic(state.roomCode, { clientToken: state.clientToken, trackIndex: Number(select.value) });
-        } catch (error) { toast(error.message, 'error'); }
-        finally { select.disabled = false; }
-      });
-      musicChoice.append(select);
-      ui.content.append(musicChoice);
-    }
-
-    const controls = node('div', 'online-controls');
-    if (isHost()) {
-      const start = actionButton('Lancer la partie', 'online-action online-action--primary');
+      const start = actionButton('Lancer la partie', 'online-action online-action--primary online-start-action');
       start.disabled = players.length !== 3;
       start.addEventListener('click', async () => {
       if (!canWrite()) return;
@@ -473,33 +449,6 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       controls.append(cancel);
     }
     ui.content.append(controls);
-
-    if (isHost()) {
-      const currentIds = new Set(players.map(player => String(player.playerId)));
-      const targets = livePresences().filter(item => !item.roomCode && !currentIds.has(String(item.playerId)));
-      if (targets.length) {
-        const inviteSection = node('details', 'online-section online-invite-chooser');
-        inviteSection.append(node('summary', 'online-action', 'Inviter un joueur connecté'));
-        const inviteOptions = node('div', 'online-invite-options');inviteSection.append(inviteOptions);
-        for (const target of targets) {
-          const row = node('div', 'online-row');
-          row.append(avatar(target),node('span', '', target.name));
-          const invite = actionButton('Inviter', 'online-action online-action--small');
-          invite.addEventListener('click', async () => {
-      if (!canWrite()) return;
-            try {
-              await repositories.invitations.send({
-                roomCode: state.roomCode, fromProfile: state.networkProfile, toPlayerId: target.playerId, roomTitle: loungeTitle(state.room)
-              });
-              toast(`Invitation envoyée à ${target.name}`);
-            } catch (error) { toast(error.message, 'error'); }
-          });
-          row.append(invite);
-          inviteOptions.append(row);
-        }
-        ui.content.append(inviteSection);
-      } else ui.content.append(node('p', 'portal-muted', 'Aucun autre joueur disponible à inviter.'));
-    }
   }
 
   function renderPlayingPanel() {
@@ -606,11 +555,14 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   async function sendReaction(kind, effect, target) {
     if (!canWrite()) return;
     const me = myRoomPlayer();
-    if (!me || !target || state.role !== 'player' || state.room?.status !== 'playing' || state.room.game?.roundStatus !== 'playing') return;
+    const spectator = state.role === 'spectator';
+    const sender = spectator ? state.networkProfile : me;
+    if (!sender || !target || state.room?.status !== 'playing' || state.room.game?.roundStatus !== 'playing') return;
     const allowed = kind === 'emotion' ? SELF_EMOTIONS : OPPONENT_REACTIONS;
     if (!allowed[effect]) return;
+    if (spectator && kind !== 'opponent') return;
     if (kind === 'emotion' && String(target.playerId) !== String(me.playerId)) return;
-    if (kind === 'opponent' && String(target.playerId) === String(me.playerId)) return;
+    if (!spectator && kind === 'opponent' && String(target.playerId) === String(me.playerId)) return;
     if (kind === 'emotion' && effect === 'working') {
       const next = !playerIsWorking(me.playerId);
       closeReactionMenu();
@@ -625,11 +577,11 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       toast('Attends un instant avant une nouvelle réaction.', 'error');
       return;
     }
-    state.reactionCooldownUntil = Date.now() + REACTION_COOLDOWN;
+    state.reactionCooldownUntil = Date.now() + (spectator ? 8000 : REACTION_COOLDOWN);
     closeReactionMenu();
     try {
       await repositories.reactions.send(state.roomCode, {
-        kind, effect, sender: me, target, clientToken: state.clientToken
+        kind, effect, sender, target, clientToken: state.clientToken, senderRole: state.role
       });
     } catch (error) {
       state.reactionCooldownUntil = 0;
@@ -642,12 +594,17 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     return reaction?.[`${key}Name`] || roomPlayers(state.room).find(player => String(player.playerId) === String(id))?.name || fallback;
   }
 
+  function reactionSenderLabel(reaction) {
+    const name = reactionName(reaction, 'sender', 'Un joueur');
+    return reaction?.senderRole === 'spectator' ? `Spectateur ${name}` : name;
+  }
+
   function premiumReactionBadge(reaction, meta, targetSeat) {
     const badge = node('div', `seat-interaction effect-${reaction.effect}`);
     const visual = createReactionVisual(reaction.effect);
     const copy = node('div', 'seat-interaction__copy');
     if (reaction.kind === 'opponent') {
-      copy.append(node('small', 'seat-interaction__sender', `${reactionName(reaction, 'sender', 'Un joueur')} → ${reactionName(reaction, 'target', 'toi')}`));
+      copy.append(node('small', 'seat-interaction__sender', `${reactionSenderLabel(reaction)} → ${reactionName(reaction, 'target', 'toi')}`));
     }
     copy.append(node('strong', '', meta.label));
     if (visual) badge.append(visual);
@@ -657,49 +614,72 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     return badge;
   }
 
+  function smoothPath(points) {
+    if (points.length < 2) return '';
+    let path = `M ${points[0][0]} ${points[0][1]}`;
+    for (let index = 1; index < points.length - 1; index += 1) {
+      const point = points[index], next = points[index + 1];
+      path += ` Q ${point[0]} ${point[1]} ${(point[0] + next[0]) / 2} ${(point[1] + next[1]) / 2}`;
+    }
+    const last = points.at(-1); return `${path} L ${last[0]} ${last[1]}`;
+  }
+
   function premiumReactionTrail(reaction, sourceSeat, targetSeat, targetBadge) {
     const stage = document.querySelector('#casino-stage');
-    if (!stage || !sourceSeat || !targetSeat || !targetBadge) return;
+    if (!stage || !targetSeat || !targetBadge) return;
     const stageRect = stage.getBoundingClientRect();
-    const sourcePlaque = sourceSeat.querySelector('.player-plaque') || sourceSeat;
+    const spectatorSource = reaction?.senderRole === 'spectator';
+    const sourceElement = spectatorSource ? document.querySelector('#spectator-panel') : sourceSeat;
+    if (!sourceElement) return;
+    const sourcePlaque = sourceElement.querySelector?.('.player-plaque') || sourceElement;
     const sourceRect = sourcePlaque.getBoundingClientRect();
     const targetRect = targetBadge.getBoundingClientRect();
     const fromX = sourceRect.left + sourceRect.width / 2 - stageRect.left;
     const fromY = sourceRect.top + sourceRect.height / 2 - stageRect.top;
     const toX = targetRect.left + targetRect.width / 2 - stageRect.left;
     const toY = targetRect.top + targetRect.height / 2 - stageRect.top;
-    const sourceName = sourceSeat.dataset.seat;
+    const sourceName = spectatorSource ? 'spectator' : sourceSeat?.dataset.seat;
     const targetName = targetSeat.dataset.seat;
-    let controlX = (fromX + toX) / 2;
-    let controlY = stageRect.height * .14;
-    if ((sourceName === 'left' && targetName === 'right') || (sourceName === 'right' && targetName === 'left')) controlY = stageRect.height * .88;
-    else if (sourceName === 'top' || targetName === 'top') {
-      controlX += (sourceName === 'left' || targetName === 'left') ? -stageRect.width * .08 : stageRect.width * .08;
-      controlY = stageRect.height * .2;
-    }
-    const path = `path("M ${fromX} ${fromY} Q ${controlX} ${controlY} ${toX} ${toY}")`;
+    const w=stageRect.width,h=stageRect.height;
+    const anchors={top:[w*.5,h*.205],left:[w*.115,h*.59],right:[w*.885,h*.59],spectator:[w*.105,h*.835]};
+    const routes={
+      'top-left':[[w*.34,h*.21],[w*.2,h*.33]],'left-top':[[w*.2,h*.33],[w*.34,h*.21]],
+      'top-right':[[w*.66,h*.21],[w*.8,h*.33]],'right-top':[[w*.8,h*.33],[w*.66,h*.21]],
+      'left-right':[[w*.14,h*.75],[w*.34,h*.875],[w*.66,h*.875],[w*.86,h*.75]],
+      'right-left':[[w*.86,h*.75],[w*.66,h*.875],[w*.34,h*.875],[w*.14,h*.75]],
+      'spectator-left':[[w*.11,h*.72]],
+      'spectator-top':[[w*.12,h*.68],[w*.19,h*.36],[w*.34,h*.215]],
+      'spectator-right':[[w*.16,h*.86],[w*.36,h*.9],[w*.68,h*.88],[w*.86,h*.73]]
+    };
+    const points=[[fromX,fromY],anchors[sourceName]||[fromX,fromY],...(routes[`${sourceName}-${targetName}`]||[]),anchors[targetName]||[toX,toY],[toX,toY]];
+    const d=smoothPath(points),path=`path("${d}")`;
     const travel = node('div', `reaction-travel effect-${reaction.effect}`);
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('reaction-gold-path');svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.setAttribute('aria-hidden','true');
+    for(const className of ['reaction-gold-path__aura','reaction-gold-path__glow','reaction-gold-path__core']){const line=document.createElementNS('http://www.w3.org/2000/svg','path');line.classList.add(className);line.setAttribute('d',d);line.setAttribute('pathLength','1');line.style.animationDelay=`${-Math.min(reaction.elapsed||0,650)/1000}s`;svg.append(line);}travel.append(svg);
     const pulse = node('span', 'reaction-source-pulse');
     pulse.style.left = `${fromX}px`;
     pulse.style.top = `${fromY}px`;
     travel.append(pulse);
-    for (let index = 0; index < 7; index += 1) {
+    for (let index = 0; index < 12; index += 1) {
       const particle = createReactionTrailParticle(index, index === 0 ? 'reaction-comet' : 'reaction-particle');
       particle.style.offsetPath = path;
-      particle.style.animationDelay = `${index * .045 - Math.min(reaction.elapsed || 0, 650) / 1000}s`;
+      particle.style.animationDelay = `${index * .034 - Math.min(reaction.elapsed || 0, 650) / 1000}s`;
       travel.append(particle);
     }
+    const arrival=node('span','reaction-arrival-ring');arrival.style.left=`${toX}px`;arrival.style.top=`${toY}px`;travel.append(arrival);
     ui.reactionLayer.append(travel);
   }
 
   function renderReactionMenu(player) {
     ui.actionLayer.replaceChildren();
-    if (!player || state.role !== 'player' || state.room?.status !== 'playing' || state.room?.game?.roundStatus !== 'playing') return;
+    if (!player || state.room?.status !== 'playing' || state.room?.game?.roundStatus !== 'playing') return;
     const me = myRoomPlayer();
-    if (!me) return;
-    const mine = String(me.playerId) === String(player.playerId);
+    const sender = state.role === 'spectator' ? state.networkProfile : me;
+    if (!sender) return;
+    const mine = state.role === 'player' && String(me.playerId) === String(player.playerId);
     const actions = mine ? SELF_EMOTIONS : OPPONENT_REACTIONS;
-    const menu=reactionPicker({mine,player,sender:me,actions,working:mine&&playerIsWorking(me.playerId),onClose:closeReactionMenu,onSend:effect=>sendReaction(mine?'emotion':'opponent',effect,player)});
+    const menu=reactionPicker({mine,player,sender,actions,working:mine&&playerIsWorking(me.playerId),onClose:closeReactionMenu,onSend:effect=>sendReaction(mine?'emotion':'opponent',effect,player)});
+    if(state.role==='spectator')menu.classList.add('is-spectator');
     ui.actionLayer.append(menu);
     menu.querySelector('button').focus({preventScroll:true});
   }
@@ -757,7 +737,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         impact.style.top = `${toY}px`;
         impact.style.animationDelay = `${.76 - fresh.elapsed / 1000}s`;
         const copy = node('div', 'reaction-impact__copy');
-        const sender = fresh.senderName || roomPlayers(state.room).find(p => String(p.playerId) === String(fresh.senderId))?.name || 'Un joueur';
+        const sender = reactionSenderLabel(fresh);
         copy.append(node('small', 'reaction-impact__sender', `${sender} → ${fresh.targetName || roomPlayers(state.room).find(p => String(p.playerId) === String(fresh.targetId))?.name || 'toi'}`), node('strong', '', meta.label));
         impact.append(node('span', 'reaction-impact__icon', meta.icon), copy);
         ui.reactionLayer.append(projectile, impact);
@@ -963,6 +943,24 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     return canAct;
   }
 
+  function renderSpectators(room) {
+    const panel = document.querySelector('#spectator-panel');
+    const list = document.querySelector('#spectator-list');
+    if (!panel || !list) return;
+    const seated = new Set(roomPlayers(room).map(player => String(player.playerId)));
+    const unique = new Map();
+    for (const spectator of Object.values(room?.spectators || {}).filter(Boolean)) {
+      const id = String(spectator.playerId ?? spectator.name ?? '');
+      if (!id || seated.has(id)) continue;
+      const previous = unique.get(id);
+      if (!previous || Number(spectator.joinedAt || 0) < Number(previous.joinedAt || 0)) unique.set(id, spectator);
+    }
+    const spectators = [...unique.values()].sort((left, right) => Number(left.joinedAt || 0) - Number(right.joinedAt || 0));
+    list.replaceChildren(...spectators.map(spectator => node('li', '', spectator.name || 'Spectateur')));
+    panel.hidden = spectators.length === 0;
+    panel.setAttribute('aria-label', `Spectateurs : ${spectators.map(spectator => displayName(spectator.name || 'Spectateur')).join(', ')}`);
+  }
+
   function renderLiveScene(room) {
     const players = seatedPlayers(room);
     const game = room.game || {};
@@ -977,7 +975,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         return;
       }
       seat.dataset.playerId = String(player.playerId);
-      seat.tabIndex = state.role === 'player' ? 0 : -1;
+      seat.tabIndex = ['player','spectator'].includes(state.role) ? 0 : -1;
       seat.setAttribute('aria-label', `${displayName(player.name)} · ouvrir les interactions`);
       image.style.opacity = '1';
       const characterId = characterIdForProfile(player);
@@ -996,6 +994,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     });
 
     renderBoard(document.querySelector('#domino-board'), game.board || { placements: [] });
+    renderSpectators(room);
     const canAct = renderLiveHand(room);
 
     const turn = players.find(player => String(player.playerId) === String(game.currentTurnId));
@@ -1036,6 +1035,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         if (error?.code !== 'player-not-seated') throw error;
       }
     }
+    muteLoungeMusic();
     state.enterSceneOnStart = !restored;
     stopRoomBindings();
     await repositories.spectators.clear();
@@ -1115,7 +1115,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       }
     });
     const toggleSeatMenu = seat => {
-      if (!seat?.dataset.playerId || state.role !== 'player') return;
+      if (!seat?.dataset.playerId || !['player','spectator'].includes(state.role)) return;
       const player = roomPlayers(state.room).find(item => String(item.playerId) === seat.dataset.playerId);
       if (!player) return;
       if (state.openReactionPlayerId === seat.dataset.playerId) closeReactionMenu();
@@ -1243,7 +1243,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       identity: () => ({ profile: state.networkProfile, clientToken: state.clientToken, role: state.role }), canWrite, notify: toast,
       onData: value => { state.profiles = value.players; },
       actions: { renderOnline: renderCurrentPanel, acceptInvite,
-        watchRoom:(code,role)=>{requestAppFullscreen();primeLoungeMusic();return attachRoom(code,role);},
+        watchRoom:(code,role)=>{requestAppFullscreen();muteLoungeMusic();primeLoungeMusic();return attachRoom(code,role);},
         joinRoom:async code=>{if(!canWrite())return;try{if(state.room&&['waiting','playing'].includes(state.room.status)&&state.role==='player'&&state.roomCode!==code)throw new Error('Quitte ta salle d’attente ou termine ta partie avant de rejoindre une autre salle.');requestAppFullscreen();primeLoungeMusic();await repositories.rooms.join(code,{profile:state.networkProfile,clientToken:state.clientToken});await attachRoom(code,'player');}catch(error){toast(error.message,'error');}},
         inviteProfile:async profile=>{if(!canWrite()||invitePending)return;invitePending=true;try{if(state.room&&(state.room.status!=='waiting'||!isHost()))throw new Error('Crée un salon libre ou retourne dans ton salon d’attente pour inviter.');if(!state.room){const code=await repositories.rooms.create({profile:state.networkProfile,clientToken:state.clientToken});await attachRoom(code,'player');}await repositories.invitations.send({roomCode:state.roomCode,fromProfile:state.networkProfile,toPlayerId:profile.id,roomTitle:state.room?loungeTitle(state.room):''});portal.open('online');toast(`Invitation envoyée à ${profile.name}`);}catch(error){toast(error.message,'error');}finally{invitePending=false;}},
         declineInvite: async id => { if (!canWrite()) return; try { await repositories.invitations.remove(state.profile.id, id); } catch (error) { toast(error.message, 'error'); } } }

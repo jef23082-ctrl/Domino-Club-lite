@@ -166,11 +166,12 @@
 .hand-pip {
   align-self: center;
   justify-self: center;
-  width: 42%;
+  width: 68%;
+  min-width: 5px;
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 28%, #474747, #080808 58%, #000);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .25);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .25), 0 1px 1px rgba(42, 25, 5, .28);
 }
 
 .hand-domino::after {
@@ -218,8 +219,8 @@
 
 .result-domino .hand-half { padding: 7%; }
 .result-domino .hand-pip {
-  width: 68%;
-  min-width: 4px;
+  width: 84%;
+  min-width: 5px;
   background: radial-gradient(circle at 35% 28%, #5a5a5a, #090909 52%, #000 74%);
   box-shadow: inset 0 1px 1px #ffffff4d, 0 1px 1px #5c431c4d;
 }

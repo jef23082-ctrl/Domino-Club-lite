@@ -1,4 +1,4 @@
-import { playerAsset } from '../config/player-assets.js?v=20260906T181957527';
+import { playerAsset } from '../config/player-assets.js?v=20260908T233254904';
 
 export function renderCharacterPlate(seat, characterId) {
   const image = document.querySelector(`#character-${seat}`);

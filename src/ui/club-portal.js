@@ -1,24 +1,25 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260906T181957527';
-import { profileDetails } from '../game/club-state.js?v=20260906T181957527';
-import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260906T181957527';
-import { roomPlayers } from '../game/room-state.js?v=20260906T181957527';
-import { createChatComposer } from './chat-composer.js?v=20260906T181957527';
-import { navigationIcon } from './navigation-icon.js?v=20260906T181957527';
-import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260906T181957527';
-import { displayName } from '../online/display-name.js?v=20260906T181957527';
-import { clubRankings } from '../online/combined-ranking.js?v=20260906T181957527';
-import { paginate } from './pagination.js?v=20260906T181957527';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260906T181957527';
-import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260906T181957527';
-import { requestAppFullscreen } from './app-shell.js?v=20260906T181957527';
-import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260906T181957527';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260908T233254904';
+import { profileDetails } from '../game/club-state.js?v=20260908T233254904';
+import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260908T233254904';
+import { roomPlayers } from '../game/room-state.js?v=20260908T233254904';
+import { createChatComposer } from './chat-composer.js?v=20260908T233254904';
+import { navigationIcon } from './navigation-icon.js?v=20260908T233254904';
+import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260908T233254904';
+import { displayName } from '../online/display-name.js?v=20260908T233254904';
+import { clubRankings } from '../online/combined-ranking.js?v=20260908T233254904';
+import { paginate } from './pagination.js?v=20260908T233254904';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260908T233254904';
+import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260908T233254904';
+import { requestAppFullscreen } from './app-shell.js?v=20260908T233254904';
+import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260908T233254904';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
+const SITE_VERSION='V4';
 export function createClubPortal({ ui, physical, access, stats, admin, chat, identity, canWrite, notify, actions, onData }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;
   const scroll=el('div','portal-scroll'), header=el('header','portal-header');
-  header.append(el('p','portal-kicker','LE SALON PRIVÉ'),el('h1','','DOMINO CLUB'),el('p','portal-subtitle','Le Roi du Cochon'));
+  header.append(el('span','portal-site-version',SITE_VERSION),el('p','portal-kicker','LE SALON PRIVÉ'),el('h1','','DOMINO CLUB'),el('p','portal-subtitle','Le Roi du Cochon'));
   const dataStatus=el('p','portal-data-status','Chargement des données du club…');header.append(dataStatus);scroll.append(header);
   const pages=new Map(), nav=el('nav','portal-nav');nav.setAttribute('aria-label','Navigation principale');
   const buttons=new Map();
@@ -58,7 +59,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, ide
     if(!snapshot)return;
     const now=Date.now(), live=Object.values(snapshot.presences||{}).filter(item=>item&&now-Number(item.lastSeen||0)<120000);
     const unique=new Map();for(const item of live){const key=String(item.playerId),previous=unique.get(key),priority=value=>value?.roomCode?2:1;if(!previous||priority(item)>priority(previous)||priority(item)===priority(previous)&&Number(item.lastSeen)>Number(previous.lastSeen))unique.set(key,item);}
-    presences.replaceChildren(...[...unique.values()].map(item=>{const line=el('div','portal-list-row portal-member-row'),state=el('span','portal-member-state');state.append(el('strong','',item.name),el('small','',`· ${item.roomCode ? item.role==='spectator'?'Spectateur':'En salle' : 'Disponible'}`));line.append(avatar(item),state);return line;}));
+    presences.replaceChildren(...[...unique.values()].map(item=>{const line=el('div','portal-list-row portal-member-row'),state=el('span','portal-member-state');state.append(el('i','portal-online-dot'),el('strong','',item.name),el('small','',`· ${item.roomCode ? item.role==='spectator'?'Spectateur':'En salle' : 'Disponible'}`));line.append(avatar(item),state);return line;}));
     if(!unique.size)presences.append(el('p','portal-muted','Aucun joueur connecté.'));
     const valid=Object.entries(snapshot.invitations||{}).filter(([,item])=>item&&(!item.createdAt||now-Number(item.createdAt)<3600000));
     invites.replaceChildren();paged(invites,valid,'invitations',1,([id,v])=>invitationCard(id,v));
@@ -114,31 +115,52 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, ide
     for(const p of players){const seat=el('div');seat.append(avatar(p),el('span','',p.name));strip.append(seat);}
     for(let i=players.length;i<3;i++){const seat=el('div');seat.append(el('span','portal-empty-seat','+'),el('span','','Place libre'));strip.append(seat);}
     const enter=button(label,action,label==='Regarder'?'':'online-action--primary');if(label==='Rejoindre'&&players.length>=3)enter.disabled=true;
-    node.append(el('span',`portal-status-pill ${room.status==='waiting'?'is-waiting':''}`,room.status==='waiting'?'En attente':label==='Reprendre'?'Ta partie · À reprendre':'Partie en cours'),el('h3','',loungeTitle(room)),el('p','portal-room-origin',loungeIdentity(room).territory),strip,el('p','portal-room-capacity',`${players.length} / 3 joueurs · ${Object.keys(room.spectators||{}).length} spectateur(s)`),enter);
+    const heading=el('header','portal-room-heading');
+    const title=el('div','portal-room-title');title.append(el('h3','',loungeTitle(room)),el('p','portal-room-origin',loungeIdentity(room).territory));
+    heading.append(title,el('span',`portal-status-pill ${room.status==='waiting'?'is-waiting':''}`,room.status==='waiting'?'En attente':label==='Reprendre'?'Ta partie · À reprendre':'Partie en cours'));
+    node.append(heading,strip,el('p','portal-room-capacity',`${players.length} / 3 joueurs · ${Object.keys(room.spectators||{}).length} spectateur(s)`),enter);
     return node;
   }
   function renderHome(target){
     const selfId=identity().profile?.id,me=data.players.find(p=>String(p.id)===String(selfId)),generalRows=rankings().general,mine=generalRows.find(p=>String(p.id)===String(selfId)),mineRank=generalRows.findIndex(p=>String(p.id)===String(selfId))+1;
-    const layout=el('div','portal-home-layout'),main=el('div','portal-home-main'),side=el('div','portal-home-side');
-    const room=snapshot?.room,resumable=Boolean(room?.game),resume=card(resumable?'Retrouver ma partie':'Bienvenue au club');resume.classList.add('portal-resume-card');
-    resume.append(el('p','portal-muted',resumable?`${loungeTitle(room)} · ${room.status==='finished'?'Partie terminée':'Partie en cours'}`:'Une table privée. Des partenaires familiers. À toi de jouer.'));
-    const portraits=el('div','portal-hero-portraits');
-    for(const player of (resumable?roomPlayers(room):[me,...data.players.filter(p=>String(p.id)!==String(selfId))].filter(Boolean).slice(0,3))){const seat=el('div');seat.append(avatar(player),el('strong','',player.name));portraits.append(seat);}
-    resume.append(portraits,button(resumable?'Revenir à la table':'Rejoindre les salons',()=>resumable?showTable():open('online'),'online-action--primary'));
-    const shortcuts=el('div','portal-home-shortcuts');
-    for(const[id,label,detail]of [['online','Jouer en ligne','Retrouve les membres et les invitations.'],['ranking','Voir le classement','Tous les résultats du club.']]){const b=button('',()=>open(id),'portal-shortcut');b.append(navigationIcon(id),el('strong','',label),el('span','portal-muted',detail));shortcuts.append(b);}
-    main.append(resume,shortcuts);
-    const member=card(new Date().getHours()<18?'Bonjour':'Bonsoir');member.classList.add('portal-member-card');if(me){const metrics=el('div','portal-member-metrics');for(const [icon,value,label]of [['domino',mine?.totalGames||0,'résultats'],['trophy',mine?.vic||0,'victoires'],['percent',`${mine?.percent||0}%`,'de victoire']]){const metric=el('div'),glyph=el('span','portal-member-metric-icon');glyph.append(navigationIcon(icon));metric.append(glyph,el('strong','',value),el('span','',label));metrics.append(metric);}member.append(el('span','portal-member-rank',mineRank?`#${mineRank}`:'—'),avatar(me),el('h3','',me.name),metrics,button('Voir mon profil',()=>{profileId=selfId;open('profiles');}));}
-    const invitations=card('Invitations'),valid=Object.entries(snapshot?.invitations||{}).filter(([,v])=>v&&(!v.createdAt||Date.now()-Number(v.createdAt)<3600000));
-    paged(invitations,valid,'accueil invitations',1,([id,v])=>invitationCard(id,v));if(!valid.length)invitations.append(el('p','portal-muted','Aucune invitation pour le moment.'),button('Voir les salons',()=>open('online')));
-    side.append(member,invitations);layout.append(main,side);target.append(layout);
+    const showcase=el('div','portal-home-showcase');
+    const makeTitle=(icon,title)=>{const heading=el('div','portal-home-card-heading'),glyph=el('span','portal-home-heading-icon');glyph.append(navigationIcon(icon));heading.append(glyph,el('h2','',title),el('span','portal-home-heading-jewel','◆'));return heading;};
+    const makeAction=(icon,label,action,type='')=>{const control=button('',action,`portal-home-action ${type}`.trim()),glyph=el('span','portal-home-action-icon');glyph.append(navigationIcon(icon));control.append(glyph,el('strong','',label),el('span','portal-home-action-arrow','›'));return control;};
+
+    const onlineCard=el('section','portal-card portal-home-card portal-home-online-card');
+    onlineCard.append(makeTitle('online','PARTIE EN LIGNE'));
+    const onlineActions=el('div','portal-home-action-list');
+    onlineActions.append(
+      makeAction('create','Créer une salle',()=>open('online')),
+      makeAction('table','Table du club',()=>open('online')),
+      makeAction('chat','Discussion commune',()=>open('online'))
+    );
+    const now=Date.now(),active=activeRooms(snapshot?.rooms,snapshot?.presences,now),waiting=waitingRooms(snapshot?.rooms,snapshot?.presences,now,{playerId:snapshot?.profile?.id,roomCode:snapshot?.roomCode});
+    const roomCount=new Set([...active,...waiting].map(room=>String(room.code))).size;
+    const roomStatus=el('div','portal-home-room-status');roomStatus.append(el('i','portal-home-live-dot'),el('span','',`${roomCount} table${roomCount===1?'':'s'} active${roomCount===1?'':'s'}`));
+    onlineCard.append(onlineActions,roomStatus);
+
+    const member=el('section','portal-card portal-member-card portal-home-card portal-home-profile');
+    if(me){
+      const metrics=el('div','portal-member-metrics');
+      for(const [icon,value,label]of [['domino',mine?.totalGames||0,'parties'],['trophy',mine?.vic||0,'victoires'],['percent',`${mine?.percent||0}%`,'de victoire']]){
+        const metric=el('div'),glyph=el('span','portal-member-metric-icon');glyph.append(navigationIcon(icon));metric.append(glyph,el('strong','',value),el('span','',label));metrics.append(metric);
+      }
+      const portrait=avatar(me);portrait.classList.add('portal-home-profile-avatar');
+      member.append(el('span','portal-member-rank',mineRank?`#${mineRank}`:'—'),makeTitle('profiles',me.name),portrait,metrics,button('Voir mon profil  ›',()=>{profileId=selfId;open('profiles');},'online-action--primary portal-home-profile-button'));
+    }
+
+    const physicalCard=el('section','portal-card portal-home-card portal-home-physical-card');
+    physicalCard.append(makeTitle('domino','CLUB PHYSIQUE'));
+    const physicalActions=el('div','portal-home-action-list portal-home-physical-actions');
+    const cancel=makeAction('cancel','Annuler',openCancelPhysical,'portal-home-action--danger');cancel.disabled=!data.currentTable.length;
+    physicalActions.append(makeAction('play','Nouvelle partie',openNewGame,'portal-home-action--gold'),makeAction('finish','Fin de manche',openRound,'portal-home-action--gold'),cancel);
+    physicalCard.append(physicalActions);
+    showcase.append(onlineCard,member,physicalCard);target.append(showcase);
+
     const connected=el('div','portal-connected-strip');connected.append(el('span','','En ligne :'));
     const live=new Map(Object.values(snapshot?.presences||{}).filter(p=>p&&Date.now()-Number(p.lastSeen)<120000).map(p=>[String(p.playerId),p]));
     for(const p of live.values()){const item=el('span','portal-connected-member');item.append(avatar(p),el('span','',p.name),el('i','portal-presence-dot'));connected.append(item);}if(!live.size)connected.append(el('span','portal-muted','Aucun autre membre connecté.'));target.append(connected);
-    const table=el('div','portal-physical-strip'), seats=el('div','portal-current-table');
-    for(const id of data.currentTable){const player=data.players.find(p=>String(p.id)===String(id));if(!player)continue;const place=el('div');place.append(avatar(player),el('strong','',player.name));seats.append(place);}
-    if(!seats.children.length)seats.append(el('p','portal-muted','Aucune partie physique en cours.'));
-    const controls=el('div','portal-actions'),cancel=button('Annuler',openCancelPhysical,'online-action--danger');cancel.disabled=!data.currentTable.length;controls.append(button('▶ Nouvelle Partie',openNewGame),button('✓ Fin de Manche',openRound),cancel);table.append(el('strong','','Club physique'),seats,controls);target.append(table);
   }
   function renderRanking(target){
     const section=card('Classement'),tabs=el('div','portal-ranking-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','Type de classement');

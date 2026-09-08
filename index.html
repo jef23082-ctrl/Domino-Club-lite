@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Le Roi du Cochon — Domino Club V3">
-  <title>Le Roi du Cochon — Casino V3</title>
-  <link rel="stylesheet" href="./styles/foundation.css?v=20260906T181957527">
-  <link rel="stylesheet" href="./styles/casino-scene.css?v=20260906T181957527">
-  <link rel="stylesheet" href="./styles/dominoes.css?v=20260906T181957527">
-  <link rel="stylesheet" href="./styles/interface.css?v=20260906T181957527">
-  <link rel="stylesheet" href="./styles/responsive.css?v=20260906T181957527">
-  <link rel="stylesheet" href="./styles/online.css?v=20260906T181957527">
-  <link rel="stylesheet" href="./styles/portal.css?v=20260906T181957527">
+  <meta name="description" content="Le Roi du Cochon — Domino Club V4">
+  <title>Le Roi du Cochon — Casino V4</title>
+  <link rel="stylesheet" href="./styles/foundation.css?v=20260908T233254904">
+  <link rel="stylesheet" href="./styles/casino-scene.css?v=20260908T233254904">
+  <link rel="stylesheet" href="./styles/dominoes.css?v=20260908T233254904">
+  <link rel="stylesheet" href="./styles/interface.css?v=20260908T233254904">
+  <link rel="stylesheet" href="./styles/responsive.css?v=20260908T233254904">
+  <link rel="stylesheet" href="./styles/online.css?v=20260908T233254904">
+  <link rel="stylesheet" href="./styles/portal.css?v=20260908T233254904">
 </head>
 <body>
   <main id="app" class="app-shell">
     <section id="game-shell" class="game-shell" aria-label="Partie de dominos en ligne">
       <div id="casino-stage" class="casino-stage">
-        <img class="scene-base" src="./assets/scene/casino-base-v1.png?v=20260906T181957527" alt="Salon de casino privé avec table de dominos">
+        <img class="scene-base" src="./assets/scene/casino-base-v1.png?v=20260908T233254904" alt="Salon de casino privé avec table de dominos">
         <img id="character-top" class="scene-player-plate scene-player-plate--top" hidden alt="">
         <img id="character-left" class="scene-player-plate scene-player-plate--left" hidden alt="">
         <img id="character-right" class="scene-player-plate scene-player-plate--right" hidden alt="">
@@ -79,8 +79,9 @@
           <header class="chat-heading">
             <span class="chat-heading-rule" aria-hidden="true"></span>
             <h2>Discussion</h2>
-            <button id="chat-toggle" type="button" aria-label="Replier la discussion" aria-expanded="true"><span class="chat-toggle-arrow" aria-hidden="true">›</span><span id="chat-unread-badge" class="chat-unread-badge" hidden>0</span></button>
+            <button id="chat-toggle" type="button" aria-label="Replier la discussion" aria-expanded="true"><span class="chat-toggle-arrow" aria-hidden="true">›</span></button>
           </header>
+            <span id="chat-unread-badge" class="chat-unread-badge" hidden>0</span>
             <div class="chat-messages" aria-live="polite"></div>
             <p id="scene-typing" class="scene-typing" aria-live="polite"></p>
           <form class="chat-form">
@@ -89,9 +90,14 @@
             <button type="submit" aria-label="Envoyer">➜</button>
           </form>
         </aside>
+
+        <aside id="spectator-panel" class="spectator-panel" aria-label="Spectateurs" hidden>
+          <strong>Spectateurs</strong>
+          <ul id="spectator-list"></ul>
+        </aside>
       </div>
     </section>
   </main>
-    <script type="module" src="./src/main.js?v=20260906T181957527"></script>
+    <script type="module" src="./src/main.js?v=20260908T233254904"></script>
 </body>
 </html>

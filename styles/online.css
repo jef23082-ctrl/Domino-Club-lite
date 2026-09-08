@@ -231,6 +231,17 @@
 .reaction-particle:nth-child(8) { opacity:.18; transform:scale(.3); }
 .reaction-source-pulse { position:absolute; display:block; width:2.3rem; aspect-ratio:1; border:1px solid #f5cd6c; border-radius:50%; transform:translate(-50%,-50%); animation:sourceGoldPulse .62s ease-out both; box-shadow:0 0 1rem #e5aa42; }
 
+/* V4 — readable liquid-gold trail that hugs the table's outer rim. */
+.reaction-gold-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;filter:drop-shadow(0 0 5px #ffb63f)}
+.reaction-gold-path path{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:.22 1;stroke-dashoffset:1;animation:goldenRibbonFlow 1.55s cubic-bezier(.3,.72,.22,1) both}
+.reaction-gold-path__aura{stroke:#d9781f;stroke-width:13;opacity:.2;filter:blur(4px)}
+.reaction-gold-path__glow{stroke:#ffb53f;stroke-width:7;opacity:.58;filter:blur(1.7px)}
+.reaction-gold-path__core{stroke:#fff5c2;stroke-width:2.4;opacity:.98;filter:drop-shadow(0 0 3px #fff7cf)}
+.reaction-comet,.reaction-particle{animation-duration:1.55s;filter:brightness(1.28) drop-shadow(0 0 .4rem #fff7cf) drop-shadow(0 0 .9rem #ffac36) drop-shadow(0 0 1.5rem #d36b16)}
+.reaction-comet{width:clamp(1.25rem,1.75vw,2rem);filter:brightness(1.5) drop-shadow(0 0 .55rem #fff) drop-shadow(0 0 1.2rem #ffd064) drop-shadow(0 0 2rem #e7801f)}
+.reaction-arrival-ring{position:absolute;display:block;width:clamp(3rem,4.5vw,5rem);aspect-ratio:1;border:2px solid #fff0a6;border-radius:50%;transform:translate(-50%,-50%) scale(.28);opacity:0;box-shadow:0 0 7px #fff8d7,0 0 20px #ffb33e,0 0 36px #d8781f;animation:goldenArrival 1.05s 1.12s cubic-bezier(.2,.85,.25,1) both}
+.reaction-menu.is-spectator .reaction-menu__recipient::before{content:'Spectateur · ';color:#fff0ba;font-weight:850}
+
 .reaction-projectile {
   position: absolute;
   left: var(--from-x);
@@ -407,6 +418,8 @@
 @keyframes premiumInteractionIn { from { opacity:0; transform:translateY(.45rem) scale(.84); } }
 @keyframes premiumInteractionOut { to { opacity:0; transform:translateY(-.25rem) scale(.94); } }
 @keyframes goldenRimTravel { 0% { opacity:0; offset-distance:0%; } 9% { opacity:1; } 88% { opacity:1; } 100% { opacity:0; offset-distance:100%; } }
+@keyframes goldenRibbonFlow{0%{opacity:0;stroke-dashoffset:1}8%{opacity:1}88%{opacity:1}100%{opacity:0;stroke-dashoffset:-.22}}
+@keyframes goldenArrival{0%{opacity:0;transform:translate(-50%,-50%) scale(.28)}28%{opacity:1}68%{opacity:.9;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.42)}}
 @keyframes sourceGoldPulse { from { opacity:.9; transform:translate(-50%,-50%) scale(.35); } to { opacity:0; transform:translate(-50%,-50%) scale(1.65); } }
 @keyframes premiumGlint { 0%,25% { left:-45%; opacity:0; } 38% { opacity:1; } 67%,100% { left:125%; opacity:0; } }
 @keyframes pngHalo { 0%,100% { opacity:.2; transform:scale(.88); } 50% { opacity:.48; transform:scale(1.08); } }
@@ -459,14 +472,22 @@
   .premium-reaction-image, .premium-reaction-halo, .premium-reaction-glint { animation:none !important; }
   .reaction-projectile { display: none; }
   .reaction-impact { opacity: 1; }
-  .reaction-travel { display:none; }
+  /* The golden table-rim trail is a short, essential interaction cue. Keep it
+     visible even when the operating system requests reduced motion. */
+  .reaction-travel { display:block; }
+  .reaction-comet, .reaction-particle {
+    animation: goldenRimTravel 1.35s cubic-bezier(.3,.72,.26,1) both !important;
+  }
+  .reaction-source-pulse {
+    animation: sourceGoldPulse .62s ease-out both !important;
+  }
   .seat-interaction { opacity:1; }
   .work-beacon.is-lit .work-beacon__rotor { animation: workBeaconRotor .68s linear infinite !important; }
   .work-beacon.is-lit .work-beacon__beam { animation: workBeaconSweep 1.05s linear infinite !important; }
   .work-beacon.is-lit .work-beacon__glow { animation: workBeaconGlow 1.05s ease-in-out infinite !important; }
 }
 
-.pass-button:disabled { opacity: .72; color: #cba95e; }
+.pass-button:disabled { opacity: 1; color: #ffd700; }
 
 @media (max-width: 620px) {
   .online-lobby-actions, .online-controls { grid-template-columns: 1fr; }

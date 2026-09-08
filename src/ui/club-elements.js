@@ -1,8 +1,8 @@
-import { displayName } from '../online/display-name.js?v=20260906T181957527';
-import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20260906T181957527';
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260906T181957527';
-import { paginate } from './pagination.js?v=20260906T181957527';
-import { createPremiumCrown, createPremiumPig } from './premium-symbols.js?v=20260906T181957527';
+import { displayName } from '../online/display-name.js?v=20260908T233254904';
+import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20260908T233254904';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260908T233254904';
+import { paginate } from './pagination.js?v=20260908T233254904';
+import { createPremiumCrown, createPremiumPig } from './premium-symbols.js?v=20260908T233254904';
 export function element(tag, className = '', text) {
   const node = document.createElement(tag); node.className = className;
   if (text !== undefined) node.textContent = displayName(text);

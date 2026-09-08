@@ -1,4 +1,4 @@
-Domino Club V3 — 1.7.0
+Domino Club V4 — 4.0.0
 
 Publier le contenu de ce dossier sur GitHub Pages. Ouvrir index.html via HTTP/HTTPS, pas par double-clic.
 
@@ -6,9 +6,9 @@ Connexion et reprise : aucun indice de mot de passe n’est affiché. Une saisie
 
 En ligne : créer une salle, inviter ou accepter une invitation. Deux salles et un chat commun permanent occupent la page. La même discussion est visible et utilisable à la table, joueurs et spectateurs compris. La barre inférieure est masquée pendant le jeu ; Retour au menu ouvre En ligne sans quitter la salle et Revenir à la table retrouve la scène synchronisée.
 
-Musique : la table utilise les trois fichiers MP3 fournis par le club. L’hôte choisit la piste ; le choix et le temps de lecture sont synchronisés à l’entrée sur la table et lors d’un changement de morceau. Les mises à jour suivantes de la salle ne replacent jamais la piste au début : elle boucle seulement à sa fin. Les autres joueurs règlent uniquement leur volume local ou coupent le son. Une synchronisation navigateur ne peut pas garantir un alignement à la milliseconde.
+Musique : la table utilise les trois fichiers MP3 fournis par le club. À chaque entrée dans une salle, la musique est coupée par défaut sur l’appareil de chaque membre ; chacun peut ensuite l’activer et régler son volume. L’hôte choisit la piste ; le choix et le temps de lecture sont synchronisés à l’entrée sur la table et lors d’un changement de morceau. Les mises à jour suivantes de la salle ne replacent jamais la piste au début : elle boucle seulement à sa fin. Une synchronisation navigateur ne peut pas garantir un alignement à la milliseconde.
 
-Jeu : un clic joue la première pièce ou une pièce avec une seule extrémité possible. Lorsque les deux extrémités sont valides, les deux commandes scintillent en vert. Le statut Je travaille s’éteint automatiquement lorsque le joueur rejoue. Les tours suivent haut, droite, gauche et la plaque active scintille en jaune.
+Jeu : un clic joue la première pièce ou une pièce avec une seule extrémité possible. Lorsque les deux extrémités sont valides, les deux commandes scintillent en vert. Le statut Je travaille s’éteint automatiquement lorsque le joueur rejoue. Les tours suivent haut, droite, gauche et la plaque active scintille en rouge vif.
 
 Résultats : à la fin d’une manche ou d’une partie, le panneau montre les dominos restants des trois joueurs avec leurs points et le dernier domino du gagnant qui a vidé sa main. Les mêmes dominos premium ivoire et or sont utilisés dans la salle et dans ce panneau.
 
@@ -16,8 +16,8 @@ Classement et profils : les trois classements gardent leurs neuf colonnes. Le po
 
 Salons et profils : chaque page ouverte possède un identifiant de présence distinct, ce qui empêche plusieurs onglets Chrome de faire disparaître un salon en attente. Les salles récemment créées restent visibles pendant la propagation Firebase et les autres joueurs conservent le bouton Rejoindre. La salle à reprendre est mémorisée séparément pour chaque profil. La fiche détaillée affiche le rang général en haut à droite et la moyenne des points encore en main lors des victoires en ligne par blocage ; les anciens résultats incomplets ne sont pas estimés.
 
-Chat : lorsqu’il est replié sur la table, une pastille vive compte les nouveaux messages reçus. Le compteur est propre à l’appareil et revient à zéro dès la réouverture.
+Chat et spectateurs : lorsque le chat est replié sur la table, une pastille vive placée au-dessus et hors du bouton compte les nouveaux messages reçus. Le compteur est propre à l’appareil et revient à zéro dès la réouverture. Un panneau discret en bas à gauche affiche les prénoms des spectateurs présents ; il est entièrement masqué lorsque la salle n’en compte aucun. Un spectateur ouvre les interactions par un clic direct sur le joueur ciblé et dispose uniquement des interactions destinées aux adversaires.
 
-Interactions premium : les 14 interactions envoyées et les 14 émotions personnelles utilisent désormais les objets PNG photoréalistes validés. Les interactions envoyées affichent l’expéditeur dans une capsule adaptative et suivent brièvement le pourtour de la table avec une traînée composée de particules PNG dorées. Chaque interaction possède son mouvement et sa signature sonore synthétisée ; les effets ont leur propre volume et leur propre bouton de coupure. « Je travaille » et « Je suis revenu » conservent exactement leur gyrophare synchronisé existant.
+Interactions premium : les 14 interactions envoyées et les 14 émotions personnelles utilisent désormais les objets PNG photoréalistes validés. Les interactions envoyées affichent l’expéditeur dans une capsule adaptative et suivent le pourtour extérieur avec un ruban d’or liquide composé d’une aura ambrée, d’un cœur blanc-or, d’une comète, de particules et d’un cercle d’arrivée. Chaque interaction possède son mouvement et sa signature sonore synthétisée ; les effets ont leur propre volume et leur propre bouton de coupure. « Je travaille » et « Je suis revenu » conservent exactement leur gyrophare synchronisé existant.
 
 Firebase reprend la base existante. Les tests, données de démonstration et scénarios QA sont exclus de ce paquet. Tous les joueurs doivent utiliser la même nouvelle version pour partager les fonctions ajoutées.

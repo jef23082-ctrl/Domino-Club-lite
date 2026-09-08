@@ -134,6 +134,17 @@ export function stopLoungeMusic() {
   updateControls();
 }
 
+export function muteLoungeMusic() {
+  muted = true;
+  remember(MUTE_STORAGE_KEY, true);
+  if (audio) {
+    audio.volume = 0;
+    audio.pause();
+  }
+  updateControls();
+  return muted;
+}
+
 export function toggleLoungeMusic() {
   muted = !muted;
   remember(MUTE_STORAGE_KEY, muted);

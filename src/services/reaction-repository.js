@@ -1,5 +1,5 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260906T181957527';
-import { randomId } from './ids.js?v=20260906T181957527';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260908T233254904';
+import { randomId } from './ids.js?v=20260908T233254904';
 
 export const REACTION_DURATION = 4200;
 export const REACTION_COOLDOWN = 2400;
@@ -17,7 +17,7 @@ export class ReactionRepository {
     return () => reference.off('value', listener);
   }
 
-  send(roomCode, { kind, effect, sender, target, clientToken }) {
+  send(roomCode, { kind, effect, sender, target, clientToken, senderRole = 'player' }) {
     const at = Date.now();
     return this.root.child(roomCode).set({
       id: `${at}_${randomId(6)}`,
@@ -25,6 +25,7 @@ export class ReactionRepository {
       effect,
       senderId: sender.playerId,
       senderName: sender.name,
+      senderRole,
       senderToken: clientToken,
       targetId: target.playerId,
       targetName: target.name,
