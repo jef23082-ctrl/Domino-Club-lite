@@ -1,50 +1,51 @@
-import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=20260908T233254904';
-import { roomPlayers } from '../game/room-state.js?v=20260908T233254904';
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260908T233254904';
-import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20260908T233254904';
-import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20260908T233254904';
-import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20260908T233254904';
-import { playSound, unlockSound } from '../ui/sound-player.js?v=20260908T233254904';
-import { createReactionTrailParticle, createReactionVisual, isPremiumReaction } from '../ui/reaction-visual.js?v=20260908T233254904';
-import { HandOrderStore, handOrderKey, moveHandTile } from '../ui/hand-order.js?v=20260908T233254904';
-import { bindHandInteractions } from '../ui/hand-interactions.js?v=20260908T233254904';
-import { ChatRepository } from '../services/chat-repository.js?v=20260908T233254904';
-import { ClubChatSession, CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260908T233254904';
-import { createFirebaseRuntime } from '../services/firebase-runtime.js?v=20260908T233254904';
-import { InvitationRepository } from '../services/invitation-repository.js?v=20260908T233254904';
-import { randomId } from '../services/ids.js?v=20260908T233254904';
-import { authenticateProfile } from '../services/profile-auth.js?v=20260908T233254904';
-import { PresenceService } from '../services/presence-service.js?v=20260908T233254904';
-import { ProfileRepository } from '../services/profile-repository.js?v=20260908T233254904';
-import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js?v=20260908T233254904';
-import { RoomRepository } from '../services/room-repository.js?v=20260908T233254904';
-import { SessionStore } from '../services/session-store.js?v=20260908T233254904';
-import { SpectatorService } from '../services/spectator-service.js?v=20260908T233254904';
-import { StatsRepository } from '../services/stats-repository.js?v=20260908T233254904';
-import { AdminAccess } from '../services/admin-access.js?v=20260908T233254904';
-import { AdminRepository } from '../services/admin-repository.js?v=20260908T233254904';
-import { createClubPortal } from '../ui/club-portal.js?v=20260908T233254904';
-import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20260908T233254904';
-import { renderChatMessage } from '../ui/chat-renderer.js?v=20260908T233254904';
-import { ConnectionService } from '../services/connection-service.js?v=20260908T233254904';
-import { characterIdForProfile } from './profile-map.js?v=20260908T233254904';
-import { tileIntent } from './play-intent.js?v=20260908T233254904';
-import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20260908T233254904';
-import { displayName } from './display-name.js?v=20260908T233254904';
-import { avatar } from '../ui/club-elements.js?v=20260908T233254904';
-import { reactionPicker } from '../ui/reaction-picker.js?v=20260908T233254904';
-import { premiumConfirm } from '../ui/premium-confirm.js?v=20260908T233254904';
-import { requestAppFullscreen } from '../ui/app-shell.js?v=20260908T233254904';
-import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20260908T233254904';
-import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20260908T233254904';
-import { loungeTitle } from './lounge-name.js?v=20260908T233254904';
+import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=20260910T004553338';
+import { roomPlayers } from '../game/room-state.js?v=20260910T004553338';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260910T004553338';
+import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20260910T004553338';
+import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20260910T004553338';
+import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20260910T004553338';
+import { playSound, unlockSound } from '../ui/sound-player.js?v=20260910T004553338';
+import { createReactionTrailParticle, createReactionVisual, isPremiumReaction } from '../ui/reaction-visual.js?v=20260910T004553338';
+import { HandOrderStore, handOrderKey, moveHandTile } from '../ui/hand-order.js?v=20260910T004553338';
+import { bindHandInteractions } from '../ui/hand-interactions.js?v=20260910T004553338';
+import { ChatRepository } from '../services/chat-repository.js?v=20260910T004553338';
+import { ClubChatSession, CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260910T004553338';
+import { createFirebaseRuntime } from '../services/firebase-runtime.js?v=20260910T004553338';
+import { InvitationRepository } from '../services/invitation-repository.js?v=20260910T004553338';
+import { randomId } from '../services/ids.js?v=20260910T004553338';
+import { authenticateProfile } from '../services/profile-auth.js?v=20260910T004553338';
+import { PresenceService } from '../services/presence-service.js?v=20260910T004553338';
+import { ProfileRepository } from '../services/profile-repository.js?v=20260910T004553338';
+import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js?v=20260910T004553338';
+import { RoomRepository } from '../services/room-repository.js?v=20260910T004553338';
+import { SessionStore } from '../services/session-store.js?v=20260910T004553338';
+import { SpectatorService } from '../services/spectator-service.js?v=20260910T004553338';
+import { StatsRepository } from '../services/stats-repository.js?v=20260910T004553338';
+import { AdminAccess } from '../services/admin-access.js?v=20260910T004553338';
+import { AdminRepository } from '../services/admin-repository.js?v=20260910T004553338';
+import { createClubPortal } from '../ui/club-portal.js?v=20260910T004553338';
+import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20260910T004553338';
+import { renderChatMessage } from '../ui/chat-renderer.js?v=20260910T004553338';
+import { ConnectionService } from '../services/connection-service.js?v=20260910T004553338';
+import { characterIdForProfile } from './profile-map.js?v=20260910T004553338';
+import { tileIntent } from './play-intent.js?v=20260910T004553338';
+import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20260910T004553338';
+import { displayName } from './display-name.js?v=20260910T004553338';
+import { avatar } from '../ui/club-elements.js?v=20260910T004553338';
+import { reactionPicker } from '../ui/reaction-picker.js?v=20260910T004553338';
+import { premiumConfirm } from '../ui/premium-confirm.js?v=20260910T004553338';
+import { requestAppFullscreen } from '../ui/app-shell.js?v=20260910T004553338';
+import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20260910T004553338';
+import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20260910T004553338';
+import { createOpeningMascot } from '../ui/opening-mascot.js?v=20260910T004553338';
+import { loungeTitle } from './lounge-name.js?v=20260910T004553338';
 import {
   actionKey,
   celebrationState,
   freshReaction,
   remainingTileCount,
   resultPresentation
-} from './presentation.js?v=20260908T233254904';
+} from './presentation.js?v=20260910T004553338';
 
 const FIREBASE_SCRIPTS = Object.freeze([
   'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js',
@@ -125,6 +126,7 @@ function createShell() {
 
 export async function initOnlineApp({ runtime: suppliedRuntime = null, session: suppliedSession = null, adminAccess: suppliedAdminAccess = null } = {}) {
   const ui = createShell();
+  const openingMascot = createOpeningMascot({ stage: document.querySelector('#casino-stage'), shell: document.querySelector('#game-shell'), notify: message => toast(message) });
   const state = {
     view: 'loading', profiles: [], profile: null, networkProfile: null, enterSceneOnStart: false,
     clientToken: '', roomCode: '', role: 'player', room: null,
@@ -220,6 +222,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   }
 
   function stopRoomBindings() {
+    openingMascot.reset();
     handInteractions?.cancel();
     handContextKey = '';
     state.selectedTileId = '';
@@ -940,6 +943,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     document.querySelector('#play-right').classList.toggle('is-dual-choice', dualChoice);
     document.querySelector('#pass-button').disabled = !canAct || hasPlayableTile(game, me?.playerId);
     document.querySelector('#pass-button').hidden = room?.status !== 'playing' || game.roundStatus !== 'playing';
+    openingMascot.select({tileId: state.selectedTileId, playable: Boolean(state.selectedTileId && tileIntent(game, state.selectedTileId).playable), active: canAct});
     return canAct;
   }
 
@@ -994,6 +998,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     });
 
     renderBoard(document.querySelector('#domino-board'), game.board || { placements: [] });
+    openingMascot.update(room);
     renderSpectators(room);
     const canAct = renderLiveHand(room);
 

@@ -1,4 +1,4 @@
-Domino Club V4 — 4.0.0
+Domino Club V4.1 — 4.1.0
 
 Publier le contenu de ce dossier sur GitHub Pages. Ouvrir index.html via HTTP/HTTPS, pas par double-clic.
 
@@ -19,5 +19,7 @@ Salons et profils : chaque page ouverte possède un identifiant de présence dis
 Chat et spectateurs : lorsque le chat est replié sur la table, une pastille vive placée au-dessus et hors du bouton compte les nouveaux messages reçus. Le compteur est propre à l’appareil et revient à zéro dès la réouverture. Un panneau discret en bas à gauche affiche les prénoms des spectateurs présents ; il est entièrement masqué lorsque la salle n’en compte aucun. Un spectateur ouvre les interactions par un clic direct sur le joueur ciblé et dispose uniquement des interactions destinées aux adversaires.
 
 Interactions premium : les 14 interactions envoyées et les 14 émotions personnelles utilisent désormais les objets PNG photoréalistes validés. Les interactions envoyées affichent l’expéditeur dans une capsule adaptative et suivent le pourtour extérieur avec un ruban d’or liquide composé d’une aura ambrée, d’un cœur blanc-or, d’une comète, de particules et d’un cercle d’arrivée. Chaque interaction possède son mouvement et sa signature sonore synthétisée ; les effets ont leur propre volume et leur propre bouton de coupure. « Je travaille » et « Je suis revenu » conservent exactement leur gyrophare synchronisé existant.
+
+Cochon d’ouverture : personnage 3D local présent uniquement avant le premier domino de chaque manche. Mélange automatique, groin et nœud interactifs, suivi du regard et petites réactions d’attente. La première pose réelle déclenche applaudissements et départ doré, sans retard de jeu. Les dominos restent à 120 × 70 sur le plateau 1500 × 440. Une reprise de partie déjà commencée ne rejoue pas son arrivée. Le vrai grognement d’erdie respecte les réglages des effets ; son attribution CC BY 3.0 figure dans les réglages et dans assets/audio/PIG-CREDITS.md. Three.js est distribué sous licence MIT dans src/vendor/three/THREE-LICENSE.txt. Le jeu reste utilisable si WebGL est indisponible.
 
 Firebase reprend la base existante. Les tests, données de démonstration et scénarios QA sont exclus de ce paquet. Tous les joueurs doivent utiliser la même nouvelle version pour partager les fonctions ajoutées.

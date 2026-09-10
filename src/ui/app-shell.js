@@ -3,8 +3,8 @@ import {
   setLoungeMusicVolume,
   syncLoungeMusicControls,
   toggleLoungeMusic
-} from './lounge-music.js?v=20260908T233254904';
-import { setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20260908T233254904';
+} from './lounge-music.js?v=20260910T004553338';
+import { playPigGrunt, setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20260910T004553338';
 
 export async function requestAppFullscreen() {
   if (document.fullscreenElement) return true;
@@ -68,6 +68,16 @@ export function bindAppShell() {
   musicVolume?.addEventListener('input', event => setLoungeMusicVolume(Number(event.currentTarget.value) / 100));
   soundToggle?.addEventListener('click', () => toggleSoundEffects());
   soundVolume?.addEventListener('input', event => setSoundEffectVolume(Number(event.currentTarget.value) / 100));
+  document.querySelector('#pig-sound-test')?.addEventListener('click', async () => {
+    const status = document.querySelector('#pig-sound-status');
+    const result = await playPigGrunt();
+    if (status) status.textContent = {
+      playing: 'Lecture du vrai grognement.',
+      muted: 'Active les effets et monte leur volume pour écouter.',
+      blocked: 'Lecture bloquée par le navigateur. Réessaie ce bouton.',
+      error: 'Enregistrement indisponible. Recharge la page.'
+    }[result] || '';
+  });
   musicPanel?.addEventListener('keydown', event => {
     if (event.key === 'Escape') { event.preventDefault(); closeMusicPanel(); music?.focus(); }
   });

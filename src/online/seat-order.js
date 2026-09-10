@@ -1,4 +1,4 @@
-import { roomPlayers } from '../game/room-state.js?v=20260908T233254904';
+import { roomPlayers } from '../game/room-state.js?v=20260910T004553338';
 
 // Match the unchanged engine order to clockwise physical seats, for every viewer.
 export const CLOCKWISE_SEATS = Object.freeze(['top', 'right', 'left']);

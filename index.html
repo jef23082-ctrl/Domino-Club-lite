@@ -3,21 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Le Roi du Cochon — Domino Club V4">
-  <title>Le Roi du Cochon — Casino V4</title>
-  <link rel="stylesheet" href="./styles/foundation.css?v=20260908T233254904">
-  <link rel="stylesheet" href="./styles/casino-scene.css?v=20260908T233254904">
-  <link rel="stylesheet" href="./styles/dominoes.css?v=20260908T233254904">
-  <link rel="stylesheet" href="./styles/interface.css?v=20260908T233254904">
-  <link rel="stylesheet" href="./styles/responsive.css?v=20260908T233254904">
-  <link rel="stylesheet" href="./styles/online.css?v=20260908T233254904">
-  <link rel="stylesheet" href="./styles/portal.css?v=20260908T233254904">
+  <meta name="description" content="Le Roi du Cochon — Domino Club V4.1">
+  <title>Le Roi du Cochon — Casino V4.1</title>
+  <link rel="stylesheet" href="./styles/foundation.css?v=20260910T004553338">
+  <link rel="stylesheet" href="./styles/casino-scene.css?v=20260910T004553338">
+  <link rel="stylesheet" href="./styles/dominoes.css?v=20260910T004553338">
+  <link rel="stylesheet" href="./styles/interface.css?v=20260910T004553338">
+  <link rel="stylesheet" href="./styles/responsive.css?v=20260910T004553338">
+  <link rel="stylesheet" href="./styles/online.css?v=20260910T004553338">
+  <link rel="stylesheet" href="./styles/portal.css?v=20260910T004553338">
+  <link rel="stylesheet" href="./styles/opening-mascot.css?v=20260910T004553338">
 </head>
 <body>
   <main id="app" class="app-shell">
     <section id="game-shell" class="game-shell" aria-label="Partie de dominos en ligne">
       <div id="casino-stage" class="casino-stage">
-        <img class="scene-base" src="./assets/scene/casino-base-v1.png?v=20260908T233254904" alt="Salon de casino privé avec table de dominos">
+        <img class="scene-base" src="./assets/scene/casino-base-v1.png?v=20260910T004553338" alt="Salon de casino privé avec table de dominos">
         <img id="character-top" class="scene-player-plate scene-player-plate--top" hidden alt="">
         <img id="character-left" class="scene-player-plate scene-player-plate--left" hidden alt="">
         <img id="character-right" class="scene-player-plate scene-player-plate--right" hidden alt="">
@@ -63,7 +64,12 @@
           <label class="music-panel__volume" for="sound-volume"><span>Effets premium</span><output id="sound-volume-value" for="sound-volume">82 %</output></label>
           <input id="sound-volume" type="range" min="0" max="100" step="1" value="82">
           <button id="sound-toggle" class="music-panel__toggle" type="button" aria-pressed="true">Couper les effets</button>
+          <button id="pig-sound-test" class="music-panel__toggle" type="button">Écouter le cochon</button>
+          <p id="pig-sound-status" class="mascot-audio-credit" role="status"></p>
+          <p class="mascot-audio-credit">Grognement : <a href="https://commons.wikimedia.org/wiki/File:Pig_grunt_-_Erdie.ogg" target="_blank" rel="noreferrer">erdie</a> · <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a> · <a href="./assets/audio/PIG-CREDITS.md" target="_blank" rel="noreferrer">Crédits</a></p>
         </section>
+
+        <audio id="pig-grunt-audio" hidden preload="auto" src="./assets/audio/pig-grunt-erdie.ogg"></audio>
 
         <audio id="lounge-audio-assets" hidden preload="none">
           <source src="./assets/audio/musique1.mp3" type="audio/mpeg">
@@ -98,6 +104,6 @@
       </div>
     </section>
   </main>
-    <script type="module" src="./src/main.js?v=20260908T233254904"></script>
+    <script type="module" src="./src/main.js?v=20260910T004553338"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import { duckLoungeMusic } from './lounge-music.js?v=20260908T233254904';
+import { duckLoungeMusic } from './lounge-music.js?v=20260910T004553338';
 
 const MUTE_STORAGE_KEY = 'domino-club-sfx-muted';
 const VOLUME_STORAGE_KEY = 'domino-club-sfx-volume';
@@ -6,6 +6,7 @@ let audioContext = null;
 let masterGain = null;
 let muted = false;
 let volume = .82;
+let pigAudio = null;
 
 try {
   muted = globalThis.localStorage?.getItem(MUTE_STORAGE_KEY) === 'true';
@@ -28,6 +29,35 @@ function context() {
 
 function updateMasterGain() {
   if (masterGain) masterGain.gain.value = muted ? 0 : volume;
+  if (pigAudio) {
+    pigAudio.volume = volume * .9;
+    if (muted || volume === 0) stopPigGrunt();
+  }
+}
+
+// A genuine recording, played from the user's gesture without depending on
+// the synthesis context. Uses exactly the existing effects mute/volume.
+export async function playPigGrunt() {
+  if (muted || volume === 0) return 'muted';
+  try {
+    if (!pigAudio) pigAudio = globalThis.document?.querySelector('#pig-grunt-audio');
+    if (!pigAudio) return 'error';
+    pigAudio.volume = volume * .9;
+    pigAudio.muted = false;
+    pigAudio.playbackRate = 1;
+    pigAudio.currentTime = 0;
+    await pigAudio.play();
+    duckLoungeMusic(850, .65);
+    return 'playing';
+  } catch (error) {
+    return error.name === 'NotAllowedError' ? 'blocked' : error.name === 'AbortError' ? 'interrupted' : 'error';
+  }
+}
+
+export function stopPigGrunt() {
+  if (!pigAudio) return;
+  pigAudio.pause();
+  pigAudio.currentTime = 0;
 }
 
 function remember(key, value) {
