@@ -1,4 +1,4 @@
-import { duckLoungeMusic } from './lounge-music.js?v=20260910T004553338';
+import { duckLoungeMusic } from './lounge-music.js?v=20260915T095227534';
 
 const MUTE_STORAGE_KEY = 'domino-club-sfx-muted';
 const VOLUME_STORAGE_KEY = 'domino-club-sfx-volume';
@@ -125,7 +125,18 @@ export function playSound(kind) {
 
   if (String(kind).startsWith('reaction-')) duckLoungeMusic(1050, .72);
 
-  if (kind === 'placement') {
+  if (String(kind).startsWith('verdict-')) {
+    const cue = String(kind).slice(8);
+    if (cue === 'arm') { impact(current, 0, .18, 2200, .11); tone(current, 170, 0, .2, .055, 'triangle', 340); }
+    if (cue === 'slide') { impact(current, 0, .19, 1400, .075); tone(current, 270, 0, .18, .038, 'triangle', 135); }
+    if (cue === 'impact') {
+      duckLoungeMusic(1150, .7);
+      impact(current, 0, .09, 1700, .27); tone(current, 112, 0, .46, .22, 'sine', 47);
+      tone(current, 470, 0, .45, .075, 'sine', 430); tone(current, 1320, 0, .9, .043); tone(current, 2076, 0, .7, .028);
+    }
+    if (cue === 'shine') { tone(current, 1520, 0, .48, .022); tone(current, 2280, 0, .65, .018); }
+    if (cue === 'return') { impact(current, 0, .2, 1000, .07); tone(current, 180, 0, .16, .032, 'triangle', 290); }
+  } else if (kind === 'placement') {
     impact(current, 0, .052, 1250, .27);
     impact(current, .055, .072, 760, .19);
   } else if (kind === 'message') {
@@ -136,6 +147,9 @@ export function playSound(kind) {
     tone(current, 220, .13, .22, .04, 'triangle', 145);
   } else if (kind === 'victory') {
     [523.25, 659.25, 783.99].forEach((frequency, index) => tone(current, frequency, index * .11, .45, .06));
+  } else if (kind === 'trophy') {
+    tone(current, 1046.5, 0, .48, .04);
+    tone(current, 2093, .012, .25, .012);
   } else if (kind === 'turn') {
     tone(current, 659.25, 0, .22, .04);
     tone(current, 783.99, .1, .3, .04);

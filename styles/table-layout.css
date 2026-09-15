@@ -1,0 +1,62 @@
+/* V17: shared 1672 × 941 playfield. Skins own decoration, not game geometry.
+   Both skins opt in via data-table-layout="club" in applyRoomStyle(). */
+.game-shell[data-table-layout="club"] {
+  --table-ratio:1672 / 941;
+  --table-board-left:17.5%;--table-board-top:33.2%;
+  --table-board-width:64%;--table-board-height:27.5%;
+  --table-hand-left:20.2%;--table-hand-top:66.1%;
+  --table-hand-width:59.6%;--table-hand-height:14.8%;
+}
+.game-shell[data-table-layout="club"] .player-seat--top {left:36.5%;top:0;width:27%;height:34%;}
+.game-shell[data-table-layout="club"] .player-seat--left {left:0;top:14%;width:29%;height:48%;}
+.game-shell[data-table-layout="club"] .player-seat--right {right:0;top:14%;width:29%;height:48%;}
+.game-shell[data-table-layout="club"] .player-seat--top .player-plaque {left:25%;top:54%;width:auto;height:auto;min-width:49%;}
+.game-shell[data-table-layout="club"] .player-seat--left .player-plaque {left:9%;top:78%;width:auto;height:auto;min-width:49%;}
+.game-shell[data-table-layout="club"] .player-seat--right .player-plaque {right:9%;top:78%;width:auto;height:auto;min-width:49%;}
+.game-shell[data-table-layout="club"] .player-seat--top .opponent-rack {left:20%;top:81%;width:60%;height:16%;}
+.game-shell[data-table-layout="club"] .player-seat--left .opponent-rack {left:39%;top:56%;width:56%;height:11.5%;transform:rotate(-12deg);}
+.game-shell[data-table-layout="club"] .player-seat--right .opponent-rack {right:39%;top:56%;width:56%;height:11.5%;transform:rotate(12deg);}
+.game-shell[data-table-layout="club"] .board-plane {left:var(--table-board-left);top:var(--table-board-top);width:var(--table-board-width);height:var(--table-board-height);}
+.game-shell[data-table-layout="club"] .turn-banner {left:37%;top:63.2%;width:26%;}
+.game-shell[data-table-layout="club"] .hand-dock {left:var(--table-hand-left);top:var(--table-hand-top);width:var(--table-hand-width);height:var(--table-hand-height);grid-template-columns:16% minmax(0,1fr) 16%;gap:1.2%;}
+
+/* Keep all logical coordinates proportional, including when #app rather than
+   #game-shell receives fullscreen. Extra-wide margins are decorated, not black. */
+body.has-luxe-room {background:#07100b;}
+body.has-luxe-room .app-shell {position:relative;isolation:isolate;background:transparent;}
+body.has-luxe-room .app-shell::before {content:"";position:fixed;inset:-30px;z-index:-1;pointer-events:none;background:#07100b url('../assets/scene/palais-royale-luxe-v12.png') center/cover no-repeat;filter:blur(28px) brightness(.5);}
+.game-shell[data-room-style="luxe"] {width:min(100vw,calc(100dvh * 1672 / 941));height:auto;aspect-ratio:var(--table-ratio);}
+.game-shell[data-room-style="luxe"] > .casino-stage {inset:0;width:100%;height:100%;transform:none;container-type:size;}
+.game-shell[data-room-style="luxe"]:fullscreen {width:100vw;height:100dvh;aspect-ratio:auto;background:#07100b;}
+.game-shell[data-room-style="luxe"]:fullscreen::before {display:block;content:"";position:absolute;inset:-30px;z-index:-1;background:url('../assets/scene/palais-royale-luxe-v12.png') center/cover no-repeat;filter:blur(28px) brightness(.5);}
+.game-shell[data-room-style="luxe"]:fullscreen > .casino-stage {inset:auto;left:50%;top:50%;width:min(100vw,calc(100dvh * 1672 / 941));height:min(100dvh,calc(100vw * 941 / 1672));transform:translate(-50%,-50%);}
+[data-room-style="luxe"] .scene-base {inset:auto;left:0;top:-14%;width:100%;height:114%;object-fit:fill;}
+
+/* Actual alpha PNGs: no second clip, no radial fade, no regenerated faces.
+   Historical profiles without a new cutout keep the old fallback masks. */
+[data-room-style="luxe"] .scene-player-plate[data-render-mode="cutout"] {
+  inset:0;left:0;top:0;right:auto;width:100%;height:100%;object-fit:fill;
+  clip-path:none!important;mask:none!important;-webkit-mask:none!important;
+}
+[data-room-style="luxe"] .player-plaque {padding:2.4% 4%;font-size:clamp(9px,.87vw,16px);}
+[data-room-style="luxe"] .player-name,
+[data-room-style="luxe"] :is(.player-seat--left,.player-seat--right) .player-name[data-long-name="true"] {font-size:clamp(13px,1.13vw,20px);}
+[data-room-style="luxe"] .player-name::before {flex-basis:1.1cqw;width:1.1cqw;height:1.5cqw;}
+[data-room-style="luxe"] .player-hand {align-items:flex-end;height:auto;gap:.7%;}
+[data-room-style="luxe"] .hand-domino {width:7.1%;min-width:38px;max-width:58px;flex:0 1 58px;padding:3px;border-width:2px;border-radius:8px;}
+[data-room-style="luxe"] .edge-action {font-size:clamp(8px,.9cqw,15px);}
+[data-room-style="luxe"] .turn-banner {font-size:clamp(11px,1cqw,18px);}
+[data-room-style="luxe"] .turn-banner span {min-width:0;}
+[data-room-style="luxe"] .leader-trophy {left:32%;top:6.5%;width:8.5%;height:18%;}
+[data-room-style="luxe"] .leader-trophy__asset {object-fit:contain;object-position:center bottom;}
+[data-room-style="luxe"] .opening-mascot__rig {left:50%;top:32%;height:26cqh;width:23.11cqh;max-height:26dvh;max-width:23.11dvh;translate:-50% 0;}
+[data-room-style="luxe"] .opening-mascot.is-departing .opening-mascot__rig {height:20cqh;width:17.78cqh;}
+/* Keep mood and work badges in separate lanes after changing seat geometry. */
+[data-room-style="luxe"] .player-seat--top .player-work-status {left:86%;right:auto;top:54%;}
+[data-room-style="luxe"] .player-seat--left .player-work-status {left:68%;top:78%;}
+[data-room-style="luxe"] .player-seat--right .player-work-status {right:68%;top:78%;}
+[data-room-style="luxe"] .player-seat--top .seat-interaction[data-kind="self"] {left:83%;right:auto;top:78%;bottom:auto;}
+[data-room-style="luxe"] .player-seat--left .seat-interaction[data-kind="self"] {left:55%;right:auto;top:-10%;bottom:auto;max-width:16cqw;}
+[data-room-style="luxe"] .player-seat--right .seat-interaction[data-kind="self"] {right:55%;left:auto;top:-10%;bottom:auto;max-width:16cqw;}
+[data-room-style="luxe"] .player-seat--left .seat-interaction:not([data-kind="self"]) {left:68%;top:78%;}
+[data-room-style="luxe"] .player-seat--right .seat-interaction:not([data-kind="self"]) {right:68%;top:78%;}

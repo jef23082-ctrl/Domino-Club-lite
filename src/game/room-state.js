@@ -9,7 +9,7 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20260910T004553338';
+} from './engine.js?v=20260915T095227534';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -43,6 +43,7 @@ export function createInitialRoom({ code, profile, clientToken, at = Date.now() 
     version: 1,
     code,
     status: 'waiting',
+    style: 'luxe',
     hostToken: clientToken,
     creatorToken: clientToken,
     createdAt: at,
@@ -137,6 +138,16 @@ export function startRematchInRoom(room, { clientToken, matchId, at = Date.now()
   room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
   room.updatedAt = at;
   delete room.endedAt;
+  return room;
+}
+
+export function selectRoomStyle(room, { clientToken, style, at = Date.now() }) {
+  rule(room, 'Salle introuvable.', 'room-not-found');
+  rule(room.hostToken === clientToken, 'Seul l’hôte choisit le style de la salle.', 'host-only');
+  rule(room.status === 'waiting', 'Le style doit être choisi avant de lancer la partie.', 'room-started');
+  rule(style === 'classic' || style === 'luxe', 'Ce style de salle n’existe pas.', 'invalid-room-style');
+  room.style = style;
+  room.updatedAt = at;
   return room;
 }
 

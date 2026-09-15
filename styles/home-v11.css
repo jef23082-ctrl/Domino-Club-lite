@@ -1,0 +1,144 @@
+/* Reference composition: 1817 × 866. Every desktop dimension shares one scale. */
+.portal-home-crest,.portal-home-monogram,.portal-home-motto,.portal-nav-home-glyph{display:none}
+.club-portal[data-page="home"]{
+  --home-u:min(.055036vw,.115473dvh);
+  --home-serif:'Times New Roman',Times,serif;
+  --nav-height:calc(101 * var(--home-u));
+  font-family:var(--home-serif);
+}
+.club-portal[data-page="home"]::before{background:#020a07 url('../assets/menus/club-lounge-v11.png') center/cover no-repeat;opacity:1}
+.club-portal[data-page="home"]::after{background:radial-gradient(ellipse at 50% 27%,transparent 40%,#00000012 100%)}
+.club-portal[data-page="home"] .portal-scroll{
+  position:absolute;left:50%;top:calc((100dvh - 866 * var(--home-u))/2);
+  width:calc(1817 * var(--home-u));height:calc(765 * var(--home-u));
+  transform:translateX(-50%);padding:0 calc(214 * var(--home-u));gap:0;overflow:visible;
+}
+.club-portal[data-page="home"] .portal-header{height:calc(152 * var(--home-u));padding:0;display:flex;flex-direction:column;align-items:center}
+.club-portal[data-page="home"] .portal-header::after{display:none}
+.club-portal[data-page="home"] .portal-home-crest{display:flex;align-items:center;justify-content:center;gap:calc(9 * var(--home-u));height:calc(31 * var(--home-u));width:calc(190 * var(--home-u));color:#f0cb77;filter:drop-shadow(0 1px 1px #000)}
+.portal-home-crest svg{width:calc(40 * var(--home-u));height:calc(31 * var(--home-u));flex:none}
+.portal-home-crest::before,.portal-home-crest::after{content:'';width:calc(65 * var(--home-u));height:calc(6 * var(--home-u));background:linear-gradient(90deg,transparent,#e8c574);clip-path:polygon(0 44%,88% 44%,93% 0,100% 50%,93% 100%,88% 56%,0 56%)}
+.portal-home-crest::after{transform:scaleX(-1)}
+.club-portal[data-page="home"] .portal-header h1{
+  position:relative;margin:0;font:700 calc(52 * var(--home-u))/1 var(--home-serif);letter-spacing:calc(1.5 * var(--home-u));
+  color:#f5d487;background:linear-gradient(#fff4c8 12%,#eac579 40%,#c3913e 58%,#f9df9c 76%,#b27e32);background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 2px #000);text-shadow:none;
+}
+.club-portal[data-page="home"] .portal-header h1::before,.club-portal[data-page="home"] .portal-header h1::after{content:'';position:absolute;width:calc(75 * var(--home-u));height:calc(6 * var(--home-u));top:50%;right:calc(100% + 25 * var(--home-u));background:linear-gradient(90deg,transparent,#e8c574);clip-path:polygon(0 42%,90% 42%,94% 0,100% 50%,94% 100%,90% 58%,0 58%)}
+.club-portal[data-page="home"] .portal-header h1::after{right:auto;left:calc(100% + 25 * var(--home-u));transform:scaleX(-1)}
+.club-portal[data-page="home"] .portal-subtitle{display:flex;align-items:center;gap:calc(14 * var(--home-u));margin:calc(1 * var(--home-u)) 0 0;font:700 italic calc(26 * var(--home-u))/1.25 var(--home-serif);color:#f2cc79}
+.club-portal[data-page="home"] .portal-subtitle::before,.club-portal[data-page="home"] .portal-subtitle::after{content:'';width:calc(90 * var(--home-u));height:1px;background:linear-gradient(90deg,transparent,#bf9747)}
+.club-portal[data-page="home"] .portal-subtitle::after{transform:scaleX(-1)}
+.club-portal[data-page="home"] .portal-header .portal-data-status{position:static;max-width:none;text-align:center;margin:calc(4 * var(--home-u)) 0 0;color:#eee9d8;font:700 calc(19 * var(--home-u))/1.5 var(--home-serif);white-space:nowrap;text-shadow:0 1px 3px #000}
+.club-portal[data-page="home"] .portal-site-version{position:fixed;top:calc(14 * var(--home-u));right:calc(26 * var(--home-u));font:700 calc(23 * var(--home-u))/1 var(--home-serif);letter-spacing:0}
+.club-portal[data-page="home"] #page-home{flex:none;height:calc(595 * var(--home-u));grid-template-rows:calc(520 * var(--home-u)) calc(60 * var(--home-u));gap:calc(15 * var(--home-u))}
+.club-portal[data-page="home"] .portal-home-showcase{grid-template-columns:464fr 434fr 464fr;gap:calc(16 * var(--home-u));align-items:center;height:calc(520 * var(--home-u))}
+.club-portal[data-page="home"] .portal-home-card{
+  height:calc(502 * var(--home-u));min-height:0;padding:calc(16 * var(--home-u)) calc(21 * var(--home-u));
+  border:calc(2 * var(--home-u)) solid #c79f55;border-radius:calc(20 * var(--home-u));
+  background:radial-gradient(ellipse at 50% 49%,#00110bdd 5%,#00120a99 45%,#00140b24 100%),url('../assets/menus/emerald-marble-v11.png') center/cover;
+  box-shadow:inset 0 0 0 1px #ffe6a24a,inset 0 2px 5px #f1cf7e33,0 8px 21px #0009;
+}
+.club-portal[data-page="home"] .portal-home-card-heading{gap:0;position:relative}
+.club-portal[data-page="home"] .portal-home-online-card,.club-portal[data-page="home"] .portal-home-physical-card{transform:translateY(calc(4 * var(--home-u)))}
+.club-portal[data-page="home"] .portal-home-heading-icon{width:calc(66 * var(--home-u));height:calc(66 * var(--home-u));border:calc(2 * var(--home-u)) solid #d5b56e;background:radial-gradient(circle at 50% 12%,#31482b88,#06170ff0 60%);box-shadow:inset 0 0 0 2px #03120d,0 5px 10px #000a;color:#f2cf7d}
+.club-portal[data-page="home"] .portal-home-heading-icon svg{width:57%;height:57%;stroke-width:1.35}
+.club-portal[data-page="home"] .portal-home-card-heading h2{margin:calc(9 * var(--home-u)) 0 calc(4 * var(--home-u));font:700 calc(27 * var(--home-u))/1.2 var(--home-serif);color:#f1ca7c;text-shadow:0 2px 3px #000;white-space:nowrap}
+.club-portal[data-page="home"] .portal-home-card-subtitle{margin:0;color:#dfdfcb;font:400 calc(12 * var(--home-u))/1.5 var(--home-serif);letter-spacing:calc(2.6 * var(--home-u));white-space:nowrap}
+.club-portal[data-page="home"] .portal-home-heading-jewel{width:50%;gap:calc(12 * var(--home-u));margin-top:calc(13 * var(--home-u));font-size:calc(11 * var(--home-u));height:calc(9 * var(--home-u));align-self:center}
+.club-portal[data-page="home"] .portal-home-heading-jewel::before{background:linear-gradient(90deg,transparent,#ebc677)}
+.club-portal[data-page="home"] .portal-home-heading-jewel::after{background:linear-gradient(90deg,#ebc677,transparent)}
+.club-portal[data-page="home"] .portal-home-action-list{flex:none;gap:calc(12 * var(--home-u));margin-top:calc(20 * var(--home-u));padding:0}
+.club-portal[data-page="home"] .portal-home-action{
+  width:100%;height:calc(70 * var(--home-u));min-height:0;grid-template-columns:calc(41 * var(--home-u)) minmax(0,1fr) calc(20 * var(--home-u));
+  gap:calc(16 * var(--home-u));padding:calc(7 * var(--home-u)) calc(16 * var(--home-u));border-radius:calc(12 * var(--home-u));
+  border:1px solid #d1ac63;background:linear-gradient(110deg,#13251b99,#02100aee 24%,#03110bdd 75%,#19271988);
+  box-shadow:inset 0 1px 2px #f8e5a235,inset 0 -2px 3px #0007,0 4px 7px #0008;color:#f0eee4;
+}
+.club-portal[data-page="home"] .portal-home-action-copy{display:flex;flex-direction:column;min-width:0;gap:calc(2 * var(--home-u));line-height:1.15}
+.club-portal[data-page="home"] .portal-home-action strong{font:700 calc(21 * var(--home-u))/1.2 var(--home-serif);white-space:nowrap}
+.club-portal[data-page="home"] .portal-home-action small{font:400 calc(15 * var(--home-u))/1.2 var(--home-serif);color:#dadbcd;white-space:nowrap}
+.club-portal[data-page="home"] .portal-home-action-icon svg{width:calc(37 * var(--home-u));height:calc(37 * var(--home-u));stroke-width:1.55;filter:drop-shadow(0 1px 2px #0008)}
+.club-portal[data-page="home"] .portal-home-action-arrow{font-size:calc(38 * var(--home-u));line-height:1;color:#ecc572}
+.club-portal[data-page="home"] .portal-home-room-status{margin-top:auto;min-height:calc(49 * var(--home-u));padding-top:calc(8 * var(--home-u));font:400 calc(20 * var(--home-u))/1.2 var(--home-serif);color:#eacb83;gap:calc(17 * var(--home-u));border-image:linear-gradient(90deg,transparent,#b3924e,transparent) 1}
+.club-portal[data-page="home"] .portal-home-live-dot{width:calc(11 * var(--home-u));height:calc(11 * var(--home-u));background:#52e528;box-shadow:0 0 8px #70ff30,0 0 18px #49dd2355}
+.club-portal[data-page="home"] .portal-home-action--gold,.club-portal[data-page="home"] .portal-home-profile-button{border-color:#f1d387;background:linear-gradient(170deg,#f7d788 0%,#e6bd69 26%,#c79948 68%,#b38336 100%);color:#160f04;box-shadow:inset 0 1px 2px #fff6bd,inset 0 -2px 3px #67401466,0 4px 7px #0009}
+.club-portal[data-page="home"] .portal-home-action--gold .portal-home-action-icon,.club-portal[data-page="home"] .portal-home-action--gold .portal-home-action-arrow{color:#150e03}
+.club-portal[data-page="home"] .portal-home-action--gold small{color:#3b2a0f}
+.club-portal[data-page="home"] .portal-home-action--danger{background:linear-gradient(155deg,#26392b99,#0a1812dc 55%,#101f1499);border-color:#959482;color:#94988a;opacity:.77;filter:none}
+.club-portal[data-page="home"] .portal-home-action--danger small,.club-portal[data-page="home"] .portal-home-action--danger .portal-home-action-icon,.club-portal[data-page="home"] .portal-home-action--danger .portal-home-action-arrow{color:#94988a}
+.club-portal[data-page="home"] .portal-home-action--danger:not(:disabled){opacity:1;color:#e8dcb9;border-color:#cbb16d}
+.club-portal[data-page="home"] .portal-home-signature{margin:auto 0 0;text-align:center;white-space:nowrap;color:#d6b565;font:400 calc(31 * var(--home-u))/1.2 'Kunstler Script','Vivaldi','Brush Script MT',cursive;text-shadow:0 1px 2px #000}
+.club-portal[data-page="home"] .portal-home-profile{
+  height:calc(520 * var(--home-u));gap:0;padding:calc(17 * var(--home-u)) calc(23 * var(--home-u));border:calc(3 * var(--home-u)) solid #ffe8a0;
+  background:radial-gradient(ellipse at 50% 42%,#00130bef 22%,#00120ad1 57%,#00170b22 100%),url('../assets/menus/emerald-marble-v11.png') center/cover;
+  animation:home-v11-gold-breathe 3.4s ease-in-out infinite!important;box-shadow:0 0 5px #fff3b8,0 0 16px #e3b449aa,inset 0 0 22px #ddbb5066;
+}
+.club-portal[data-page="home"] .portal-home-profile::before{inset:calc(-4 * var(--home-u));padding:calc(3 * var(--home-u));border-radius:calc(20 * var(--home-u));background:conic-gradient(from 0deg,#dfb659 0deg,#fff7be 15deg,#d0a547 50deg,#3e6d38 90deg,#f6e393 130deg,#fffad3 177deg,#b28735 220deg,#def5b4 262deg,#d4af54 300deg,#fff5be 330deg,#dfb659);filter:drop-shadow(0 0 5px #f7d271);animation:home-v11-border-light 5s ease-in-out infinite!important}
+.club-portal[data-page="home"] .portal-home-profile::after{inset:calc(-9 * var(--home-u));border-radius:calc(24 * var(--home-u));background:radial-gradient(circle at 4% 17%,#fff7b8 0 1px,transparent 3px),radial-gradient(circle at 98% 69%,#c8ff8f 0 1px,transparent 3px),radial-gradient(circle at 62% 1%,#fff7b8 0 1px,transparent 3px),radial-gradient(circle at 12% 98%,#e9dc86 0 1px,transparent 3px);filter:drop-shadow(0 0 4px #ebd369);animation:home-v11-sparkle 2.8s ease-in-out infinite!important}
+.club-portal[data-page="home"] .portal-home-profile .portal-home-heading-icon{display:none}
+.club-portal[data-page="home"] .portal-home-profile .portal-home-card-heading h2{max-width:82%;margin:0;font-size:calc(39 * var(--home-u));line-height:1.17;white-space:normal;overflow-wrap:anywhere}
+.club-portal[data-page="home"] .portal-home-profile .portal-home-heading-jewel{width:72%;margin-top:calc(8 * var(--home-u))}
+.club-portal[data-page="home"] .portal-home-profile .portal-member-rank{right:calc(24 * var(--home-u));top:calc(23 * var(--home-u));font:700 calc(32 * var(--home-u))/1 var(--home-serif);color:#f5d382;letter-spacing:0}
+.club-portal[data-page="home"] .portal-home-portrait-frame{position:relative;display:grid;place-items:center;flex:none;width:100%;height:calc(207 * var(--home-u));margin-top:calc(6 * var(--home-u))}
+.club-portal[data-page="home"] .portal-home-laurels{position:absolute;width:calc(293 * var(--home-u));height:calc(202 * var(--home-u));top:calc(8 * var(--home-u));color:#aa974142;pointer-events:none}
+.portal-home-laurels svg{width:100%;height:100%}
+.club-portal[data-page="home"] .portal-home-profile .portal-home-profile-avatar{position:relative;width:calc(207 * var(--home-u));height:calc(207 * var(--home-u));max-width:none;border:calc(3 * var(--home-u)) solid #e8c572;border-radius:50%;box-shadow:0 0 0 1px #755c2c,inset 0 0 0 2px #fff3b7,0 3px 8px #000b}
+.club-portal[data-page="home"] .portal-home-profile .portal-character-portrait{width:650%;left:-275%;top:-2%;height:auto}
+.club-portal[data-page="home"] .portal-home-profile .portal-member-metrics{width:100%;height:calc(61 * var(--home-u));flex:none;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:0;padding:calc(9 * var(--home-u)) 0;border-block:1px solid #b49649a3}
+.club-portal[data-page="home"] .portal-home-profile .portal-member-metrics>div{grid-template-columns:auto auto;grid-template-rows:auto auto;justify-content:center;justify-items:start;column-gap:calc(12 * var(--home-u));border-right:1px solid #927d354f}
+.club-portal[data-page="home"] .portal-home-profile .portal-member-metrics>div:last-child{border-right:0}
+.club-portal[data-page="home"] .portal-home-profile .portal-member-metric-icon{grid-row:1/3;align-self:center;display:flex;color:#e8c26c}
+.club-portal[data-page="home"] .portal-home-profile .portal-member-metric-icon svg{width:calc(30 * var(--home-u));height:calc(34 * var(--home-u))}
+.club-portal[data-page="home"] .portal-home-profile .portal-member-metrics strong{font:700 calc(20 * var(--home-u))/1.2 var(--home-serif);color:#f4f0df}
+.club-portal[data-page="home"] .portal-home-profile .portal-member-metrics>div>span:last-child{font:400 calc(14 * var(--home-u))/1.25 var(--home-serif);color:#e4dfc9}
+.club-portal[data-page="home"] .portal-home-quote{margin:calc(15 * var(--home-u)) 0 0;color:#efd58b;font:italic calc(18 * var(--home-u))/1.3 var(--home-serif);white-space:pre-line;text-align:center;flex:none}
+.club-portal[data-page="home"] .portal-home-profile>.portal-home-quote-jewel{width:55%;margin-top:calc(8 * var(--home-u))}
+.club-portal[data-page="home"] .portal-home-profile>.portal-home-profile-button{flex:none;width:100%;height:calc(54 * var(--home-u));min-height:0;margin:calc(9 * var(--home-u)) 0 0;padding:0 calc(12 * var(--home-u));display:flex;align-items:center;justify-content:center;gap:calc(12 * var(--home-u));font:700 calc(22 * var(--home-u))/1.2 var(--home-serif);border-radius:calc(11 * var(--home-u))}
+.portal-home-profile-button svg{width:calc(31 * var(--home-u));height:calc(32 * var(--home-u));stroke-width:2.6;flex:none}
+.club-portal[data-page="home"] .portal-connected-strip{align-self:center;justify-self:center;width:calc(956 * var(--home-u));max-width:100%;min-height:calc(60 * var(--home-u));padding:calc(8 * var(--home-u)) calc(18 * var(--home-u));gap:calc(25 * var(--home-u));margin:0;border:1px solid #b99952;border-radius:calc(16 * var(--home-u));background:linear-gradient(110deg,#06100dd6,#06160cec,#07130ddd);box-shadow:inset 0 1px 3px #efdb8944,0 4px 10px #0008;overflow:visible}
+.club-portal[data-page="home"] .portal-connected-strip>span:first-child{font:700 calc(20 * var(--home-u))/1 var(--home-serif);color:#e7bf64}
+.club-portal[data-page="home"] .portal-connected-member{gap:calc(9 * var(--home-u));font:700 calc(20 * var(--home-u))/1.2 var(--home-serif);color:#e9e6dc}
+.club-portal[data-page="home"] .portal-connected-member.is-self{color:#e6bd64}
+.club-portal[data-page="home"] .portal-connected-member .portal-avatar{width:calc(42 * var(--home-u));height:calc(42 * var(--home-u));border-color:#dcb76f}
+.club-portal[data-page="home"] .portal-connected-member .portal-presence-dot{width:calc(10 * var(--home-u));height:calc(10 * var(--home-u));background:#4be42a;box-shadow:0 0 7px #4dfb2c;flex:none}
+.club-portal[data-page="home"] .portal-nav{left:50%;right:auto;bottom:calc((100dvh - 866 * var(--home-u))/2 + 8 * var(--home-u));transform:translateX(-50%);width:calc(1817 * var(--home-u));height:calc(94 * var(--home-u));padding:calc(7 * var(--home-u)) 0;display:grid;grid-template-columns:calc(252 * var(--home-u)) calc(200 * var(--home-u)) repeat(5,calc(182 * var(--home-u))) 1fr;gap:0;border-block:1px solid #bd9b56;background:linear-gradient(#001109df,#000c08f2),url('../assets/menus/emerald-marble-v11.png') center/cover;box-shadow:0 -5px 18px #0007;backdrop-filter:none}
+.club-portal[data-page="home"] .portal-nav .portal-nav-item{width:100%;height:100%;gap:calc(7 * var(--home-u));padding:calc(8 * var(--home-u));border:1px solid transparent;border-radius:calc(14 * var(--home-u));color:#dfbf7c;font:600 calc(14 * var(--home-u))/1.1 Arial,sans-serif}
+.club-portal[data-page="home"] .portal-nav .portal-nav-icon{height:calc(31 * var(--home-u));line-height:1}
+.club-portal[data-page="home"] .portal-nav .portal-nav-icon svg{width:calc(30 * var(--home-u));height:calc(30 * var(--home-u));stroke-width:1.5}
+.club-portal[data-page="home"] .portal-nav .active{color:#fff3ce;border-color:#ddae59;background:linear-gradient(160deg,#cdab5766,#6c491d5c 48%,#99702b5c);box-shadow:inset 0 1px 2px #ffe1a1,0 0 4px #dcb75688,inset 0 0 19px #e1b34f44;text-shadow:0 0 4px #ffdc8066}
+.club-portal[data-page="home"] .portal-nav .active::after{bottom:-1px;left:10%;height:2px;width:80%;background:linear-gradient(90deg,transparent,#fff8c4,transparent);box-shadow:0 0 8px #f5d489;animation:home-v11-nav-light 4.1s ease-in-out infinite}
+.club-portal[data-page="home"] .portal-nav .active::before{content:'';position:absolute;top:0;left:14%;height:2px;width:72%;background:linear-gradient(90deg,transparent,#fffbe0,transparent);filter:drop-shadow(0 0 5px #ffdf83);animation:home-v11-nav-light 4.1s ease-in-out infinite reverse}
+.club-portal[data-page="home"] .portal-nav-icon:has(.portal-nav-home-glyph)>svg{display:none}
+.club-portal[data-page="home"] .portal-nav-home-glyph{display:inline-flex}
+.club-portal[data-page="home"] .portal-home-monogram{display:block;align-self:center;justify-self:center;position:relative;width:calc(64 * var(--home-u));height:calc(60 * var(--home-u));color:#d4ac59;font:italic calc(53 * var(--home-u))/1 'Baskerville Old Face',var(--home-serif);text-shadow:1px 0 #fff0aa}
+.portal-home-monogram i{position:absolute;font-style:inherit;top:0;left:0}
+.portal-home-monogram i:last-child{left:calc(24 * var(--home-u));top:calc(15 * var(--home-u))}
+.club-portal[data-page="home"] .portal-home-motto{display:flex;align-self:center;align-items:center;gap:calc(16 * var(--home-u));margin-left:calc(132 * var(--home-u));border-left:1px solid #9b814c66;padding-left:calc(72 * var(--home-u));font:400 calc(12 * var(--home-u))/1.5 var(--home-serif);letter-spacing:calc(2 * var(--home-u));color:#b2934e;white-space:pre-line}
+.portal-home-motto svg{width:calc(22 * var(--home-u));height:calc(28 * var(--home-u));flex:none;color:#d6ae5b}
+@keyframes home-v11-gold-breathe{0%,100%{box-shadow:0 0 4px #fff4b9,0 0 12px #d8a93599,inset 0 0 18px #dfbf5755}50%{box-shadow:0 0 7px #fff6c0,0 0 22px #edc663b3,inset 0 0 30px #cbcb6055}}
+@keyframes home-v11-border-light{0%,100%{opacity:.65;filter:drop-shadow(0 0 3px #f7d271)}45%{opacity:1;filter:drop-shadow(0 0 7px #f7d271)}}
+@keyframes home-v11-sparkle{0%,100%{opacity:.25}20%{opacity:.9}47%{opacity:.4}72%{opacity:1}}
+@keyframes home-v11-nav-light{0%,100%{opacity:.45;transform:translateX(-8%)}50%{opacity:1;transform:translateX(8%)}}
+/* Smaller viewports retain native text and controls, with vertical scrolling. */
+@media(max-width:800px) and (orientation:portrait){
+  .club-portal[data-page="home"]{--home-u:clamp(.78px,.23vw,1.15px);--nav-height:70px}
+  .club-portal[data-page="home"] .portal-scroll{position:static;transform:none;width:100%;height:calc(100dvh - 70px);padding:12px 18px 26px;overflow:auto}
+  .club-portal[data-page="home"] .portal-header{height:auto;min-height:145px;margin-bottom:15px}
+  .club-portal[data-page="home"] .portal-header h1{font-size:clamp(29px,6.6vw,48px)}
+  .club-portal[data-page="home"] .portal-header h1::before,.club-portal[data-page="home"] .portal-header h1::after{display:none}
+  .club-portal[data-page="home"] .portal-header .portal-data-status{font-size:12px;white-space:normal;max-width:95%}
+  .club-portal[data-page="home"] .portal-subtitle{font-size:22px}
+  .club-portal[data-page="home"] .portal-subtitle::before,.club-portal[data-page="home"] .portal-subtitle::after{width:35px}
+  .club-portal[data-page="home"] .portal-site-version{top:10px;right:12px;font-size:15px}
+  .club-portal[data-page="home"] #page-home{height:auto;grid-template-rows:auto auto;gap:20px}
+  .club-portal[data-page="home"] .portal-home-showcase{height:auto;grid-template-columns:1fr;gap:20px;width:100%;max-width:480px;justify-self:center}
+  .club-portal[data-page="home"] .portal-home-profile{order:-1}
+  .club-portal[data-page="home"] .portal-home-card{min-height:calc(502 * var(--home-u))}
+  .club-portal[data-page="home"] .portal-connected-strip{height:auto;min-height:52px;gap:12px;width:100%;padding:10px}
+  .club-portal[data-page="home"] .portal-connected-member{font-size:16px}
+  .club-portal[data-page="home"] .portal-nav{left:0;bottom:0;transform:none;width:100%;height:70px;padding:5px 2px;grid-template-columns:repeat(6,1fr)}
+  .club-portal[data-page="home"] .portal-home-monogram,.club-portal[data-page="home"] .portal-home-motto{display:none}
+  .club-portal[data-page="home"] .portal-nav .portal-nav-item{font-size:10px;gap:6px;padding:6px 0}
+  .club-portal[data-page="home"] .portal-nav .portal-nav-icon svg{width:25px;height:25px}
+}

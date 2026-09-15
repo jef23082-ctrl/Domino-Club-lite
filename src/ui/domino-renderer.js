@@ -1,6 +1,6 @@
-import { parseTile } from '../game/engine.js?v=20260910T004553338';
-import { displayName } from '../online/display-name.js?v=20260910T004553338';
-import { createWorkBeacon } from './work-beacon.js?v=20260910T004553338';
+import { parseTile } from '../game/engine.js?v=20260915T095227534';
+import { displayName } from '../online/display-name.js?v=20260915T095227534';
+import { createWorkBeacon } from './work-beacon.js?v=20260915T095227534';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -179,6 +179,7 @@ export function renderPlayerPlaque(container, player) {
   const name = document.createElement('strong');
   name.className = 'player-name';
   name.textContent = displayName(player.name);
+  name.dataset.longName = String(name.textContent.length > 8);
 
   const rounds = document.createElement('span');
   rounds.className = 'player-stat';

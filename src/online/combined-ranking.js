@@ -1,5 +1,5 @@
-import { physicalRanking, list } from '../game/club-state.js?v=20260910T004553338';
-import { rankingRows } from './club-presentation.js?v=20260910T004553338';
+import { physicalRanking, list } from '../game/club-state.js?v=20260915T095227534';
+import { rankingRows } from './club-presentation.js?v=20260915T095227534';
 
 // A physical round and a completed online match are separate scored results.
 // Never add online roundsWon to victories, nor persist this combined view.

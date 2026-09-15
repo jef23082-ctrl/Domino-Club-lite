@@ -1,0 +1,3 @@
+/* Separate from rerendered seats; does not intercept any game controls. */
+.boude-verdict{position:absolute;z-index:29;pointer-events:none;object-fit:contain;contain:layout style;filter:drop-shadow(0 4px 4px #0004)}
+.boude-verdict[hidden]{display:none}

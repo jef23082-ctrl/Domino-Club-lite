@@ -1,20 +1,21 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260910T004553338';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260915T095227534';
 import {
   createInitialRoom,
   cancelRoomInState,
   joinWaitingRoom,
   reattachPlayerInRoom,
   selectRoomMusic,
+  selectRoomStyle,
   leaveWaitingRoom,
   passTurnInRoom,
   playTileInRoom,
   startMatchInRoom,
   startRematchInRoom,
   startNextRoundInRoom
-} from '../game/room-state.js?v=20260910T004553338';
-import { randomId } from './ids.js?v=20260910T004553338';
-import { liveTransaction } from './live-transaction.js?v=20260910T004553338';
-import { createLoungeName } from '../online/lounge-name.js?v=20260910T004553338';
+} from '../game/room-state.js?v=20260915T095227534';
+import { randomId } from './ids.js?v=20260915T095227534';
+import { liveTransaction } from './live-transaction.js?v=20260915T095227534';
+import { createLoungeName } from '../online/lounge-name.js?v=20260915T095227534';
 
 export class RoomRepository {
   constructor(database) {
@@ -58,6 +59,10 @@ export class RoomRepository {
 
   async selectMusic(code, context) {
     return this.#reduce(code, room => selectRoomMusic(room, context));
+  }
+
+  async selectStyle(code, context) {
+    return this.#reduce(code, room => selectRoomStyle(room, context));
   }
 
   async play(code, context) {

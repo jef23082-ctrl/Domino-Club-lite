@@ -1,4 +1,4 @@
-export const CELEBRATION_DURATION = 6000;
+export const CELEBRATION_DURATION = 10000;
 
 // Realtime Database omits empty arrays: a missing hand during a game means zero,
 // not an undistributed seven-tile hand in the waiting room.
@@ -95,6 +95,10 @@ export function resultPresentation(room) {
     action: 'next-round',
     actionLabel: 'Rejouer une manche'
   };
+}
+
+export function shouldShowSpectatorPanel(room, spectatorCount) {
+  return Number(spectatorCount || 0) > 0 && !resultPresentation(room);
 }
 
 export function freshReaction(reaction, at = Date.now(), duration = 4200) {
