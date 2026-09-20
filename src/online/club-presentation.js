@@ -1,5 +1,5 @@
-import { rankingFromHistory, victories } from '../game/online-stats.js?v=20260915T095227534';
-import { playerKey } from '../game/engine.js?v=20260915T095227534';
+import { rankingFromHistory, victories } from '../game/online-stats.js?v=20260920T151452528';
+import { playerKey } from '../game/engine.js?v=20260920T151452528';
 
 export function currentStreak(history, playerId) {
   let count = 0;

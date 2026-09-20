@@ -1,5 +1,5 @@
-import { OpeningMascotState } from './opening-mascot-state.js?v=20260915T095227534';
-import { playPigGrunt, stopPigGrunt } from './sound-player.js?v=20260915T095227534';
+import { OpeningMascotState } from './opening-mascot-state.js?v=20260920T151452528';
+import { playPigGrunt, stopPigGrunt } from './sound-player.js?v=20260920T151452528';
 
 export function createOpeningMascot({ stage, shell, notify = () => {} }) {
   const lifecycle = new OpeningMascotState();
@@ -30,7 +30,7 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
     if(pig||loading||failed||!visible()||mode==='gone')return;
     loading=true;const ticket=++generation;
     try {
-      const { Pig3D }=await import('./mascot/pig3d.js?v=20260915T095227534');
+      const { Pig3D }=await import('./mascot/pig3d.js?v=20260920T151452528');
       if(ticket!==generation||disposed||mode==='gone')return;
       pig=new Pig3D();pig.renderer.domElement.className='opening-mascot__canvas';pig.renderer.domElement.setAttribute('aria-hidden','true');
       rig.prepend(pig.renderer.domElement);

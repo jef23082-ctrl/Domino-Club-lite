@@ -9,7 +9,7 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20260915T095227534';
+} from './engine.js?v=20260920T151452528';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -17,6 +17,32 @@ export class GameRuleError extends Error {
     this.name = 'GameRuleError';
     this.code = code;
   }
+}
+
+export const TURN_TIMER_OPTIONS = Object.freeze([0, 10, 15, 20, 30]);
+
+export function normalizeTurnTimerSeconds(value, fallback = 15) {
+  const seconds = Math.round(Number(value));
+  return TURN_TIMER_OPTIONS.includes(seconds) ? seconds : fallback;
+}
+
+function resetTurnClock(room, at = Date.now()) {
+  const game = room?.game;
+  if (!game || game.roundStatus !== 'playing') return;
+  const seconds = normalizeTurnTimerSeconds(room.turnTimerSeconds);
+  if (!seconds) {
+    delete game.turnClock;
+    return;
+  }
+  game.turnClock = {
+    turnId: String(game.currentTurnId),
+    durationMs: seconds * 1000,
+    remainingMs: seconds * 1000,
+    deadlineAt: at + seconds * 1000,
+    paused: false,
+    revision: Number(game.turnClock?.revision || 0) + 1,
+    updatedAt: at
+  };
 }
 
 function rule(condition, message, code) {
@@ -44,6 +70,7 @@ export function createInitialRoom({ code, profile, clientToken, at = Date.now() 
     code,
     status: 'waiting',
     style: 'luxe',
+    turnTimerSeconds: 15,
     hostToken: clientToken,
     creatorToken: clientToken,
     createdAt: at,
@@ -112,6 +139,7 @@ export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex =
     changedAt: at
   };
   room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
+  resetTurnClock(room, at);
   room.updatedAt = at;
   return room;
 }
@@ -136,6 +164,7 @@ export function startRematchInRoom(room, { clientToken, matchId, at = Date.now()
     changedAt: at
   };
   room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
+  resetTurnClock(room, at);
   room.updatedAt = at;
   delete room.endedAt;
   return room;
@@ -147,6 +176,39 @@ export function selectRoomStyle(room, { clientToken, style, at = Date.now() }) {
   rule(room.status === 'waiting', 'Le style doit être choisi avant de lancer la partie.', 'room-started');
   rule(style === 'classic' || style === 'luxe', 'Ce style de salle n’existe pas.', 'invalid-room-style');
   room.style = style;
+  room.updatedAt = at;
+  return room;
+}
+
+export function selectTurnTimerInRoom(room, { clientToken, seconds, at = Date.now() }) {
+  rule(room, 'Salle introuvable.', 'room-not-found');
+  rule(room.hostToken === clientToken, 'Seul l’hôte règle le compte à rebours.', 'host-only');
+  rule(room.status === 'waiting', 'Le compte à rebours doit être réglé avant de lancer la partie.', 'room-started');
+  const normalized = normalizeTurnTimerSeconds(seconds, -1);
+  rule(normalized >= 0, 'Cette durée de compte à rebours n’existe pas.', 'invalid-turn-timer');
+  room.turnTimerSeconds = normalized;
+  room.updatedAt = at;
+  return room;
+}
+
+export function setTurnClockPausedInRoom(room, { clientToken, paused, expectedTurnId, at = Date.now() }) {
+  rule(room?.status === 'playing' && room.game?.roundStatus === 'playing', 'La manche n’est pas active.', 'round-inactive');
+  rule(roomPlayers(room).some(player => player.token === clientToken), 'Seul un joueur de la salle peut synchroniser la pause.', 'player-only');
+  const clock = room.game.turnClock;
+  if (!clock) return room;
+  rule(String(room.game.currentTurnId) === String(expectedTurnId) && String(clock.turnId) === String(expectedTurnId), 'Le tour a déjà changé.', 'stale-turn');
+  const nextPaused = Boolean(paused);
+  if (clock.paused === nextPaused) return room;
+  if (nextPaused) {
+    clock.remainingMs = Math.max(0, Number(clock.deadlineAt || at) - at);
+    clock.paused = true;
+    clock.pausedAt = at;
+  } else {
+    clock.deadlineAt = at + Math.max(0, Number(clock.remainingMs || 0));
+    clock.paused = false;
+    delete clock.pausedAt;
+  }
+  clock.updatedAt = at;
   room.updatedAt = at;
   return room;
 }
@@ -192,6 +254,7 @@ export function cancelRoomInState(room, { clientToken, creatorName, at = Date.no
 export function playTileInRoom(room, { playerId, tileId, side, at = Date.now() }) {
   rule(room?.status === 'playing' && room.game?.roundStatus === 'playing', 'La manche n’est pas active.', 'round-inactive');
   const game = room.game;
+  rule(!game.turnClock?.paused, 'La partie est en pause pendant le travail d’un joueur.', 'game-paused');
   rule(String(game.currentTurnId) === String(playerId), 'Ce n’est pas ton tour.', 'wrong-turn');
   const board = ensureBoard(game);
   const handKey = playerKey(playerId);
@@ -210,7 +273,10 @@ export function playTileInRoom(room, { playerId, tileId, side, at = Date.now() }
   game.consecutivePasses = 0;
   game.lastAction = { type: 'play', playerId, tileId, side, at };
   if (game.hands[handKey].length === 0) finishRoundInRoom(room, playerId, 'empty', { points: 0, lastTileId: tileId }, at);
-  else advanceTurn(game);
+  else {
+    advanceTurn(game);
+    resetTurnClock(room, at);
+  }
   room.updatedAt = at;
   return room;
 }
@@ -218,6 +284,7 @@ export function playTileInRoom(room, { playerId, tileId, side, at = Date.now() }
 export function passTurnInRoom(room, { playerId, at = Date.now() }) {
   rule(room?.status === 'playing' && room.game?.roundStatus === 'playing', 'La manche n’est pas active.', 'round-inactive');
   const game = room.game;
+  rule(!game.turnClock?.paused, 'La partie est en pause pendant le travail d’un joueur.', 'game-paused');
   rule(String(game.currentTurnId) === String(playerId), 'Ce n’est pas ton tour.', 'wrong-turn');
   rule(!hasPlayableTile(game, playerId), 'Tu possèdes au moins un domino jouable.', 'playable-tile');
 
@@ -241,6 +308,7 @@ export function passTurnInRoom(room, { playerId, at = Date.now() }) {
     }
   } else {
     advanceTurn(game);
+    resetTurnClock(room, at);
     room.updatedAt = at;
   }
   return room;
@@ -256,6 +324,37 @@ export function startNextRoundInRoom(room, { at = Date.now(), randomIndex }) {
     starterId,
     { randomIndex, at }
   );
+  resetTurnClock(room, at);
   room.updatedAt = at;
+  return room;
+}
+
+export function timeoutTurnInRoom(room, { expectedTurnId, at = Date.now(), randomIndex = limit => Math.floor(Math.random() * limit) }) {
+  rule(room?.status === 'playing' && room.game?.roundStatus === 'playing', 'La manche n’est pas active.', 'round-inactive');
+  const game = room.game;
+  const turnId = game.currentTurnId;
+  const clock = game.turnClock;
+  rule(clock && normalizeTurnTimerSeconds(room.turnTimerSeconds) > 0, 'Le compte à rebours est désactivé.', 'turn-timer-disabled');
+  rule(!clock.paused, 'La partie est en pause.', 'game-paused');
+  rule(String(turnId) === String(expectedTurnId) && String(clock.turnId) === String(expectedTurnId), 'Le tour a déjà changé.', 'stale-turn');
+  rule(Number(clock.deadlineAt || 0) <= at, 'Le compte à rebours n’est pas terminé.', 'turn-timer-active');
+
+  const hand = game.hands?.[playerKey(turnId)] || [];
+  const forced = !game.board?.placements?.length && game.forcedOpeningTileId;
+  const candidates = forced
+    ? hand.filter(tileId => tileId === game.forcedOpeningTileId)
+    : hand.filter(tileId => validSides(tileId, game.board).length > 0);
+  if (!candidates.length) {
+    passTurnInRoom(room, { playerId: turnId, at });
+    game.lastAction.auto = true;
+    game.lastAction.reason = 'timeout';
+    return room;
+  }
+  const tileId = candidates[Math.max(0, Math.min(candidates.length - 1, Number(randomIndex(candidates.length)) || 0))];
+  const sides = validSides(tileId, game.board);
+  const side = sides[Math.max(0, Math.min(sides.length - 1, Number(randomIndex(sides.length)) || 0))];
+  playTileInRoom(room, { playerId: turnId, tileId, side, at });
+  game.lastAction.auto = true;
+  game.lastAction.reason = 'timeout';
   return room;
 }

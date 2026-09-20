@@ -1,4 +1,4 @@
-import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260915T095227534';
+import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260920T151452528';
 
 const NS = 'http://www.w3.org/2000/svg';
 

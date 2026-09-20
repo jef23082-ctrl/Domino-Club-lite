@@ -1,4 +1,4 @@
-import { duckLoungeMusic } from './lounge-music.js?v=20260915T095227534';
+import { duckLoungeMusic } from './lounge-music.js?v=20260920T151452528';
 
 const MUTE_STORAGE_KEY = 'domino-club-sfx-muted';
 const VOLUME_STORAGE_KEY = 'domino-club-sfx-volume';
@@ -153,6 +153,13 @@ export function playSound(kind) {
   } else if (kind === 'turn') {
     tone(current, 659.25, 0, .22, .04);
     tone(current, 783.99, .1, .3, .04);
+  } else if (kind === 'countdown-warning') {
+    tone(current, 880, 0, .075, .052, 'square', 760);
+    impact(current, 0, .045, 1450, .055);
+  } else if (kind === 'countdown-danger') {
+    tone(current, 620, 0, .09, .07, 'square', 470);
+    tone(current, 930, .015, .075, .035, 'triangle', 720);
+    impact(current, 0, .055, 980, .075);
   } else if (kind === 'pig') {
     tone(current, 238, .05, .34, .075, 'sawtooth', 126);
     tone(current, 205, .34, .3, .055, 'sawtooth', 118);

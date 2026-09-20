@@ -1,26 +1,26 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260915T095227534';
-import { profileDetails } from '../game/club-state.js?v=20260915T095227534';
-import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260915T095227534';
-import { roomPlayers } from '../game/room-state.js?v=20260915T095227534';
-import { createChatComposer } from './chat-composer.js?v=20260915T095227534';
-import { navigationIcon } from './navigation-icon.js?v=20260915T095227534';
-import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260915T095227534';
-import { displayName } from '../online/display-name.js?v=20260915T095227534';
-import { clubRankings } from '../online/combined-ranking.js?v=20260915T095227534';
-import { paginate } from './pagination.js?v=20260915T095227534';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260915T095227534';
-import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260915T095227534';
-import { requestAppFullscreen } from './app-shell.js?v=20260915T095227534';
-import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260915T095227534';
-import { homeOrnament } from './home-ornaments.js?v=20260915T095227534';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260920T151452528';
+import { profileDetails } from '../game/club-state.js?v=20260920T151452528';
+import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260920T151452528';
+import { roomPlayers } from '../game/room-state.js?v=20260920T151452528';
+import { createChatComposer } from './chat-composer.js?v=20260920T151452528';
+import { navigationIcon } from './navigation-icon.js?v=20260920T151452528';
+import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260920T151452528';
+import { displayName } from '../online/display-name.js?v=20260920T151452528';
+import { clubRankings } from '../online/combined-ranking.js?v=20260920T151452528';
+import { paginate } from './pagination.js?v=20260920T151452528';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260920T151452528';
+import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260920T151452528';
+import { requestAppFullscreen } from './app-shell.js?v=20260920T151452528';
+import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260920T151452528';
+import { homeOrnament } from './home-ornaments.js?v=20260920T151452528';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
-const SITE_VERSION='V17';
+const SITE_VERSION='V19';
 export function createClubPortal({ ui, physical, access, stats, admin, chat, identity, canWrite, notify, actions, onData, onLeader }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;
   const scroll=el('div','portal-scroll'), header=el('header','portal-header');
-  header.append(el('span','portal-site-version',SITE_VERSION),el('p','portal-kicker','LE SALON PRIVÉ'),el('h1','','DOMINO CLUB'),el('p','portal-subtitle','Le Roi du Cochon'));
+  header.append(el('span','portal-site-version',SITE_VERSION),el('p','portal-kicker','LE SALON PRIVÉ'),el('h1','','DOMINO CLUB'),el('p','portal-subtitle','Le Roi du Cochon'),el('h2','portal-page-title',''));
   const crest=el('span','portal-home-crest');crest.append(homeOrnament('crown'));header.prepend(crest);
   const dataStatus=el('p','portal-data-status','Chargement des données du club…');header.append(dataStatus);scroll.append(header);
   const pages=new Map(), nav=el('nav','portal-nav');nav.setAttribute('aria-label','Navigation principale');
@@ -34,8 +34,8 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, ide
   const presenceCard=card('Joueurs connectés'), inviteCard=card('Tes invitations'), gamesCard=card('Tables du club');
   const presences=el('div','portal-live-list'), invites=el('div','portal-live-list'), games=el('div','portal-live-list');
   presenceCard.append(presences);inviteCard.append(invites);games.classList.add('portal-room-grid');
-  const columns=el('div','portal-online-columns'),chatDock=el('aside','portal-live-chat'),chatSlot=el('div','portal-chat-slot');chatDock.setAttribute('aria-label','Discussion commune à tout le club');chatDock.append(chatSlot);columns.append(games,chatDock);gamesCard.append(columns);
-  const lobbyHost=el('div','portal-lobby-host');online.append(presenceCard,lobbyHost,gamesCard,inviteCard);
+  const columns=el('div','portal-online-columns'),chatDock=el('aside','portal-live-chat'),chatSlot=el('div','portal-chat-slot');chatDock.setAttribute('aria-label','Discussion commune à tout le club');chatDock.append(chatSlot);gamesCard.append(games);columns.append(gamesCard,chatDock);
+  const lobbyHost=el('div','portal-lobby-host');online.append(presenceCard,lobbyHost,columns,inviteCard);
   gamesCard.classList.add('portal-tables');inviteCard.classList.add('portal-invites-card');presenceCard.classList.add('portal-presence-card');
   let data=null, snapshot=null, summary={history:[],stats:{},rooms:{}}, page='home', authenticated=false, inScene=false, profileId=null, editorId='new', generalChat=null, stopData, stopStats;
   let physicalFingerprint='', summaryFingerprint='', profilePresenceFingerprint='', dialogBusy=false, rankingMode='general', adminMode='players';
@@ -51,7 +51,8 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, ide
     if(page==='admin' && next!=='admin')access.lock();
     stopLoungeMusic();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
     page=next;inScene=false;root.hidden=false;game.hidden=true;ui.menu.hidden=true;reparentNotices(app);
-    root.dataset.page=next;header.querySelector('h1').textContent=next==='home'?'DOMINO CLUB':SECTIONS.find(([id])=>id===next)?.[1]||'DOMINO CLUB';
+    root.dataset.page=next;header.querySelector('h1').textContent='DOMINO CLUB';
+    header.querySelector('.portal-page-title').textContent=next==='home'?'':({online:'Salons en ligne',ranking:'Classement',profiles:'Profils',history:'Historique',admin:'Administration'}[next]||'');
     header.querySelector('.portal-kicker').textContent={home:'ACCUEIL DU CLUB',online:'SALONS EN LIGNE',ranking:'CLASSEMENT DU CLUB',profiles:'CARTES DE MEMBRE',history:'LES ARCHIVES DU CLUB',admin:'GESTION DU CLUB'}[next]||'LE SALON PRIVÉ';
     for(const [id,view] of pages){view.hidden=id!==next;buttons.get(id).classList.toggle('active',id===next);if(id===next)buttons.get(id).setAttribute('aria-current','page');else buttons.get(id).removeAttribute('aria-current');}
     scroll.scrollTop=0;
@@ -174,7 +175,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, ide
     for(const[id,label]of [['general','Général'],['online','En ligne'],['physical','Club physique']]){const b=button(label,()=>{rankingMode=id;renderPage();pages.get('ranking').querySelector('[aria-selected="true"]').focus();});b.setAttribute('role','tab');b.id=`ranking-tab-${id}`;b.setAttribute('aria-controls','ranking-results');b.setAttribute('aria-selected',String(rankingMode===id));b.tabIndex=rankingMode===id?0:-1;b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const ids=['general','online','physical'],i=ids.indexOf(rankingMode);rankingMode=e.key==='Home'?ids[0]:e.key==='End'?ids[2]:ids[(i+(e.key==='ArrowRight'?1:2))%3];renderPage();pages.get('ranking').querySelector('[aria-selected="true"]').focus();});tabs.append(b);}
     const rows=rankings()[rankingMode],panel=el('div','portal-ranking-results');panel.id='ranking-results';panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',`ranking-tab-${rankingMode}`);
     const note=rankingMode==='general'?'Général = manches du club physique + parties complètes en ligne. Une victoire avec deux cochons vaut deux crédits, comme dans la V2. Les manches intermédiaires en ligne ne sont pas ajoutées.':rankingMode==='online'?'Parties complètes en ligne · Barème V2 conservé.':'Manches du club physique · Barème V2 conservé.';
-    const podium=el('div','portal-podium');for(const index of [1,0,2]){const p=rows[index];if(!p||!p.totalGames)continue;const step=el('article',`portal-podium-place place-${index+1}`);step.append(el('span','portal-podium-rank',`#${index+1}`),avatar(p),el('h3','',p.name));const metrics=el('p','portal-podium-metrics');for(const [icon,value,label] of [['percent',`${p.percent||0}%`,'victoires'],['domino',p.totalGames,'parties'],['pig',p.coch||0,'cochons']]){const item=el('span');item.append(navigationIcon(icon),document.createTextNode(`${value} ${label}`));metrics.append(item);}step.append(metrics);podium.append(step);}panel.append(podium);
+    const podium=el('div','portal-podium');for(const index of [1,0,2]){const p=rows[index];if(!p||!p.totalGames)continue;const step=el('article',`portal-podium-place place-${index+1}`);step.append(el('span','portal-podium-rank',`#${index+1}`));if(index===0){const crown=el('span','portal-podium-crown');crown.append(homeOrnament('crown'));step.append(crown);}step.append(avatar(p),el('h3','',p.name));const metrics=el('p','portal-podium-metrics');for(const [icon,value,label] of [['percent',`${p.percent||0}%`,'victoires'],['domino',p.totalGames,'parties'],['pig',p.coch||0,'cochons']]){const item=el('span');item.append(navigationIcon(icon),document.createTextNode(`${value} ${label}`));metrics.append(item);}step.append(metrics);podium.append(step);}panel.append(podium);
     panel.append(rows.length?rankingTable(rows,true,{selfId:identity().profile?.id,onDetails:p=>{profileId=p.id;open('profiles');}}):el('p','portal-muted','Aucun résultat enregistré.'));
     const help=button('ⓘ Comprendre le classement',()=>{const {dialog,cancel,show}=modal('Le barème du club');cancel.textContent='Fermer';dialog.append(el('p','',note),el('p','','Le classement conserve le tri V2 : taux de crédits de victoire, puis score (victoires moins cochons). Série : victoires consécutives par date. « — » indique un historique incomplet. Le taux peut dépasser 100 %.'),cancel);show();},'portal-ranking-help');panel.append(help);
     section.append(tabs,panel);target.append(section);
@@ -203,8 +204,8 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, ide
     paged(physical,data.history,'historique physique',4,(match,index)=>physicalHistoryRow(match,index));target.append(online,physical);
   }
   function historyMeta(text){const meta=el('p','portal-history-meta');meta.append(navigationIcon('history'),el('span','',text));return meta;}
-  function onlineHistoryRow(match,index){const node=el('article','portal-history-row'),description=historyDescription(match),names=(match.players||[]).map(player=>player.name||'Joueur supprimé');node.append(historyMeta(`${formatMatchDate(match.endedAt)} · ${formatMatchDuration(match)} · #${summary.history.length-index}`),el('h3','',description.title),el('p','',`${names.join(' · ')} — ${description.detail}`));return node;}
-  function physicalHistoryRow(match,index){const node=el('article','portal-history-row'),names=(match.table||[]).map(id=>data.players.find(p=>String(p.id)===String(id))?.name||'Joueur supprimé');node.append(historyMeta(`${match.date||''} ${match.duration||''} · #${data.history.length-index}`),el('h3','',`${match.winner}`),el('p','',`${names.join(' · ')} — Cochons : ${match.cochon||'Aucun'}`));return node;}
+  function onlineHistoryRow(match,index){const node=el('article','portal-history-row'),description=historyDescription(match),names=(match.players||[]).map(player=>player.name||'Joueur supprimé');node.append(historyMeta(`${formatMatchDate(match.endedAt)} · ${formatMatchDuration(match)} · #${summary.history.length-index}`),el('h3','',description.title),el('p','',`${names.join(' · ')} — ${description.detail}`),el('span','portal-history-arrow','›'));return node;}
+  function physicalHistoryRow(match,index){const node=el('article','portal-history-row'),names=(match.table||[]).map(id=>data.players.find(p=>String(p.id)===String(id))?.name||'Joueur supprimé');node.append(historyMeta(`${match.date||''} ${match.duration||''} · #${data.history.length-index}`),el('h3','',`${match.winner}`),el('p','',`${names.join(' · ')} — Cochons : ${match.cochon||'Aucun'}`),el('span','portal-history-arrow','›'));return node;}
   function modal(title){
     const dialog=el('dialog','portal-dialog');dialog.setAttribute('aria-label',title);dialog.append(el('h2','',title));app.append(dialog);
     const cancel=button('Annuler',()=>{if(!dialogBusy)dialog.close();});dialog.addEventListener('cancel',event=>{if(dialogBusy)event.preventDefault();});dialog.addEventListener('close',()=>dialog.remove());

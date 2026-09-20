@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260915T095227534';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260920T151452528';
 import {
   createInitialRoom,
   cancelRoomInState,
@@ -6,16 +6,19 @@ import {
   reattachPlayerInRoom,
   selectRoomMusic,
   selectRoomStyle,
+  selectTurnTimerInRoom,
+  setTurnClockPausedInRoom,
   leaveWaitingRoom,
   passTurnInRoom,
   playTileInRoom,
   startMatchInRoom,
   startRematchInRoom,
-  startNextRoundInRoom
-} from '../game/room-state.js?v=20260915T095227534';
-import { randomId } from './ids.js?v=20260915T095227534';
-import { liveTransaction } from './live-transaction.js?v=20260915T095227534';
-import { createLoungeName } from '../online/lounge-name.js?v=20260915T095227534';
+  startNextRoundInRoom,
+  timeoutTurnInRoom
+} from '../game/room-state.js?v=20260920T151452528';
+import { randomId } from './ids.js?v=20260920T151452528';
+import { liveTransaction } from './live-transaction.js?v=20260920T151452528';
+import { createLoungeName } from '../online/lounge-name.js?v=20260920T151452528';
 
 export class RoomRepository {
   constructor(database) {
@@ -63,6 +66,18 @@ export class RoomRepository {
 
   async selectStyle(code, context) {
     return this.#reduce(code, room => selectRoomStyle(room, context));
+  }
+
+  async selectTurnTimer(code, context) {
+    return this.#reduce(code, room => selectTurnTimerInRoom(room, context));
+  }
+
+  async setTurnClockPaused(code, context) {
+    return this.#reduce(code, room => setTurnClockPausedInRoom(room, context));
+  }
+
+  async timeoutTurn(code, context) {
+    return this.#reduce(code, room => timeoutTurnInRoom(room, context));
   }
 
   async play(code, context) {

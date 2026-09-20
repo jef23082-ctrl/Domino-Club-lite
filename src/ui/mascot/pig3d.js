@@ -1,4 +1,4 @@
-import * as T from '../../vendor/three/three.module.js?v=20260915T095227534';
+import * as T from '../../vendor/three/three.module.js?v=20260920T151452528';
 
 // One persistent, volumetric character. Expressions never replace an image.
 const V=(x,y,z)=>new T.Vector3(x,y,z);

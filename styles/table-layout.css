@@ -1,4 +1,4 @@
-/* V17: shared 1672 × 941 playfield. Skins own decoration, not game geometry.
+/* V19: shared 1672 × 941 playfield. Skins own decoration, not game geometry.
    Both skins opt in via data-table-layout="club" in applyRoomStyle(). */
 .game-shell[data-table-layout="club"] {
   --table-ratio:1672 / 941;

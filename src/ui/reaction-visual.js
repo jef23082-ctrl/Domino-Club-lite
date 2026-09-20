@@ -1,5 +1,5 @@
-import { REACTION_ASSETS, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260915T095227534';
-import { createWorkBeacon } from './work-beacon.js?v=20260915T095227534';
+import { REACTION_ASSETS, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260920T151452528';
+import { createWorkBeacon } from './work-beacon.js?v=20260920T151452528';
 
 export function isPremiumReaction(effect) {
   return effect === 'working' || Boolean(REACTION_ASSETS[effect]);

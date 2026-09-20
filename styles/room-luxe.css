@@ -113,6 +113,7 @@
 .room-style-picker small { font:600 11px system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase; }
 .room-style-picker__select { width:100%;border:0;outline-offset:3px;background:#081a12;color:#ffe6a9;font:700 20px Georgia,serif;cursor:pointer; }
 .room-style-picker__select:disabled { cursor:default;opacity:.8; }
+.room-timer-picker{min-width:165px}.room-timer-picker__select{font-size:18px}
 .portal-online-panel[data-view="waiting"] .online-waiting-controls { flex-wrap:wrap; }
 
 /* Separate mood lanes: never occupy the hand, the trophy or a neighbour's plaque. */
