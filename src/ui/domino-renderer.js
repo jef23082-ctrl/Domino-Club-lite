@@ -1,6 +1,6 @@
-import { parseTile } from '../game/engine.js?v=20260920T151452528';
-import { displayName } from '../online/display-name.js?v=20260920T151452528';
-import { createWorkBeacon } from './work-beacon.js?v=20260920T151452528';
+import { parseTile } from '../game/engine.js?v=20260922T005918368';
+import { displayName } from '../online/display-name.js?v=20260922T005918368';
+import { createWorkBeacon } from './work-beacon.js?v=20260922T005918368';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -201,6 +201,7 @@ export function renderPlayerWorkStatus(container, player) {
   if (!player.working) return;
   const status = document.createElement('span');
   status.className = 'player-work-status';
+  status.dataset.overlayRole = 'work';
   status.append(createWorkBeacon(), document.createElement('span'));
   status.lastElementChild.textContent = 'Travaille';
   status.title = `${displayName(player.name)} travaille et revient bientôt`;

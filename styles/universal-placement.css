@@ -1,0 +1,19 @@
+/* V23 — every transient seat element receives space from one placement engine. */
+[data-overlay-resolved="true"]{
+  margin-left:var(--overlay-nudge-x,0px)!important;
+  margin-top:var(--overlay-nudge-y,0px)!important;
+}
+[data-interaction-format="personal"],[data-interaction-format="routed"]{
+  max-width:min(var(--interaction-max-width,16rem),34cqw)!important;
+  max-height:var(--interaction-max-height,12rem);
+}
+[data-interaction-format="personal"]{transform-origin:50% 100%}
+[data-interaction-format="routed"]{transform-origin:50% 50%}
+[data-overlay-resolved="true"][data-overlay-role="timer"],
+[data-overlay-resolved="true"][data-overlay-role="work"],
+[data-overlay-resolved="true"][data-overlay-role="emotion"]{
+  transition:margin .22s cubic-bezier(.2,.75,.2,1),filter .25s ease;
+}
+@media(prefers-reduced-motion:reduce){
+  [data-overlay-resolved="true"]{transition:none!important}
+}

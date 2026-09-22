@@ -1,0 +1,66 @@
+/* V23 — one luminous language shared by the whole club. */
+:root{
+  --premium-gold-white:#fff9dc;
+  --premium-gold-light:#ffe89a;
+  --premium-gold:#f2c85f;
+  --premium-gold-rich:#dca437;
+  --premium-gold-edge:#ffdfa0;
+  --premium-emerald:#063b29;
+  --premium-emerald-deep:#00140d;
+  --premium-emerald-glow:#29ff78;
+  --premium-glow-discreet:0 0 .45rem #f2c85f45;
+  --premium-glow-important:0 0 .55rem #fff2af,0 0 1.35rem #e8b3429c;
+  --premium-glow-spectacular:0 0 .7rem #fffbd9,0 0 1.8rem #ffd567d6,0 0 3.2rem #d9992b8c;
+}
+.casino-stage[data-effect-level="discreet"]{--active-premium-glow:var(--premium-glow-discreet)}
+.casino-stage[data-effect-level="important"]{--active-premium-glow:var(--premium-glow-important)}
+.casino-stage[data-effect-level="spectacular"]{--active-premium-glow:var(--premium-glow-spectacular)}
+.casino-stage :is(.player-plaque,.turn-countdown,.player-work-status,.seat-emotion,.seat-interaction,.online-result-card){
+  border-color:var(--premium-gold-edge);
+}
+.casino-stage :is(.player-name,.seat-emotion strong,.seat-interaction strong,.online-result-card strong){color:var(--premium-gold-light)}
+.casino-stage[data-spectacular-event] :is(.seat-emotion,.seat-interaction,.reaction-travel){
+  opacity:0!important;visibility:hidden;transition:opacity .16s ease,visibility 0s .16s;
+}
+.casino-stage[data-spectacular-event="boude"] .boude-verdict,
+.casino-stage[data-spectacular-event="round-end"] .online-result-card,
+.casino-stage[data-spectacular-event="finale"] .online-result-card,
+.casino-stage[data-spectacular-event="victory"] .online-result-card{filter:drop-shadow(0 0 .7rem #fffbd9) drop-shadow(0 0 1.8rem #ffd567d6) drop-shadow(0 0 3.2rem #d9992b8c)}
+
+/* Contact, felt relief and reflected room light tie the pieces to the table. */
+.game-shell[data-table-layout="club"] .board-plane::before{
+  content:"";position:absolute;inset:-7%;z-index:-1;pointer-events:none;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 52%,rgba(8,58,39,.2),rgba(0,14,9,.05) 56%,transparent 74%);
+  box-shadow:inset 0 .18rem .35rem #fff1b20d,0 .6rem 1.3rem #0003;
+  mix-blend-mode:soft-light;
+}
+.game-shell[data-table-layout="club"] .board-plane::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(112deg,transparent 12%,rgba(255,225,146,.045) 39%,transparent 62%),radial-gradient(ellipse at 50% 55%,transparent 42%,rgba(0,0,0,.1));
+  mix-blend-mode:screen;
+}
+.board-domino{filter:drop-shadow(0 .42rem .28rem rgba(0,0,0,.52)) drop-shadow(0 0 .12rem rgba(255,218,126,.16))}
+.board-domino.is-just-played{animation:dominoContactLight .52s cubic-bezier(.2,.8,.25,1) both}
+.scene-player-plate[data-render-mode="cutout"]{filter:drop-shadow(0 .45cqw .28cqw rgba(0,0,0,.72)) saturate(1.02)}
+.leader-trophy{filter:drop-shadow(0 .28cqw .2cqw rgba(0,0,0,.82)) drop-shadow(0 0 .24cqw rgba(255,212,105,.24))}
+@keyframes dominoContactLight{0%{opacity:.4;filter:brightness(1.5) drop-shadow(0 .12rem .08rem #0008) drop-shadow(0 0 .65rem #ffe090)}55%{filter:brightness(1.1) drop-shadow(0 .45rem .3rem #0008) drop-shadow(0 0 .22rem #eeb94c)}100%{opacity:1;filter:brightness(1) drop-shadow(0 .42rem .28rem #0008)}}
+
+/* A 440 ms curtain keeps page changes luxurious without delaying navigation. */
+.portal-page-transition{position:absolute;z-index:300;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0;background:#0000}
+.portal-page-transition i{position:absolute;left:8%;right:8%;top:50%;height:1px;scale:0 1;background:linear-gradient(90deg,transparent,var(--premium-gold-white),var(--premium-gold),var(--premium-gold-white),transparent);box-shadow:0 0 1rem #ffd461}
+.portal-page-transition span{width:.45rem;aspect-ratio:1;rotate:45deg;background:var(--premium-gold-white);box-shadow:var(--premium-glow-important);scale:0}
+.club-portal.is-page-transitioning .portal-page-transition{animation:portalCurtain .46s ease both}
+.club-portal.is-page-transitioning .portal-page-transition i{animation:portalGoldThread .46s ease both}
+.club-portal.is-page-transitioning .portal-page-transition span{animation:portalGoldDiamond .46s ease both}
+.club-portal.is-page-transitioning .portal-page:not([hidden]){animation:portalPageReveal .44s ease both}
+@keyframes portalCurtain{0%,100%{opacity:0;background:#0000}42%,58%{opacity:1;background:#0009}}
+@keyframes portalGoldThread{0%,100%{scale:0 1;opacity:0}45%,62%{scale:1 1;opacity:1}}
+@keyframes portalGoldDiamond{0%,100%{scale:0;opacity:0}48%,64%{scale:1;opacity:1}}
+@keyframes portalPageReveal{0%,42%{opacity:.18;filter:brightness(.55)}100%{opacity:1;filter:brightness(1)}}
+
+/* The active plaque joins the clock only for the final three seconds. */
+.casino-stage[data-event-lighting="danger"] .player-seat.is-active .player-plaque{animation:finalPlaquePulse .5s ease-in-out infinite;box-shadow:var(--premium-glow-important)}
+@keyframes finalPlaquePulse{50%{filter:brightness(1.28);box-shadow:var(--premium-glow-spectacular)}}
+@media(prefers-reduced-motion:reduce){
+  .portal-page-transition,.club-portal.is-page-transitioning .portal-page:not([hidden]),.casino-stage[data-event-lighting="danger"] .player-seat.is-active .player-plaque{animation:none!important}
+}

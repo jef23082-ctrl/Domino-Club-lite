@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260920T151452528';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260922T005918368';
 import {
   createInitialRoom,
   cancelRoomInState,
@@ -15,21 +15,23 @@ import {
   startRematchInRoom,
   startNextRoundInRoom,
   timeoutTurnInRoom
-} from '../game/room-state.js?v=20260920T151452528';
-import { randomId } from './ids.js?v=20260920T151452528';
-import { liveTransaction } from './live-transaction.js?v=20260920T151452528';
-import { createLoungeName } from '../online/lounge-name.js?v=20260920T151452528';
+} from '../game/room-state.js?v=20260922T005918368';
+import { randomId } from './ids.js?v=20260922T005918368';
+import { liveTransaction } from './live-transaction.js?v=20260922T005918368';
+import { createLoungeName } from '../online/lounge-name.js?v=20260922T005918368';
 
 export class RoomRepository {
-  constructor(database) {
+  constructor(database, { now = () => Date.now() } = {}) {
     this.database = database;
     this.rooms = database.ref(FIREBASE_PATHS.rooms);
+    this.now = now;
   }
 
-  async create({ profile, clientToken, at = Date.now() }) {
+  async create({ profile, clientToken, at } = {}) {
+    const createdAt = Number.isFinite(at) ? at : this.now();
     for (let attempt = 0; attempt < 8; attempt += 1) {
       const code = randomId(5);
-      const room = createInitialRoom({ code, profile, clientToken, at });
+      const room = createInitialRoom({ code, profile, clientToken, at: createdAt });
       room.lounge = createLoungeName(profile);
       const result = await this.rooms.child(code).transaction(current => current ? undefined : room, undefined, false);
       if (result.committed) return code;
@@ -42,7 +44,7 @@ export class RoomRepository {
     const normalized = String(code || '').toUpperCase();
     const result = await liveTransaction(this.rooms.child(normalized), room => {
       try {
-        return joinWaitingRoom(room, context);
+        return joinWaitingRoom(room, this.#withServerTime(context));
       } catch (error) {
         failure = error;
         return undefined;
@@ -53,55 +55,55 @@ export class RoomRepository {
   }
 
   async start(code, context) {
-    return this.#reduce(code, room => startMatchInRoom(room, context));
+    return this.#reduce(code, room => startMatchInRoom(room, this.#withServerTime(context)));
   }
 
   async reattach(code, context) {
-    return this.#reduce(code, room => reattachPlayerInRoom(room, context));
+    return this.#reduce(code, room => reattachPlayerInRoom(room, this.#withServerTime(context)));
   }
 
   async selectMusic(code, context) {
-    return this.#reduce(code, room => selectRoomMusic(room, context));
+    return this.#reduce(code, room => selectRoomMusic(room, this.#withServerTime(context)));
   }
 
   async selectStyle(code, context) {
-    return this.#reduce(code, room => selectRoomStyle(room, context));
+    return this.#reduce(code, room => selectRoomStyle(room, this.#withServerTime(context)));
   }
 
   async selectTurnTimer(code, context) {
-    return this.#reduce(code, room => selectTurnTimerInRoom(room, context));
+    return this.#reduce(code, room => selectTurnTimerInRoom(room, this.#withServerTime(context)));
   }
 
   async setTurnClockPaused(code, context) {
-    return this.#reduce(code, room => setTurnClockPausedInRoom(room, context));
+    return this.#reduce(code, room => setTurnClockPausedInRoom(room, this.#withServerTime(context)));
   }
 
   async timeoutTurn(code, context) {
-    return this.#reduce(code, room => timeoutTurnInRoom(room, context));
+    return this.#reduce(code, room => timeoutTurnInRoom(room, this.#withServerTime(context)));
   }
 
   async play(code, context) {
-    return this.#reduce(code, room => playTileInRoom(room, context));
+    return this.#reduce(code, room => playTileInRoom(room, this.#withServerTime(context)));
   }
 
   async pass(code, context) {
-    return this.#reduce(code, room => passTurnInRoom(room, context));
+    return this.#reduce(code, room => passTurnInRoom(room, this.#withServerTime(context)));
   }
 
   async nextRound(code, context) {
-    return this.#reduce(code, room => startNextRoundInRoom(room, context));
+    return this.#reduce(code, room => startNextRoundInRoom(room, this.#withServerTime(context)));
   }
 
   async rematch(code, context) {
-    return this.#reduce(code, room => startRematchInRoom(room, context));
+    return this.#reduce(code, room => startRematchInRoom(room, this.#withServerTime(context)));
   }
 
   async leaveWaiting(code, context) {
-    return this.#reduce(code, room => leaveWaitingRoom(room, context));
+    return this.#reduce(code, room => leaveWaitingRoom(room, this.#withServerTime(context)));
   }
 
   async cancel(code, context) {
-    return this.#reduce(code, room => cancelRoomInState(room, context));
+    return this.#reduce(code, room => cancelRoomInState(room, this.#withServerTime(context)));
   }
 
   async removeRoomData(code, repositories = {}) {
@@ -138,5 +140,9 @@ export class RoomRepository {
     }, undefined, false);
     if (!result.committed) throw failure || new Error('La salle a changé.');
     return result.snapshot.val();
+  }
+
+  #withServerTime(context = {}) {
+    return Number.isFinite(context.at) ? context : { ...context, at: this.now() };
   }
 }

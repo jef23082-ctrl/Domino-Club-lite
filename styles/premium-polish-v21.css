@@ -1,0 +1,62 @@
+/* V21 — collision-safe overlays and restrained luminous finishing. */
+.seat-interaction[data-overlay-resolved="true"] {
+  /* Position changes are atomic so the golden trail can target the final
+     coordinates immediately, including on narrow landscape screens. */
+  transition: filter .25s ease;
+  filter: drop-shadow(0 0 .18rem rgba(255, 225, 144, .35));
+}
+
+.game-shell[data-table-layout="club"] .player-seat--top .seat-interaction[data-overlay-lane="below"] { left:35%;right:auto;top:96%;bottom:auto; }
+.game-shell[data-table-layout="club"] .player-seat--top .seat-interaction[data-overlay-lane="outer-left"] { left:auto;right:101%;top:60%;bottom:auto; }
+.game-shell[data-table-layout="club"] .player-seat--top .seat-interaction[data-overlay-lane="outer-right"] { left:101%;right:auto;top:60%;bottom:auto; }
+.game-shell[data-table-layout="club"] .player-seat--left .seat-interaction[data-overlay-lane="above"] { left:0;right:auto;top:auto;bottom:101%; }
+.game-shell[data-table-layout="club"] .player-seat--left .seat-interaction[data-overlay-lane="inner"] { left:84%;right:auto;top:86%;bottom:auto; }
+.game-shell[data-table-layout="club"] .player-seat--left .seat-interaction[data-overlay-lane="outer"] { left:auto;right:82%;top:65%;bottom:auto; }
+.game-shell[data-table-layout="club"] .player-seat--right .seat-interaction[data-overlay-lane="above"] { left:auto;right:0;top:auto;bottom:101%; }
+.game-shell[data-table-layout="club"] .player-seat--right .seat-interaction[data-overlay-lane="inner"] { left:auto;right:84%;top:86%;bottom:auto; }
+.game-shell[data-table-layout="club"] .player-seat--right .seat-interaction[data-overlay-lane="outer"] { left:82%;right:auto;top:65%;bottom:auto; }
+
+.game-shell[data-table-layout="club"] .casino-stage::after {
+  content:"";position:absolute;inset:0;z-index:24;pointer-events:none;opacity:.16;
+  background:
+    radial-gradient(circle at 50% 34%,rgba(255,224,142,.16),transparent 28%),
+    linear-gradient(112deg,transparent 18%,rgba(255,231,170,.09) 31%,transparent 43%);
+  background-size:100% 100%,240% 100%;mix-blend-mode:screen;
+  animation:clubLightSweep 11s ease-in-out infinite;
+}
+
+.player-plaque,
+.turn-countdown,
+.online-result-card,
+.room-style-picker,
+.room-timer-picker { transition: box-shadow .35s ease, border-color .35s ease, filter .35s ease; }
+
+.online-result-card::after {
+  content:"";position:absolute;inset:1px;border-radius:inherit;pointer-events:none;overflow:hidden;
+  background:linear-gradient(105deg,transparent 18%,rgba(255,248,207,.28) 48%,transparent 72%);
+  background-size:240% 100%;animation:premiumEdgeSweep 3.8s ease-in-out infinite;
+  mix-blend-mode:screen;
+}
+
+.online-result-card { overflow:hidden; }
+.turn-countdown:not(.is-warning):not(.is-danger):not(.is-paused) { animation:clockGoldBreath 3.2s ease-in-out infinite; }
+
+.game-shell[data-room-style="luxe"] .scene-base,
+.game-shell[data-room-style="classic"] .scene-base { animation:sceneLuxuryReveal .7s cubic-bezier(.2,.75,.2,1) both; }
+
+@keyframes clubLightSweep {
+  0%,22% { background-position:0 0,-85% 0;opacity:.1; }
+  48% { opacity:.2; }
+  72%,100% { background-position:0 0,115% 0;opacity:.1; }
+}
+@keyframes premiumEdgeSweep { 0%,35%{background-position:110% 0;opacity:0} 48%{opacity:.72} 72%,100%{background-position:-110% 0;opacity:0} }
+@keyframes clockGoldBreath { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.12) drop-shadow(0 0 .25cqw rgba(250,190,66,.48))} }
+@keyframes sceneLuxuryReveal { from{opacity:.55;filter:brightness(.72) saturate(.82)} to{opacity:1;filter:brightness(1) saturate(1)} }
+
+@media (prefers-reduced-motion: reduce) {
+  .game-shell[data-table-layout="club"] .casino-stage::after,
+  .online-result-card::after,
+  .turn-countdown,
+  .scene-base { animation:none!important; }
+  .seat-interaction[data-overlay-resolved="true"] { transition:none; }
+}

@@ -1,4 +1,5 @@
-import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260920T151452528';
+import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260922T005918368';
+import { setOptimizedImage } from './image-source.js?v=20260922T005918368';
 
 export function renderCharacterPlate(seat, characterId) {
   const image = document.querySelector(`#character-${seat}`);
@@ -7,7 +8,7 @@ export function renderCharacterPlate(seat, characterId) {
   const cutout = luxe && hasPlayerCutout(characterId, seat);
   const asset = cutout ? playerCutoutAsset(characterId, seat) : playerAsset(characterId, seat);
   image.hidden = false;
-  if (image.getAttribute('src') !== asset.src) image.src = asset.src;
+  setOptimizedImage(image, asset.src);
   const seated = characterId === 'emmanuelle' ? 'assise' : 'assis';
   image.alt = `${asset.displayName} ${seated} au siège ${seat === 'top' ? 'supérieur' : seat === 'left' ? 'gauche' : 'droit'}`;
   image.dataset.characterId = characterId;

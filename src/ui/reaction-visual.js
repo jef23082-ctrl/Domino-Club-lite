@@ -1,5 +1,6 @@
-import { REACTION_ASSETS, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260920T151452528';
-import { createWorkBeacon } from './work-beacon.js?v=20260920T151452528';
+import { REACTION_ASSETS, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260922T005918368';
+import { createWorkBeacon } from './work-beacon.js?v=20260922T005918368';
+import { setOptimizedImage } from './image-source.js?v=20260922T005918368';
 
 export function isPremiumReaction(effect) {
   return effect === 'working' || Boolean(REACTION_ASSETS[effect]);
@@ -16,19 +17,19 @@ export function createReactionVisual(effect, { compact = false, active = true } 
 
   const halo = document.createElement('img');
   halo.className = 'premium-reaction-halo';
-  halo.src = reactionParticleUrl(5);
+  setOptimizedImage(halo, reactionParticleUrl(5));
   halo.alt = '';
 
   const image = document.createElement('img');
   image.className = 'premium-reaction-image';
-  image.src = reactionAssetUrl(effect);
+  setOptimizedImage(image, reactionAssetUrl(effect));
   image.alt = '';
   image.decoding = 'async';
   image.draggable = false;
 
   const glint = document.createElement('img');
   glint.className = 'premium-reaction-glint';
-  glint.src = reactionParticleUrl(4);
+  setOptimizedImage(glint, reactionParticleUrl(4));
   glint.alt = '';
   glint.draggable = false;
 
@@ -39,7 +40,7 @@ export function createReactionVisual(effect, { compact = false, active = true } 
 export function createReactionTrailParticle(index, className) {
   const particle = document.createElement('img');
   particle.className = className;
-  particle.src = reactionParticleUrl(index);
+  setOptimizedImage(particle, reactionParticleUrl(index));
   particle.alt = '';
   particle.draggable = false;
   particle.setAttribute('aria-hidden', 'true');

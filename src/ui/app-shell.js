@@ -3,8 +3,9 @@ import {
   setLoungeMusicVolume,
   syncLoungeMusicControls,
   toggleLoungeMusic
-} from './lounge-music.js?v=20260920T151452528';
-import { playPigGrunt, setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20260920T151452528';
+} from './lounge-music.js?v=20260922T005918368';
+import { playPigGrunt, setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20260922T005918368';
+import { bindVisualQuality } from './visual-quality.js?v=20260922T005918368';
 
 export async function requestAppFullscreen() {
   if (document.fullscreenElement) return true;
@@ -18,6 +19,11 @@ export function bindAppShell() {
   const toggle = document.querySelector('#chat-toggle');
   const unreadBadge = document.querySelector('#chat-unread-badge');
   let unreadMessages = 0;
+  if ((globalThis.innerWidth || 1920) <= 900) {
+    panel.classList.add('is-collapsed');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Déplier la discussion');
+  }
   const renderUnread = () => {
     if (!unreadBadge) return;
     unreadBadge.textContent = unreadMessages > 99 ? '99+' : String(unreadMessages);
@@ -83,6 +89,7 @@ export function bindAppShell() {
   });
   syncLoungeMusicControls();
   syncSoundControls();
+  bindVisualQuality();
   document.addEventListener('fullscreenchange', () => {
     const active = Boolean(document.fullscreenElement);
     button.setAttribute('aria-pressed', String(active));

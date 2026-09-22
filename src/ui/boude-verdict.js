@@ -1,4 +1,5 @@
 // Validated PNG artwork; continuous motion independent of player rerenders.
+import { loadOptimizedImage } from './image-source.js?v=20260922T005918368';
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const between=(t,a,b)=>clamp((t-a)/(b-a));
 const smooth=x=>x*x*(3-2*x);
@@ -17,7 +18,7 @@ export function createBoudeVerdict({stage,onSound=()=>{},isVisible=()=>true}){
   const ctx=canvas.getContext('2d'),assets={};
   const sources={domino:'../../assets/interactions/verdict/domino.png',frame:'../../assets/interactions/verdict/frame.png',bar:'../../assets/interactions/verdict/bar.png',spark:'../../assets/interactions/particles/star-glint.png',dust:'../../assets/interactions/particles/gold-dust.png'};
   const ready=Promise.all(Object.entries(sources).map(async([name,path])=>{
-    const image=new Image();image.src=new URL(path,import.meta.url).href;await image.decode();assets[name]=image;
+    assets[name]=await loadOptimizedImage(new URL(path,import.meta.url).href);
   })).then(()=>true).catch(()=>false);
   const particles=Array.from({length:56},(_,i)=>({angle:i*2.39996323,speed:70+(i*37%175),life:.4+(i*13%90)/100,delay:(i%9)*.016,size:2+(i*7%6),spin:(i%2?1:-1)*(i%5+1)}));
   const cueTimes=[['arm',.17],['slide',.54],['impact',.86],['shine',1.32],['return',2.52]];

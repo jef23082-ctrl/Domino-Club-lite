@@ -1,4 +1,4 @@
-Domino Club V19 — 19.0.0
+Domino Club V24 — 24.0.0
 
 Styles de salle : Luxe est le style par défaut des nouvelles salles et des anciennes salles sans style enregistré. Avant le lancement, l’hôte peut toujours choisir Classique ou Luxe dans le sélecteur placé à gauche de Lancer la partie. Le choix appartient au salon, reste identique chez les joueurs et spectateurs, et est conservé lors d’une reprise ou d’une nouvelle manche. Luxe reprend la maquette Palais Royale avec un décor dédié, les personnages existants, la coupe royale réservée au numéro 1 et la grande plaque BOUDÉÉÉ avec sa couronne. Les règles de jeu et le moteur de placement des dominos sont inchangés.
 
@@ -16,9 +16,31 @@ BOUDÉÉÉ : le passage de tour confirmé déclenche le mécanisme ivoire et or 
 
 Coupe du classement : le numéro 1 du classement général est toujours représenté sur le siège supérieur lorsqu’il participe à la partie, sans modifier l’ordre logique des tours. Lui seul possède la coupe d’or, réduite et posée sur le bord supérieur gauche de la table, près de son siège. La coupe utilise un véritable PNG transparent sans étoile ni signe plus, une entrée avec rebond et poussière d’or, une respiration lumineuse, puis un halo lors de sa victoire.
 
-Rendu Luxe V19 : les 27 PNG détourés localement et validés dans le laboratoire sont utilisés uniquement dans Luxe, sans les anciens masques d'affichage. Les pixels RGB des originaux sont conservés et seule la transparence change. Classique garde ses fichiers d'origine. Aucun nouveau détourage Kyllian. Le gabarit commun est 1672 × 941, avec les mêmes ancrages de sièges, de plateau et de main. Le décor Luxe est recadré indépendamment ; le plein écran conserve le ratio du jeu et remplit les marges avec le décor. Les visuels d'interactions conservent leurs tailles bornées et le gyrophare supérieur reste à droite de la plaque.
+Rendu Luxe V21 : les 27 PNG détourés localement sont utilisés uniquement dans Luxe, sans les anciens masques d'affichage. Khalil utilise son identité B7 validée — coupe courte sur les côtés, sans barbe et fidélité renforcée — dans les trois positions Classique et Luxe. Le gabarit commun reste inchangé. Les images publiées sont recompressées sans perte avec vérification pixel par pixel ; aucun détail ni canal alpha n'est modifié.
 
-Compte à rebours V19 : avant le lancement, l’hôte choisit Désactivé, 10, 15, 20 ou 30 secondes à côté du style de salle. Le cadran or apparaît uniquement sous la plaque du joueur actif. Il clignote en orange pendant les cinq dernières secondes, en rouge pendant les trois dernières et émet un signal à chaque seconde finale. À zéro, un domino jouable et une extrémité valide sont choisis aléatoirement ; si aucun domino ne peut être posé, BOUDÉÉÉ est déclenché automatiquement. Une seule transaction synchronisée décide de l’action pour tous les navigateurs. « Je travaille » ou l’absence d’un joueur met la partie et le cadran en pause ; ils reprennent au même instant lorsque les trois joueurs sont revenus.
+Protection visuelle V21 : les interactions testent plusieurs zones autour de chaque siège et choisissent automatiquement celle qui évite plaques, mains, minuteur, coupe, mascotte, chat et panneau de résultat. Leur trajectoire dorée rejoint la position réellement retenue. Les changements de taille de fenêtre recalculent cette position.
+
+Synchronisation V21 : le compte à rebours et les transactions qui le pilotent utilisent l'horloge serveur Firebase via son décalage officiel. Un appareil dont l'heure locale est fausse ne peut donc plus avancer ou retarder le tour. La résolution à zéro reste atomique dans la salle partagée.
+
+Finitions V21 : balayages lumineux discrets, respiration du cadran et révélation de scène renforcent le rendu premium. Le mode Réduire les animations désactive ces mouvements. Le script npm test:visual lance automatiquement des scènes Classique et Luxe aux formats 1366×768 et 1920×1080, contrôle le gabarit commun, le chargement des images et les collisions, puis archive les captures et mesures de référence.
+
+Fiabilité V22 : le calcul physique est contrôlé automatiquement sur 200 historiques contre la fonction V2 officielle. Les scénarios synchronisés couvrent trois clients, un spectateur, la pause, la reprise, l'expiration du minuteur, la reconnexion et deux tentatives simultanées sur un même domino. Toutes les mutations restent transactionnelles ; une seule action peut gagner.
+
+Chargement V22 : l'entrée dans une salle demande en priorité uniquement son décor et les trois portraits réellement assis. Les interactions et particules sont chargées ensuite pendant une période d'inactivité. Les pistes et le grognement restent à la demande. Le réglage Qualité visuelle propose Automatique, Premium et Optimisée ; Automatique protège les petits écrans et les appareils disposant de peu de mémoire ou de processeurs.
+
+Reconnexion V22 : lors d'une coupure, une protection centrale suspend toutes les commandes. Le joueur est réassocié à son siège avant la reprise, sans modifier la manche ni rejouer un domino. Les spectateurs sont réinscrits séparément.
+
+Éclairage V22 : un directeur lumineux discret accompagne les cinq dernières secondes, le danger rouge, les pauses, BOUDÉÉÉ, la fin de manche et la victoire. Ces effets ne recouvrent jamais les commandes et suivent les préférences de réduction des mouvements.
+
+Architecture V23 : un moteur de placement universel attribue une zone libre aux compteurs, statuts, émotions et interactions selon leur priorité. Une machine à états unique encadre attente, lancement, tour, pause, fin de manche, manche suivante et fin de partie. Une seule animation spectaculaire peut être active à la fois, avec une signature commune or clair et vert émeraude.
+
+Rendu V23 : les scènes disposent d'ombres de contact, d'un relief subtil du tapis et de transitions dorées entre les pages. Les 27 silhouettes Luxe actives sont contrôlées automatiquement sur leur alpha, leurs dimensions et leurs limites. Les PNG restent les fichiers de secours ; des WebP transparents sans perte sont servis en priorité.
+
+Validation V23 : les tests visuels couvrent quinze scènes et comparent les pixels à une référence. Un scénario Firebase isolé pilote trois navigateurs joueurs et un spectateur, puis vérifie pause, reprise, jeu simultané et reconnexion. Le pipeline de version refuse la construction si une étape échoue et conserve la version précédente dans release/current.json.
+
+Minuteur V23 sans service payant : le cadran utilise l'heure serveur Firebase pour afficher l'échéance. À zéro, un navigateur de joueur connecté demande une transaction Realtime Database qui vérifie le tour et l'échéance avant une unique pose ou un unique BOUDÉÉÉ. Aucun déploiement Cloud Functions ou Cloud Tasks n'est nécessaire. Si tous les joueurs sont déconnectés, la résolution attend leur retour.
+
+Compte à rebours : avant le lancement, l’hôte choisit Désactivé, 10, 15, 20 ou 30 secondes à côté du style de salle. Le cadran or apparaît uniquement sous la plaque du joueur actif. Il clignote en orange pendant les cinq dernières secondes, en rouge pendant les trois dernières et émet un signal à chaque seconde finale. À zéro, un domino jouable et une extrémité valide sont choisis aléatoirement ; si aucun domino ne peut être posé, BOUDÉÉÉ est déclenché automatiquement. Une seule transaction synchronisée décide de l’action pour tous les navigateurs. « Je travaille » ou l’absence d’un joueur met la partie et le cadran en pause ; ils reprennent au même instant lorsque les trois joueurs sont revenus.
 
 Fin de manche : le gagnant, les points et les dominos restants restent affichés à leur taille premium actuelle dans un panneau rectangulaire en bas de la table. Ce panneau possède la même hauteur que Discussion et se place immédiatement à sa gauche afin que la chaîne de dominos joués reste visible.
 

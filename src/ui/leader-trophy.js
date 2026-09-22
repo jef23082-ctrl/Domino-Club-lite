@@ -1,5 +1,6 @@
 const TROPHY_ASSET = './assets/ui/coupe-cochon-or-v10.png';
 const LUXE_TROPHY_ASSET = './assets/ui/coupe-palais-royale-v12.png';
+import { setOptimizedImage } from './image-source.js?v=20260922T005918368';
 
 const element = (tag, className = '') => {
   const node = document.createElement(tag);
@@ -21,7 +22,7 @@ export function createLeaderTrophy({ stage, onSound = () => {} } = {}) {
   root.setAttribute('aria-label', "Coupe d’or du numéro 1 du club");
 
   const asset = element('img', 'leader-trophy__asset');
-  asset.src = TROPHY_ASSET;
+  setOptimizedImage(asset, TROPHY_ASSET);
   asset.alt = '';
   asset.setAttribute('aria-hidden', 'true');
   asset.draggable = false;
@@ -92,7 +93,7 @@ export function createLeaderTrophy({ stage, onSound = () => {} } = {}) {
   return {
     update({ player = null, matchKey: nextMatchKey = '', style = 'classic' } = {}) {
       const trophyAsset = style === 'luxe' ? LUXE_TROPHY_ASSET : TROPHY_ASSET;
-      if (asset.getAttribute('src') !== trophyAsset) asset.src = trophyAsset;
+      setOptimizedImage(asset, trophyAsset);
       if (!player) {
         root.hidden = true;
         playerId = '';

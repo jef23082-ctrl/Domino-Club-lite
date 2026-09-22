@@ -1,5 +1,5 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260920T151452528';
-import { randomId } from './ids.js?v=20260920T151452528';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260922T005918368';
+import { randomId } from './ids.js?v=20260922T005918368';
 
 export const REACTION_DURATION = 4200;
 export const REACTION_COOLDOWN = 2400;
@@ -23,11 +23,11 @@ export class ReactionRepository {
       id: `${at}_${randomId(6)}`,
       kind,
       effect,
-      senderId: sender.playerId,
+      senderId: sender.playerId ?? sender.id,
       senderName: sender.name,
       senderRole,
       senderToken: clientToken,
-      targetId: target.playerId,
+      targetId: target.playerId ?? target.id,
       targetName: target.name,
       at: this.serverTimestamp()
     });

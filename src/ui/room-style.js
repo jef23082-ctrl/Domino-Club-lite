@@ -1,4 +1,5 @@
-import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260920T151452528';
+import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260922T005918368';
+import { setOptimizedImage } from './image-source.js?v=20260922T005918368';
 
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -46,6 +47,6 @@ export function applyRoomStyle(value) {
   shell.dataset.tableLayout = 'club';
   stage.dataset.roomStyle = style;
   const background = stage.querySelector('.scene-base');
-  if (background && background.getAttribute('src') !== ROOM_STYLES[style].scene) background.src = ROOM_STYLES[style].scene;
+  if (background) setOptimizedImage(background, ROOM_STYLES[style].scene);
   document.body.classList.toggle('has-luxe-room', style === 'luxe');
 }

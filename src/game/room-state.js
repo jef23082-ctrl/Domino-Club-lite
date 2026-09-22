@@ -9,7 +9,8 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20260920T151452528';
+} from './engine.js?v=20260922T005918368';
+import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260922T005918368';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -69,6 +70,8 @@ export function createInitialRoom({ code, profile, clientToken, at = Date.now() 
     version: 1,
     code,
     status: 'waiting',
+    phase: ROOM_PHASE.WAITING,
+    phaseChangedAt: at,
     style: 'luxe',
     turnTimerSeconds: 15,
     hostToken: clientToken,
@@ -129,6 +132,7 @@ export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex =
   rule(room.status === 'waiting', 'La partie a déjà commencé.', 'room-started');
   const players = roomPlayers(room);
   rule(players.length === 3, 'Il faut exactement trois joueurs.', 'players-count');
+  transitionRoom(room, ROOM_PHASE.LAUNCHING, at);
   room.status = 'playing';
   room.matchId = matchId;
   room.matchStartedAt = at;
@@ -140,6 +144,7 @@ export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex =
   };
   room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
   resetTurnClock(room, at);
+  transitionRoom(room, ROOM_PHASE.TURN, at);
   room.updatedAt = at;
   return room;
 }
@@ -154,6 +159,7 @@ export function startRematchInRoom(room, { clientToken, matchId, at = Date.now()
   Object.values(room.players || {}).forEach(player => {
     player.isHost = player.token === clientToken;
   });
+  transitionRoom(room, ROOM_PHASE.LAUNCHING, at);
   room.status = 'playing';
   room.matchId = matchId;
   room.matchStartedAt = at;
@@ -165,6 +171,7 @@ export function startRematchInRoom(room, { clientToken, matchId, at = Date.now()
   };
   room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
   resetTurnClock(room, at);
+  transitionRoom(room, ROOM_PHASE.TURN, at);
   room.updatedAt = at;
   delete room.endedAt;
   return room;
@@ -199,6 +206,7 @@ export function setTurnClockPausedInRoom(room, { clientToken, paused, expectedTu
   rule(String(room.game.currentTurnId) === String(expectedTurnId) && String(clock.turnId) === String(expectedTurnId), 'Le tour a déjà changé.', 'stale-turn');
   const nextPaused = Boolean(paused);
   if (clock.paused === nextPaused) return room;
+  transitionRoom(room, nextPaused ? ROOM_PHASE.PAUSED : ROOM_PHASE.TURN, at);
   if (nextPaused) {
     clock.remainingMs = Math.max(0, Number(clock.deadlineAt || at) - at);
     clock.paused = true;
@@ -244,6 +252,7 @@ export function leaveWaitingRoom(room, { playerId, clientToken, at = Date.now() 
 export function cancelRoomInState(room, { clientToken, creatorName, at = Date.now() }) {
   rule(room, 'La salle n’existe plus.', 'room-not-found');
   rule((room.creatorToken || room.hostToken) === clientToken, 'Seul le créateur peut annuler cette partie.', 'creator-only');
+  transitionRoom(room, ROOM_PHASE.CANCELLED, at);
   room.status = 'cancelled';
   room.cancelledAt = at;
   room.cancelledBy = { token: clientToken, name: creatorName || 'le créateur' };
@@ -278,6 +287,7 @@ export function playTileInRoom(room, { playerId, tileId, side, at = Date.now() }
     resetTurnClock(room, at);
   }
   room.updatedAt = at;
+  synchronizeRoomPhase(room, at);
   return room;
 }
 
@@ -311,12 +321,14 @@ export function passTurnInRoom(room, { playerId, at = Date.now() }) {
     resetTurnClock(room, at);
     room.updatedAt = at;
   }
+  synchronizeRoomPhase(room, at);
   return room;
 }
 
 export function startNextRoundInRoom(room, { at = Date.now(), randomIndex }) {
   rule(room?.status === 'playing' && room.game?.roundStatus === 'ended', 'La manche n’est pas terminée.', 'round-not-ended');
   const starterId = room.game.roundResult?.type === 'winner' ? room.game.roundResult.winnerId : null;
+  transitionRoom(room, ROOM_PHASE.NEXT_ROUND, at);
   room.game = buildRound(
     room.game.playerOrder,
     room.game.roundWins,
@@ -325,6 +337,7 @@ export function startNextRoundInRoom(room, { at = Date.now(), randomIndex }) {
     { randomIndex, at }
   );
   resetTurnClock(room, at);
+  transitionRoom(room, ROOM_PHASE.TURN, at);
   room.updatedAt = at;
   return room;
 }
