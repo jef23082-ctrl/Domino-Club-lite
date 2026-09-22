@@ -1,6 +1,6 @@
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260922T005918368';
-import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20260922T005918368';
-import { displayName } from '../online/display-name.js?v=20260922T005918368';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20260922T161100427';
+import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20260922T161100427';
+import { displayName } from '../online/display-name.js?v=20260922T161100427';
 
 export function renderChatMessage(message) {
   const article = document.createElement('article');

@@ -1,5 +1,5 @@
 // Validated PNG artwork; continuous motion independent of player rerenders.
-import { loadOptimizedImage } from './image-source.js?v=20260922T005918368';
+import { loadOptimizedImage } from './image-source.js?v=20260922T161100427';
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const between=(t,a,b)=>clamp((t-a)/(b-a));
 const smooth=x=>x*x*(3-2*x);
@@ -11,7 +11,11 @@ export function verdictElapsed(at,now=Date.now()){
   const elapsed=Math.max(0,(now-time)/1000);
   return elapsed<3.2?elapsed:null;
 }
-export function createBoudeVerdict({stage,onSound=()=>{},isVisible=()=>true}){
+export function verdictReadyToStart(at,now=Date.now(),maxAge=1.2){
+  const age=verdictElapsed(at,now);
+  return age!==null&&age<=maxAge;
+}
+export function createBoudeVerdict({stage,onSound=()=>{},isVisible=()=>true,now=()=>Date.now()}){
   const canvas=document.createElement('canvas');
   canvas.className='boude-verdict';canvas.width=640;canvas.height=520;canvas.hidden=true;
   canvas.setAttribute('role','img');canvas.setAttribute('aria-label','BOUDÉÉÉ');stage.append(canvas);
@@ -49,16 +53,16 @@ export function createBoudeVerdict({stage,onSound=()=>{},isVisible=()=>true}){
   }
   function render(t){ctx.clearRect(0,0,640,520);ctx.save();ctx.translate(320,252);drawActor(t);ctx.restore();}
   async function play({seat,at}){
-    if(!ctx||verdictElapsed(at)===null||!['top','left','right'].includes(seat)||!isVisible()||document.hidden)return;
+    if(!ctx||!verdictReadyToStart(at,now())||!['top','left','right'].includes(seat)||!isVisible()||document.hidden)return;
     reset();const ticket=generation;
     if(!await ready||ticket!==generation)return;
-    const age=verdictElapsed(at);if(age===null||!isVisible()||document.hidden)return;
-    activeSeat=seat;startedAt=Number(at);canvas.dataset.seat=seat;canvas.dataset.eventAt=String(at);
+    const age=verdictElapsed(at,now());if(age===null||age>1.2||!isVisible()||document.hidden)return;
+    activeSeat=seat;startedAt=performance.now()-age*1000;canvas.dataset.seat=seat;canvas.dataset.eventAt=String(at);
     cues.clear();for(const [name,time]of cueTimes)if(time<age)cues.add(name);
     position();canvas.hidden=false;
     const step=()=>{
       if(!isVisible()||document.hidden){reset();return;}
-      const t=verdictElapsed(startedAt);if(t===null){reset();return;}
+      const t=(performance.now()-startedAt)/1000;if(t>=3.2){reset();return;}
       for(const [name,time]of cueTimes)if(t>=time&&!cues.has(name)){cues.add(name);onSound('verdict-'+name);}
       render(t);raf=requestAnimationFrame(step);
     };step();

@@ -1,4 +1,4 @@
-Domino Club V24 — 24.0.0
+Domino Club V25 — 25.0.0
 
 Styles de salle : Luxe est le style par défaut des nouvelles salles et des anciennes salles sans style enregistré. Avant le lancement, l’hôte peut toujours choisir Classique ou Luxe dans le sélecteur placé à gauche de Lancer la partie. Le choix appartient au salon, reste identique chez les joueurs et spectateurs, et est conservé lors d’une reprise ou d’une nouvelle manche. Luxe reprend la maquette Palais Royale avec un décor dédié, les personnages existants, la coupe royale réservée au numéro 1 et la grande plaque BOUDÉÉÉ avec sa couronne. Les règles de jeu et le moteur de placement des dominos sont inchangés.
 

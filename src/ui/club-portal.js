@@ -1,21 +1,21 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260922T005918368';
-import { profileDetails } from '../game/club-state.js?v=20260922T005918368';
-import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260922T005918368';
-import { roomPlayers } from '../game/room-state.js?v=20260922T005918368';
-import { createChatComposer } from './chat-composer.js?v=20260922T005918368';
-import { navigationIcon } from './navigation-icon.js?v=20260922T005918368';
-import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260922T005918368';
-import { displayName } from '../online/display-name.js?v=20260922T005918368';
-import { clubRankings } from '../online/combined-ranking.js?v=20260922T005918368';
-import { paginate } from './pagination.js?v=20260922T005918368';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260922T005918368';
-import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260922T005918368';
-import { requestAppFullscreen } from './app-shell.js?v=20260922T005918368';
-import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260922T005918368';
-import { homeOrnament } from './home-ornaments.js?v=20260922T005918368';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260922T161100427';
+import { profileDetails } from '../game/club-state.js?v=20260922T161100427';
+import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260922T161100427';
+import { roomPlayers } from '../game/room-state.js?v=20260922T161100427';
+import { createChatComposer } from './chat-composer.js?v=20260922T161100427';
+import { navigationIcon } from './navigation-icon.js?v=20260922T161100427';
+import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260922T161100427';
+import { displayName } from '../online/display-name.js?v=20260922T161100427';
+import { clubRankings } from '../online/combined-ranking.js?v=20260922T161100427';
+import { paginate } from './pagination.js?v=20260922T161100427';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260922T161100427';
+import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260922T161100427';
+import { requestAppFullscreen } from './app-shell.js?v=20260922T161100427';
+import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260922T161100427';
+import { homeOrnament } from './home-ornaments.js?v=20260922T161100427';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
-const SITE_VERSION='V24';
+const SITE_VERSION='V25';
 export function createClubPortal({ ui, physical, access, stats, admin, chat, identity, canWrite, notify, actions, onData, onLeader }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;

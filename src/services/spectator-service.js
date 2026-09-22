@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260922T005918368';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260922T161100427';
 
 export class SpectatorService {
   constructor(database, { serverTimestamp = () => Date.now() } = {}) {
