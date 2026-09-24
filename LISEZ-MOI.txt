@@ -1,4 +1,10 @@
-Domino Club V25 — 25.0.0
+Domino Club V29 — 29.0.0
+
+Poker V29 : même gabarit pour toutes les cartes, nouvelles figures gravées ivoire / émeraude / or, papier texturé et dos ornementé. Voir POKER-V29.md.
+
+Poker V28 : trois réserves de jetons correspondent aux montants faibles, moyens et élevés ; les figures sont des cartes complètes sans cadre imbriqué ; le classement commence au premier tournoi. Les commandes de mise sont recentrées. Après dix secondes, le bouton Domino de manche suivante est déverrouillé sur place et son test lance réellement la manche 2. Voir POKER-V28.md.
+
+Poker V27 : décor Luxe Poker dédié, six pages émeraude et or, annulation depuis le menu, correction de Parole et salle sans titre ni couronne. Voir POKER-V27.md.
 
 Styles de salle : Luxe est le style par défaut des nouvelles salles et des anciennes salles sans style enregistré. Avant le lancement, l’hôte peut toujours choisir Classique ou Luxe dans le sélecteur placé à gauche de Lancer la partie. Le choix appartient au salon, reste identique chez les joueurs et spectateurs, et est conservé lors d’une reprise ou d’une nouvelle manche. Luxe reprend la maquette Palais Royale avec un décor dédié, les personnages existants, la coupe royale réservée au numéro 1 et la grande plaque BOUDÉÉÉ avec sa couronne. Les règles de jeu et le moteur de placement des dominos sont inchangés.
 
@@ -59,5 +65,7 @@ Interactions premium : les 14 interactions envoyées et les 14 émotions personn
 Cochon d’ouverture : personnage 3D local présent uniquement avant le premier domino de chaque manche. Mélange automatique, groin et nœud interactifs, suivi du regard et petites réactions d’attente. La première pose réelle déclenche applaudissements et départ doré, sans retard de jeu. Les dominos restent à 120 × 70 sur le plateau 1500 × 440. Une reprise de partie déjà commencée ne rejoue pas son arrivée. Le vrai grognement d’erdie respecte les réglages des effets ; son attribution CC BY 3.0 figure dans les réglages et dans assets/audio/PIG-CREDITS.md. Three.js est distribué sous licence MIT dans src/vendor/three/THREE-LICENSE.txt. Le jeu reste utilisable si WebGL est indisponible.
 
 Coupe du Cochon d’Argent : elle est posée sur le bord supérieur de la table, près du joueur numéro 1 du club. Un clic révèle le nom de son détenteur. Son arrivée, ses reflets argentés et sa célébration de victoire sont purement visuels et ne modifient ni la taille des dominos, ni le plateau, ni les règles de jeu.
+
+Mode Poker V26 : le septième bouton de navigation alterne Domino et Poker sans mélanger leurs résultats. Les six pages prennent leur identité Poker Club — Le Roi des Fish. Une table privée accueille trois joueurs avec 20 000 jetons virtuels chacun ; les blindes commencent à 100/200 et augmentent toutes les cinq minutes. Il n'y a ni argent réel ni minuteur de tour. Les règles Texas Hold'em comprennent préflop, flop, turn, river, coucher, suivre, relancer, tapis et pots secondaires. Les cartes, les jetons, les commandes et le chat sont affichés dans les décors Classique et Luxe existants ; seul le joueur du haut possède une pile de jetons, à sa gauche. La plaque du joueur actif scintille en rouge. Un tournoi terminé attribue +20, -5 et -15 points de prestige selon le rang ; le classement Poker devient officiel après cinq tournois. Les branches Firebase de Poker sont séparées des données Domino. Ce mode repose encore sur des transactions exécutées par les navigateurs : les cartes privées et les résultats ne sont pas résistants à un client malveillant ; une autorité serveur et des règles d'accès adaptées seraient nécessaires avant un classement compétitif public.
 
 Firebase reprend la base existante. Les tests, données de démonstration et scénarios QA sont exclus de ce paquet. Tous les joueurs doivent utiliser la même nouvelle version pour partager les fonctions ajoutées.

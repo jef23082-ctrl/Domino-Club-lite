@@ -1,4 +1,4 @@
-import { duckLoungeMusic } from './lounge-music.js?v=20260922T161100427';
+import { duckLoungeMusic } from './lounge-music.js?v=20260924T185554830';
 
 const MUTE_STORAGE_KEY = 'domino-club-sfx-muted';
 const VOLUME_STORAGE_KEY = 'domino-club-sfx-volume';

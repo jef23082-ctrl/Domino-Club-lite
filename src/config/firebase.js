@@ -21,5 +21,9 @@ export const FIREBASE_PATHS = Object.freeze({
   invites: 'domino_data/online_domino_v1/invites',
   chats: 'domino_data/online_domino_v1/chats',
   reactions: 'domino_data/online_domino_v1/reactions',
-  typing: 'domino_data/online_domino_v1/typing'
+  typing: 'domino_data/online_domino_v1/typing',
+  pokerRoot: 'domino_data/poker_v1',
+  pokerRooms: 'domino_data/poker_v1/rooms',
+  pokerHistory: 'domino_data/poker_v1/history',
+  pokerChats: 'domino_data/poker_v1/chats'
 });

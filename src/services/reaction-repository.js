@@ -1,5 +1,5 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260922T161100427';
-import { randomId } from './ids.js?v=20260922T161100427';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260924T185554830';
+import { randomId } from './ids.js?v=20260924T185554830';
 
 export const REACTION_DURATION = 4200;
 export const REACTION_COOLDOWN = 2400;
