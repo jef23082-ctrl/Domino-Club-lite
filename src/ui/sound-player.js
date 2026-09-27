@@ -1,4 +1,4 @@
-import { duckLoungeMusic } from './lounge-music.js?v=20260924T185554830';
+import { duckLoungeMusic } from './lounge-music.js?v=20260927T015033192';
 
 const MUTE_STORAGE_KEY = 'domino-club-sfx-muted';
 const VOLUME_STORAGE_KEY = 'domino-club-sfx-volume';
@@ -7,6 +7,7 @@ let masterGain = null;
 let muted = false;
 let volume = .82;
 let pigAudio = null;
+export const POKER_ALL_IN_SOUND_SECONDS = 3;
 
 try {
   muted = globalThis.localStorage?.getItem(MUTE_STORAGE_KEY) === 'true';
@@ -123,9 +124,36 @@ export function playSound(kind) {
   if (!current || current.state !== 'running') return false;
   if (muted) return true;
 
-  if (String(kind).startsWith('reaction-')) duckLoungeMusic(1050, .72);
+  if (String(kind).startsWith('reaction-') || String(kind).startsWith('poker-')) duckLoungeMusic(900, .75);
 
-  if (String(kind).startsWith('verdict-')) {
+  if (String(kind).startsWith('poker-')) {
+    const cue = String(kind).slice(6);
+    if (cue === 'call') { impact(current, 0, .06, 1650, .14); impact(current, .07, .055, 1120, .09); }
+    else if (cue === 'check') { impact(current, 0, .04, 2200, .08); impact(current, .11, .04, 2200, .07); }
+    else if (cue === 'raise') { impact(current, 0, .07, 1450, .16); impact(current, .08, .075, 920, .13); tone(current, 540, .03, .22, .03, 'triangle', 710); }
+    else if (cue === 'all-in') {
+      // Original three-second signature: a felt-table impact, rising glass
+      // resonance, a metallic chip cascade, then a suspended minor chord.
+      // Generated locally; no recording licence, download or paid service.
+      duckLoungeMusic(3000, .5);
+      impact(current, 0, .22, 680, .16);
+      tone(current, 82.41, 0, .9, .07, 'sine', 55);
+      tone(current, 293.66, .12, 1.08, .04, 'triangle', 587.33);
+      [0, .13, .28, .46, .68].forEach((delay, index) => {
+        impact(current, .38 + delay, .07, 1500 + index * 230, .07);
+        tone(current, 1174.66 + index * 146.83, .4 + delay, .5, .012);
+      });
+      [293.66, 349.23, 440].forEach((frequency, index) => tone(current, frequency, 1.12 + index * .09, 1.55 - index * .09, .035, 'triangle'));
+      tone(current, 1760, 1.55, POKER_ALL_IN_SOUND_SECONDS - 1.55, .009);
+    }
+    else if (cue === 'fold') { impact(current, 0, .11, 1150, .09); tone(current, 310, 0, .22, .035, 'triangle', 165); }
+    else if (cue === 'turn') { tone(current, 659.25, 0, .18, .035); tone(current, 880, .08, .25, .035); }
+    else if (cue === 'flop') { [0, .08, .16].forEach((delay, index) => impact(current, delay, .065, 1550 - index * 130, .12)); }
+    else if (cue === 'turn-card') { impact(current, 0, .075, 1320, .14); tone(current, 620, .04, .25, .028); }
+    else if (cue === 'river') { impact(current, 0, .08, 1180, .16); tone(current, 620, .02, .35, .036); tone(current, 930, .12, .3, .025); }
+    else if (cue === 'show-cards') { impact(current, 0, .06, 1800, .1); tone(current, 720, .05, .3, .035, 'triangle', 980); }
+    else if (cue === 'win') { [523.25, 659.25, 783.99, 1046.5].forEach((frequency, index) => tone(current, frequency, index * .1, .55, .055)); impact(current, .12, .15, 1250, .09); }
+  } else if (String(kind).startsWith('verdict-')) {
     const cue = String(kind).slice(8);
     if (cue === 'arm') { impact(current, 0, .18, 2200, .11); tone(current, 170, 0, .2, .055, 'triangle', 340); }
     if (cue === 'slide') { impact(current, 0, .19, 1400, .075); tone(current, 270, 0, .18, .038, 'triangle', 135); }

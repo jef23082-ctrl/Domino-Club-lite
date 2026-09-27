@@ -1,4 +1,4 @@
-import { validSides } from '../game/engine.js?v=20260924T185554830';
+import { validSides } from '../game/engine.js?v=20260927T015033192';
 
 // The engine still validates every write. This only chooses the UI interaction.
 export function tileIntent(game, tileId) {

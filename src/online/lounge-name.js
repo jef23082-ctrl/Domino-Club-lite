@@ -1,6 +1,6 @@
-import { knownCharacterIdForProfile } from './profile-map.js?v=20260924T185554830';
-import { displayName } from './display-name.js?v=20260924T185554830';
-import { PLAYER_TERRITORIES, LOUNGE_CITIES } from '../config/lounge-cities.js?v=20260924T185554830';
+import { knownCharacterIdForProfile } from './profile-map.js?v=20260927T015033192';
+import { displayName } from './display-name.js?v=20260927T015033192';
+import { PLAYER_TERRITORIES, LOUNGE_CITIES } from '../config/lounge-cities.js?v=20260927T015033192';
 
 export function createLoungeName(profile, random = Math.random) {
   const territory=PLAYER_TERRITORIES[knownCharacterIdForProfile(profile)]||'';

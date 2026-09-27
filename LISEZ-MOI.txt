@@ -1,4 +1,10 @@
-Domino Club V29 — 29.0.0
+Domino Club V32 — 32.0.0
+
+V32 : cinq clics sur la version dans Admin Domino déverrouillé activent ou désactivent la distribution spéciale Khalil. Version verte en mode activé, dorée en tirage normal. Aux manches impaires, exactement cinq des sept dominos portent un même chiffre ; les manches paires gardent le mélange habituel. Réglage partagé, applicable aux prochaines distributions uniquement, poker inchangé. Voir DISTRIBUTION-V32.md.
+
+V31 : cadran des blindes horizontal avec compte à rebours visible, jeu dans le sens horaire, badges jaunes scintillants et mises lisibles. Réglages de table, durée des niveaux de 1 à 10 minutes, réserve de départ configurable, salons nommés par ville. Volumes musique/effets et son Tapis original de trois secondes. Profils, classement et historique détaillé des manches avec uniquement les cartes dévoilées. Suppression administrative de toute partie après confirmation. Voir POKER-V31.md pour la compatibilité des nouveaux compteurs avec les anciennes données.
+
+V30 : mises visibles, cartes personnelles à maintenir, dévoilement sur la table, combinaison gagnante, pots annexes et sons distincts. Distribution à tapis espacée de deux secondes ; lancement et main suivante accessibles à tous les joueurs assis. Domino : cadre du compteur stable et échéance commune de dix secondes pour la manche suivante. Voir POKER-V30.md.
 
 Poker V29 : même gabarit pour toutes les cartes, nouvelles figures gravées ivoire / émeraude / or, papier texturé et dos ornementé. Voir POKER-V29.md.
 

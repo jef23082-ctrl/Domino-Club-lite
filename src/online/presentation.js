@@ -37,13 +37,15 @@ export function celebrationState(room, at = Date.now(), duration = CELEBRATION_D
 
   if (!type || !eventAt || winnerId === null || winnerId === undefined) return null;
   const elapsed = Math.max(0, Number(at) - eventAt);
+  const readyAt = Number(game.roundResult?.nextRoundReadyAt || (eventAt + duration));
   return {
     type,
     eventAt,
     winnerId,
     cochonIds,
     elapsed,
-    remaining: Math.max(0, duration - elapsed),
+    remaining: Math.max(0, readyAt - Number(at)),
+    readyAt,
     key: `${room.matchId || room.code}|${type}|${eventAt}|${winnerId}`
   };
 }

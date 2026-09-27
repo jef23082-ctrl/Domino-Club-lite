@@ -3,9 +3,9 @@ import {
   setLoungeMusicVolume,
   syncLoungeMusicControls,
   toggleLoungeMusic
-} from './lounge-music.js?v=20260924T185554830';
-import { playPigGrunt, setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20260924T185554830';
-import { bindVisualQuality } from './visual-quality.js?v=20260924T185554830';
+} from './lounge-music.js?v=20260927T015033192';
+import { playPigGrunt, setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20260927T015033192';
+import { bindVisualQuality } from './visual-quality.js?v=20260927T015033192';
 
 export async function requestAppFullscreen() {
   if (document.fullscreenElement) return true;

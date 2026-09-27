@@ -9,8 +9,14 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20260924T185554830';
-import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260924T185554830';
+} from './engine.js?v=20260927T015033192';
+import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260927T015033192';
+import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20260927T015033192';
+
+function assistedDealTarget(room, enabled) {
+  if (enabled !== true) return undefined;
+  return roomPlayers(room).find(player => knownCharacterIdForProfile(player) === 'khalil')?.playerId;
+}
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -126,7 +132,7 @@ export function reattachPlayerInRoom(room, { profile, clientToken, at = Date.now
   return room;
 }
 
-export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex = null, at = Date.now(), randomIndex }) {
+export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex = null, at = Date.now(), randomIndex, assistedDealEnabled = false }) {
   rule(room, 'La salle n’existe plus.', 'room-not-found');
   rule(room.hostToken === clientToken, 'Seul l’hôte peut lancer la partie.', 'host-only');
   rule(room.status === 'waiting', 'La partie a déjà commencé.', 'room-started');
@@ -142,14 +148,14 @@ export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex =
     startedAt: at,
     changedAt: at
   };
-  room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
+  room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at, assistedDealTargetId: assistedDealTarget(room, assistedDealEnabled) });
   resetTurnClock(room, at);
   transitionRoom(room, ROOM_PHASE.TURN, at);
   room.updatedAt = at;
   return room;
 }
 
-export function startRematchInRoom(room, { clientToken, matchId, at = Date.now(), randomIndex }) {
+export function startRematchInRoom(room, { clientToken, matchId, at = Date.now(), randomIndex, assistedDealEnabled = false }) {
   rule(room, 'La salle n’existe plus.', 'room-not-found');
   rule(room.status === 'finished', 'La partie n’est pas terminée.', 'match-not-finished');
   const players = roomPlayers(room);
@@ -169,7 +175,7 @@ export function startRematchInRoom(room, { clientToken, matchId, at = Date.now()
     startedAt: at,
     changedAt: at
   };
-  room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
+  room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at, assistedDealTargetId: assistedDealTarget(room, assistedDealEnabled) });
   resetTurnClock(room, at);
   transitionRoom(room, ROOM_PHASE.TURN, at);
   room.updatedAt = at;
@@ -325,8 +331,13 @@ export function passTurnInRoom(room, { playerId, at = Date.now() }) {
   return room;
 }
 
-export function startNextRoundInRoom(room, { at = Date.now(), randomIndex }) {
+export function startNextRoundInRoom(room, { at = Date.now(), randomIndex, expectedRoundNumber, expectedResultAt, assistedDealEnabled = false } = {}) {
+  if (room?.status === 'playing' && room.game?.roundStatus === 'playing' && expectedRoundNumber !== undefined && Number(room.game.roundNumber) > Number(expectedRoundNumber)) return room;
   rule(room?.status === 'playing' && room.game?.roundStatus === 'ended', 'La manche n’est pas terminée.', 'round-not-ended');
+  if (expectedRoundNumber !== undefined) rule(Number(room.game.roundNumber) === Number(expectedRoundNumber), 'La manche suivante est déjà lancée.', 'stale-round');
+  if (expectedResultAt !== undefined) rule(Number(room.game.roundResult?.at) === Number(expectedResultAt), 'Le résultat de la manche a changé.', 'stale-result');
+  const readyAt = Number(room.game.roundResult?.nextRoundReadyAt || 0);
+  rule(!readyAt || Number(at) >= readyAt, `La manche suivante sera disponible dans ${Math.max(1, Math.ceil((readyAt - Number(at)) / 1000))} s.`, 'next-round-delay');
   const starterId = room.game.roundResult?.type === 'winner' ? room.game.roundResult.winnerId : null;
   transitionRoom(room, ROOM_PHASE.NEXT_ROUND, at);
   room.game = buildRound(
@@ -334,7 +345,7 @@ export function startNextRoundInRoom(room, { at = Date.now(), randomIndex }) {
     room.game.roundWins,
     Number(room.game.roundNumber || 0) + 1,
     starterId,
-    { randomIndex, at }
+    { randomIndex, at, assistedDealTargetId: assistedDealTarget(room, assistedDealEnabled) }
   );
   resetTurnClock(room, at);
   transitionRoom(room, ROOM_PHASE.TURN, at);

@@ -26,11 +26,13 @@
 .game-shell[data-table-layout="club"] .player-seat--top:has(.turn-countdown) .opponent-rack{top:109%}
 .player-seat--left .turn-countdown,.player-seat--right .turn-countdown{top:86%;width:5cqw;min-width:58px;max-width:96px}
 .player-seat--left .turn-countdown{left:34%}.player-seat--right .turn-countdown{left:66%}
-.turn-countdown.is-warning{--clock-color:#ff8c1f;--clock-bright:#ffd06b;--clock-deep:#c7460b;animation:turnClockOrange .78s ease-in-out infinite}
-.turn-countdown.is-danger{--clock-color:#ff251c;--clock-bright:#fff1c2;--clock-deep:#920807;animation:turnClockRed .48s ease-in-out infinite}
+.turn-countdown.is-warning{--clock-color:#ff8c1f;--clock-bright:#ffd06b;--clock-deep:#c7460b;animation:none}
+.turn-countdown.is-danger{--clock-color:#ff251c;--clock-bright:#fff1c2;--clock-deep:#920807;animation:none}
+.turn-countdown.is-warning .turn-countdown__face{animation:turnClockOrangeFace .78s ease-in-out infinite}
+.turn-countdown.is-danger .turn-countdown__face{animation:turnClockRedFace .48s ease-in-out infinite}
 .turn-countdown.is-danger strong{color:#ffb13c;-webkit-text-fill-color:#ffb13c;-webkit-text-stroke:.025cqw #fff1c2;text-shadow:0 .035cqw .06cqw #3f0704,0 0 .25cqw #ff3128}
 .turn-countdown.is-paused{--clock-color:#c59035;filter:saturate(.72);animation:none}
-@keyframes turnClockOrange{0%,100%{scale:1;box-shadow:inset 0 0 0 .18cqw #8d5d17,inset 0 0 1cqw #ff9a2740,0 0 .5cqw #ff8c2bbd,0 0 1.2cqw #f06b1c4d}50%{scale:1.045;box-shadow:inset 0 0 0 .18cqw #ffb94d,inset 0 0 1.3cqw #ff861f73,0 0 .95cqw #ff9d39ed,0 0 2cqw #f06b247f}}
-@keyframes turnClockRed{0%,100%{scale:1;box-shadow:inset 0 0 0 .18cqw #8d1510,inset 0 0 1cqw #ff271f52,0 0 .65cqw #ff211ccf,0 0 1.5cqw #d600005c}50%{scale:1.065;box-shadow:inset 0 0 0 .18cqw #fff0bb,inset 0 0 1.4cqw #ff211f8a,0 0 1.15cqw #ff3128,0 0 2.4cqw #d60000a6}}
+@keyframes turnClockOrangeFace{0%,100%{transform:scale(1);box-shadow:inset 0 0 .65cqw #000,0 0 .35cqw #ff8c2b80}50%{transform:scale(1.045);box-shadow:inset 0 0 .75cqw #5a1707,0 0 .85cqw #ff9d39ed}}
+@keyframes turnClockRedFace{0%,100%{transform:scale(1);box-shadow:inset 0 0 .65cqw #210000,0 0 .45cqw #ff211cb8}50%{transform:scale(1.065);box-shadow:inset 0 0 .8cqw #720805,0 0 1cqw #ff3128}}
 @media(max-width:760px){.turn-countdown{min-width:46px}.player-seat--left .turn-countdown,.player-seat--right .turn-countdown{min-width:44px}}
-@media(prefers-reduced-motion:reduce){.turn-countdown.is-warning,.turn-countdown.is-danger{animation:none}}
+@media(prefers-reduced-motion:reduce){.turn-countdown.is-warning .turn-countdown__face,.turn-countdown.is-danger .turn-countdown__face{animation:none}}

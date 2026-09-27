@@ -1,3 +1,5 @@
+import { setOptimizedImage } from '../ui/image-source.js?v=20260927T015033192';
+
 const SUIT_SYMBOLS = Object.freeze({ S: '♠', H: '♥', D: '♦', C: '♣' });
 const SUIT_NAMES = Object.freeze({ S: 'pique', H: 'cœur', D: 'carreau', C: 'trèfle' });
 const RANK_NAMES = Object.freeze({ A: 'As', K: 'Roi', Q: 'Dame', J: 'Valet', T: '10' });
@@ -33,7 +35,7 @@ export function createPokerCard(card, { hidden = false, small = false } = {}) {
   if (court) {
     const artwork = document.createElement('img');
     artwork.className = 'poker-card__artwork';
-    artwork.src = `./assets/poker-v29/${court}.png`;
+    setOptimizedImage(artwork, `./assets/poker-v29/${court}.png`);
     artwork.alt = ''; artwork.draggable = false;
     artwork.setAttribute('aria-hidden', 'true');
     node.append(artwork);
@@ -51,13 +53,31 @@ export function createPokerCard(card, { hidden = false, small = false } = {}) {
 
 export function createChipStack(value, tone = 'green', { compact = false } = {}) {
   const wrapper = document.createElement('span');
+  const amount = Math.max(0, Math.floor(Number(value || 0)));
   wrapper.className = `poker-chip-stack poker-chip-stack--${tone}${compact ? ' poker-chip-stack--compact' : ''}`;
-  wrapper.setAttribute('aria-label', `${Number(value || 0).toLocaleString('fr-FR')} jetons`);
-  const image = document.createElement('img');
-  const amount = Number(value || 0);
-  const tier = amount <= 2500 ? 'low' : amount <= 12000 ? 'medium' : 'high';
-  wrapper.dataset.tier = tier;
-  image.src = `./assets/poker-v27/chips-${tier}.png`; image.alt = ''; image.draggable = false;
-  wrapper.append(image);
+  wrapper.setAttribute('aria-label', `${amount.toLocaleString('fr-FR')} jetons`);
+  const denominations = [
+    [5000, 'black'], [1000, 'red'], [100, 'green'], [1, 'gold']
+  ];
+  let remaining = amount, pileIndex = 0;
+  for (const [denomination, pileTone] of denominations) {
+    const count = Math.floor(remaining / denomination);
+    if (!count) continue;
+    remaining -= count * denomination;
+    const pile = document.createElement('span');
+    pile.className = `poker-chip-stack__pile poker-chip-stack__pile--${pileTone}`;
+    pile.dataset.count = String(count); pile.dataset.denomination = String(denomination);
+    pile.style.setProperty('--pile-index', String(pileIndex++));
+    const image = document.createElement('img');
+    const tier = count <= 2 ? 'low' : count <= 5 ? 'medium' : 'high';
+    setOptimizedImage(image, `./assets/poker-v27/chips-${tier}.png`); image.alt = ''; image.draggable = false;
+    pile.append(image); wrapper.append(pile);
+  }
+  if (!wrapper.childElementCount) {
+    const image = document.createElement('img');
+    setOptimizedImage(image, './assets/poker-v27/chips-low.png'); image.alt = ''; image.draggable = false;
+    wrapper.append(image);
+  }
+  wrapper.dataset.piles = String(pileIndex || 1);
   return wrapper;
 }
