@@ -1,5 +1,5 @@
-import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260927T015033192';
-import { setOptimizedImage } from './image-source.js?v=20260927T015033192';
+import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260927T021825018';
+import { setOptimizedImage } from './image-source.js?v=20260927T021825018';
 
 const NS = 'http://www.w3.org/2000/svg';
 

@@ -1,29 +1,11 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260927T015033192';
-import { rebuiltStats, validFirebaseKey } from './online-records.js?v=20260927T015033192';
-import { liveTransaction } from './live-transaction.js?v=20260927T015033192';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260927T021825018';
+import { rebuiltStats, validFirebaseKey } from './online-records.js?v=20260927T021825018';
+import { liveTransaction } from './live-transaction.js?v=20260927T021825018';
 
 export class AdminRepository {
   constructor(database, access) {
     this.root = database.ref(FIREBASE_PATHS.onlineRoot);
-    this.dealSettings = database.ref(FIREBASE_PATHS.dealSettings);
     this.access = access;
-  }
-
-  watchDealMode(onValue, onError) {
-    const listener = snapshot => onValue(snapshot.val()?.enabled === true);
-    this.dealSettings.on('value', listener, onError);
-    return () => this.dealSettings.off('value', listener);
-  }
-
-  async toggleDealMode() {
-    this.access.require();
-    const changedAt = Date.now();
-    const result = await liveTransaction(this.dealSettings, current => {
-      this.access.require();
-      return { ...current, enabled: current?.enabled !== true, changedAt };
-    });
-    if (!result.committed) throw new Error('Le réglage n’a pas pu être enregistré.');
-    return result.snapshot.val().enabled === true;
   }
 
   async #change(reducer) {

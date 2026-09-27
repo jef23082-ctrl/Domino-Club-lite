@@ -9,14 +9,8 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20260927T015033192';
-import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260927T015033192';
-import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20260927T015033192';
-
-function assistedDealTarget(room, enabled) {
-  if (enabled !== true) return undefined;
-  return roomPlayers(room).find(player => knownCharacterIdForProfile(player) === 'khalil')?.playerId;
-}
+} from './engine.js?v=20260927T021825018';
+import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260927T021825018';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -132,7 +126,7 @@ export function reattachPlayerInRoom(room, { profile, clientToken, at = Date.now
   return room;
 }
 
-export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex = null, at = Date.now(), randomIndex, assistedDealEnabled = false }) {
+export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex = null, at = Date.now(), randomIndex }) {
   rule(room, 'La salle n’existe plus.', 'room-not-found');
   rule(room.hostToken === clientToken, 'Seul l’hôte peut lancer la partie.', 'host-only');
   rule(room.status === 'waiting', 'La partie a déjà commencé.', 'room-started');
@@ -148,14 +142,14 @@ export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex =
     startedAt: at,
     changedAt: at
   };
-  room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at, assistedDealTargetId: assistedDealTarget(room, assistedDealEnabled) });
+  room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
   resetTurnClock(room, at);
   transitionRoom(room, ROOM_PHASE.TURN, at);
   room.updatedAt = at;
   return room;
 }
 
-export function startRematchInRoom(room, { clientToken, matchId, at = Date.now(), randomIndex, assistedDealEnabled = false }) {
+export function startRematchInRoom(room, { clientToken, matchId, at = Date.now(), randomIndex }) {
   rule(room, 'La salle n’existe plus.', 'room-not-found');
   rule(room.status === 'finished', 'La partie n’est pas terminée.', 'match-not-finished');
   const players = roomPlayers(room);
@@ -175,7 +169,7 @@ export function startRematchInRoom(room, { clientToken, matchId, at = Date.now()
     startedAt: at,
     changedAt: at
   };
-  room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at, assistedDealTargetId: assistedDealTarget(room, assistedDealEnabled) });
+  room.game = buildRound(players.map(player => player.playerId), {}, 1, null, { randomIndex, at });
   resetTurnClock(room, at);
   transitionRoom(room, ROOM_PHASE.TURN, at);
   room.updatedAt = at;
@@ -331,7 +325,7 @@ export function passTurnInRoom(room, { playerId, at = Date.now() }) {
   return room;
 }
 
-export function startNextRoundInRoom(room, { at = Date.now(), randomIndex, expectedRoundNumber, expectedResultAt, assistedDealEnabled = false } = {}) {
+export function startNextRoundInRoom(room, { at = Date.now(), randomIndex, expectedRoundNumber, expectedResultAt } = {}) {
   if (room?.status === 'playing' && room.game?.roundStatus === 'playing' && expectedRoundNumber !== undefined && Number(room.game.roundNumber) > Number(expectedRoundNumber)) return room;
   rule(room?.status === 'playing' && room.game?.roundStatus === 'ended', 'La manche n’est pas terminée.', 'round-not-ended');
   if (expectedRoundNumber !== undefined) rule(Number(room.game.roundNumber) === Number(expectedRoundNumber), 'La manche suivante est déjà lancée.', 'stale-round');
@@ -345,7 +339,7 @@ export function startNextRoundInRoom(room, { at = Date.now(), randomIndex, expec
     room.game.roundWins,
     Number(room.game.roundNumber || 0) + 1,
     starterId,
-    { randomIndex, at, assistedDealTargetId: assistedDealTarget(room, assistedDealEnabled) }
+    { randomIndex, at }
   );
   resetTurnClock(room, at);
   transitionRoom(room, ROOM_PHASE.TURN, at);

@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260927T015033192';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260927T021825018';
 
 function toProfiles(value) {
   return (Array.isArray(value) ? value : Object.values(value || {})).filter(Boolean);

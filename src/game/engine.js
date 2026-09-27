@@ -103,19 +103,7 @@ export function chooseOpening(playerIds, hands) {
 }
 
 export function buildRound(playerIds, roundWins = {}, roundNumber = 1, starterId = null, options = {}) {
-  let deck = shuffle(createDeck(), options.randomIndex);
-  const targetIndex = options.assistedDealTargetId == null ? -1
-    : playerIds.findIndex(id => String(id) === String(options.assistedDealTargetId));
-  if (playerIds.length === 3 && targetIndex >= 0 && Number(roundNumber) % 2 === 1) {
-    const value = shuffle([0, 1, 2, 3, 4, 5, 6], options.randomIndex)[0];
-    const containsValue = id => { const tile = parseTile(id); return tile.a === value || tile.b === value; };
-    const targetHand = [...deck.filter(containsValue).slice(0, 5), ...deck.filter(id => !containsValue(id)).slice(0, 2)];
-    const selected = new Set(targetHand), remaining = deck.filter(id => !selected.has(id));
-    let targetCursor = 0, otherCursor = 0;
-    // Reserve the target's seven usual deal slots; keep all 28 unique tiles.
-    deck = deck.map((_, index) => index < 21 && index % 3 === targetIndex
-      ? targetHand[targetCursor++] : remaining[otherCursor++]);
-  }
+  const deck = shuffle(createDeck(), options.randomIndex);
   const hands = {};
   playerIds.forEach(id => {
     hands[playerKey(id)] = [];

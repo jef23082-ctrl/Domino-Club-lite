@@ -1,7 +1,4 @@
 /* V18 — faithful club pages based on the validated home-room art direction. */
-.club-portal[data-mode="domino"] .portal-site-version.is-assisted-deal{color:#6fff75;text-shadow:0 0 8px #22df6580}
-.portal-site-version[role="button"]{cursor:pointer;user-select:none}
-.portal-site-version[role="button"]:focus-visible{outline:1px solid currentColor;outline-offset:5px;border-radius:3px}
 .portal-page-title{display:none}
 .club-portal:is([data-page="online"],[data-page="ranking"],[data-page="history"],[data-page="profiles"]){--v18-u:min(.0520833vw,.106383dvh);--v18-serif:'Times New Roman',Times,Georgia,serif;--nav-height:calc(92 * var(--v18-u));font-family:var(--v18-serif)}
 .club-portal:is([data-page="online"],[data-page="ranking"],[data-page="history"],[data-page="profiles"])::before{opacity:1;background:#020a07 url('../assets/menus/club-lounge-v11.png') center/cover no-repeat}

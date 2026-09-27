@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260927T015033192';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260927T021825018';
 import {
   createInitialRoom,
   cancelRoomInState,
@@ -15,16 +15,15 @@ import {
   startRematchInRoom,
   startNextRoundInRoom,
   timeoutTurnInRoom
-} from '../game/room-state.js?v=20260927T015033192';
-import { randomId } from './ids.js?v=20260927T015033192';
-import { liveTransaction } from './live-transaction.js?v=20260927T015033192';
-import { createLoungeName } from '../online/lounge-name.js?v=20260927T015033192';
+} from '../game/room-state.js?v=20260927T021825018';
+import { randomId } from './ids.js?v=20260927T021825018';
+import { liveTransaction } from './live-transaction.js?v=20260927T021825018';
+import { createLoungeName } from '../online/lounge-name.js?v=20260927T021825018';
 
 export class RoomRepository {
   constructor(database, { now = () => Date.now() } = {}) {
     this.database = database;
     this.rooms = database.ref(FIREBASE_PATHS.rooms);
-    this.dealSettings = database.ref(FIREBASE_PATHS.dealSettings);
     this.now = now;
   }
 
@@ -56,8 +55,7 @@ export class RoomRepository {
   }
 
   async start(code, context) {
-    const dealContext = await this.#dealContext(context);
-    return this.#reduce(code, room => startMatchInRoom(room, this.#withServerTime(dealContext)));
+    return this.#reduce(code, room => startMatchInRoom(room, this.#withServerTime(context)));
   }
 
   async reattach(code, context) {
@@ -93,13 +91,11 @@ export class RoomRepository {
   }
 
   async nextRound(code, context) {
-    const dealContext = await this.#dealContext(context);
-    return this.#reduce(code, room => startNextRoundInRoom(room, this.#withServerTime(dealContext)));
+    return this.#reduce(code, room => startNextRoundInRoom(room, this.#withServerTime(context)));
   }
 
   async rematch(code, context) {
-    const dealContext = await this.#dealContext(context);
-    return this.#reduce(code, room => startRematchInRoom(room, this.#withServerTime(dealContext)));
+    return this.#reduce(code, room => startRematchInRoom(room, this.#withServerTime(context)));
   }
 
   async leaveWaiting(code, context) {
@@ -150,10 +146,4 @@ export class RoomRepository {
     return Number.isFinite(context.at) ? context : { ...context, at: this.now() };
   }
 
-  async #dealContext(context = {}) {
-    // Read only when dealing, never on every clock tick or domino action.
-    // Do not trust an enabled flag supplied by an ordinary player's UI.
-    const snapshot = await this.dealSettings.once('value');
-    return { ...context, assistedDealEnabled: snapshot.val()?.enabled === true };
-  }
 }

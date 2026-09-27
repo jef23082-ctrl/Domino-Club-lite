@@ -14,7 +14,6 @@ export const FIREBASE_PATHS = Object.freeze({
   legacyBackups: 'domino_data_backups',
   onlineRoot: 'domino_data/online_domino_v1',
   rooms: 'domino_data/online_domino_v1/rooms',
-  dealSettings: 'domino_data/online_domino_v1/settings/deal',
   stats: 'domino_data/online_domino_v1/stats',
   history: 'domino_data/online_domino_v1/history',
   deletedMatches: 'domino_data/online_domino_v1/deletedMatches',

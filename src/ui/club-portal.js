@@ -1,21 +1,21 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260927T015033192';
-import { profileDetails } from '../game/club-state.js?v=20260927T015033192';
-import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260927T015033192';
-import { roomPlayers } from '../game/room-state.js?v=20260927T015033192';
-import { createChatComposer } from './chat-composer.js?v=20260927T015033192';
-import { navigationIcon } from './navigation-icon.js?v=20260927T015033192';
-import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260927T015033192';
-import { displayName } from '../online/display-name.js?v=20260927T015033192';
-import { clubRankings } from '../online/combined-ranking.js?v=20260927T015033192';
-import { paginate } from './pagination.js?v=20260927T015033192';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260927T015033192';
-import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260927T015033192';
-import { requestAppFullscreen } from './app-shell.js?v=20260927T015033192';
-import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260927T015033192';
-import { homeOrnament } from './home-ornaments.js?v=20260927T015033192';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260927T021825018';
+import { profileDetails } from '../game/club-state.js?v=20260927T021825018';
+import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260927T021825018';
+import { roomPlayers } from '../game/room-state.js?v=20260927T021825018';
+import { createChatComposer } from './chat-composer.js?v=20260927T021825018';
+import { navigationIcon } from './navigation-icon.js?v=20260927T021825018';
+import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260927T021825018';
+import { displayName } from '../online/display-name.js?v=20260927T021825018';
+import { clubRankings } from '../online/combined-ranking.js?v=20260927T021825018';
+import { paginate } from './pagination.js?v=20260927T021825018';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260927T021825018';
+import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260927T021825018';
+import { requestAppFullscreen } from './app-shell.js?v=20260927T021825018';
+import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260927T021825018';
+import { homeOrnament } from './home-ornaments.js?v=20260927T021825018';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
-const SITE_VERSION='V32';
+const SITE_VERSION='V33';
 export function createClubPortal({ ui, physical, access, stats, admin, chat, poker, identity, canWrite, notify, actions, onData, onLeader }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;
@@ -45,25 +45,6 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   gamesCard.classList.add('portal-tables');inviteCard.classList.add('portal-invites-card');presenceCard.classList.add('portal-presence-card');
   let data=null, snapshot=null, summary={history:[],stats:{},rooms:{}}, page='home', mode='domino', authenticated=false, inScene=false, profileId=null, editorId='new', generalChat=null, stopData, stopStats;
   let physicalFingerprint='', summaryFingerprint='', profilePresenceFingerprint='', dialogBusy=false, rankingMode='general', adminMode='players';
-  let assistedDealEnabled=false, dealModeLoaded=false, versionClicks=0, dealTogglePending=false, stopDealMode;
-  function updateDealVersion(){
-    const editable=authenticated&&mode==='domino'&&page==='admin'&&access.unlocked&&dealModeLoaded&&!dealTogglePending;
-    siteVersion.classList.toggle('is-assisted-deal',mode==='domino'&&assistedDealEnabled);
-    siteVersion.tabIndex=editable?0:-1;
-    if(editable){siteVersion.setAttribute('role','button');siteVersion.setAttribute('aria-pressed',String(assistedDealEnabled));siteVersion.setAttribute('aria-label',`${SITE_VERSION} · cinq clics pour ${assistedDealEnabled?'désactiver':'activer'} la distribution spéciale Khalil`);}
-    else{siteVersion.removeAttribute('role');siteVersion.removeAttribute('aria-pressed');siteVersion.removeAttribute('aria-label');}
-  }
-  async function clickVersion(){
-    if(mode!=='domino'||page!=='admin'||!access.unlocked||!dealModeLoaded||dealTogglePending){versionClicks=0;return;}
-    if(!canWrite()){versionClicks=0;return;}
-    if(++versionClicks<5)return;
-    versionClicks=0;dealTogglePending=true;updateDealVersion();
-    try{assistedDealEnabled=await admin.toggleDealMode();notify(assistedDealEnabled?'Distribution spéciale Khalil activée : cinq dominos avec un même chiffre aux manches impaires.':'Distribution aléatoire rétablie pour toutes les prochaines manches.');}
-    catch(error){notify(error.message,'error');}
-    finally{dealTogglePending=false;updateDealVersion();}
-  }
-  siteVersion.addEventListener('click',clickVersion);
-  siteVersion.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();clickVersion();}});
   const pageNumbers={};
   function paged(target,items,key,size,render){const result=paginate(items,pageNumbers[key],size);pageNumbers[key]=result.page;const list=el('div','portal-paged-list');result.items.forEach((item,i)=>list.append(render(item,result.start+i)));target.append(list);if(result.pages>1){const controls=el('nav','portal-pagination');controls.setAttribute('aria-label',`Pages ${key}`);const prev=button('‹',()=>{pageNumbers[key]--;refresh();}),next=button('›',()=>{pageNumbers[key]++;refresh();});prev.setAttribute('aria-label',`Page précédente ${key}`);next.setAttribute('aria-label',`Page suivante ${key}`);prev.disabled=!result.page;next.disabled=result.page===result.pages-1;controls.append(prev,el('span','',`${result.page+1} / ${result.pages} · ${result.total} résultats`),next);target.append(controls);}function refresh(){if(page==='online')renderOnlineExtras();else renderPage();}}
   const activityTimer=setInterval(()=>{if(authenticated&&!inScene){if(page==='online')renderOnlineExtras();if(page==='profiles')refreshProfilePresence();}},15000);
@@ -78,7 +59,6 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     if(page==='admin' && next!=='admin')access.lock();
     stopLoungeMusic();poker?.hideScene();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
     page=next;inScene=false;root.hidden=false;game.hidden=true;ui.menu.hidden=true;reparentNotices(app);
-    versionClicks=0;updateDealVersion();
     root.dataset.page=next;root.dataset.mode=mode;header.querySelector('h1').textContent=mode==='poker'?'POKER CLUB':'DOMINO CLUB';
     header.querySelector('.portal-subtitle').textContent=mode==='poker'?'Le Roi des Fish':'Le Roi du Cochon';
     document.title=mode==='poker'?`Poker Club — Le Roi des Fish ${SITE_VERSION}`:`Domino Club — Le Roi du Cochon ${SITE_VERSION}`;
@@ -125,7 +105,6 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   function onlineDot(){const dot=el('span','portal-profile-online-dot');dot.setAttribute('role','img');dot.setAttribute('aria-label','Connecté');dot.title='Connecté';return dot;}
   function activate(profile){
     if(authenticated)return;authenticated=true;profileId=profile.id;
-    stopDealMode=admin.watchDealMode(enabled=>{assistedDealEnabled=enabled;dealModeLoaded=true;updateDealVersion();},error=>{dealModeLoaded=false;versionClicks=0;updateDealVersion();notify(error.message,'error');});
     ui.hub.classList.add('portal-online-panel');lobbyHost.append(ui.hub);
     generalChat=createChatComposer({repository:chat,channel:CLUB_CHAT_CHANNEL,identity:()=>({...identity(),role:'lobby'}),canWrite,notify,audible:()=>!inScene});chatSlot.append(generalChat.root);
     stopData=physical.watch(value=>{const fingerprint=JSON.stringify(value);if(fingerprint===physicalFingerprint)return;physicalFingerprint=fingerprint;data=value;onData?.(value);updateCounts();onLeader?.(rankings().general[0]||null);
@@ -134,7 +113,6 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     open('home');
   }
   function renderPage(){
-    updateDealVersion();
     if(mode==='poker'){refreshPoker();return;}
     if(page==='online')return;
     const target=pages.get(page);target.replaceChildren();if(!data){target.append(el('p','portal-muted','Chargement des données…'));return;}
@@ -298,5 +276,5 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     if(!summary.history.length)history.append(el('p','portal-muted','Aucun résultat.'));slot.append(rooms,history);
   }
   poker.setCallbacks({refresh:refreshPoker,showScene:showPokerTable,open});
-  return {activate,open,showTable,showPokerTable,update,get isScene(){return inScene||poker.isScene;},get mode(){return mode;},get page(){return page;},get authenticated(){return authenticated;},dispose(){clearInterval(activityTimer);stopData?.();stopStats?.();stopDealMode?.();generalChat?.dispose();poker.dispose();chatDock.remove();root.remove();}};
+  return {activate,open,showTable,showPokerTable,update,get isScene(){return inScene||poker.isScene;},get mode(){return mode;},get page(){return page;},get authenticated(){return authenticated;},dispose(){clearInterval(activityTimer);stopData?.();stopStats?.();generalChat?.dispose();poker.dispose();chatDock.remove();root.remove();}};
 }
