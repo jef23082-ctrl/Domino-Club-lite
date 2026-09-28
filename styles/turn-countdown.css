@@ -26,6 +26,8 @@
 .game-shell[data-table-layout="club"] .player-seat--top:has(.turn-countdown) .opponent-rack{top:109%}
 .player-seat--left .turn-countdown,.player-seat--right .turn-countdown{top:86%;width:5cqw;min-width:58px;max-width:96px}
 .player-seat--left .turn-countdown{left:34%}.player-seat--right .turn-countdown{left:66%}
+.player-seat--left .turn-countdown:not(.is-warning):not(.is-danger):not(.is-paused),
+.player-seat--right .turn-countdown:not(.is-warning):not(.is-danger):not(.is-paused){animation:none}
 .turn-countdown.is-warning{--clock-color:#ff8c1f;--clock-bright:#ffd06b;--clock-deep:#c7460b;animation:none}
 .turn-countdown.is-danger{--clock-color:#ff251c;--clock-bright:#fff1c2;--clock-deep:#920807;animation:none}
 .turn-countdown.is-warning .turn-countdown__face{animation:turnClockOrangeFace .78s ease-in-out infinite}

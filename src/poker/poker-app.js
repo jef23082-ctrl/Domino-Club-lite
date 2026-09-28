@@ -1,17 +1,17 @@
-import { PokerRepository } from './poker-repository.js?v=20260927T021825018';
-import { pokerRanking, pokerBlindStatus, pokerSettings, pokerSeatMap, pokerPotAward, POKER_STACK_CHOICES, POKER_LEVEL_MINUTES } from './poker-engine.js?v=20260927T021825018';
-import { createPokerCard, createChipStack } from './poker-cards.js?v=20260927T021825018';
-import { element as el, button, card, avatar } from '../ui/club-elements.js?v=20260927T021825018';
-import { characterIdForProfile } from '../online/profile-map.js?v=20260927T021825018';
-import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260927T021825018';
-import { ROOM_STYLES } from '../config/room-styles.js?v=20260927T021825018';
-import { setOptimizedImage } from '../ui/image-source.js?v=20260927T021825018';
-import { requestAppFullscreen } from '../ui/app-shell.js?v=20260927T021825018';
-import { muteLoungeMusic, startLoungeMusic, stopLoungeMusic, toggleLoungeMusic, loungeMusicState, setLoungeMusicVolume } from '../ui/lounge-music.js?v=20260927T021825018';
-import { navigationIcon } from '../ui/navigation-icon.js?v=20260927T021825018';
-import { homeOrnament } from '../ui/home-ornaments.js?v=20260927T021825018';
-import { playSound, unlockSound, soundEffectState, setSoundEffectVolume, toggleSoundEffects } from '../ui/sound-player.js?v=20260927T021825018';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260927T021825018';
+import { PokerRepository } from './poker-repository.js?v=20260928T204111961';
+import { pokerRanking, pokerBlindStatus, pokerSettings, pokerSeatMap, pokerPotAward, POKER_STACK_CHOICES, POKER_LEVEL_MINUTES } from './poker-engine.js?v=20260928T204111961';
+import { createPokerCard, createChipStack } from './poker-cards.js?v=20260928T204111961';
+import { element as el, button, card, avatar } from '../ui/club-elements.js?v=20260928T204111961';
+import { characterIdForProfile } from '../online/profile-map.js?v=20260928T204111961';
+import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260928T204111961';
+import { ROOM_STYLES } from '../config/room-styles.js?v=20260928T204111961';
+import { setOptimizedImage } from '../ui/image-source.js?v=20260928T204111961';
+import { requestAppFullscreen } from '../ui/app-shell.js?v=20260928T204111961';
+import { muteLoungeMusic, startLoungeMusic, stopLoungeMusic, toggleLoungeMusic, loungeMusicState, setLoungeMusicVolume } from '../ui/lounge-music.js?v=20260928T204111961';
+import { navigationIcon } from '../ui/navigation-icon.js?v=20260928T204111961';
+import { homeOrnament } from '../ui/home-ornaments.js?v=20260928T204111961';
+import { playSound, unlockSound, soundEffectState, setSoundEffectVolume, toggleSoundEffects } from '../ui/sound-player.js?v=20260928T204111961';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260928T204111961';
 
 const number = value => Number(value || 0).toLocaleString('fr-FR');
 const same = (left, right) => String(left) === String(right);
@@ -321,9 +321,10 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
       view.slot.classList.toggle('is-folded', Boolean(game?.folded?.[String(player.id)]));
       view.slot.classList.toggle('is-all-in', Boolean(game?.allIn?.[String(player.id)]));
       view.cards.replaceChildren();
-      if (game && player.stack + Number(game.committed?.[String(player.id)] || 0) > 0 && !game.folded?.[String(player.id)]) {
+      if (game?.holeCards?.[String(player.id)]?.length) {
+        const folded = Boolean(game.folded?.[String(player.id)]);
         const foldReveal = game.status === 'showdown' && game.lastResult?.type === 'fold' && game.lastResult.shownCards && game.lastResult.winners.some(id => same(id, player.id));
-        const reveal = game.status === 'runout' || (game.status === 'showdown' && game.lastResult?.type === 'showdown') || foldReveal;
+        const reveal = !folded && (game.status === 'runout' || (game.status === 'showdown' && game.lastResult?.type === 'showdown') || foldReveal);
         view.slot.classList.toggle('is-showdown', reveal);
         const bestFive = new Set(game.lastResult?.hands?.[String(player.id)]?.bestFive || []);
         for (const card of game.holeCards?.[String(player.id)] || []) {
@@ -353,10 +354,18 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     boardCards.replaceChildren(); potChips.replaceChildren(); sidePots.replaceChildren();
     const primaryWinner = game?.lastResult?.pots?.[0]?.winners?.[0] ?? game?.lastResult?.winners?.[0];
     const bestFive = new Set(game?.lastResult?.hands?.[String(primaryWinner)]?.bestFive || []);
-    for (const card of game?.board || []) {
+    const displayedBoard = game?.status === 'showdown' && game.lastResult?.previewBoard?.length === 5
+      ? game.lastResult.previewBoard : game?.board || [];
+    for (let index = 0; index < 5; index += 1) {
+      const slot = el('span', 'poker-board__slot');
+      slot.dataset.cardPosition = String(index + 1);
+      const card = displayedBoard[index];
+      if (!card) { slot.setAttribute('aria-hidden', 'true'); boardCards.append(slot); continue; }
       const view = createPokerCard(card);
-      if (game?.status === 'showdown' && bestFive.size) view.classList.add(bestFive.has(card) ? 'is-best-card' : 'is-unused-card');
-      boardCards.append(view);
+      if (index >= (game?.board?.length || 0)) view.classList.add('is-preview-card');
+      else if (game?.status === 'showdown' && bestFive.size) view.classList.add(bestFive.has(card) ? 'is-best-card' : 'is-unused-card');
+      slot.append(view);
+      boardCards.append(slot);
     }
     if (game?.pot) {
       potChips.append(createChipStack(game.pot, 'red', { compact: true }));
@@ -382,11 +391,13 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
   }
   function renderLocal(room) {
     const game = room.game, me = room.players.find(player => same(player.id, currentProfile()?.id));
-    const canAct = role === 'player' && game?.status === 'betting' && me && same(game.turnId, me.id);
+    const canAct = role === 'player' && game?.status === 'betting' && me && !game.folded?.[String(me.id)] && same(game.turnId, me.id);
     local.hidden = !game || ['runout', 'showdown'].includes(game.status);
     if (!game) return;
+    const folded = Boolean(me && game.folded?.[String(me.id)]);
+    local.classList.toggle('is-folded', folded);
     const turnPlayer = room.players.find(player => same(player.id, game.turnId));
-    turn.textContent = game.status === 'showdown' ? 'Fin de la main' : canAct ? 'À vous de jouer' : turnPlayer ? `Tour de ${turnPlayer.name}` : 'Distribution des cartes';
+    turn.textContent = game.status === 'showdown' ? 'Fin de la main' : folded ? (turnPlayer ? `Vous êtes couché · Tour de ${turnPlayer.name}` : 'Vous êtes couché') : canAct ? 'À vous de jouer' : turnPlayer ? `Tour de ${turnPlayer.name}` : 'Distribution des cartes';
     const handKey = `${game.handId}:${me?.id}:${Boolean(game.folded?.[String(me?.id)])}:${game.status}:${(game.holeCards?.[String(me?.id)] || []).join(',')}`;
     const keepPeeking = hand.dataset.handKey === handKey && hand.classList.contains('is-peeking');
     setPeeking(false); stack.replaceChildren(); hand.replaceChildren(); controls.replaceChildren();
@@ -394,7 +405,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     if (me) {
       if (me.stack > 0) stack.append(createChipStack(me.stack, 'green', { compact: true }));
       stack.append(el('span', '', `Jetons : ${number(me.stack)}`));
-      if (!game.folded?.[String(me.id)]) for (const card of game.holeCards?.[String(me.id)] || []) {
+      for (const card of game.holeCards?.[String(me.id)] || []) {
         const view = createPokerCard(card);
         if (game.status === 'betting') {
           view.dataset.cardLabel = view.getAttribute('aria-label') || '';
@@ -473,6 +484,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
       if (award > 0) awardRows.append(line(`${player.name} · +${number(award)} jetons`));
     });
     result.append(awardRows);
+    if (last.previewBoard?.length === 5) result.append(line('Cartes hypothétiques affichées sur le tapis · résultat inchangé.', 'poker-result__hand'));
     clearTimeout(revealTimer); revealTimer = null;
     const revealRemaining = last.type === 'fold' ? Math.max(0, Number(last.revealChoiceUntil || 0) - now()) : 0;
     const currentIsWinner = (last.winners || []).some(id => same(id, currentProfile()?.id));
@@ -490,7 +502,12 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     } else if (role === 'player') {
       const next = button(revealRemaining > 0 ? `Main suivante · ${Math.ceil(revealRemaining / 1000)} s` : 'Main suivante', () => submit(() => repo.nextHand(currentCode, currentProfile().id, { expectedHandId: game.handId })), 'poker-action poker-action--raise');
       next.disabled = revealRemaining > 0 || busy;
-      result.append(next);
+      const actions = el('div', 'poker-result__actions');
+      actions.append(next);
+      const showBoard = button('Afficher les cartes', () => submit(() => repo.showRemainingBoard(currentCode, currentProfile().id)), 'poker-action poker-action--call');
+      showBoard.disabled = busy || game.board.length >= 5 || last.previewBoard?.length === 5;
+      actions.append(showBoard);
+      result.append(actions);
     } else result.append(hint('Un joueur assis lancera la main suivante.'));
   }
   function renderScene() {

@@ -1,12 +1,12 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260927T021825018';
-import { randomId } from '../services/ids.js?v=20260927T021825018';
-import { liveTransaction } from '../services/live-transaction.js?v=20260927T021825018';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260928T204111961';
+import { randomId } from '../services/ids.js?v=20260928T204111961';
+import { liveTransaction } from '../services/live-transaction.js?v=20260928T204111961';
 import {
   createPokerRoom, joinPokerRoom, leavePokerRoom, choosePokerStyle,
   startPokerTournament, pokerAction, nextPokerHand, pokerHistoryRecord,
   shuffleDeck, normalizePokerRoom, cancelPokerTournament,
-  advancePokerTimeline, showPokerCards, choosePokerSettings
-} from './poker-engine.js?v=20260927T021825018';
+  advancePokerTimeline, showPokerCards, previewRemainingPokerBoard, choosePokerSettings
+} from './poker-engine.js?v=20260928T204111961';
 
 export class PokerRepository {
   constructor(database, { now = () => Date.now() } = {}) {
@@ -68,6 +68,7 @@ export class PokerRepository {
     return this.#change(code, room => advancePokerTimeline(room, { playerId, at, commandId, ...expected }));
   }
   showCards(code, playerId) { return this.#change(code, room => showPokerCards(room, playerId, this.now())); }
+  showRemainingBoard(code, playerId) { return this.#change(code, room => previewRemainingPokerBoard(room, playerId)); }
   async recordFinished(room) {
     if (room?.status !== 'finished') return;
     const record = pokerHistoryRecord(room);

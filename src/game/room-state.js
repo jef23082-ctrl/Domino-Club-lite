@@ -9,8 +9,8 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20260927T021825018';
-import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260927T021825018';
+} from './engine.js?v=20260928T204111961';
+import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260928T204111961';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -330,8 +330,9 @@ export function startNextRoundInRoom(room, { at = Date.now(), randomIndex, expec
   rule(room?.status === 'playing' && room.game?.roundStatus === 'ended', 'La manche n’est pas terminée.', 'round-not-ended');
   if (expectedRoundNumber !== undefined) rule(Number(room.game.roundNumber) === Number(expectedRoundNumber), 'La manche suivante est déjà lancée.', 'stale-round');
   if (expectedResultAt !== undefined) rule(Number(room.game.roundResult?.at) === Number(expectedResultAt), 'Le résultat de la manche a changé.', 'stale-result');
-  const readyAt = Number(room.game.roundResult?.nextRoundReadyAt || 0);
-  rule(!readyAt || Number(at) >= readyAt, `La manche suivante sera disponible dans ${Math.max(1, Math.ceil((readyAt - Number(at)) / 1000))} s.`, 'next-round-delay');
+  // Only the round identity controls this atomic transition. The ten-second
+  // ceremony is a local, monotonic UI wait before its shared request is sent;
+  // comparing clients' wall clocks here stranded rooms on skewed machines.
   const starterId = room.game.roundResult?.type === 'winner' ? room.game.roundResult.winnerId : null;
   transitionRoom(room, ROOM_PHASE.NEXT_ROUND, at);
   room.game = buildRound(

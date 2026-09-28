@@ -35,8 +35,9 @@
 .poker-card__index--mirror{left:auto;top:auto;right:5%;bottom:5%}
 .poker-card--back{background:#04231b url('../assets/poker-v29/back.png') center/100% 100%;border-color:#e7c77d;box-shadow:inset 0 0 0 1px #fff0b68c,1px 1px 0 #987030,0 3px 5px #0009}
 .poker-board{left:34%;top:40%;width:32%;height:22%}
-.poker-board__cards{position:absolute;top:0;height:44%;width:100%;gap:.45cqw;transform:perspective(700px) rotateX(10deg)}
-.poker-board__cards .poker-card{width:5.1cqw;min-width:5.1cqw;max-width:5.1cqw;height:100%;font-size:1.25cqw}
+.poker-board__cards{position:absolute;top:0;height:44%;width:100%;display:grid;grid-template-columns:repeat(5,5.1cqw);grid-template-rows:minmax(0,1fr);gap:.45cqw;align-items:stretch;justify-content:center;transform:perspective(700px) rotateX(10deg)}
+.poker-board__slot{display:block;width:5.1cqw;height:100%}
+.poker-board__cards .poker-card{width:100%;min-width:0;max-width:none;height:100%;aspect-ratio:auto;font-size:1.25cqw}
 .poker-board__chips{position:absolute;top:39%;height:48%;width:52%}
 .poker-board__pot{position:absolute;top:77%;height:26%;width:48%;padding:.3em .5em;text-align:center;font:700 1.6cqw Georgia,serif}
 .poker-local{display:block;left:25%;bottom:8%;width:53%;height:25%;isolation:isolate}
@@ -228,4 +229,12 @@
 .poker-hand-history .portal-muted{font-size:13px;margin:4px 0}
 @media(min-width:1700px){.poker-history-cards .poker-card{width:72px;height:101px;flex-basis:72px;font-size:17px}}
 @media(max-width:900px){.poker-blind-clock{width:31%}.poker-blind-clock__level,.poker-blind-clock small{font-size:.68cqw}.poker-table-settings{gap:6px}.poker-table-settings select{font-size:12px}}
+
+/* Folded players keep their private card backs in the open right-hand bay. */
+.poker-local.is-folded .poker-local__hand{left:70%;top:0;width:24%;height:70%}
+.poker-local.is-folded .poker-local__turn{left:0;width:68%;font-size:1.12cqw}
+.poker-local.is-folded .poker-local__controls{width:69%}
+.poker-result__actions{display:flex;align-items:center;justify-content:center;gap:.7cqw;width:100%}
+.poker-result__actions .poker-action{min-width:0;white-space:nowrap}
+.poker-board__cards .poker-card.is-preview-card{box-shadow:inset 0 0 0 2px #eac675,0 0 .7cqw #f2c36691,0 4px 7px #000a}
 @media(prefers-reduced-motion:reduce){.poker-position,.poker-position::after{animation:none}}

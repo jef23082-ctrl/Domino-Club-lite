@@ -1,11 +1,11 @@
 {
-  "version": "20260927T021825018",
-  "generatedAt": "2026-09-27T02:18:27.550Z",
+  "version": "20260928T204111961",
+  "generatedAt": "2026-09-28T20:41:14.893Z",
   "files": [
     {
       "path": "index.html",
       "bytes": 8836,
-      "sha256": "483d22a178a6f671f9e1bc5e357277b72c1a5079d4d402d9dbe67f2ee4fd3db8"
+      "sha256": "6b5837c6d9086bb5c41eccf30d415253a9578c2749a85e2b0182ec02260625d8"
     },
     {
       "path": "styles/foundation.css",
@@ -119,8 +119,8 @@
     },
     {
       "path": "styles/turn-countdown.css",
-      "bytes": 4337,
-      "sha256": "cd1d78d1fb98da42f0148e1c8553da0836486b541bb32771f9c11e8c8a758c15"
+      "bytes": 4523,
+      "sha256": "0d1f6ea7da45f53baa57bc8c6177ebd9ab41282a30cbbf119915403b798ee5e7"
     },
     {
       "path": "styles/premium-polish-v21.css",
@@ -134,8 +134,8 @@
     },
     {
       "path": "styles/universal-placement.css",
-      "bytes": 891,
-      "sha256": "659c0211b1ebb6e7dba0bca7db35a815edf931ac4ba2df71d2e617efa7a7dc50"
+      "bytes": 966,
+      "sha256": "ddab9df2a655f6a151171f558768fd677410496062dfe52b5064368ce92b2e96"
     },
     {
       "path": "styles/premium-system-v23.css",
@@ -149,8 +149,8 @@
     },
     {
       "path": "styles/poker-premium.css",
-      "bytes": 24452,
-      "sha256": "5698afe9cb8d074999f5f3f76bc91c2318c6bac30f374cd82c15eaabcb381631"
+      "bytes": 25231,
+      "sha256": "735379b85a431f2b8692cd07323cb9d40c028321d2a216cbb0415dafe78de582"
     },
     {
       "path": "assets/poker-v27/frame.svg",
@@ -215,12 +215,12 @@
     {
       "path": "src/main.js",
       "bytes": 188,
-      "sha256": "5e815f3f41016d26a3b649ff057e653e30b83aba291805397399d67b04586750"
+      "sha256": "c57536631b7674f4792cbc28d3f639b8c0e8556813bf58562c818515ab8f1d6a"
     },
     {
       "path": "src/ui/app-shell.js",
       "bytes": 4768,
-      "sha256": "575ea930a36516fed316ac097cc8783b93ab2c67d76c3bb7ead72b48b33a95ea"
+      "sha256": "b8e663f76634545a5c593fa20d80c5028ea6bb467bd1e0961d29788e427510e3"
     },
     {
       "path": "src/ui/lounge-music.js",
@@ -230,7 +230,7 @@
     {
       "path": "src/ui/sound-player.js",
       "bytes": 14349,
-      "sha256": "2dd2c39a9345f1eaf757454ddd42c7d620ba3691f410b07e1c9fcca5a8b72b03"
+      "sha256": "91d69685f62935ed89108933551b5cd9ff35ed028d8b939aacb31c26d459dac4"
     },
     {
       "path": "src/ui/visual-quality.js",
@@ -239,8 +239,8 @@
     },
     {
       "path": "src/online/online-app.js",
-      "bytes": 82047,
-      "sha256": "296640c23c47eafb3ad16caf31acd92c0d09d186e3bf523e84707591375ce7b4"
+      "bytes": 88070,
+      "sha256": "c231a48059eca9d065bc19b4da53dcd310da4daa3c2f84654c13657bc3961577"
     },
     {
       "path": "src/game/engine.js",
@@ -249,8 +249,8 @@
     },
     {
       "path": "src/game/room-state.js",
-      "bytes": 16259,
-      "sha256": "c95e0536cf179a517095838156446dd0fee7472134127ab8c4573a9ef09fbb04"
+      "bytes": 16253,
+      "sha256": "ac6d7b1a96f975a4e5335feb68d4f3ee50be4df9f7e59a82309a8a32f2677ab3"
     },
     {
       "path": "src/game/room-machine.js",
@@ -265,7 +265,7 @@
     {
       "path": "src/ui/room-style.js",
       "bytes": 4416,
-      "sha256": "170423ece84ac57d4261e41b595f01e02f6bdc36bad517250d0fb6e1a2861953"
+      "sha256": "cd904556df0ef3b4317a89eb63ac2a1d6e9038b1f27133464d138719f5dd4add"
     },
     {
       "path": "src/ui/image-source.js",
@@ -275,7 +275,7 @@
     {
       "path": "src/config/player-assets.js",
       "bytes": 5240,
-      "sha256": "bceaa24daf4d7f6ed050409016d82a9a109f0672b1ab7eec7b93c0b6db5e1a37"
+      "sha256": "b7b708ca16f39a422c52dfcd96d17db8867a15e0cc9a6292194f8d4d0d8f402c"
     },
     {
       "path": "src/config/reactions.js",
@@ -285,7 +285,7 @@
     {
       "path": "src/ui/domino-renderer.js",
       "bytes": 8475,
-      "sha256": "110fe1bd76f51e542aad6957107b1742ead9feac5a42b85f0580083855762a7a"
+      "sha256": "267c159d443310055cf7688a8bfc2e9b0497aa0262bdfdb5f303f3bd89839171"
     },
     {
       "path": "src/online/display-name.js",
@@ -300,17 +300,17 @@
     {
       "path": "src/ui/scene-renderer.js",
       "bytes": 1013,
-      "sha256": "29f544f82838fe58b92f70d247af30eabe91ceeb0cc123cea64b18d0c913bbfb"
+      "sha256": "73101a9e56c185b7f3e103e49eef7a305a25875abc81f8cbbea1f419e8cafef9"
     },
     {
       "path": "src/ui/boude-verdict.js",
       "bytes": 10597,
-      "sha256": "69c5903fda57dbc6e098840698c2f13629de1a9fd6a7f042cbab423821600efd"
+      "sha256": "ef01e1f7b8154f0bedb89cc654f33dd0d46a6f6910e9fa94c5b781893e7c2624"
     },
     {
       "path": "src/ui/reaction-visual.js",
       "bytes": 1805,
-      "sha256": "933f24fdf4f9a6d9bf066cb027da9343c42b047fa78f5c1a2d053ca6985cd9b9"
+      "sha256": "c4dd95854b96a8da0ae16e33725cba2630a8bd19a0f8e43c04559a9c156e734d"
     },
     {
       "path": "src/config/reaction-assets.js",
@@ -330,17 +330,17 @@
     {
       "path": "src/services/chat-repository.js",
       "bytes": 2263,
-      "sha256": "a09aa2744f39281e988a1bd9a113a78a20162bd8310cea2dd9763828a81071d4"
+      "sha256": "b49d15f0dd75ca936302959bcdbbbb9f196cdf3fbdf61cfac57083d1ff684406"
     },
     {
       "path": "src/config/firebase.js",
-      "bytes": 1291,
-      "sha256": "c2bd17ac3af5e29680a27db9136a1a650c1ff878f37ada3595c0ccc80bb59213"
+      "bytes": 1368,
+      "sha256": "9991da57e0a80f66725ab8029cb7cd5d540d14e14c7483d58ef78d826319220b"
     },
     {
       "path": "src/services/club-chat-session.js",
       "bytes": 2362,
-      "sha256": "32fe5d3629ff869665b134011e8daed8027b92168130fecbcc35967c68f3bec3"
+      "sha256": "3ed980370b9a43227a67a0f3bf43c9174dde3931ed75ac0eb05c27a29da7ab65"
     },
     {
       "path": "src/services/live-transaction.js",
@@ -350,12 +350,12 @@
     {
       "path": "src/services/firebase-runtime.js",
       "bytes": 507,
-      "sha256": "641baf53cf9cda9eb37f263c6c0accb591321172121825dd1be34bf5b60946bd"
+      "sha256": "1162506ca26c9441cfddfedf61f9e771cd14fb31f046edcb981756919f86e6cc"
     },
     {
       "path": "src/services/invitation-repository.js",
       "bytes": 1122,
-      "sha256": "f3b44046eabef991efc8f839caad2d589926e2e1e61feb1751bae030c0e527fa"
+      "sha256": "ea65d2dfe8d96f29826f4ddb254bccaed23f197d3bc1a708efc12da1d6d79127"
     },
     {
       "path": "src/services/ids.js",
@@ -370,27 +370,27 @@
     {
       "path": "src/services/presence-service.js",
       "bytes": 3798,
-      "sha256": "0a4efb2ff85787924b25fa85c8686ab8ce52f97eb9611c614c68a262a79a9051"
+      "sha256": "cae3af75fc66fd6ed5f60419890e01ca024b9884a9453b110d4e4f617e1aa23a"
     },
     {
       "path": "src/services/profile-repository.js",
       "bytes": 640,
-      "sha256": "b733f62ca414315f5c90bd6bdd7ceb9117d8b72eaecfcaf9fe8e1a11575e5410"
+      "sha256": "ec442854320c85770149df2870b95bc719896e5bf23477bc5df6ee68539fb206"
     },
     {
       "path": "src/services/reaction-repository.js",
       "bytes": 1215,
-      "sha256": "49c7d445a3e55ce478531ba2afb84947fceb2895fb94f7560eb67a13b2629095"
+      "sha256": "4f80040570660ada22673937352a4dbceec1ac99223e9ae8788a1e97a4945631"
     },
     {
       "path": "src/services/room-repository.js",
-      "bytes": 5097,
-      "sha256": "1b03953b1fe1dde3ff3b6d1956c39237920c6f5ad95b74286bc16fd033e1892e"
+      "bytes": 5832,
+      "sha256": "3924838a3fc2602e6654c3bcf36a7fc467971d4eec5b649aca8c7e0449e62c08"
     },
     {
       "path": "src/online/lounge-name.js",
       "bytes": 1539,
-      "sha256": "b9d1ef177bc7a5080b97fbdc07f0bf085dfe2e14f2a5b2b48bf965347588ea4d"
+      "sha256": "2532d435ea34896ae1f835c91c29b19de20b3c2d1b46ee64eaa8eb217b52582e"
     },
     {
       "path": "src/online/profile-map.js",
@@ -410,7 +410,7 @@
     {
       "path": "src/services/spectator-service.js",
       "bytes": 1473,
-      "sha256": "9ee2eb606bb83297fa96012cc9a2dcce967d094b2b737d7ea1766788f97e0aae"
+      "sha256": "b6070e0cd97fea99756b70a3f68a2c007b8fac6497356d90a2faf65fe1bfb55f"
     },
     {
       "path": "src/services/server-clock.js",
@@ -420,17 +420,17 @@
     {
       "path": "src/services/stats-repository.js",
       "bytes": 1518,
-      "sha256": "5cdbbc7014633e8c299de15691ff16b0502be3f204300ee7910c69dfe2aa0af8"
+      "sha256": "e6fb68e7779efe88dc46996799501e4d0700403e47e94eeb8541000b05851cc3"
     },
     {
       "path": "src/game/online-stats.js",
       "bytes": 3422,
-      "sha256": "3d6e53f4a32b7701a31698ade51ee45ee733aaa206af3a74fde57c9b2770d0dc"
+      "sha256": "76ed5a548a51f413dfeb08aeb7975281433307beb82960cff94793ce4ef8d318"
     },
     {
       "path": "src/services/online-records.js",
       "bytes": 2522,
-      "sha256": "68c7ad8f24d4b3f9c18753688417039ab60017db208c6d0d007f68fe6a4ba5cb"
+      "sha256": "745feb18e54a8b3ef463a8322142206f88a65fd445205d642afb50558e887d08"
     },
     {
       "path": "src/services/admin-access.js",
@@ -440,17 +440,17 @@
     {
       "path": "src/services/admin-repository.js",
       "bytes": 2689,
-      "sha256": "5c2d447e9a43aa96dc94481ffeca2afe3fe8c69222971bdf8abeea61d0aebbd8"
+      "sha256": "684ade5154298829cfab2ab0601cd6d957bbff2537f31be6863fbbc570471e5e"
     },
     {
       "path": "src/ui/club-portal.js",
       "bytes": 42611,
-      "sha256": "08a90fc5936b3d1abdc72ce9d2bbd7e130704afd9cf94292977c3e6b97c4872a"
+      "sha256": "1c6bf3a959d85d5808f8e3774c89376c89cce977b694da902ed8c8996da1869a"
     },
     {
       "path": "src/ui/club-elements.js",
       "bytes": 5111,
-      "sha256": "5a39c1ba288ec5089341e6e17c889f9060ea9d9578cdf02a84042f506f18d8b5"
+      "sha256": "49f825c8ddc4d77a6d36444269639a10efa2e9fb1f0864cf9948170b1aba85fd"
     },
     {
       "path": "src/ui/pagination.js",
@@ -470,17 +470,17 @@
     {
       "path": "src/online/club-presentation.js",
       "bytes": 3592,
-      "sha256": "d2d1956274da15de232c4b25b8a22790a6e79bc4354b7adcb67dbe5910e32a07"
+      "sha256": "d16be64dca220b624d86be596e73cd3b037cca156ffa5e2132e48baf064fb34e"
     },
     {
       "path": "src/ui/chat-composer.js",
       "bytes": 3382,
-      "sha256": "ce6fd07a634e84d813f4008788a152503edd70a0dd3a4c1485b0a367d7aa5943"
+      "sha256": "4816bbf043e4d5dd8c70e8a51f57a1f528c8ee8294e5ac61cfa495f3d1dff26e"
     },
     {
       "path": "src/ui/chat-renderer.js",
       "bytes": 1452,
-      "sha256": "7265369e0f1f04036fb965c7c8306de425b0d226b39036bd960c587cc1680501"
+      "sha256": "ad89c73c7d032545753275fe19616ee9920c29be978ec266ceb9f238499033ae"
     },
     {
       "path": "src/ui/navigation-icon.js",
@@ -490,12 +490,12 @@
     {
       "path": "src/online/room-activity.js",
       "bytes": 1643,
-      "sha256": "30796c19eb854fa6866bd7abb11445e8b4675d9fbb268d2cce65fa447fb786f8"
+      "sha256": "2ee43128a1b3d965714b201d6b10abb32057281137012263829916d32e75c833"
     },
     {
       "path": "src/online/combined-ranking.js",
       "bytes": 2620,
-      "sha256": "7d20a245a2aa00b9fff90bc312d775303c32edebea7acf815e213c69cf60c4f8"
+      "sha256": "dec736a1f76c8e7aefb084090e901d7c13e253b01c3c132c9d42e8425a20b8bb"
     },
     {
       "path": "src/ui/home-ornaments.js",
@@ -504,28 +504,28 @@
     },
     {
       "path": "src/poker/poker-app.js",
-      "bytes": 57625,
-      "sha256": "e5c5a8bb96a34106606d3ad43d09bd49f370bf94a9858a90a8d1753eb5ae89df"
+      "bytes": 58915,
+      "sha256": "121c4c2c8f11dfb592354ad5c6717cbb5f9dd02e107ceeb7a6d0aa4833918c6b"
     },
     {
       "path": "src/poker/poker-repository.js",
-      "bytes": 6990,
-      "sha256": "5ae2255935b1f4cdde0728a06601ea5d54ef63173b6e3864340b1b57f3753343"
+      "bytes": 7138,
+      "sha256": "916b7451c354c79a85381691e0808d058e6dbe14f337dbca4d2305279d8669d8"
     },
     {
       "path": "src/poker/poker-engine.js",
-      "bytes": 35586,
-      "sha256": "21ce821677136df10013a9f5fa0f2f68f446d3a0ec91ba42289c3d09ef541448"
+      "bytes": 36529,
+      "sha256": "81850776d7f723fc15b3658ccf95d10cf5c0c11ed5a511bb50194377f3f52ab2"
     },
     {
       "path": "src/poker/poker-cards.js",
       "bytes": 3870,
-      "sha256": "91a8c4449524e95a5b3312716fd4bba9e4349af53bf0cc2dec49bd0288395072"
+      "sha256": "cd2d4c6d921f35d75c25817dafeb45118988b9eb233c00fb837ef6d533423831"
     },
     {
       "path": "src/services/physical-club-repository.js",
       "bytes": 5459,
-      "sha256": "88ec20ab2218502800f6cca961996b898711b916cf89381cea3b4f8d63d593b9"
+      "sha256": "bf20b407a57592f580e65d9c54fd7da6aa302e4740bed90bf3365b27be5c03ef"
     },
     {
       "path": "src/services/connection-service.js",
@@ -535,32 +535,47 @@
     {
       "path": "src/online/play-intent.js",
       "bytes": 529,
-      "sha256": "a4885bee6552509443fa29063675e60f66d716cf9d06c21d31d19f6e6a979546"
+      "sha256": "ceb2d1ad19f3b3839ee320bf773ea2f03bf2ea9cb45708b0838147dcefb44f48"
     },
     {
       "path": "src/online/seat-order.js",
       "bytes": 1011,
-      "sha256": "928935e3883fa5990e2d63f5f193adf69387981f66e28268f46f7ba8e827bbae"
+      "sha256": "efa2c6d05b67cf34cb001fd63e02f045f029dbcdf6de6ba9213f963812912089"
+    },
+    {
+      "path": "src/online/round-gate.js",
+      "bytes": 731,
+      "sha256": "3512a34e092272b159330a5cb344d5f730f6df55a6b002c067ba505369e47f51"
+    },
+    {
+      "path": "src/online/presentation.js",
+      "bytes": 4080,
+      "sha256": "52b9b5283438ad0d0dd835d670e619b5d05a90bdc338044f2b5994591f8539c1"
+    },
+    {
+      "path": "src/online/round-advance.js",
+      "bytes": 1229,
+      "sha256": "84b7366cb591ffd4c8f44559ffbbc2a73c5ea3ee74dd2b855a3b7e9ac0694ed6"
     },
     {
       "path": "src/ui/reaction-picker.js",
       "bytes": 2313,
-      "sha256": "1466faa0143f35f660fa56cb34a95ce0d0bdf34b2a524259042e73bb2195fbfd"
+      "sha256": "23b91bfde95cce027b214a7580b2ceae7db15a41ad951230a6a0cf8d72bf4e43"
     },
     {
       "path": "src/ui/premium-confirm.js",
       "bytes": 766,
-      "sha256": "ddf76448f7d6aa8bf887a930ad876f18466de0f8bb4f58d95c8a893071461d11"
+      "sha256": "af4bb3053e7dbabdf75784945ca48830f5ee157a7e255b71a0363c7e82d53eb4"
     },
     {
       "path": "src/ui/overlay-layout.js",
-      "bytes": 8726,
-      "sha256": "8c23fdd4ac67d4138f99181825b692706ab907e879928c4db5ad270227bde17e"
+      "bytes": 9421,
+      "sha256": "47b1f616fb2f565992e7fa01999a668749d635a013763443f378d8cf01fdfb37"
     },
     {
       "path": "src/ui/resource-loader.js",
       "bytes": 3175,
-      "sha256": "30ff250669bc68ef965c242116a3946c5d59ce3fccbdf987cc9cc73b9b54bf24"
+      "sha256": "dcc1d772ae49240d8c964e53d402fa0c61b0736598dcffeae09a213b1874e3a5"
     },
     {
       "path": "src/ui/event-lighting.js",
@@ -575,7 +590,7 @@
     {
       "path": "src/ui/opening-mascot.js",
       "bytes": 8476,
-      "sha256": "9f16bca70d141c31d37fd24c3f09f2fd21a0ebc06fd3274a772709cf5001241b"
+      "sha256": "ca57b0815a3962d444145e55eb1f2021388bd1b9c2c2f98be6b6818689014a7a"
     },
     {
       "path": "src/ui/opening-mascot-state.js",
@@ -585,12 +600,12 @@
     {
       "path": "src/ui/mascot/pig3d.js",
       "bytes": 14416,
-      "sha256": "186fe226e9198e58ea6798767ff44217ad370684a2be411dab363eb34e7022c1"
+      "sha256": "912f58ce1709eb95c06dad8cce2c4338ec93aa057d0642820bedf15f57e75274"
     },
     {
       "path": "src/vendor/three/three.module.js",
       "bytes": 603155,
-      "sha256": "0e968dbc578db932b621c6479485edf88f20751713fe24c9346fb44b1b254610"
+      "sha256": "17c795a1e4e5d8c861bc5d29efb2829441d1196a8b1076ff86f21be1f1349019"
     },
     {
       "path": "src/vendor/three/three.core.js",
@@ -600,12 +615,7 @@
     {
       "path": "src/ui/leader-trophy.js",
       "bytes": 5140,
-      "sha256": "b1fdf01c1e12871d0e9d58b0ebc90da7543ff00ace841839d4b5f8a6f183c1aa"
-    },
-    {
-      "path": "src/online/presentation.js",
-      "bytes": 4080,
-      "sha256": "52b9b5283438ad0d0dd835d670e619b5d05a90bdc338044f2b5994591f8539c1"
+      "sha256": "b55003b619d2e2fa7317328ed800e81a9bfa4b419b426fa825f9d2d91c844b31"
     },
     {
       "path": "assets/poker-v27/cards/jack_of_clubs.svg",

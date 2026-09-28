@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260927T021825018';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20260928T204111961';
 import {
   createInitialRoom,
   cancelRoomInState,
@@ -15,15 +15,16 @@ import {
   startRematchInRoom,
   startNextRoundInRoom,
   timeoutTurnInRoom
-} from '../game/room-state.js?v=20260927T021825018';
-import { randomId } from './ids.js?v=20260927T021825018';
-import { liveTransaction } from './live-transaction.js?v=20260927T021825018';
-import { createLoungeName } from '../online/lounge-name.js?v=20260927T021825018';
+} from '../game/room-state.js?v=20260928T204111961';
+import { randomId } from './ids.js?v=20260928T204111961';
+import { liveTransaction } from './live-transaction.js?v=20260928T204111961';
+import { createLoungeName } from '../online/lounge-name.js?v=20260928T204111961';
 
 export class RoomRepository {
   constructor(database, { now = () => Date.now() } = {}) {
     this.database = database;
     this.rooms = database.ref(FIREBASE_PATHS.rooms);
+    this.roundAdvanceRequests = database.ref(FIREBASE_PATHS.roundAdvanceRequests);
     this.now = now;
   }
 
@@ -94,6 +95,18 @@ export class RoomRepository {
     return this.#reduce(code, room => startNextRoundInRoom(room, this.#withServerTime(context)));
   }
 
+  async requestNextRound(code, request) {
+    if (!request || !Number.isFinite(Number(request.roundNumber)) || !Number.isFinite(Number(request.resultAt))) throw new Error('Demande de manche invalide.');
+    return this.roundAdvanceRequests.child(String(code || '').toUpperCase()).set(request);
+  }
+
+  watchNextRoundRequest(code, onValue, onError) {
+    const reference = this.roundAdvanceRequests.child(String(code || '').toUpperCase());
+    const listener = snapshot => onValue(snapshot.val());
+    reference.on('value', listener, onError);
+    return () => reference.off('value', listener);
+  }
+
   async rematch(code, context) {
     return this.#reduce(code, room => startRematchInRoom(room, this.#withServerTime(context)));
   }
@@ -108,7 +121,7 @@ export class RoomRepository {
 
   async removeRoomData(code, repositories = {}) {
     const normalized = String(code || '').toUpperCase();
-    const removals = [this.rooms.child(normalized).remove()];
+    const removals = [this.rooms.child(normalized).remove(), this.roundAdvanceRequests.child(normalized).remove()];
     for (const repository of Object.values(repositories)) {
       if (repository?.remove) removals.push(repository.remove(normalized));
     }

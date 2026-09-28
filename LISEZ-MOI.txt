@@ -1,4 +1,6 @@
-Domino Club V33 — 33.0.0
+Domino Club V35 — 35.0.0
+
+V35 : les cinq places des cartes communes au Poker restent fixes du flop à la rivière. Au Domino, la demande « Manche suivante » est conservée dans un canal partagé : les autres joueurs connectés peuvent relancer la transition si le premier navigateur échoue. Les dix secondes sont uniquement une attente visuelle locale et ne bloquent plus la transaction par comparaison d’horloges. Le bouton demeure réessayable en cas de confirmation réseau absente. Cette reprise a été vérifiée avec un décalage d’horloge et un échec simulé ; elle reste à confirmer sur le réseau du travail.
 
 V33 : retrait complet de l’activation par cinq clics sur la version et de la distribution spéciale Khalil. Le numéro de version reste doré et purement informatif. Tous les joueurs reçoivent le tirage aléatoire habituel à chaque manche ; les anciens réglages sont ignorés. Actualiser tous les appareils pour utiliser cette version. Les corrections de manche suivante et le poker sont conservés.
 

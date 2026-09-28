@@ -166,14 +166,22 @@ export function placeUniversalOverlay(element, stage = document.querySelector('#
   return { role, seat, lane: element.dataset.overlayLane, rect: element.getBoundingClientRect() };
 }
 
-export function refreshUniversalOverlays(stage = document.querySelector('#casino-stage')) {
+export function refreshUniversalOverlays(stage = document.querySelector('#casino-stage'), { reflowTimer = false } = {}) {
   if (!stage) return [];
   const elements = [...stage.querySelectorAll(UNIVERSAL_OVERLAY_SELECTOR)].filter(visible);
-  elements.forEach(resetNudge);
+  elements.forEach(element => {
+    if (roleOf(element) !== 'timer' || reflowTimer || element.dataset.overlayResolved !== 'true') resetNudge(element);
+  });
   elements.sort((left, right) => ROLE_PRIORITY[roleOf(right)] - ROLE_PRIORITY[roleOf(left)]);
   const occupied = [];
   const placements = [];
   for (const element of elements) {
+    if (roleOf(element) === 'timer' && !reflowTimer && element.dataset.overlayResolved === 'true') {
+      const placement = { role: 'timer', seat: seatOf(element), lane: element.dataset.overlayLane, rect: element.getBoundingClientRect() };
+      occupied.push(placement.rect);
+      placements.push(placement);
+      continue;
+    }
     const placement = placeUniversalOverlay(element, stage, occupied);
     if (!placement) continue;
     occupied.push(element.getBoundingClientRect());
@@ -186,27 +194,31 @@ export const refreshSeatOverlays = refreshUniversalOverlays;
 
 export function createUniversalPlacementEngine(stage = document.querySelector('#casino-stage')) {
   let frame = 0;
-  const schedule = () => {
+  let reflowTimer = false;
+  const schedule = (forceTimer = false) => {
+    reflowTimer ||= forceTimer === true;
     if (frame || !stage) return;
     frame = requestAnimationFrame(() => {
       frame = 0;
-      refreshUniversalOverlays(stage);
+      refreshUniversalOverlays(stage, { reflowTimer });
+      reflowTimer = false;
     });
   };
   const mutation = typeof MutationObserver === 'function' && stage ? new MutationObserver(schedule) : null;
   mutation?.observe(stage, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
-  const resize = typeof ResizeObserver === 'function' && stage ? new ResizeObserver(schedule) : null;
+  const resize = typeof ResizeObserver === 'function' && stage ? new ResizeObserver(() => schedule(true)) : null;
   resize?.observe(stage);
-  globalThis.addEventListener?.('resize', schedule, { passive: true });
+  const onResize = () => schedule(true);
+  globalThis.addEventListener?.('resize', onResize, { passive: true });
   schedule();
   return {
     schedule,
-    layout: () => refreshUniversalOverlays(stage),
+    layout: () => refreshUniversalOverlays(stage, { reflowTimer: true }),
     dispose() {
       if (frame) cancelAnimationFrame(frame);
       mutation?.disconnect();
       resize?.disconnect();
-      globalThis.removeEventListener?.('resize', schedule);
+      globalThis.removeEventListener?.('resize', onResize);
     }
   };
 }

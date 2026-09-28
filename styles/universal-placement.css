@@ -14,6 +14,7 @@
 [data-overlay-resolved="true"][data-overlay-role="emotion"]{
   transition:margin .22s cubic-bezier(.2,.75,.2,1),filter .25s ease;
 }
+[data-overlay-resolved="true"][data-overlay-role="timer"]{transition:none}
 @media(prefers-reduced-motion:reduce){
   [data-overlay-resolved="true"]{transition:none!important}
 }

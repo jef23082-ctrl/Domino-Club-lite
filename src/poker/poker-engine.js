@@ -1,6 +1,6 @@
 // Three-seat, no-limit Texas Hold'em sit-and-go. All mutations are pure so a
 // Realtime Database transaction can replay them safely after contention.
-import { createLoungeName } from '../online/lounge-name.js?v=20260927T021825018';
+import { createLoungeName } from '../online/lounge-name.js?v=20260928T204111961';
 
 export const POKER_STARTING_STACK = 20000;
 export const POKER_STACK_CHOICES = Object.freeze([5000, 10000, 20000, 50000, 100000]);
@@ -530,6 +530,20 @@ export function showPokerCards(room, playerId, at = Date.now()) {
   game.lastResult.revealChoiceUntil = Math.max(Number(game.lastResult.revealChoiceUntil || 0), at + POKER_REVEAL_CHOICE_MS);
   recordEvent(game, 'show-cards', at, { playerId });
   saveCompletedHand(next);
+  return next;
+}
+
+export function previewRemainingPokerBoard(room, playerId) {
+  if (!room?.game || room.game.status !== 'showdown') throw new Error('La main doit être terminée pour afficher les cartes restantes.');
+  const next = normalizePokerRoom(room);
+  if (!next.players.some(player => key(player.id) === key(playerId))) throw new Error('Seul un joueur assis peut afficher les cartes restantes.');
+  if (next.game.lastResult?.previewBoard?.length === 5) return next;
+  // Use the original deck and the same burn-card sequence as a live runout,
+  // but only on a copy: awards, winner, true board and hand history stay intact.
+  const board = [...next.game.board];
+  const runout = { deck: [...next.game.deck], board, street: board.length < 3 ? 'preflop' : board.length === 3 ? 'flop' : board.length === 4 ? 'turn' : 'river' };
+  while (runout.board.length < 5) revealStreet(runout);
+  next.game.lastResult.previewBoard = runout.board;
   return next;
 }
 
