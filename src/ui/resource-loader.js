@@ -1,7 +1,7 @@
-import { PLAYER_ASSETS, hasPlayerCutout, playerAsset, playerCutoutAsset } from '../config/player-assets.js?v=20260928T204111961';
-import { REACTION_ASSETS, REACTION_PARTICLES, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260928T204111961';
-import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260928T204111961';
-import { imageSourceSet } from './image-source.js?v=20260928T204111961';
+import { PLAYER_ASSETS, hasPlayerCutout, playerAsset, playerCutoutAsset } from '../config/player-assets.js?v=20260929T190638113';
+import { REACTION_ASSETS, REACTION_PARTICLES, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260929T190638113';
+import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20260929T190638113';
+import { imageSourceSet } from './image-source.js?v=20260929T190638113';
 
 const requested = new Map();
 let warmScheduled = false;
@@ -16,7 +16,7 @@ export function roomResourcePlan({ style, seats = [] }) {
   const critical = [ROOM_STYLES[selectedStyle].scene];
   for (const { seat, characterId } of seats) {
     if (!PLAYER_ASSETS[characterId]?.seats?.[seat]) continue;
-    critical.push(selectedStyle === 'luxe' && hasPlayerCutout(characterId, seat)
+    critical.push(roomLayout(selectedStyle) === 'luxe' && hasPlayerCutout(characterId, seat)
       ? playerCutoutAsset(characterId, seat).src
       : playerAsset(characterId, seat).src);
   }

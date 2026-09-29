@@ -1,0 +1,69 @@
+/* Exact reference artwork, with native accessible controls registered to it.
+   Everything is scoped to the signed-out screen, never to the club or tables. */
+#online-hub[data-view="login"] {
+  --login-u:min(calc(100vw / 1672),calc(100dvh / 941));
+  position:fixed;inset:0;z-index:350;display:block;padding:0;overflow:hidden;
+  background:#071009 url('../assets/menus/club-login-v41.png') center/cover no-repeat;
+  backdrop-filter:none;
+}
+#online-hub[data-view="login"]::before{content:'';position:absolute;inset:-30px;background:inherit;filter:blur(18px);pointer-events:none}
+#online-hub[data-view="login"] .online-hub__frame {
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:calc(1672 * var(--login-u));height:calc(941 * var(--login-u));
+  max-width:none;max-height:none;padding:0;margin:0;border:0;border-radius:0;overflow:visible;
+  background:url('../assets/menus/club-login-v41.png') center/100% 100% no-repeat;box-shadow:none;
+}
+#online-hub[data-view="login"] .online-hub__eyebrow{display:none}
+#online-hub[data-view="login"] .online-hub__title{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#online-hub[data-view="login"] .online-hub__content,
+#online-hub[data-view="login"] .online-form{display:contents}
+#online-hub[data-view="login"] .login-reference-mask{position:absolute;left:calc(620 * var(--login-u));top:calc(477 * var(--login-u));width:calc(432 * var(--login-u));height:calc(42 * var(--login-u));pointer-events:none;z-index:1}
+#online-hub[data-view="login"] .online-hub__status{
+  position:absolute;z-index:2;left:calc(620 * var(--login-u));top:calc(477 * var(--login-u));
+  width:calc(432 * var(--login-u));height:calc(42 * var(--login-u));margin:0;padding:0;
+  display:grid;place-items:center;color:#edcf8e;text-align:center;font:800 calc(23 * var(--login-u))/1 Arial,sans-serif;
+}
+#online-hub[data-view="login"] .online-label{display:contents;font-size:0;color:transparent}
+#online-hub[data-view="login"] .online-label::before{content:'';position:absolute;left:calc(561 * var(--login-u));top:calc(569 * var(--login-u));width:calc(550 * var(--login-u));height:calc(59 * var(--login-u));cursor:text}
+#online-hub[data-view="login"] .online-input{
+  position:absolute;left:calc(609 * var(--login-u));top:calc(580 * var(--login-u));
+  width:calc(487 * var(--login-u));height:calc(36 * var(--login-u));min-height:0;
+  padding:0 calc(9 * var(--login-u));margin:0;border:0;border-radius:0;
+  background:#030c07;color:#ffe4a3;box-shadow:none;text-transform:none;
+  font:400 calc(17 * var(--login-u))/1 Arial,sans-serif;letter-spacing:0;
+}
+#online-hub[data-view="login"] .online-input::placeholder{color:#787971;opacity:1;text-transform:uppercase}
+#online-hub[data-view="login"] .online-label:focus-within::after{
+  content:'';position:absolute;left:calc(561 * var(--login-u));top:calc(569 * var(--login-u));
+  width:calc(550 * var(--login-u));height:calc(59 * var(--login-u));border-radius:calc(10 * var(--login-u));
+  box-shadow:0 0 0 2px #f8d58188,0 0 14px #dca84433;pointer-events:none;
+}
+#online-hub[data-view="login"] .online-action--primary{
+  position:absolute;left:calc(560 * var(--login-u));top:calc(648 * var(--login-u));
+  width:calc(552 * var(--login-u));height:calc(66 * var(--login-u));min-height:0;
+  border:0;border-radius:calc(13 * var(--login-u));padding:0;margin:0;
+  background:transparent;color:transparent;font-size:0;box-shadow:none;cursor:pointer;
+}
+#online-hub[data-view="login"] .online-action--primary:hover{background:#ffe39a12;box-shadow:0 0 20px #f5c26733}
+#online-hub[data-view="login"] .online-action--primary:focus-visible{outline:2px solid #fff0b2;outline-offset:4px}
+#online-hub[data-view="login"] .online-action--primary:active{background:#4e280033}
+#online-hub[data-view="login"] .online-action--primary:disabled{background:#06130a66;cursor:wait}
+#online-hub[data-login-pending="true"] .online-action--primary:disabled{background:transparent;opacity:1;filter:none}
+#online-hub[data-login-pending="true"] .online-input:disabled{opacity:1}
+#online-hub[data-view="login"] .online-error{
+  position:absolute;z-index:3;left:calc(570 * var(--login-u));top:calc(716 * var(--login-u));
+  width:calc(530 * var(--login-u));margin:0;padding:2px 5px;text-align:center;
+  border-radius:6px;background:#08160df5;color:#ffc3a7;font:700 max(12px,calc(15 * var(--login-u)))/1.2 Arial,sans-serif;
+}
+#online-hub[data-view="login"] .online-error[hidden]{display:none}
+@media(max-aspect-ratio:6/5){
+  #online-hub[data-view="login"]{--login-u:min(calc((100vw - 24px) / 700),calc((100dvh - 36px) / 550))}
+  #online-hub[data-view="login"] .online-hub__frame{margin-top:calc(-24 * var(--login-u))}
+  #online-hub[data-view="login"] .online-input{font-size:16px}
+  #online-hub[data-view="login"] .online-action--primary{min-height:40px}
+}
+@media(max-height:420px) and (min-aspect-ratio:6/5){
+  #online-hub[data-view="login"]{--login-u:min(calc((100vw - 24px) / 700),calc((100dvh - 24px) / 550))}
+  #online-hub[data-view="login"] .online-hub__frame{margin-top:calc(-24 * var(--login-u))}
+  #online-hub[data-view="login"] .online-input{font-size:16px}
+}

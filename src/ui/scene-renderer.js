@@ -1,5 +1,5 @@
-import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260928T204111961';
-import { setOptimizedImage } from './image-source.js?v=20260928T204111961';
+import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260929T190638113';
+import { setOptimizedImage } from './image-source.js?v=20260929T190638113';
 
 export function renderCharacterPlate(seat, characterId) {
   const image = document.querySelector(`#character-${seat}`);

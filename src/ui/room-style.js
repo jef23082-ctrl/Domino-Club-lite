@@ -1,5 +1,5 @@
-import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260928T204111961';
-import { setOptimizedImage } from './image-source.js?v=20260928T204111961';
+import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20260929T190638113';
+import { setOptimizedImage } from './image-source.js?v=20260929T190638113';
 
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -39,14 +39,21 @@ function ensureMasks() {
 
 export function applyRoomStyle(value) {
   const style = roomStyle(value);
+  const { layout, scene } = ROOM_STYLES[style];
   const shell = document.getElementById('game-shell');
   const stage = document.getElementById('casino-stage');
   if (!shell || !stage) return;
-  if (style === 'luxe') ensureMasks();
-  shell.dataset.roomStyle = style;
+  if (layout === 'luxe') ensureMasks();
+  // Layout is shared; the selected decor remains a separate, synchronized key.
+  shell.dataset.roomStyle = layout;
+  shell.dataset.roomTheme = style;
   shell.dataset.tableLayout = 'club';
-  stage.dataset.roomStyle = style;
+  stage.dataset.roomStyle = layout;
+  stage.dataset.roomTheme = style;
+  const sceneUrl = `url("${new URL(scene, document.baseURI).href}")`;
+  shell.style.setProperty('--domino-room-scene', sceneUrl);
+  document.body.style.setProperty('--domino-room-scene', sceneUrl);
   const background = stage.querySelector('.scene-base');
-  if (background) setOptimizedImage(background, ROOM_STYLES[style].scene);
-  document.body.classList.toggle('has-luxe-room', style === 'luxe');
+  if (background) setOptimizedImage(background, scene);
+  document.body.classList.toggle('has-luxe-room', layout === 'luxe');
 }

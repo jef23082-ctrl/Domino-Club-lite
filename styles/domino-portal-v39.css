@@ -1,0 +1,81 @@
+/* Domino's own source materials, on the shared Poker/club composition. */
+.club-portal[data-mode="domino"] {
+  --domino-reference-atlas:url('../assets/menus/domino-ui-reference-v39.png');
+  --v18-serif:'Times New Roman',Times,serif;
+  --home-serif:'Times New Roman',Times,serif;
+}
+.club-portal[data-mode="domino"][data-page]::before{background:#04100b url('../assets/menus/domino-lounge-v39.png') center/cover no-repeat;opacity:1}
+.club-portal[data-mode="domino"] :is(.poker-suit-left,.poker-suit-right){width:calc(48 * var(--p-u));height:calc(44 * var(--p-u));top:calc(27 * var(--p-u));left:calc(22 * var(--p-u))}
+.club-portal[data-mode="domino"] .poker-suit-right{left:auto;right:calc(22 * var(--p-u));transform:scaleX(-1)}
+.club-portal[data-mode="domino"] .portal-home-portrait-frame::after{display:none}
+.club-portal[data-mode="domino"] .domino-reference-medallion{left:50%;bottom:calc(-9 * var(--p-u));transform:translateX(-50%);width:calc(42 * var(--p-u));height:calc(38 * var(--p-u));z-index:3}
+.club-portal[data-mode="domino"] .portal-home-profile-button{display:flex;align-items:center;justify-content:center;gap:10px}
+.club-portal[data-mode="domino"] .portal-home-profile-button>svg{width:24px;height:24px;flex:none}
+.club-portal[data-mode="domino"] .portal-home-action small{white-space:normal!important}
+.club-portal[data-mode="domino"] .portal-home-action--danger{color:#bfbfb8}
+.club-portal[data-mode="domino"] .portal-nav .portal-home-motto{border-left:1px solid #bb974d;margin-left:20px;height:60%;justify-self:stretch}
+.club-portal[data-mode="domino"] :is(.portal-chat-form input,.online-input,.online-select){background:#06100bdc;border-color:#ac8745;color:#ffebba}
+.club-portal[data-mode="domino"] .portal-chat-messages{background:#020805d9;border:1px solid #aa864655;border-radius:10px}
+.club-portal[data-mode="domino"] .portal-chat{background:none;box-shadow:none}
+.club-portal[data-mode="domino"] .portal-presence-card,.club-portal[data-mode="domino"] .portal-invites-card{padding:12px 24px}
+.club-portal[data-mode="domino"][data-page="online"] #page-online{display:grid;grid-template-rows:calc(60 * var(--p-u)) calc(74 * var(--p-u)) minmax(calc(330 * var(--p-u)),1fr) calc(70 * var(--p-u));gap:calc(10 * var(--p-u));height:calc(610 * var(--p-u));max-height:none;padding:4px}
+.club-portal[data-mode="domino"] .portal-online-columns{grid-template-columns:1.75fr 1fr;min-height:0;gap:18px}
+.club-portal[data-mode="domino"] .portal-live-chat{height:100%;min-height:0;padding:18px}
+.club-portal[data-mode="domino"] .portal-tables{padding:18px}
+.club-portal[data-mode="domino"] .portal-online-panel{padding:12px 20px;border-radius:12px}
+.club-portal[data-mode="domino"] .portal-online-panel .online-hub__frame{flex-direction:column;gap:6px}
+.club-portal[data-mode="domino"] .portal-live-chat .portal-chat{border:0;background:none;box-shadow:none}
+.club-portal[data-mode="domino"] .portal-room-card{padding:14px!important}
+.club-portal[data-mode="domino"] .portal-room-portraits{flex:none;min-height:calc(69 * var(--p-u));margin:0;align-items:start}
+.club-portal[data-mode="domino"] .portal-room-portraits :is(.portal-avatar,.portal-empty-seat){width:calc(47 * var(--p-u));height:calc(47 * var(--p-u))}
+.club-portal[data-mode="domino"] .portal-room-portraits>div>span:last-child{font:700 calc(12 * var(--p-u))/1.1 'Times New Roman',serif}
+.club-portal[data-mode="domino"] .portal-room-card .portal-room-capacity{font-size:calc(12 * var(--p-u));margin:0;text-align:center}
+.club-portal[data-mode="domino"] .portal-room-card>button{margin-top:auto;min-height:calc(35 * var(--p-u));font-size:calc(16 * var(--p-u))}
+.club-portal[data-mode="domino"] .portal-room-heading h3{font-size:calc(21 * var(--p-u));line-height:1.05}
+.club-portal[data-mode="domino"] .portal-room-origin{margin-top:3px}
+.club-portal[data-mode="domino"] .portal-ranking td .poker-skin{display:none}
+.club-portal[data-mode="domino"] .portal-ranking tbody tr:nth-child(even){background:#0b1a1244}
+.club-portal[data-mode="domino"] #page-admin>.portal-card:has(.portal-admin-login){width:min(620px,100%);margin:30px auto;padding:35px;text-align:center}
+.club-portal[data-mode="domino"] .portal-admin-login{margin-inline:auto}
+.club-portal[data-mode="domino"] .portal-dialog{position:fixed;inset:auto;top:50%;left:50%;transform:translate(-50%,-50%);margin:0;width:min(620px,calc(100vw - 32px));max-height:calc(100dvh - 40px);padding:28px;border-radius:18px;color:#ffe5ab;overflow:auto;font-family:'Times New Roman',Times,serif}
+.club-portal[data-mode="domino"] .portal-dialog::backdrop{background:#010804ba;backdrop-filter:blur(5px)}
+.club-portal[data-mode="domino"] .portal-dialog h2{color:#ffe3a1;font-size:28px}
+.club-portal[data-mode="domino"] .portal-dialog .online-action{min-height:38px}
+.club-portal[data-mode="domino"] .portal-choice[aria-pressed="true"]{color:#140e03!important;font-weight:700!important}
+.club-portal[data-mode="domino"] .portal-choice[aria-pressed="true"]>.poker-skin{background:linear-gradient(#ffe5a2,#cc963b);filter:drop-shadow(0 0 5px #ffcb68)}
+.club-portal[data-mode="domino"] .portal-choice[aria-pressed="true"]>.poker-skin>.poker-skin-material{opacity:.12}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="home"] .portal-connected-strip{flex-wrap:nowrap;justify-content:safe center;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:#ad873c #10130a;padding-inline:28px}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="home"] .portal-connected-strip>:not(.poker-skin,.poker-artwork){flex:none;white-space:nowrap}
+.club-portal[data-mode="domino"] .portal-presence-card h2{display:block;font-size:20px;white-space:nowrap}
+.club-portal[data-mode="domino"][data-page="ranking"] #page-ranking{height:calc(588 * var(--p-u));max-height:none;padding:4px}
+.club-portal[data-mode="domino"] .portal-ranking-results{min-height:0}
+.club-portal[data-mode="domino"] .portal-ranking-results>.portal-podium{flex:0 0 calc(206 * var(--p-u));width:calc(1160 * var(--p-u));max-width:100%}
+.club-portal[data-mode="domino"] .portal-ranking-results>.portal-table-wrap{height:auto;min-height:150px;max-height:none;overflow:auto;padding:10px}
+.club-portal[data-mode="domino"] .portal-ranking th{background:#07140e}
+.club-portal[data-mode="domino"] .portal-ranking th .online-action{border:0;background:none!important;box-shadow:none!important}
+.club-portal[data-mode="domino"] .portal-ranking th .poker-skin{display:none}
+.club-portal[data-mode="domino"] .portal-ranking tbody tr{background:#04110a66}
+.club-portal[data-mode="domino"] .portal-ranking-tabs{background:#05120c;border-color:#d3af61;border-radius:10px}
+.club-portal[data-mode="domino"] #page-profiles{padding:4px;grid-template-columns:minmax(0,.77fr) minmax(0,1.23fr)}
+.club-portal[data-mode="domino"] .portal-profile-detail{grid-template-columns:minmax(0,.95fr) minmax(0,1.1fr);gap:20px;padding:28px}
+.club-portal[data-mode="domino"] .portal-profile-portrait{width:100%;height:auto;aspect-ratio:1}
+.club-portal[data-mode="domino"] .portal-profile-heading h2{font-size:calc(39 * var(--p-u))}
+.club-portal[data-mode="domino"] .portal-profile-facts{padding-right:170px}
+.club-portal[data-mode="domino"] #page-history{padding:4px;gap:20px}
+.club-portal[data-mode="domino"] .portal-history-column{height:100%;padding:20px 25px}
+.club-portal[data-mode="domino"] .portal-history-column>h2{font-size:calc(24 * var(--p-u));white-space:normal;height:auto;min-height:55px}
+.club-portal[data-mode="domino"] .portal-history-row h3{font-size:calc(23 * var(--p-u))}
+.club-portal[data-mode="domino"] #page-admin{height:auto;max-height:calc(590 * var(--p-u));overflow:auto;padding:4px}
+.club-portal[data-mode="domino"] #page-admin .portal-card{padding:24px}
+.club-portal[data-mode="domino"] .portal-nav .portal-nav-item{position:relative}
+@media(max-width:1050px),(max-height:660px){
+  .club-portal[data-mode="domino"][data-page="online"] #page-online{height:auto;display:flex;flex-direction:column}
+  .club-portal[data-mode="domino"] .portal-online-columns{display:grid;grid-template-columns:1fr}
+  .club-portal[data-mode="domino"] .portal-live-chat{min-height:340px}
+  .club-portal[data-mode="domino"][data-page="ranking"] #page-ranking{height:auto;max-height:none}
+  .club-portal[data-mode="domino"] #page-ranking>.portal-card{height:auto;min-height:600px}
+  .club-portal[data-mode="domino"] .portal-ranking-results>.portal-table-wrap{max-height:340px;flex:auto}
+  .club-portal[data-mode="domino"] #page-profiles{grid-template-columns:1fr}
+  .club-portal[data-mode="domino"] .portal-profile-facts{padding-right:0}
+  .club-portal[data-mode="domino"] .portal-profile-facts::after{display:none}
+}

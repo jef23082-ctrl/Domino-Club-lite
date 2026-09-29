@@ -1,22 +1,23 @@
-import { PokerRepository } from './poker-repository.js?v=20260928T204111961';
-import { pokerRanking, pokerBlindStatus, pokerSettings, pokerSeatMap, pokerPotAward, POKER_STACK_CHOICES, POKER_LEVEL_MINUTES } from './poker-engine.js?v=20260928T204111961';
-import { createPokerCard, createChipStack } from './poker-cards.js?v=20260928T204111961';
-import { element as el, button, card, avatar } from '../ui/club-elements.js?v=20260928T204111961';
-import { characterIdForProfile } from '../online/profile-map.js?v=20260928T204111961';
-import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260928T204111961';
-import { ROOM_STYLES } from '../config/room-styles.js?v=20260928T204111961';
-import { setOptimizedImage } from '../ui/image-source.js?v=20260928T204111961';
-import { requestAppFullscreen } from '../ui/app-shell.js?v=20260928T204111961';
-import { muteLoungeMusic, startLoungeMusic, stopLoungeMusic, toggleLoungeMusic, loungeMusicState, setLoungeMusicVolume } from '../ui/lounge-music.js?v=20260928T204111961';
-import { navigationIcon } from '../ui/navigation-icon.js?v=20260928T204111961';
-import { homeOrnament } from '../ui/home-ornaments.js?v=20260928T204111961';
-import { playSound, unlockSound, soundEffectState, setSoundEffectVolume, toggleSoundEffects } from '../ui/sound-player.js?v=20260928T204111961';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260928T204111961';
+import { PokerRepository } from './poker-repository.js?v=20260929T190638113';
+import { applyPokerPortalSkin } from './poker-portal-skin.js?v=20260929T190638113';
+import { pokerRanking, pokerBlindStatus, pokerSettings, pokerSeatMap, pokerPotAward, POKER_STACK_CHOICES, POKER_LEVEL_MINUTES } from './poker-engine.js?v=20260929T190638113';
+import { createPokerCard, createChipStack } from './poker-cards.js?v=20260929T190638113';
+import { element as el, button, card, avatar } from '../ui/club-elements.js?v=20260929T190638113';
+import { characterIdForProfile } from '../online/profile-map.js?v=20260929T190638113';
+import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260929T190638113';
+import { POKER_TABLE_STYLES, pokerTableStyle } from './poker-table-styles.js?v=20260929T190638113';
+import { setOptimizedImage } from '../ui/image-source.js?v=20260929T190638113';
+import { requestAppFullscreen } from '../ui/app-shell.js?v=20260929T190638113';
+import { muteLoungeMusic, startLoungeMusic, stopLoungeMusic, toggleLoungeMusic, loungeMusicState, setLoungeMusicVolume } from '../ui/lounge-music.js?v=20260929T190638113';
+import { navigationIcon } from '../ui/navigation-icon.js?v=20260929T190638113';
+import { homeOrnament } from '../ui/home-ornaments.js?v=20260929T190638113';
+import { playSound, unlockSound, soundEffectState, setSoundEffectVolume, toggleSoundEffects } from '../ui/sound-player.js?v=20260929T190638113';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260929T190638113';
 
 const number = value => Number(value || 0).toLocaleString('fr-FR');
 const same = (left, right) => String(left) === String(right);
 const STAGES = Object.freeze({ waiting: 'En attente', playing: 'En cours', finished: 'Terminée', cancelled: 'Annulée' });
-const POKER_SCENE = './assets/poker-v27/room.png';
+const POKER_SCENE = POKER_TABLE_STYLES.luxe.scene;
 const SEATS = Object.freeze(['top', 'left', 'right']);
 
 function line(text, className = '') { return el('p', className, text); }
@@ -311,7 +312,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
       view.slot.hidden = !player; image.hidden = !player;
       if (!player) continue;
       const characterId = characterIdForProfile(player);
-      const cutout = room.style === 'luxe' && hasPlayerCutout(characterId, seat);
+      const cutout = POKER_TABLE_STYLES[pokerTableStyle(room.style)].layout === 'luxe' && hasPlayerCutout(characterId, seat);
       const asset = cutout ? playerCutoutAsset(characterId, seat) : playerAsset(characterId, seat);
       if (image.dataset.asset !== asset.src) { setOptimizedImage(image, asset.src); image.dataset.asset = asset.src; }
       image.dataset.characterId = characterId; image.dataset.renderMode = cutout ? 'cutout' : 'scene';
@@ -514,8 +515,10 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     if (!currentRoom || !currentCode) return;
     const room = currentRoom;
     stage.classList.toggle('is-revealing', ['runout', 'showdown'].includes(room.game?.status));
-    shell.dataset.roomStyle = room.style === 'classic' ? 'classic' : 'luxe';
-    const sceneAsset = room.style === 'classic' ? ROOM_STYLES.classic.scene : POKER_SCENE;
+    const table = POKER_TABLE_STYLES[pokerTableStyle(room.style)];
+    shell.dataset.roomStyle = table.layout;
+    shell.dataset.pokerTable = pokerTableStyle(room.style);
+    const sceneAsset = table.scene;
     if (sceneBase.dataset.asset !== sceneAsset) { setOptimizedImage(sceneBase, sceneAsset); sceneBase.dataset.asset = sceneAsset; }
     cancelGame.hidden = !['waiting', 'playing'].includes(room.status) || !same(room.hostId, currentProfile()?.id);
     renderSeats(room); renderBoard(room); renderLocal(room); renderOverlays(room);
@@ -558,7 +561,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     const group = el('div', 'poker-table-settings');
     const settings = pokerSettings(room.settings);
     const definitions = [
-      ['style', 'Table', Object.entries(ROOM_STYLES).map(([value, option]) => [value, option.label]), room.style],
+      ['style', 'Table', Object.entries(POKER_TABLE_STYLES).map(([value, option]) => [value, option.label]), pokerTableStyle(room.style)],
       ['blindMinutes', 'Durée des niveaux', POKER_LEVEL_MINUTES.map(value => [value, `${value} minute${value > 1 ? 's' : ''}`]), settings.blindMinutes],
       ['startingStack', 'Jetons de départ', POKER_STACK_CHOICES.map(value => [value, `${number(value)} jetons`]), settings.startingStack]
     ];
@@ -593,9 +596,10 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     const actions = el('div', 'portal-home-action-list');
     actions.append(homeAction('create','Créer une salle','Invitez vos partenaires à la table',()=>createRoom()),homeAction('table','Tables du club','Rejoignez un tournoi ouvert',()=>callbacks.open?.('online')),homeAction('chat','Discussion commune','Retrouvez les joueurs du club',()=>callbacks.open?.('online')));
     const status = el('div','portal-home-room-status'); status.append(el('i','portal-home-live-dot'),el('span','',`${roomList().length} table${roomList().length===1?'':'s'} active${roomList().length===1?'':'s'}`)); online.append(actions,status);
-    const mine=personal(), me=currentProfile() || allProfiles()[0];
+    const rows=ranking(), me=currentProfile() || allProfiles()[0];
+    const mineIndex=rows.findIndex(row=>same(row.id,me?.id)), mine=rows[mineIndex];
     const member=el('section','portal-card portal-member-card portal-home-card portal-home-profile');
-    member.append(el('span','portal-member-rank',mine?`#${ranking().indexOf(mine)+1}`:'—'),pageHeading('profiles',me?.name || 'Mon profil'));
+    member.append(el('span','portal-member-rank',mineIndex>=0?`#${mineIndex+1}`:'—'),pageHeading('profiles',me?.name || 'Mon profil'));
     const frame=el('div','portal-home-portrait-frame'), laurels=el('span','portal-home-laurels');laurels.append(homeOrnament('laurels'));
     const portrait=avatar(me || {});portrait.classList.add('portal-home-profile-avatar');frame.append(laurels,portrait);
     const metrics=el('div','portal-member-metrics');
@@ -612,7 +616,10 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
   function renderOnline(target) {
     const live=card('Joueurs connectés');live.classList.add('poker-live-band');const members=el('div','poker-live-members');
     for(const p of connected()){const item=el('span');item.append(avatar(p),el('i','portal-presence-dot'),el('strong','',p.name));members.append(item);}if(!connected().length)members.append(hint('Aucun autre joueur connecté.'));live.append(members);
-    const create=el('div','poker-create-table');create.append(button('Créer une table Luxe',()=>createRoom('luxe'),'online-action--primary'),button('Créer une table Classique',()=>createRoom('classic')));
+    const create=el('div','poker-create-table');
+    for (const [style, table] of Object.entries(POKER_TABLE_STYLES)) {
+      create.append(button(`Créer une table ${table.label}`, () => createRoom(style), style === 'luxe' ? 'online-action--primary' : ''));
+    }
     const columns=el('div','poker-online-columns'),list=card('Tables du club');list.classList.add('poker-online-list');
     const active=roomList(), grid=el('div','poker-room-grid');if(!active.length){const empty=el('div','poker-empty');empty.append(navigationIcon('poker'),el('h3','','La prochaine partie vous attend'),line('Invitez deux partenaires et installez-vous à la table.'),button('Créer une salle',()=>createRoom(),'online-action--primary'));grid.append(empty);}else active.forEach(room=>grid.append(roomCard(room)));list.append(grid);
     const discussion=card('Discussion commune');discussion.classList.add('poker-common-chat');const messages=el('div','poker-common-messages');
@@ -640,7 +647,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
       item.append(el('td', '', number(row.points)), el('td', '', String(row.wins)), el('td', '', String(row.played)), el('td', '', String(row.allInsGiven)));
       body.append(item);
     }
-    table.append(body);const wrap=el('div','portal-table-wrap');wrap.append(table);panel.append(wrap,hint('Classement actif dès le premier tournoi · 1er +20 · 2e −5 · 3e −15'));target.append(panel);
+    table.append(body);const wrap=el('div','portal-table-wrap');wrap.append(table);const scoring=hint('Classement actif dès le premier tournoi · 1er +20 · 2e −5 · 3e −15');scoring.classList.add('poker-ranking-scoring');panel.append(wrap,scoring);target.append(panel);
   }
   function renderProfiles(target) {
     const roster = el('div', 'portal-players'), detail = el('section', 'portal-card portal-profile-detail');
@@ -744,6 +751,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     else if (page === 'profiles') renderProfiles(target);
     else if (page === 'history') renderHistory(target);
     else if (page === 'admin') renderAdmin(target);
+    applyPokerPortalSkin(target);
   }
 
   stopRooms = repo.watchRooms(value => { rooms = value; refresh(); }, error => flash(error.message, true));

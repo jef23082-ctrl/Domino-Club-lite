@@ -1,4 +1,4 @@
-import { setOptimizedImage } from '../ui/image-source.js?v=20260928T204111961';
+import { setOptimizedImage } from '../ui/image-source.js?v=20260929T190638113';
 
 const SUIT_SYMBOLS = Object.freeze({ S: '♠', H: '♥', D: '♦', C: '♣' });
 const SUIT_NAMES = Object.freeze({ S: 'pique', H: 'cœur', D: 'carreau', C: 'trèfle' });

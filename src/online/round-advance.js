@@ -1,5 +1,5 @@
-import { roomPlayers } from '../game/room-state.js?v=20260928T204111961';
-import { roundGateKey } from './round-gate.js?v=20260928T204111961';
+import { roomPlayers } from '../game/room-state.js?v=20260929T190638113';
+import { roundGateKey } from './round-gate.js?v=20260929T190638113';
 
 export function createRoundAdvanceRequest(room, playerId) {
   if (room?.status !== 'playing' || room.game?.roundStatus !== 'ended' || !room.game.roundResult) throw new Error('La manche n’est pas terminée.');

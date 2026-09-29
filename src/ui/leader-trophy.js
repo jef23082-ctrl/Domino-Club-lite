@@ -1,6 +1,7 @@
 const TROPHY_ASSET = './assets/ui/coupe-cochon-or-v10.png';
 const LUXE_TROPHY_ASSET = './assets/ui/coupe-palais-royale-v12.png';
-import { setOptimizedImage } from './image-source.js?v=20260928T204111961';
+import { setOptimizedImage } from './image-source.js?v=20260929T190638113';
+import { roomLayout } from '../config/room-styles.js?v=20260929T190638113';
 
 const element = (tag, className = '') => {
   const node = document.createElement(tag);
@@ -92,7 +93,7 @@ export function createLeaderTrophy({ stage, onSound = () => {} } = {}) {
 
   return {
     update({ player = null, matchKey: nextMatchKey = '', style = 'classic' } = {}) {
-      const trophyAsset = style === 'luxe' ? LUXE_TROPHY_ASSET : TROPHY_ASSET;
+      const trophyAsset = roomLayout(style) === 'luxe' ? LUXE_TROPHY_ASSET : TROPHY_ASSET;
       setOptimizedImage(asset, trophyAsset);
       if (!player) {
         root.hidden = true;

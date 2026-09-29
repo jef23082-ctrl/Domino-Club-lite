@@ -1,4 +1,18 @@
-Domino Club V35 — 35.0.0
+Domino Club V42 — 42.0.0
+
+V42 : classement Domino sur la même matière texturée que les podiums ; bandeaux de membres connectés élargis aux trois panneaux et rehaussés sur les deux accueils, avec défilement uniquement en cas de débordement. Rang Poker calculé à partir d’une seule liste de classement, sans faux #0. Chiffres des classements et libellés de navigation agrandis et renforcés. Barème Poker en noir, gras et double taille sur fond doré. Vérifications visuelles des deux modes en 1672 × 941 et 1366 × 768, débordement des membres et mise à jour du rang sur données locales.
+
+V41 : écran de connexion Domino & Poker Club reprenant directement le décor et les éléments graphiques de la maquette fournie. La phrase sur l’accès V2 est remplacée par V41, centré et en gras. Cet écran est présent dans le HTML initial et conservé pendant le chargement de JavaScript et de Firebase, sans passage par la table classique ou l’ancien panneau. Le mot de passe et le bouton restent des contrôles HTML accessibles, avec indication des erreurs et authentification inchangée. Vérification du premier affichage, des chargements retardés et d’une panne du serveur, en plus des cinq formats et essais de connexion sur données locales.
+
+V40 : trois tables Domino supplémentaires, Luxe Red, NewYork et Versailles, utilisent les images originales fournies en 1586 × 992. Elles partagent le cadrage, les silhouettes et les positions du gabarit Luxe ; le choix de l’hôte est conservé dans la salle. Le fond périphérique du plein écran suit aussi le décor choisi. Luxe reste le choix par défaut. Les tables Poker ne changent pas.
+
+V39 : les six pages Domino reprennent le fond vert fourni et les matières, coutures, encadrements et ornements dorés de la maquette Domino. L'accueil et la navigation partagent exactement le gabarit Poker. Les contenus, statistiques, actions et règles existants sont conservés. Les fenêtres d'action reçoivent le même habillage. Voir DOMINO-V39.md pour les contrôles effectués.
+
+V38 : habillage des six pages Poker repris à partir des matières et ornements de la maquette fournie : cuir véritable de la référence, coutures répétées sans étirement, encadrements dorés, lauriers, piques et boutons. Typographie et proportions rapprochées de la maquette. Les données restent dynamiques ; les règles et les tables de jeu ne changent pas.
+
+V37 : deux décors Poker fournis par le club, Yatch rouge et NewYork bleu, s’ajoutent aux tables Luxe et Classique. Le style est choisi à la création ou par l’hôte avant le lancement et partagé entre joueurs. Les scènes et les règles Domino restent inchangées.
+
+V36 : les six pages du portail Poker adoptent le décor rouge fourni et une interface cuir noir, or et ivoire, de l’accueil à l’administration. La salle de jeu Poker et les pages Domino conservent leurs décors et leurs mécanismes.
 
 V35 : les cinq places des cartes communes au Poker restent fixes du flop à la rivière. Au Domino, la demande « Manche suivante » est conservée dans un canal partagé : les autres joueurs connectés peuvent relancer la transition si le premier navigateur échoue. Les dix secondes sont uniquement une attente visuelle locale et ne bloquent plus la transaction par comparaison d’horloges. Le bouton demeure réessayable en cas de confirmation réseau absente. Cette reprise a été vérifiée avec un décalage d’horloge et un échec simulé ; elle reste à confirmer sur le réseau du travail.
 

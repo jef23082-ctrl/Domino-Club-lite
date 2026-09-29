@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 450" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#fff1b8"/>
+      <stop offset=".5" stop-color="#dba756"/>
+      <stop offset="1" stop-color="#7c4b20"/>
+    </linearGradient>
+    <g id="corner" fill="none" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 31V15q0-8 8-8h22M10 28q9-2 11-10 1-5-5-5-5 0-4 5 1 4 5 2M27 10q-1 9-9 12" stroke-width="1.6"/>
+      <path d="M8 36q7-3 10-10M42 8q-9 0-13 9M17 24q9 3 15-4" stroke-width=".9"/>
+      <path d="M16 26q-1 7-7 10M28 16q8-1 12-8" stroke-width="1.2"/>
+      <circle cx="18" cy="18" r="2.2" fill="#e7bc71" stroke="none"/>
+      <circle cx="10" cy="41" r="1.5" fill="#e7bc71" stroke="none"/>
+      <circle cx="47" cy="9" r="1.5" fill="#e7bc71" stroke="none"/>
+    </g>
+  </defs>
+  <use href="#corner"/>
+  <use href="#corner" transform="translate(400 0) scale(-1 1)"/>
+  <use href="#corner" transform="translate(0 450) scale(1 -1)"/>
+  <use href="#corner" transform="translate(400 450) scale(-1 -1)"/>
+</svg>

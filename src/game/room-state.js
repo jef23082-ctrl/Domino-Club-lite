@@ -9,8 +9,9 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20260928T204111961';
-import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260928T204111961';
+} from './engine.js?v=20260929T190638113';
+import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260929T190638113';
+import { ROOM_STYLES } from '../config/room-styles.js?v=20260929T190638113';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -181,7 +182,7 @@ export function selectRoomStyle(room, { clientToken, style, at = Date.now() }) {
   rule(room, 'Salle introuvable.', 'room-not-found');
   rule(room.hostToken === clientToken, 'Seul l’hôte choisit le style de la salle.', 'host-only');
   rule(room.status === 'waiting', 'Le style doit être choisi avant de lancer la partie.', 'room-started');
-  rule(style === 'classic' || style === 'luxe', 'Ce style de salle n’existe pas.', 'invalid-room-style');
+  rule(Object.hasOwn(ROOM_STYLES, style), 'Ce style de salle n’existe pas.', 'invalid-room-style');
   room.style = style;
   room.updatedAt = at;
   return room;

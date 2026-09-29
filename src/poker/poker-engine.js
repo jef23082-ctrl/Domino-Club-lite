@@ -1,6 +1,7 @@
 // Three-seat, no-limit Texas Hold'em sit-and-go. All mutations are pure so a
 // Realtime Database transaction can replay them safely after contention.
-import { createLoungeName } from '../online/lounge-name.js?v=20260928T204111961';
+import { createLoungeName } from '../online/lounge-name.js?v=20260929T190638113';
+import { isPokerTableStyle, pokerTableStyle } from './poker-table-styles.js?v=20260929T190638113';
 
 export const POKER_STARTING_STACK = 20000;
 export const POKER_STACK_CHOICES = Object.freeze([5000, 10000, 20000, 50000, 100000]);
@@ -26,6 +27,7 @@ export function normalizePokerRoom(value) {
   const list = item => Array.isArray(item) ? item : item && typeof item === 'object' ? Object.values(item) : [];
   room.players = list(room.players);
   room.eliminationOrder = list(room.eliminationOrder);
+  room.style = pokerTableStyle(room.style);
   room.settings = pokerSettings(room.settings);
   room.completedHands ||= {};
   if (room.game) {
@@ -72,7 +74,7 @@ export function createPokerRoom({ code, profile, at = Date.now(), style = 'luxe'
   if (profile?.id === undefined || profile?.id === null || !code) throw new Error('Profil et code nécessaires.');
   return {
     code: String(code).toUpperCase(), kind: 'poker', status: 'waiting', hostId: profile.id,
-    style: style === 'classic' ? 'classic' : 'luxe', createdAt: at, lounge: createLoungeName(profile),
+    style: pokerTableStyle(style), createdAt: at, lounge: createLoungeName(profile),
     settings: pokerSettings(), completedHands: {},
     players: [{ id: profile.id, name: profile.name, avatar: profile.avatar || '', stack: 0, joinedAt: at }],
     phase: POKER_PHASES.WAITING, game: null
@@ -102,7 +104,7 @@ export function leavePokerRoom(room, playerId) {
 
 export function choosePokerStyle(room, playerId, style) {
   if (!room || room.status !== 'waiting' || key(room.hostId) !== key(playerId)) throw new Error('Seul l’hôte choisit le style avant la partie.');
-  if (!['classic', 'luxe'].includes(style)) throw new Error('Style de table inconnu.');
+  if (!isPokerTableStyle(style)) throw new Error('Style de table inconnu.');
   return { ...room, style };
 }
 
@@ -116,7 +118,7 @@ export function pokerSettings(settings = {}) {
 export function choosePokerSettings(room, playerId, settings) {
   if (!room || room.status !== 'waiting' || key(room.hostId) !== key(playerId)) throw new Error('Seul l’hôte règle la table avant le lancement.');
   if (!POKER_STACK_CHOICES.includes(Number(settings?.startingStack)) || !POKER_LEVEL_MINUTES.includes(Number(settings?.blindMinutes))) throw new Error('Réglages Poker invalides.');
-  if (settings.style !== undefined && !['classic', 'luxe'].includes(settings.style)) throw new Error('Style de table inconnu.');
+  if (settings.style !== undefined && !isPokerTableStyle(settings.style)) throw new Error('Style de table inconnu.');
   return { ...room, settings: pokerSettings(settings), style: settings.style ?? room.style };
 }
 

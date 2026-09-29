@@ -1,21 +1,22 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260928T204111961';
-import { profileDetails } from '../game/club-state.js?v=20260928T204111961';
-import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260928T204111961';
-import { roomPlayers } from '../game/room-state.js?v=20260928T204111961';
-import { createChatComposer } from './chat-composer.js?v=20260928T204111961';
-import { navigationIcon } from './navigation-icon.js?v=20260928T204111961';
-import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260928T204111961';
-import { displayName } from '../online/display-name.js?v=20260928T204111961';
-import { clubRankings } from '../online/combined-ranking.js?v=20260928T204111961';
-import { paginate } from './pagination.js?v=20260928T204111961';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260928T204111961';
-import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260928T204111961';
-import { requestAppFullscreen } from './app-shell.js?v=20260928T204111961';
-import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260928T204111961';
-import { homeOrnament } from './home-ornaments.js?v=20260928T204111961';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260929T190638113';
+import { profileDetails } from '../game/club-state.js?v=20260929T190638113';
+import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260929T190638113';
+import { roomPlayers } from '../game/room-state.js?v=20260929T190638113';
+import { createChatComposer } from './chat-composer.js?v=20260929T190638113';
+import { navigationIcon } from './navigation-icon.js?v=20260929T190638113';
+import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260929T190638113';
+import { displayName } from '../online/display-name.js?v=20260929T190638113';
+import { clubRankings } from '../online/combined-ranking.js?v=20260929T190638113';
+import { paginate } from './pagination.js?v=20260929T190638113';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260929T190638113';
+import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260929T190638113';
+import { requestAppFullscreen } from './app-shell.js?v=20260929T190638113';
+import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260929T190638113';
+import { homeOrnament } from './home-ornaments.js?v=20260929T190638113';
+import { applyClubPortalSkin } from '../poker/poker-portal-skin.js?v=20260929T190638113';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
-const SITE_VERSION='V35';
+export const SITE_VERSION='V42';
 export function createClubPortal({ ui, physical, access, stats, admin, chat, poker, identity, canWrite, notify, actions, onData, onLeader }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;
@@ -62,7 +63,9 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     root.dataset.page=next;root.dataset.mode=mode;header.querySelector('h1').textContent=mode==='poker'?'POKER CLUB':'DOMINO CLUB';
     header.querySelector('.portal-subtitle').textContent=mode==='poker'?'Le Roi des Fish':'Le Roi du Cochon';
     document.title=mode==='poker'?`Poker Club — Le Roi des Fish ${SITE_VERSION}`:`Domino Club — Le Roi du Cochon ${SITE_VERSION}`;
-    modeButton.querySelector('span:last-child').textContent=mode==='poker'?'Domino':'Poker';
+    modeButton.querySelector('span:last-child').textContent='Poker';
+    modeButton.setAttribute('aria-label',mode==='poker'?'Quitter le mode Poker et revenir au Domino':'Passer en mode Poker');
+    modeButton.title=mode==='poker'?'Revenir au Domino':'Passer au Poker';
     modeButton.querySelector('.portal-nav-icon').replaceChildren(navigationIcon(mode==='poker'?'domino':'poker'));
     modeButton.classList.toggle('active',mode==='poker');
     monogram.querySelector('i:first-child').textContent=mode==='poker'?'P':'D';
@@ -74,6 +77,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     updateCounts();
     if(mode==='poker'){poker.renderPage(next,pages.get(next),{profiles:data?.players||[]});}
     else if(next==='online'){actions.renderOnline();renderOnlineExtras();} else renderPage();
+    applyClubPortalSkin(root);
   }
   function showTable(){if(mode==='poker'||!snapshot?.room?.game)return;requestAppFullscreen();startLoungeMusic();access.lock();inScene=true;root.hidden=true;game.hidden=false;ui.hub.hidden=true;ui.menu.hidden=false;reparentNotices(game);document.querySelector('#casino-stage').classList.remove('is-online-dimmed');}
   function showPokerTable(){if(mode!=='poker')return;access.lock();inScene=false;root.hidden=true;game.hidden=true;ui.menu.hidden=true;poker.showScene();}
@@ -229,7 +233,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   function onlineHistoryRow(match,index){const node=el('article','portal-history-row'),description=historyDescription(match),names=(match.players||[]).map(player=>player.name||'Joueur supprimé');node.append(historyMeta(`${formatMatchDate(match.endedAt)} · ${formatMatchDuration(match)} · #${summary.history.length-index}`),el('h3','',description.title),el('p','',`${names.join(' · ')} — ${description.detail}`),el('span','portal-history-arrow','›'));return node;}
   function physicalHistoryRow(match,index){const node=el('article','portal-history-row'),names=(match.table||[]).map(id=>data.players.find(p=>String(p.id)===String(id))?.name||'Joueur supprimé');node.append(historyMeta(`${match.date||''} ${match.duration||''} · #${data.history.length-index}`),el('h3','',`${match.winner}`),el('p','',`${names.join(' · ')} — Cochons : ${match.cochon||'Aucun'}`),el('span','portal-history-arrow','›'));return node;}
   function modal(title){
-    const dialog=el('dialog','portal-dialog');dialog.setAttribute('aria-label',title);dialog.append(el('h2','',title));app.append(dialog);
+    const dialog=el('dialog','portal-dialog');dialog.setAttribute('aria-label',title);dialog.append(el('h2','',title));root.append(dialog);
     const cancel=button('Annuler',()=>{if(!dialogBusy)dialog.close();});dialog.addEventListener('cancel',event=>{if(dialogBusy)event.preventDefault();});dialog.addEventListener('close',()=>dialog.remove());
     return {dialog,cancel,show:()=>dialog.showModal()};
   }
