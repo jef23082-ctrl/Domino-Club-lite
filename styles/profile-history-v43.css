@@ -1,0 +1,13 @@
+/* Only the histories and profile text explicitly requested in A–D. */
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="history"] #page-history .portal-history-column{overflow:hidden;min-width:0}
+.club-portal[data-mode="poker"][data-page="history"] #page-history .poker-personal-history{overflow:hidden;display:flex;flex-direction:column}
+.club-portal[data-mode="poker"][data-page="history"] .poker-personal-history>h2{flex:none}
+.club-portal[data-mode="poker"][data-page="history"] .poker-personal-history>.poker-history-scroll{flex:1;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#c79b51 #0c110a}
+.club-portal[data-mode="poker"][data-page="history"] .poker-history-cards{min-width:0;max-width:100%;flex-wrap:wrap}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="history"] .portal-history-column>.poker-skin{position:absolute;inset:-2px;pointer-events:none}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="profiles"] .portal-profile-facts{font-size:clamp(13px,calc(18 * var(--p-u)),19px);font-weight:700}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="profiles"] .portal-profile-facts p{font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="profiles"] .portal-profile-badges span{font-size:clamp(13px,calc(17 * var(--p-u)),18px);font-weight:700}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="profiles"] .portal-profile-metrics strong{font-size:clamp(30px,calc(42 * var(--p-u)),44px);font-weight:800}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="profiles"] .portal-profile-metrics>div>span:last-child{font-size:clamp(13px,calc(18 * var(--p-u)),19px);font-weight:700;text-align:center}
+@media(max-width:1050px),(max-height:660px){.club-portal[data-mode="poker"][data-page="history"] .poker-personal-history>.poker-history-scroll{max-height:560px}}

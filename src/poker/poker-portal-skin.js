@@ -66,6 +66,10 @@ function skin(node, kind, frameOnly = false) {
   node.querySelector(':scope > .poker-skin')?.remove();
   node.dataset.skinMode = mode;
   node.dataset.pokerSkin = kind;
+  // Keep the material and frame outside the personal history's scrolling content.
+  if(node.matches('.poker-personal-history')&&!node.querySelector(':scope > .poker-history-scroll')){
+    const scroll=document.createElement('div');scroll.className='poker-history-scroll';scroll.append(...[...node.childNodes].filter(child=>child.nodeType!==1||child.tagName!=='H2'));node.append(scroll);
+  }
   if (node.matches('.portal-table-wrap') && !node.querySelector('.poker-material-scroll')) {
     const scroll = document.createElement('div');
     scroll.className = 'poker-material-scroll';
@@ -124,9 +128,10 @@ function decorate(root) {
   root.querySelectorAll('.portal-nav').forEach(node => skin(node, 'nav'));
   root.querySelectorAll('.portal-nav-item').forEach(node => skin(node, 'tab'));
   root.querySelectorAll('.online-action,.portal-pagination button,.poker-common-form button,.portal-chat-form button').forEach(node => {
-    const kind = node.matches('.portal-home-action--danger') ? 'muted' : node.matches('.online-action--primary,.portal-home-action--gold,.portal-home-profile-button,.portal-admin-login button[type="submit"],.poker-common-form button') ? 'gold' : node.matches('[aria-selected="true"]') ? 'gold' : 'button';
+    const kind = node.closest('.online-waiting-controls') ? 'button' : node.matches('.portal-home-action--danger') ? 'muted' : node.matches('.online-action--primary,.portal-home-action--gold,.portal-home-profile-button,.portal-admin-login button[type="submit"],.poker-common-form button') ? 'gold' : node.matches('[aria-selected="true"]') ? 'gold' : 'button';
     skin(node, kind);
   });
+  root.querySelectorAll('.online-waiting-controls .room-style-picker').forEach(node=>skin(node,'button'));
 }
 
   return decorate;

@@ -1,4 +1,4 @@
-import { roomPlayers } from '../game/room-state.js?v=20260929T190638113';
+import { roomPlayers } from '../game/room-state.js?v=20260930T205039435';
 
 // Match the unchanged engine order to clockwise physical seats, for every viewer.
 // The club leader may be visually promoted to the top seat without changing the engine order.

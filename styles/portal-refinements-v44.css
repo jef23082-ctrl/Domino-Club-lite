@@ -1,0 +1,48 @@
+/* Requested refinements only: shared portal, never the playing tables. */
+.club-portal[data-mode="domino"][data-page="online"] #page-online{grid-template-rows:calc(70 * var(--p-u)) calc(90 * var(--p-u)) minmax(calc(330 * var(--p-u)),1fr);gap:calc(14 * var(--p-u))}
+.club-portal[data-mode="domino"][data-page="online"] .portal-online-panel{width:100%;height:100%;padding:0;border:0;background:none;box-shadow:none}
+.club-portal[data-mode="domino"][data-page="online"] .portal-online-panel .online-hub__frame{width:100%;max-width:none;height:100%;padding:0;gap:0}
+.club-portal[data-mode="domino"][data-page="online"] .portal-online-panel .online-hub__status:empty{display:none}
+.club-portal[data-mode="domino"][data-page="online"] .portal-online-panel[data-view="waiting"] .online-hub__content{display:block;width:100%}
+.club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:calc(14 * var(--p-u));width:100%;height:calc(86 * var(--p-u));margin:0}
+.club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls>:is(.room-style-picker,.online-action){width:100%;min-width:0;max-width:none;height:100%;min-height:0;margin:0;padding:calc(12 * var(--p-u)) calc(16 * var(--p-u));border-radius:12px;color:#ffe3a0;font:700 clamp(15px,calc(22 * var(--p-u)),24px)/1.15 'Times New Roman',Times,serif}
+.club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls .room-style-picker{display:flex;flex-direction:column;justify-content:center;gap:5px}
+.club-portal[data-mode="domino"][data-page="online"] .room-style-picker small{font:700 clamp(11px,calc(14 * var(--p-u)),15px)/1 'Times New Roman',Times,serif}
+.club-portal[data-mode="domino"][data-page="online"] .room-style-picker__select{font:700 clamp(16px,calc(23 * var(--p-u)),25px)/1.1 'Times New Roman',Times,serif;background:transparent;color:#ffe3a0;min-width:0}
+.club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls .online-action:disabled{opacity:1;color:#aaa79d;filter:none;cursor:default}
+.club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls .online-start-action{color:#ffe3a0!important;-webkit-text-fill-color:currentColor}
+.club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls .online-action:disabled>.poker-skin{opacity:1}
+.club-portal[data-mode="domino"][data-page="online"] .portal-presence-card{overflow:hidden}
+.club-portal[data-mode="domino"][data-page="online"] .portal-presence-card>.portal-live-list{overflow-x:auto;overflow-y:hidden;min-width:0;padding:4px 0}
+.club-portal[data-mode="domino"][data-page="online"] .portal-member-state strong{font-size:clamp(16px,calc(22 * var(--p-u)),24px);font-weight:700}
+.club-portal[data-mode="domino"][data-page="online"] .portal-presence-card .portal-member-state small{font-size:clamp(14px,calc(18 * var(--p-u)),20px);font-weight:700}
+.club-portal[data-mode="domino"] .portal-room-card h3{font-size:clamp(18px,calc(25 * var(--p-u)),27px);font-weight:700}
+.club-portal[data-mode="domino"] .portal-room-card :is(p,span,button){font-weight:700}
+.club-portal[data-mode="domino"] .portal-room-card .portal-room-origin{font-size:clamp(13px,calc(17 * var(--p-u)),18px)}
+.club-portal[data-mode="domino"] .portal-room-card .portal-status-pill{font-size:clamp(12px,calc(16 * var(--p-u)),17px)}
+.club-portal[data-mode="domino"] .portal-room-portraits{min-height:calc(96 * var(--p-u));align-items:center}
+.club-portal[data-mode="domino"] .portal-room-portraits :is(.portal-avatar,.portal-empty-seat){width:calc(66 * var(--p-u));height:calc(66 * var(--p-u));flex:none}
+.club-portal[data-mode="domino"] .portal-room-portraits>div>span:last-child{font-size:clamp(14px,calc(17 * var(--p-u)),18px);font-weight:700}
+.club-portal[data-mode="domino"] .portal-room-card .portal-room-capacity{font-size:clamp(14px,calc(17 * var(--p-u)),18px);font-weight:700}
+.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-tabs{transform:translateY(calc(-10 * var(--p-u)))}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="ranking"] .portal-podium-rank{left:calc(29 * var(--p-u))}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="history"] #page-history :is(h2,h3,p,span,strong,button){font-weight:700}
+.club-portal[data-mode="poker"][data-page="home"] .portal-connected-content>span:first-child{font-size:clamp(18px,calc(23 * var(--p-u)),25px);font-weight:700}
+
+@media(max-width:1050px),(max-height:660px){
+ .club-portal[data-mode="domino"][data-page="online"] #page-online{display:flex;gap:14px;height:auto}
+ .club-portal[data-mode="domino"][data-page="online"] .portal-presence-card{min-height:70px}
+ .club-portal[data-mode="domino"][data-page="online"] .portal-lobby-host{height:auto;min-height:86px;flex:none}
+ .club-portal[data-mode="domino"] .portal-room-portraits{min-height:96px}
+}
+@media(max-width:760px){
+ .club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls{height:auto;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls>:is(.room-style-picker,.online-action){height:76px;padding:12px}
+ .club-portal[data-mode="domino"][data-page="online"] .online-waiting-controls>.online-action:last-child{grid-column:1/-1}
+ .club-portal[data-mode="domino"][data-page="online"] .portal-presence-card{flex-wrap:wrap;gap:10px}
+ .club-portal[data-mode="domino"][data-page="online"] .portal-presence-card>.portal-live-list{width:100%}
+ .club-portal[data-mode="domino"][data-page="online"] .portal-member-row{width:100%;min-width:0}
+ .club-portal[data-mode="domino"][data-page="online"] .portal-member-state{display:grid;grid-template-columns:auto minmax(0,1fr);white-space:normal;gap:4px 6px;min-width:0}
+ .club-portal[data-mode="domino"][data-page="online"] .portal-member-state strong{grid-column:2;overflow-wrap:anywhere}
+ .club-portal[data-mode="domino"][data-page="online"] .portal-member-state small{display:block;grid-column:2;grid-row:2}
+}

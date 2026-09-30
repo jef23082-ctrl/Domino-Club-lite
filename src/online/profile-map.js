@@ -1,5 +1,6 @@
 const CHARACTER_ALIASES = Object.freeze({
   alexis: 'alexis',
+  aleksi: 'alexis',
   cedric: 'cedric',
   christopher: 'christopher',
   chris: 'christopher',

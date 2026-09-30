@@ -1,7 +1,7 @@
 export function passwordForProfile(profile) {
   const name = String(profile?.name || '').trim().toLocaleLowerCase('fr-FR');
   if (name === 'jean-claude') return 'jc++';
-  if (name === 'alexis') return 'aleksi++';
+  if (name === 'alexis' || name === 'aleksi') return 'aleksi++';
   return `${name}++`;
 }
 

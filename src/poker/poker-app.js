@@ -1,18 +1,18 @@
-import { PokerRepository } from './poker-repository.js?v=20260929T190638113';
-import { applyPokerPortalSkin } from './poker-portal-skin.js?v=20260929T190638113';
-import { pokerRanking, pokerBlindStatus, pokerSettings, pokerSeatMap, pokerPotAward, POKER_STACK_CHOICES, POKER_LEVEL_MINUTES } from './poker-engine.js?v=20260929T190638113';
-import { createPokerCard, createChipStack } from './poker-cards.js?v=20260929T190638113';
-import { element as el, button, card, avatar } from '../ui/club-elements.js?v=20260929T190638113';
-import { characterIdForProfile } from '../online/profile-map.js?v=20260929T190638113';
-import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260929T190638113';
-import { POKER_TABLE_STYLES, pokerTableStyle } from './poker-table-styles.js?v=20260929T190638113';
-import { setOptimizedImage } from '../ui/image-source.js?v=20260929T190638113';
-import { requestAppFullscreen } from '../ui/app-shell.js?v=20260929T190638113';
-import { muteLoungeMusic, startLoungeMusic, stopLoungeMusic, toggleLoungeMusic, loungeMusicState, setLoungeMusicVolume } from '../ui/lounge-music.js?v=20260929T190638113';
-import { navigationIcon } from '../ui/navigation-icon.js?v=20260929T190638113';
-import { homeOrnament } from '../ui/home-ornaments.js?v=20260929T190638113';
-import { playSound, unlockSound, soundEffectState, setSoundEffectVolume, toggleSoundEffects } from '../ui/sound-player.js?v=20260929T190638113';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260929T190638113';
+import { PokerRepository } from './poker-repository.js?v=20260930T205039435';
+import { applyPokerPortalSkin } from './poker-portal-skin.js?v=20260930T205039435';
+import { pokerRanking, pokerBlindStatus, pokerSettings, pokerSeatMap, pokerPotAward, POKER_STACK_CHOICES, POKER_LEVEL_MINUTES } from './poker-engine.js?v=20260930T205039435';
+import { createPokerCard, createChipStack } from './poker-cards.js?v=20260930T205039435';
+import { element as el, button, card, avatar } from '../ui/club-elements.js?v=20260930T205039435';
+import { characterIdForProfile } from '../online/profile-map.js?v=20260930T205039435';
+import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20260930T205039435';
+import { POKER_TABLE_STYLES, pokerTableStyle } from './poker-table-styles.js?v=20260930T205039435';
+import { setOptimizedImage } from '../ui/image-source.js?v=20260930T205039435';
+import { requestAppFullscreen } from '../ui/app-shell.js?v=20260930T205039435';
+import { muteLoungeMusic, startLoungeMusic, stopLoungeMusic, toggleLoungeMusic, loungeMusicState, setLoungeMusicVolume } from '../ui/lounge-music.js?v=20260930T205039435';
+import { navigationIcon } from '../ui/navigation-icon.js?v=20260930T205039435';
+import { homeOrnament } from '../ui/home-ornaments.js?v=20260930T205039435';
+import { playSound, unlockSound, soundEffectState, setSoundEffectVolume, toggleSoundEffects } from '../ui/sound-player.js?v=20260930T205039435';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260930T205039435';
 
 const number = value => Number(value || 0).toLocaleString('fr-FR');
 const same = (left, right) => String(left) === String(right);
@@ -664,7 +664,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     target.replaceChildren(roster, detail);
   }
   function renderHistory(target) {
-    const matches = records(),panel=card('Tournois du club'),personalPanel=card('Mes dernières parties');panel.classList.add('portal-history-column');personalPanel.classList.add('portal-history-column');
+    const matches = records(),panel=card('Tournois du club'),personalPanel=card('Mes dernières parties');panel.classList.add('portal-history-column');personalPanel.classList.add('portal-history-column','poker-personal-history');
     const rowFor=match=>{
       const winner = (match.players || []).find(player => same(player.id, match.placements?.[0]));
       const duration = durationLabel(Number(match.endedAt) - Number(match.startedAt));

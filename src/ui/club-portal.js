@@ -1,23 +1,24 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260929T190638113';
-import { profileDetails } from '../game/club-state.js?v=20260929T190638113';
-import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260929T190638113';
-import { roomPlayers } from '../game/room-state.js?v=20260929T190638113';
-import { createChatComposer } from './chat-composer.js?v=20260929T190638113';
-import { navigationIcon } from './navigation-icon.js?v=20260929T190638113';
-import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260929T190638113';
-import { displayName } from '../online/display-name.js?v=20260929T190638113';
-import { clubRankings } from '../online/combined-ranking.js?v=20260929T190638113';
-import { paginate } from './pagination.js?v=20260929T190638113';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260929T190638113';
-import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260929T190638113';
-import { requestAppFullscreen } from './app-shell.js?v=20260929T190638113';
-import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260929T190638113';
-import { homeOrnament } from './home-ornaments.js?v=20260929T190638113';
-import { applyClubPortalSkin } from '../poker/poker-portal-skin.js?v=20260929T190638113';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20260930T205039435';
+import { profileDetails } from '../game/club-state.js?v=20260930T205039435';
+import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20260930T205039435';
+import { roomPlayers } from '../game/room-state.js?v=20260930T205039435';
+import { createChatComposer } from './chat-composer.js?v=20260930T205039435';
+import { navigationIcon } from './navigation-icon.js?v=20260930T205039435';
+import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20260930T205039435';
+import { displayName } from '../online/display-name.js?v=20260930T205039435';
+import { clubRankings } from '../online/combined-ranking.js?v=20260930T205039435';
+import { paginate } from './pagination.js?v=20260930T205039435';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20260930T205039435';
+import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20260930T205039435';
+import { requestAppFullscreen } from './app-shell.js?v=20260930T205039435';
+import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20260930T205039435';
+import { homeOrnament } from './home-ornaments.js?v=20260930T205039435';
+import { applyClubPortalSkin } from '../poker/poker-portal-skin.js?v=20260930T205039435';
+import { createClubInfoTicker } from './club-info-ticker.js?v=20260930T205039435';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
-export const SITE_VERSION='V42';
-export function createClubPortal({ ui, physical, access, stats, admin, chat, poker, identity, canWrite, notify, actions, onData, onLeader }) {
+export const SITE_VERSION='V46';
+export function createClubPortal({ ui, physical, access, stats, admin, chat, poker, announcements, identity, canWrite, notify, actions, onData, onLeader }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;
   const pageTransition=el('div','portal-page-transition');pageTransition.setAttribute('aria-hidden','true');pageTransition.append(el('i'),el('span'));
@@ -30,19 +31,20 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   const buttons=new Map();
   for(const [id,label,icon] of SECTIONS){const page=el('section','portal-page');page.id=`page-${id}`;page.hidden=true;page.setAttribute('aria-label',label);pages.set(id,page);scroll.append(page);
     const item=button('',()=>open(id),'portal-nav-item');item.id=`nav-btn-${id}`;const glyph=el('span','portal-nav-icon');glyph.append(navigationIcon(id));if(id==='ranking'||id==='admin'){const homeGlyph=el('span','portal-nav-home-glyph');homeGlyph.append(id==='ranking'?navigationIcon('trophy'):homeOrnament('settings'));glyph.append(homeGlyph);}item.append(glyph,el('span','',label));nav.append(item);buttons.set(id,item);}
-  const modeButton=button('',()=>{mode=mode==='domino'?'poker':'domino';if(mode==='domino')online.replaceChildren(presenceCard,lobbyHost,columns,inviteCard);open('home');},'portal-nav-item portal-mode-toggle');
+  const modeButton=button('',()=>{mode=mode==='domino'?'poker':'domino';if(mode==='domino')online.replaceChildren(presenceCard,lobbyHost,columns);open('home');},'portal-nav-item portal-mode-toggle');
   modeButton.id='nav-btn-poker';modeButton.append(el('span','portal-nav-icon'),el('span','','Poker'));
   modeButton.querySelector('.portal-nav-icon').append(navigationIcon('poker'));
   nav.append(modeButton);
   const monogram=el('span','portal-home-monogram');monogram.setAttribute('aria-hidden','true');monogram.append(el('i','','D'),el('i','','C'));
   const motto=el('span','portal-home-motto');motto.append(homeOrnament('crown'),el('span','','RESPECT\nSTRATÉGIE\nCONVIVIALITÉ'));nav.prepend(monogram);nav.append(motto);
   root.append(scroll,nav,pageTransition);app.append(root);
+  const clubInfo=createClubInfoTicker({repository:announcements,identity});root.append(clubInfo.root);
   const online=pages.get('online');
   const presenceCard=card('Joueurs connectés'), inviteCard=card('Tes invitations'), gamesCard=card('Tables du club');
   const presences=el('div','portal-live-list'), invites=el('div','portal-live-list'), games=el('div','portal-live-list');
   presenceCard.append(presences);inviteCard.append(invites);games.classList.add('portal-room-grid');
   const columns=el('div','portal-online-columns'),chatDock=el('aside','portal-live-chat'),chatSlot=el('div','portal-chat-slot');chatDock.setAttribute('aria-label','Discussion commune à tout le club');chatDock.append(chatSlot);gamesCard.append(games);columns.append(gamesCard,chatDock);
-  const lobbyHost=el('div','portal-lobby-host');online.append(presenceCard,lobbyHost,columns,inviteCard);
+  const lobbyHost=el('div','portal-lobby-host');online.append(presenceCard,lobbyHost,columns);
   gamesCard.classList.add('portal-tables');inviteCard.classList.add('portal-invites-card');presenceCard.classList.add('portal-presence-card');
   let data=null, snapshot=null, summary={history:[],stats:{},rooms:{}}, page='home', mode='domino', authenticated=false, inScene=false, profileId=null, editorId='new', generalChat=null, stopData, stopStats;
   let physicalFingerprint='', summaryFingerprint='', profilePresenceFingerprint='', dialogBusy=false, rankingMode='general', adminMode='players';
@@ -61,6 +63,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     stopLoungeMusic();poker?.hideScene();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
     page=next;inScene=false;root.hidden=false;game.hidden=true;ui.menu.hidden=true;reparentNotices(app);
     root.dataset.page=next;root.dataset.mode=mode;header.querySelector('h1').textContent=mode==='poker'?'POKER CLUB':'DOMINO CLUB';
+    clubInfo.setContext({visible:true,mode});
     header.querySelector('.portal-subtitle').textContent=mode==='poker'?'Le Roi des Fish':'Le Roi du Cochon';
     document.title=mode==='poker'?`Poker Club — Le Roi des Fish ${SITE_VERSION}`:`Domino Club — Le Roi du Cochon ${SITE_VERSION}`;
     modeButton.querySelector('span:last-child').textContent='Poker';
@@ -79,8 +82,8 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     else if(next==='online'){actions.renderOnline();renderOnlineExtras();} else renderPage();
     applyClubPortalSkin(root);
   }
-  function showTable(){if(mode==='poker'||!snapshot?.room?.game)return;requestAppFullscreen();startLoungeMusic();access.lock();inScene=true;root.hidden=true;game.hidden=false;ui.hub.hidden=true;ui.menu.hidden=false;reparentNotices(game);document.querySelector('#casino-stage').classList.remove('is-online-dimmed');}
-  function showPokerTable(){if(mode!=='poker')return;access.lock();inScene=false;root.hidden=true;game.hidden=true;ui.menu.hidden=true;poker.showScene();}
+  function showTable(){if(mode==='poker'||!snapshot?.room?.game)return;clubInfo.setContext({visible:false,mode});requestAppFullscreen();startLoungeMusic();access.lock();inScene=true;root.hidden=true;game.hidden=false;ui.hub.hidden=true;ui.menu.hidden=false;reparentNotices(game);document.querySelector('#casino-stage').classList.remove('is-online-dimmed');}
+  function showPokerTable(){if(mode!=='poker')return;clubInfo.setContext({visible:false,mode});access.lock();inScene=false;root.hidden=true;game.hidden=true;ui.menu.hidden=true;poker.showScene();}
   function refreshPoker(){if(!authenticated||mode!=='poker'||poker.isScene)return;updateCounts();poker.renderPage(page,pages.get(page),{profiles:data?.players||[]});}
   function row(text, actionLabel, action){const node=el('div','portal-list-row');node.append(el('span','',text));if(actionLabel)node.append(button(actionLabel,action,'online-action--small'));return node;}
   function renderOnlineExtras(){
@@ -142,7 +145,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     line.append(copy,controls);return line;
   }
   function roomCard(room,label,action){
-    const node=el('article','portal-room-card'),players=roomPlayers(room),strip=el('div','portal-room-portraits');
+    const node=el('article','portal-room-card'),players=roomPlayers(room),strip=el('div','portal-room-portraits');node.dataset.roomCode=room.code;
     for(const p of players){const seat=el('div');seat.append(avatar(p),el('span','',p.name));strip.append(seat);}
     for(let i=players.length;i<3;i++){const seat=el('div');seat.append(el('span','portal-empty-seat','+'),el('span','','Place libre'));strip.append(seat);}
     const enter=button(label,action,label==='Regarder'?'':'online-action--primary');if(label==='Rejoindre'&&players.length>=3)enter.disabled=true;
@@ -201,7 +204,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     for(const[id,label]of [['general','Général'],['online','En ligne'],['physical','Club physique']]){const b=button(label,()=>{rankingMode=id;renderPage();pages.get('ranking').querySelector('[aria-selected="true"]').focus();});b.setAttribute('role','tab');b.id=`ranking-tab-${id}`;b.setAttribute('aria-controls','ranking-results');b.setAttribute('aria-selected',String(rankingMode===id));b.tabIndex=rankingMode===id?0:-1;b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const ids=['general','online','physical'],i=ids.indexOf(rankingMode);rankingMode=e.key==='Home'?ids[0]:e.key==='End'?ids[2]:ids[(i+(e.key==='ArrowRight'?1:2))%3];renderPage();pages.get('ranking').querySelector('[aria-selected="true"]').focus();});tabs.append(b);}
     const rows=rankings()[rankingMode],panel=el('div','portal-ranking-results');panel.id='ranking-results';panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',`ranking-tab-${rankingMode}`);
     const note=rankingMode==='general'?'Général = manches du club physique + parties complètes en ligne. Une victoire avec deux cochons vaut deux crédits, comme dans la V2. Les manches intermédiaires en ligne ne sont pas ajoutées.':rankingMode==='online'?'Parties complètes en ligne · Barème V2 conservé.':'Manches du club physique · Barème V2 conservé.';
-    const podium=el('div','portal-podium');for(const index of [1,0,2]){const p=rows[index];if(!p||!p.totalGames)continue;const step=el('article',`portal-podium-place place-${index+1}`);step.append(el('span','portal-podium-rank',`#${index+1}`));if(index===0){const crown=el('span','portal-podium-crown');crown.append(homeOrnament('crown'));step.append(crown);}step.append(avatar(p),el('h3','',p.name));const metrics=el('p','portal-podium-metrics');for(const [icon,value,label] of [['percent',`${p.percent||0}%`,'victoires'],['domino',p.totalGames,'parties'],['pig',p.coch||0,'cochons']]){const item=el('span');item.append(navigationIcon(icon),document.createTextNode(`${value} ${label}`));metrics.append(item);}step.append(metrics);podium.append(step);}panel.append(podium);
+    const podium=el('div','portal-podium');for(const index of [1,0,2]){const p=rows[index];if(!p||!p.totalGames)continue;const step=el('article',`portal-podium-place place-${index+1}`);step.append(el('span','portal-podium-rank',`#${index+1}`));step.append(avatar(p),el('h3','',p.name));const metrics=el('p','portal-podium-metrics');for(const [icon,value,label] of [['percent',`${p.percent||0}%`,'victoires'],['domino',p.totalGames,'parties'],['pig',p.coch||0,'cochons']]){const item=el('span');item.append(navigationIcon(icon),document.createTextNode(`${value} ${label}`));metrics.append(item);}step.append(metrics);podium.append(step);}panel.append(podium);
     panel.append(rows.length?rankingTable(rows,true,{selfId:identity().profile?.id,onDetails:p=>{profileId=p.id;open('profiles');}}):el('p','portal-muted','Aucun résultat enregistré.'));
     const help=button('ⓘ Comprendre le classement',()=>{const {dialog,cancel,show}=modal('Le barème du club');cancel.textContent='Fermer';dialog.append(el('p','',note),el('p','','Le classement conserve le tri V2 : taux de crédits de victoire, puis score (victoires moins cochons). Série : victoires consécutives par date. « — » indique un historique incomplet. Le taux peut dépasser 100 %.'),cancel);show();},'portal-ranking-help');panel.append(help);
     section.append(tabs,panel);target.append(section);
@@ -280,5 +283,5 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     if(!summary.history.length)history.append(el('p','portal-muted','Aucun résultat.'));slot.append(rooms,history);
   }
   poker.setCallbacks({refresh:refreshPoker,showScene:showPokerTable,open});
-  return {activate,open,showTable,showPokerTable,update,get isScene(){return inScene||poker.isScene;},get mode(){return mode;},get page(){return page;},get authenticated(){return authenticated;},dispose(){clearInterval(activityTimer);stopData?.();stopStats?.();generalChat?.dispose();poker.dispose();chatDock.remove();root.remove();}};
+  return {activate,open,showTable,showPokerTable,update,get isScene(){return inScene||poker.isScene;},get mode(){return mode;},get page(){return page;},get authenticated(){return authenticated;},dispose(){clubInfo.dispose();clearInterval(activityTimer);stopData?.();stopStats?.();generalChat?.dispose();poker.dispose();chatDock.remove();root.remove();}};
 }

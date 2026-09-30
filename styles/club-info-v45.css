@@ -1,0 +1,66 @@
+/* Approved 480 × 90 blue plaque. Rules are isolated from existing pages. */
+.club-portal .club-info-ticker{--ticker-width:480px;position:fixed;left:24px;top:24px;width:var(--ticker-width);height:calc(var(--ticker-width) * 3 / 16);padding:0;margin:0;border:0;background:transparent;z-index:60;isolation:isolate;filter:drop-shadow(0 2px 7px #001a39b0);font-family:Arial,Helvetica,sans-serif}
+.club-info-ticker[hidden],.club-info-manager [hidden]{display:none!important}
+.club-info-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;user-select:none}
+.club-info-lane{position:absolute;left:17.5%;right:17.5%;top:31%;height:40%;display:flex;align-items:center;overflow:hidden;pointer-events:none;z-index:1;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.club-info-track{display:flex;width:max-content;flex:none;will-change:transform}
+.club-info-original{display:block;flex:none;white-space:pre;font-size:calc(var(--ticker-width) * .040);font-weight:500;line-height:1.2;letter-spacing:.01em;text-shadow:0 0 7px currentColor,0 2px 2px #000}
+.club-portal .club-info-ticker button{position:absolute;border:0;background:transparent;padding:0;margin:0;min-width:0;min-height:0;box-shadow:none;cursor:pointer}
+.club-portal .club-info-ticker .club-info-open{inset:0;width:100%;height:100%;border-radius:60px;z-index:2}
+.club-portal .club-info-ticker .club-info-open:active{background:#42caff0a}
+.club-portal .club-info-ticker .club-info-arrow{top:11%;width:16%;height:79%;border-radius:50%;z-index:3;transition:box-shadow .15s,background .15s}
+.club-info-previous{left:1.9%}.club-info-next{right:1.9%}
+.club-portal .club-info-ticker .club-info-arrow:hover{box-shadow:inset 0 0 20px #25d8ff33;background:#6ef0ff08}
+.club-portal .club-info-ticker .club-info-arrow:active{background:#6ef0ff22}
+.club-portal .club-info-ticker .club-info-arrow:disabled{cursor:default;opacity:1}
+.club-info-ticker button:focus-visible{outline:2px solid #c9fcff;outline-offset:2px}
+.club-info-manager{position:fixed;inset:0;width:min(1120px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;overflow:auto;border:2px solid #51cfff;border-radius:20px;background:radial-gradient(ellipse at 50% 0,#123a5366,transparent 65%),#050d13;box-shadow:inset 0 0 0 3px #091c34,inset 0 0 0 4px #1b5980,0 12px 60px #000d,0 0 20px #009de533;color:#d9f4ff;scrollbar-color:#239fd6 #07111b;font:400 14px/1.45 Arial,Helvetica,sans-serif;color-scheme:dark}
+.club-info-manager,.club-info-manager *{box-sizing:border-box}
+.club-info-manager::backdrop{background:#000b;backdrop-filter:blur(4px)}
+.club-info-manager-content{padding:28px}
+.club-info-manager-header{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid #2370a069}
+.club-info-manager-header small{display:block;color:#87b4cc;font-size:10px;letter-spacing:.12em;line-height:1.5}
+.club-info-manager h2{font:600 29px/1.2 Arial,Helvetica,sans-serif;margin:6px 0 0;color:#e3f8ff;text-shadow:0 0 16px #32a8ee44}
+.club-info-manager h3{font:600 18px/1.3 Arial,Helvetica,sans-serif;margin:0 0 18px;color:#e3f8ff}
+.club-portal:is([data-mode="domino"],[data-mode="poker"]) .club-info-manager :is(h2,h3){font-family:Arial,Helvetica,sans-serif!important}
+.club-info-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0 22px}
+.club-info-tools p{flex:1;min-width:200px;font-size:14px;line-height:1.5;color:#b3cddf;margin:0}
+.club-info-manager-columns{display:grid;grid-template-columns:290px minmax(0,1fr);gap:24px}
+.club-info-manager button{position:relative;font:400 14px/1.35 Arial,Helvetica,sans-serif;min-width:0;min-height:0;margin:0;border:1px solid #3a819f;border-radius:7px;background:linear-gradient(#173047,#091721);padding:9px 12px;color:#e1f6ff;box-shadow:inset 0 1px 0 #88d4f533;cursor:pointer;transition:border-color .15s,background .15s}
+.club-info-manager button:hover{border-color:#81e8ff;background:linear-gradient(#1c4565,#102635)}
+.club-info-manager button:disabled{opacity:.5;cursor:wait}
+.club-portal:is([data-mode="domino"],[data-mode="poker"]) :is(.club-info-ticker,.club-info-manager) button:disabled{filter:none}
+.club-info-manager button:focus-visible{outline:2px solid #c9fcff;outline-offset:2px}
+.club-info-manager .club-info-close{width:40px;height:40px;flex:none;border-radius:50%;font-size:27px;padding:0;line-height:1}
+.club-info-message-list{display:flex;flex-direction:column;gap:10px;max-height:590px;overflow:auto;padding:1px 5px 1px 1px;scrollbar-color:#239fd6 #07111b}
+.club-info-message-row{padding:12px;border:1px solid #244657;border-radius:9px;background:#0b1822}
+.club-info-message-row.is-selected{border-color:#44c8ff;box-shadow:0 0 0 1px #34befe44}
+.club-info-message-excerpt{margin:0 0 10px;font-size:14px;line-height:1.35;overflow-wrap:anywhere}
+.club-info-message-meta{color:#8faebe;display:block;font-size:11px;line-height:1.4}
+.club-info-row-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.club-info-manager .club-info-row-actions button{padding:5px 8px;font-size:11px}
+.club-info-confirm{padding-top:10px;margin-top:10px;border-top:1px solid #4c3546;color:#ffc4ce;font-size:12px}
+.club-info-form{min-width:0;padding:18px;border:1px solid #284f64;border-radius:12px;background:#020a1080}
+.club-info-field{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:700;color:#d2e9f8}
+.club-info-form :is(textarea,input[type=number],input[type=text],select){min-width:0;width:100%;border:1px solid #346b85;background:#050e17;border-radius:7px;color:#e5faff;padding:12px;font:400 15px/1.45 Arial,Helvetica,sans-serif;outline:none}
+.club-info-form :is(input,textarea,select):focus{border-color:#55d9ff;box-shadow:0 0 0 2px #22c6ff22}
+.club-info-form textarea{resize:vertical;min-height:100px}
+.club-info-settings{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 12px}
+.club-info-color-control{display:flex;align-items:center;gap:8px}
+.club-info-color-control input[type=color]{width:46px;height:46px;flex:none;padding:3px;border:1px solid #346b85;background:#050e17;border-radius:7px;cursor:pointer}
+.club-info-palette{display:flex;gap:8px;justify-content:flex-end;padding:5px 0 12px}
+.club-info-manager .club-info-palette button{width:24px;height:24px;min-width:0;padding:0;border-radius:50%;background:var(--swatch);border-color:#8dbad5;box-shadow:none}
+.club-info-advanced{margin:6px 0 14px;color:#87b4cc;font-size:12px}
+.club-info-advanced summary{cursor:pointer}
+.club-info-form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}
+.club-info-preview-label{color:#78b6d6;font-size:10px;letter-spacing:.08em;margin:12px 0 4px}
+.club-portal .club-info-preview{position:relative;inset:auto;--ticker-width:480px;width:min(480px,100%);height:auto;aspect-ratio:16/3;margin:0 auto 18px;z-index:0;container-type:inline-size;filter:none}
+.club-info-preview .club-info-original{font-size:4cqw}
+.club-info-feedback{font-size:13px;min-height:20px;color:#83eab8;margin:10px 0}
+.club-info-feedback[role=alert]{color:#ffacb5}
+.club-info-form-actions{display:flex;gap:10px;flex-wrap:wrap}
+.club-info-manager .club-info-primary{border-color:#7adaff;background:linear-gradient(#41bced,#166aaa);color:#031425;font-weight:700;box-shadow:inset 0 1px 0 #d1f7ff66,0 2px 9px #0098da22}
+@media(max-width:1400px){.club-portal .club-info-ticker:not(.club-info-preview){--ticker-width:min(480px,35vw)}}
+@media(max-width:1050px),(max-height:660px){.club-portal .club-info-ticker:not(.club-info-preview){--ticker-width:min(28vw,300px);left:8px;top:8px}.club-info-manager-columns{grid-template-columns:230px minmax(0,1fr)}}
+@media(max-width:650px){.club-portal .club-info-ticker:not(.club-info-preview){--ticker-width:min(45vw,220px);left:4px;top:4px}.club-info-manager-content{padding:18px}.club-info-manager-columns{grid-template-columns:1fr}.club-info-message-list{max-height:190px}.club-info-settings,.club-info-form-grid{grid-template-columns:1fr}.club-info-manager h2{font-size:24px}}
+@media(prefers-reduced-motion:reduce){.club-info-ticker button,.club-info-manager button{transition:none!important}}

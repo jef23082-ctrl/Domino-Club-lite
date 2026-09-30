@@ -1,6 +1,6 @@
-import { REACTION_ASSETS, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260929T190638113';
-import { createWorkBeacon } from './work-beacon.js?v=20260929T190638113';
-import { setOptimizedImage } from './image-source.js?v=20260929T190638113';
+import { REACTION_ASSETS, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260930T205039435';
+import { createWorkBeacon } from './work-beacon.js?v=20260930T205039435';
+import { setOptimizedImage } from './image-source.js?v=20260930T205039435';
 
 export function isPremiumReaction(effect) {
   return effect === 'working' || Boolean(REACTION_ASSETS[effect]);
