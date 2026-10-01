@@ -9,9 +9,9 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20260930T205039435';
-import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20260930T205039435';
-import { ROOM_STYLES } from '../config/room-styles.js?v=20260930T205039435';
+} from './engine.js?v=20261001T003934265';
+import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20261001T003934265';
+import { ROOM_STYLES } from '../config/room-styles.js?v=20261001T003934265';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -326,14 +326,14 @@ export function passTurnInRoom(room, { playerId, at = Date.now() }) {
   return room;
 }
 
-export function startNextRoundInRoom(room, { at = Date.now(), randomIndex, expectedRoundNumber, expectedResultAt } = {}) {
-  if (room?.status === 'playing' && room.game?.roundStatus === 'playing' && expectedRoundNumber !== undefined && Number(room.game.roundNumber) > Number(expectedRoundNumber)) return room;
+export function startNextRoundInRoom(room, { at = Date.now(), randomIndex, expectedMatchId, expectedRoundNumber, expectedResultAt, playerId } = {}) {
+  if(expectedMatchId!==undefined)rule(String(room?.matchId||room?.code)===String(expectedMatchId),'La partie a changé.','stale-match');
+  if(playerId!==undefined)rule(roomPlayers(room).some(p=>String(p.playerId)===String(playerId)),'Seul un joueur de la salle peut lancer la manche suivante.','player-not-seated');
+  if (expectedRoundNumber !== undefined && Number(room?.game?.roundNumber) > Number(expectedRoundNumber)) return room;
   rule(room?.status === 'playing' && room.game?.roundStatus === 'ended', 'La manche n’est pas terminée.', 'round-not-ended');
   if (expectedRoundNumber !== undefined) rule(Number(room.game.roundNumber) === Number(expectedRoundNumber), 'La manche suivante est déjà lancée.', 'stale-round');
   if (expectedResultAt !== undefined) rule(Number(room.game.roundResult?.at) === Number(expectedResultAt), 'Le résultat de la manche a changé.', 'stale-result');
-  // Only the round identity controls this atomic transition. The ten-second
-  // ceremony is a local, monotonic UI wait before its shared request is sent;
-  // comparing clients' wall clocks here stranded rooms on skewed machines.
+  // Identity, not a browser timer, controls this atomic transition.
   const starterId = room.game.roundResult?.type === 'winner' ? room.game.roundResult.winnerId : null;
   transitionRoom(room, ROOM_PHASE.NEXT_ROUND, at);
   room.game = buildRound(

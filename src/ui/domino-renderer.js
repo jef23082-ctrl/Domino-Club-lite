@@ -1,6 +1,6 @@
-import { parseTile } from '../game/engine.js?v=20260930T205039435';
-import { displayName } from '../online/display-name.js?v=20260930T205039435';
-import { createWorkBeacon } from './work-beacon.js?v=20260930T205039435';
+import { parseTile } from '../game/engine.js?v=20261001T003934265';
+import { displayName } from '../online/display-name.js?v=20261001T003934265';
+import { createWorkBeacon } from './work-beacon.js?v=20261001T003934265';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 

@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20260930T205039435';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261001T003934265';
 import {
   createInitialRoom,
   cancelRoomInState,
@@ -15,17 +15,19 @@ import {
   startRematchInRoom,
   startNextRoundInRoom,
   timeoutTurnInRoom
-} from '../game/room-state.js?v=20260930T205039435';
-import { randomId } from './ids.js?v=20260930T205039435';
-import { liveTransaction } from './live-transaction.js?v=20260930T205039435';
-import { createLoungeName } from '../online/lounge-name.js?v=20260930T205039435';
+} from '../game/room-state.js?v=20261001T003934265';
+import { randomId } from './ids.js?v=20261001T003934265';
+import { liveTransaction } from './live-transaction.js?v=20261001T003934265';
+import { conditionalRoomWrite } from './conditional-room-write.js?v=20261001T003934265';
+import { createLoungeName } from '../online/lounge-name.js?v=20261001T003934265';
 
 export class RoomRepository {
-  constructor(database, { now = () => Date.now() } = {}) {
+  constructor(database, { now = () => Date.now(), roundTransport = conditionalRoomWrite } = {}) {
     this.database = database;
     this.rooms = database.ref(FIREBASE_PATHS.rooms);
     this.roundAdvanceRequests = database.ref(FIREBASE_PATHS.roundAdvanceRequests);
     this.now = now;
+    this.roundTransport=roundTransport;
   }
 
   async create({ profile, clientToken, at } = {}) {
@@ -60,6 +62,8 @@ export class RoomRepository {
   }
 
   async reattach(code, context) {
+    const reference=this.rooms.child(String(code||'').toUpperCase());
+    if(/^https?:\/\//.test(String(reference)))return this.roundTransport(reference,room=>reattachPlayerInRoom(room,this.#withServerTime(context)));
     return this.#reduce(code, room => reattachPlayerInRoom(room, this.#withServerTime(context)));
   }
 
@@ -92,6 +96,9 @@ export class RoomRepository {
   }
 
   async nextRound(code, context) {
+    const reference=this.rooms.child(String(code||'').toUpperCase());
+    if(/^https?:\/\//.test(String(reference)))return this.roundTransport(reference,room=>startNextRoundInRoom(room,this.#withServerTime(context)));
+    // In-memory test stores / adapters without a Firebase URL.
     return this.#reduce(code, room => startNextRoundInRoom(room, this.#withServerTime(context)));
   }
 

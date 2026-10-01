@@ -1,0 +1,15 @@
+/* Only the four Domino ranking controls. Preserve the results below them. */
+.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-controls{--ranking-tab-gap:calc(14 * var(--p-u));gap:var(--ranking-tab-gap);align-items:center;flex-wrap:nowrap;transform:translateY(calc(-2 * var(--p-u)))}
+.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-tabs{gap:var(--ranking-tab-gap);height:auto;overflow:visible;background:transparent;border:0;border-radius:0;transform:none}
+.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-archive{display:block;flex:none;transform:none;min-height:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:inherit}
+.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-controls :is(.portal-ranking-tabs .online-action,.portal-ranking-archive-trigger){height:calc(46 * var(--v18-u));min-height:40px;min-width:calc(160 * var(--v18-u));margin:0;padding:8px 16px;border:0;border-radius:11px;font:700 calc(18 * var(--v18-u))/1 'Times New Roman',Times,serif;color:#f4d18a;white-space:nowrap}
+.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-tabs [aria-selected="true"]{color:#201302}
+.portal-ranking-archive-trigger>span:not(.poker-skin){position:relative;z-index:1}
+.portal-ranking-archive-chevron{margin-left:12px}
+.portal-ranking-archive-options{position:fixed;inset:auto;margin:0;padding:5px;border:2px solid #d4ad60;border-radius:10px;background:#000;color:#f4d18a;box-shadow:inset 0 0 0 1px #514024,0 8px 24px #000b;max-height:min(320px,50vh);overflow-y:auto;color-scheme:dark}
+.portal-ranking-archive-options:popover-open{display:flex;flex-direction:column;gap:4px}
+.club-portal[data-mode="domino"] .portal-ranking-archive-option{display:block;width:100%;min-height:38px;padding:10px 12px;margin:0;border:0;border-radius:5px;background:#000;color:#f4d18a;font:700 17px/1.2 'Times New Roman',Times,serif;text-align:left;cursor:pointer}
+.club-portal[data-mode="domino"] .portal-ranking-archive-option:is(:hover,:focus-visible){background:#17130b;outline:1px solid #d4ad60;outline-offset:-1px}
+.portal-ranking-archive-option[aria-selected="true"]::after{content:'✓';float:right;margin-left:12px;color:#f4d18a}
+@media(max-width:1050px),(max-height:660px){.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-controls{--ranking-tab-gap:10px}.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-controls :is(.portal-ranking-tabs .online-action,.portal-ranking-archive-trigger){min-width:0;height:44px;font-size:16px;padding:8px 12px}}
+@media(max-width:650px){.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-tabs{display:contents}.club-portal[data-mode="domino"][data-page="ranking"] .portal-ranking-controls :is(.portal-ranking-tabs .online-action,.portal-ranking-archive-trigger){width:100%;font-size:15px;padding:8px}.portal-ranking-archive-chevron{margin-left:6px}}

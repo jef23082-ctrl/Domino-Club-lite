@@ -1,4 +1,4 @@
-import { roomPlayers } from '../game/room-state.js?v=20260930T205039435';
+import { roomPlayers } from '../game/room-state.js?v=20261001T003934265';
 export const PRESENCE_MAX_AGE = 120000;
 export function connectedRoomPlayers(room, presences, now = Date.now()) {
   return roomPlayers(room).filter(player => Object.entries(presences || {}).some(([token,presence]) =>

@@ -1,4 +1,6 @@
-import { announcementsForMode, announcementColor, DEFAULT_ANNOUNCEMENT_COLOR } from '../services/club-announcement-repository.js?v=20260930T205039435';
+import { announcementsForMode, announcementColor, DEFAULT_ANNOUNCEMENT_COLOR } from '../services/club-announcement-repository.js?v=20261001T003934265';
+import {createAnnouncementEditor,renderAnnouncementContent} from './club-announcement-editor.js?v=20261001T003934265';
+import {announcementContentText} from '../services/club-announcement-content.js?v=20261001T003934265';
 
 const frameUrl=new URL('../../assets/ui/club-info-blue-v45.png',import.meta.url).href;
 const node=(tag,className='',text)=>{const n=document.createElement(tag);n.className=className;if(text!==undefined)n.textContent=text;return n;};
@@ -35,15 +37,28 @@ export function createClubInfoTicker({repository,identity}) {
   function measure(target,item) {
     const width=target.root.getBoundingClientRect().width;if(width<=0||target.root.hidden)return;
     const text=item?.text||'Cliquez ici pour écrire un message',color=announcementColor(item?.textColor),duration=durationOf(item);
-    const fingerprint=JSON.stringify([item?.id,text,color,duration,width]);if(fingerprint===target.fingerprint)return;
+    const fingerprint=JSON.stringify([item?.id,text,item?.content,color,duration,width]);if(fingerprint===target.fingerprint)return;
     stopAnimation(target);target.fingerprint=fingerprint;
-    const copy=node('span','club-info-original',text);copy.style.color=color;target.track.replaceChildren(copy);target.track.style.transform='translateX(0)';
+    const copy=node('span','club-info-original');renderAnnouncementContent(copy,item?.content?item:{text});copy.style.color=color;target.track.replaceChildren(copy);
     target.root.dataset.duration=String(duration);target.root.dataset.messageId=item?.id||'';
     // Club messages must scroll from the first display, including when the OS
     // requests reduced decorative motion. CSS still reduces hover transitions.
-    const gap=Math.max(42,target.lane.clientWidth-copy.getBoundingClientRect().width+42),distance=copy.getBoundingClientRect().width+gap;
+    const start=target.lane.clientWidth/2,copyWidth=copy.getBoundingClientRect().width;
+    const gap=Math.max(42,target.lane.clientWidth-copyWidth+42),distance=copyWidth+gap;
+    target.track.style.transform=`translateX(${start}px)`;
     copy.style.paddingRight=`${gap}px`;for(let i=0;i<2;i++)target.track.append(copy.cloneNode(true));
-    target.animation=target.track.animate([{transform:'translateX(0px)'},{transform:`translateX(-${distance}px)`}],{duration:duration*1000,iterations:Infinity,easing:'linear'});
+    // The first character starts at the centre, with a short reading pause.
+    // Identical copies one cycle apart keep subsequent loops seamless.
+    const hold=Math.min(1.2/duration,.2);
+    const frames=from=>[{transform:`translateX(${from}px)`,offset:0},{transform:`translateX(${from}px)`,offset:hold},{transform:`translateX(${from-distance}px)`,offset:1}];
+    const intro=target.track.animate(frames(start),{duration:duration*1000,iterations:1,easing:'linear'});target.animation=intro;
+    intro.addEventListener('finish',()=>{
+      if(disposed||target.animation!==intro)return;
+      // From the second copy onwards a preceding copy supplies the trailing
+      // text on the left. This avoids a cut/jump at the centred loop boundary.
+      target.animation=target.track.animate(frames(start-distance),{duration:duration*1000,iterations:Infinity,easing:'linear'});
+      intro.cancel();if(document.hidden||(!visible&&target===view))target.animation.pause();
+    },{once:true});
     if(document.hidden||(!visible&&target===view))target.animation.pause();
   }
   function scheduleMeasure(){if(frame||disposed||!visible)return;frame=requestAnimationFrame(()=>{frame=null;measure(view,selected());});}
@@ -79,41 +94,44 @@ export function createClubInfoTicker({repository,identity}) {
     const dialog=node('dialog','club-info-manager');dialog.setAttribute('aria-label','Gérer les infos du club');
     const header=node('header','club-info-manager-header'),close=control('×',()=>{if(!busy)dialog.close();},'club-info-close');close.setAttribute('aria-label','Fermer les infos du club');
     const heading=node('div');heading.append(node('small','','DOMINO & POKER CLUB'),node('h2','','Messages du club'));header.append(heading,close);
-    const tools=node('div','club-info-tools'),add=control('Créer un message',()=>edit(null),'club-info-primary');tools.append(node('p','','Choisissez un message, sa couleur et sa durée de passage. Les modifications sont partagées avec les joueurs du club.'),add);
+    const tools=node('div','club-info-tools'),add=control('Créer un message',()=>edit(null),'club-info-primary');tools.append(node('p','',repository.canReorder()?'Vous pouvez gérer tous les messages et leur ordre. Les modifications sont partagées avec les joueurs du club.':'Vous pouvez créer et gérer vos propres messages. Seul Khalil peut gérer tous les messages et leur ordre.'),add);
     const columns=node('div','club-info-manager-columns'),list=node('div','club-info-message-list'),form=node('form','club-info-form');list.setAttribute('aria-label','Messages du club');
     const editorHeading=node('h3'),preview=plaque(true);views.add(preview);
     const inputFor=(name,label,tag='input')=>{const field=node('label','club-info-field',label),input=node(tag);input.name=name;field.append(input);return {field,input};};
-    const text=inputFor('text','Message défilant','textarea'),duration=inputFor('scrollDuration','Durée d’un passage (secondes)'),color=inputFor('textColor','Couleur du texte'),section=inputFor('section','Section','select'),order=inputFor('order','Ordre d’affichage'),active=inputFor('active','Message actif','select');
-    text.input.required=true;text.input.maxLength=1200;text.input.rows=4;color.input.type='color';duration.input.type=order.input.type='number';duration.input.min=5;duration.input.max=60;duration.input.step=1;order.input.min=-10000;order.input.max=10000;order.input.step=1;duration.input.required=order.input.required=true;
+    const text=createAnnouncementEditor({onChange:updatePreview,onError:error,onLoading:loading=>{save.disabled=loading;if(loading){feedback.textContent='Lecture de l’image…';feedback.setAttribute('role','status');}else if(feedback.getAttribute('role')!=='alert')feedback.textContent='Image ajoutée.';}}),duration=inputFor('scrollDuration','Durée d’un passage (secondes)'),color=inputFor('textColor','Couleur du texte'),section=inputFor('section','Section','select'),order=inputFor('order','Ordre d’affichage'),active=inputFor('active','Message actif','select');
+    color.input.type='color';duration.input.type=order.input.type='number';duration.input.min=5;duration.input.max=60;duration.input.step=1;order.input.min=-10000;order.input.max=10000;order.input.step=1;duration.input.required=order.input.required=true;
     for(const [value,label]of Object.entries(sectionName)){const option=node('option','',label);option.value=value;section.input.append(option);}for(const [value,label]of [['true','Oui'],['false','Non']]){const option=node('option','',label);option.value=value;active.input.append(option);}
     const colorHex=node('input');colorHex.type='text';colorHex.setAttribute('aria-label','Code couleur');colorHex.pattern='#[0-9a-fA-F]{6}';colorHex.maxLength=7;colorHex.required=true;
     const colorControl=node('div','club-info-color-control');colorControl.append(color.input,colorHex);color.field.append(colorControl);
     const settings=node('div','club-info-settings');settings.append(duration.field,color.field);const palette=node('div','club-info-palette');
     for(const [label,value]of [['Blanc glacé','#dcf7ff'],['Cyan','#47dcff'],['Rouge vif','#ff3636'],['Or','#ffd36a'],['Vert','#71ff9c'],['Rose','#ffa7e5']]){const swatch=control('',()=>{color.input.value=colorHex.value=value;updatePreview();});swatch.setAttribute('aria-label',label);swatch.title=label;swatch.style.setProperty('--swatch',value);palette.append(swatch);}
-    const advanced=node('details','club-info-advanced'),fields=node('div','club-info-form-grid');fields.append(section.field,order.field,active.field);advanced.append(node('summary','','Section, ordre et visibilité'),fields);
+    const advanced=node('details','club-info-advanced'),fields=node('div','club-info-form-grid');order.field.hidden=!repository.canReorder();order.input.disabled=!repository.canReorder();fields.classList.toggle('club-info-own-settings',!repository.canReorder());fields.append(section.field,order.field,active.field);advanced.append(node('summary','',repository.canReorder()?'Section, ordre et visibilité':'Section et visibilité'),fields);
     const actions=node('div','club-info-form-actions'),save=node('button','club-info-primary','Enregistrer'),cancel=control('Annuler',()=>dialog.close());save.type='submit';actions.append(save,cancel);
     const feedback=node('p','club-info-feedback');feedback.setAttribute('role','status');form.append(editorHeading,text.field,settings,palette,advanced,node('p','club-info-preview-label','PRÉVISUALISATION EN DIRECT'),preview.root,actions);
     columns.append(list,form);const content=node('div','club-info-manager-content');content.append(header,tools,feedback,columns);dialog.append(content);root.parentElement.append(dialog);
     let editing=null,busy=false,pendingDelete=null,previewFrame=null;
-    const values=()=>({title:editing?.title||text.input.value.trim().slice(0,140),text:text.input.value,textColor:color.input.value,section:section.input.value,scrollDuration:Number(duration.input.value),order:Number(order.input.value),active:active.input.value==='true'});
+    const values=()=>{const content=text.read(),plain=announcementContentText(content);return {title:editing?.title||plain.slice(0,140),text:plain,content,textColor:color.input.value,section:section.input.value,scrollDuration:Number(duration.input.value),order:Number(order.input.value),active:active.input.value==='true'};};
     function error(message){feedback.textContent=message;feedback.setAttribute('role','alert');}
-    function updatePreview(){if(previewFrame)return;previewFrame=requestAnimationFrame(()=>{previewFrame=null;if(dialog.open)measure(preview,values());});}
+    function updatePreview(){if(previewFrame)return;previewFrame=requestAnimationFrame(()=>{previewFrame=null;if(dialog.open){try{measure(preview,values());}catch(e){error(e.message);}}});}
     function edit(item) {
-      if(busy)return;editing=item?{...item}:null;feedback.textContent='';feedback.setAttribute('role','status');editorHeading.textContent=item?'Modifier le message':'Nouveau message';
+      if(busy||text.loading)return;if(item&&!repository.canManage(item))item=null;editing=item?{...item}:null;feedback.textContent='';feedback.setAttribute('role','status');editorHeading.textContent=item?'Modifier le message':'Nouveau message';
       const value=item||{text:'',textColor:DEFAULT_ANNOUNCEMENT_COLOR,section:'all',scrollDuration:18,order:Math.max(0,...all.map(a=>Number(a.order)||0))+1,active:true};
-      text.input.value=value.text;color.input.value=colorHex.value=announcementColor(value.textColor);section.input.value=value.section;duration.input.value=value.scrollDuration;order.input.value=value.order;active.input.value=String(value.active);pendingDelete=null;updatePreview();refreshList();
+      text.set(value);color.input.value=colorHex.value=announcementColor(value.textColor);section.input.value=value.section;duration.input.value=value.scrollDuration;order.input.value=value.order;active.input.value=String(value.active);pendingDelete=null;updatePreview();refreshList();
     }
     async function perform(operation) {
-      if(busy)return;busy=true;dialog.setAttribute('aria-busy','true');feedback.textContent='Enregistrement…';feedback.setAttribute('role','status');dialog.querySelectorAll('button,input,textarea,select').forEach(b=>b.disabled=true);
-      try{await operation();if(dialog.open)feedback.textContent='Modification enregistrée.';}catch(e){error(e.message||'Enregistrement impossible. Réessayez.');}finally{busy=false;dialog.removeAttribute('aria-busy');dialog.querySelectorAll('button,input,textarea,select').forEach(b=>b.disabled=false);if(dialog.open){if(editing&&!all.some(item=>item.id===editing.id))edit(null);refreshList();}}
+      if(busy||text.loading)return;busy=true;text.setDisabled(true);dialog.setAttribute('aria-busy','true');feedback.textContent='Enregistrement…';feedback.setAttribute('role','status');dialog.querySelectorAll('button,input,textarea,select').forEach(b=>b.disabled=true);
+      try{await operation();if(dialog.open)feedback.textContent='Modification enregistrée.';}catch(e){error(e.message||'Enregistrement impossible. Réessayez.');}finally{busy=false;text.setDisabled(false);dialog.removeAttribute('aria-busy');dialog.querySelectorAll('button,input,textarea,select').forEach(b=>b.disabled=false);order.input.disabled=!repository.canReorder();if(dialog.open){if(editing&&!all.some(item=>item.id===editing.id&&repository.canManage(item)))edit(null);refreshList();}}
     }
     function refreshList() {
       list.replaceChildren();if(!all.length)list.append(node('p','club-info-empty','Aucun message. Créez la première information du club.'));
       all.forEach((item,i)=>{
-        const row=node('article','club-info-message-row');row.dataset.announcementId=item.id;row.classList.toggle('is-selected',item.id===editing?.id);const excerpt=node('p','club-info-message-excerpt',item.text);excerpt.style.color=announcementColor(item.textColor);
+        const row=node('article','club-info-message-row');row.dataset.announcementId=item.id;row.classList.toggle('is-selected',item.id===editing?.id);const excerpt=node('p','club-info-message-excerpt');renderAnnouncementContent(excerpt,item);excerpt.style.color=announcementColor(item.textColor);
         row.append(excerpt,node('small','club-info-message-meta',`Message ${i+1} · ${sectionName[item.section]||'Tous'} · ${item.scrollDuration} s · ${item.active?'Actif':'Inactif'} · ${item.author?.name||item.author||'Joueur'}`));const controls=node('div','club-info-row-actions');
-        const up=control('↑',()=>perform(()=>repository.move(item.id,-1))),down=control('↓',()=>perform(()=>repository.move(item.id,1)));up.setAttribute('aria-label',`Monter le message ${i+1}`);down.setAttribute('aria-label',`Descendre le message ${i+1}`);up.disabled=i===0||busy;down.disabled=i===all.length-1||busy;
-        controls.append(control('Modifier',()=>edit(item)),control('Afficher',()=>{if(!items.some(a=>a.id===item.id)){error('Ce message est inactif ou réservé à l’autre mode.');return;}choose(item.id,true);edit(item);}),control(item.active?'Désactiver':'Activer',()=>perform(()=>repository.setActive(item.id,!item.active))),up,down,control('Supprimer',()=>{pendingDelete={...item};refreshList();},'club-info-button club-info-danger'));row.append(controls);
+        if(repository.canManage(item))controls.append(control('Modifier',()=>edit(item)));
+        controls.append(control('Afficher',()=>{if(!items.some(a=>a.id===item.id)){error('Ce message est inactif ou réservé à l’autre mode.');return;}choose(item.id,true);if(repository.canManage(item))edit(item);}));
+        if(repository.canManage(item))controls.append(control(item.active?'Désactiver':'Activer',()=>perform(()=>repository.setActive(item.id,!item.active))));
+        if(repository.canReorder()){const up=control('↑',()=>perform(()=>repository.move(item.id,-1))),down=control('↓',()=>perform(()=>repository.move(item.id,1)));up.setAttribute('aria-label',`Monter le message ${i+1}`);down.setAttribute('aria-label',`Descendre le message ${i+1}`);up.disabled=i===0||busy;down.disabled=i===all.length-1||busy;controls.append(up,down);}
+        if(repository.canRemove(item))controls.append(control('Supprimer',()=>{pendingDelete={...item};refreshList();},'club-info-button club-info-danger'));row.append(controls);
         if(pendingDelete?.id===item.id){const confirmation=node('div','club-info-confirm');confirmation.append(node('p','','Supprimer ce message pour tous les joueurs ?'),control('Confirmer',()=>perform(async()=>{await repository.remove(item.id,pendingDelete.updatedAt);pendingDelete=null;}), 'club-info-button club-info-danger'),control('Conserver',()=>{pendingDelete=null;refreshList();}));row.append(confirmation);}
         if(busy)row.querySelectorAll('button').forEach(b=>b.disabled=true);list.append(row);
       });
@@ -126,7 +144,7 @@ export function createClubInfoTicker({repository,identity}) {
       pendingSelectionId=id;filter();dialog.close();
     });});
     dialog.addEventListener('cancel',event=>{if(busy)event.preventDefault();});const previewResize=new ResizeObserver(updatePreview);previewResize.observe(preview.root);
-    dialog.addEventListener('close',()=>{previewResize.disconnect();if(previewFrame)cancelAnimationFrame(previewFrame);stopAnimation(preview);views.delete(preview);dialog.remove();manager=null;pauses.delete('hover');pause('manager',false);if(visible&&!disposed)openButton.focus();},{once:true});
+    dialog.addEventListener('close',()=>{text.dispose();previewResize.disconnect();if(previewFrame)cancelAnimationFrame(previewFrame);stopAnimation(preview);views.delete(preview);dialog.remove();manager=null;pauses.delete('hover');pause('manager',false);if(visible&&!disposed)openButton.focus();},{once:true});
     manager={dialog,refreshList,error};dialog.showModal();edit(selected());
   }
   return {root,setContext(context){

@@ -1,7 +1,7 @@
-import { PLAYER_ASSETS, hasPlayerCutout, playerAsset, playerCutoutAsset } from '../config/player-assets.js?v=20260930T205039435';
-import { REACTION_ASSETS, REACTION_PARTICLES, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20260930T205039435';
-import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20260930T205039435';
-import { imageSourceSet } from './image-source.js?v=20260930T205039435';
+import { PLAYER_ASSETS, hasPlayerCutout, playerAsset, playerCutoutAsset } from '../config/player-assets.js?v=20261001T003934265';
+import { REACTION_ASSETS, REACTION_PARTICLES, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20261001T003934265';
+import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20261001T003934265';
+import { imageSourceSet } from './image-source.js?v=20261001T003934265';
 
 const requested = new Map();
 let warmScheduled = false;

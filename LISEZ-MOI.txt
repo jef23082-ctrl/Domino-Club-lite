@@ -1,4 +1,6 @@
-Domino Club V46 — 46.0.0
+Domino Club V49 — 49.0.0
+
+V47 : les annonces acceptent des images intégrées au texte par Ajouter une image ou par collage direct (Ctrl+V). PNG, JPEG, GIF et WebP sont acceptés, avec conservation des octets d’origine et des animations. Les images gardent leurs proportions et une hauteur égale à la police ; leur espace est réservé avant chargement pour assurer un défilement stable. Texte et images sont enregistrés ensemble dans les annonces du Firebase existant, sans nouveau service de stockage. Limites : 1 Mo par image, 2 Mo d’images et huit images par message. Aucun HTML ni lien d’image externe n’est exécuté. Les anciens messages, les auteurs et les dates sont conservés ; un ancien client qui change le texte remplace proprement le contenu enrichi. Les pages et les tables de jeu restent inchangées.
 
 V46 : le défilement des messages est toujours actif dès l’ouverture, sans bouton d’activation et indépendamment du réglage de mouvements réduits du navigateur. Les effets décoratifs continuent à respecter ce réglage. Dans le salon Domino, Lancer la partie conserve la même couleur dorée que les autres commandes, y compris tant que la salle n’est pas complète ; ses conditions d’activation restent inchangées.
 
