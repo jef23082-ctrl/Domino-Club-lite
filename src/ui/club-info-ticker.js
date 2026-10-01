@@ -1,6 +1,6 @@
-import { announcementsForMode, announcementColor, DEFAULT_ANNOUNCEMENT_COLOR } from '../services/club-announcement-repository.js?v=20261001T003934265';
-import {createAnnouncementEditor,renderAnnouncementContent} from './club-announcement-editor.js?v=20261001T003934265';
-import {announcementContentText} from '../services/club-announcement-content.js?v=20261001T003934265';
+import { announcementsForMode, announcementColor, DEFAULT_ANNOUNCEMENT_COLOR } from '../services/club-announcement-repository.js?v=20261001T025219457';
+import {createAnnouncementEditor,renderAnnouncementContent} from './club-announcement-editor.js?v=20261001T025219457';
+import {announcementContentText} from '../services/club-announcement-content.js?v=20261001T025219457';
 
 const frameUrl=new URL('../../assets/ui/club-info-blue-v45.png',import.meta.url).href;
 const node=(tag,className='',text)=>{const n=document.createElement(tag);n.className=className;if(text!==undefined)n.textContent=text;return n;};

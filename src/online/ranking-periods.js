@@ -1,6 +1,6 @@
-import {clubData,recalculatePhysical,physicalRanking} from '../game/club-state.js?v=20261001T003934265';
-import {clubRankings} from './combined-ranking.js?v=20261001T003934265';
-import {visibleHistory} from '../services/online-records.js?v=20261001T003934265';
+import {clubData,recalculatePhysical,physicalRanking} from '../game/club-state.js?v=20261001T025219457';
+import {clubRankings} from './combined-ranking.js?v=20261001T025219457';
+import {visibleHistory} from '../services/online-records.js?v=20261001T025219457';
 
 export const physicalResultIdentity=record=>JSON.stringify([record.createdAt??null,record.dateIso??'',record.date??'',record.table??[]]);
 const publicRow=row=>Object.fromEntries(['id','playerId','name','avatar','vic','coch','saved','totalGames','currentStreak','percent','score','physicalGames','onlineGames','played','won','pigs','streak'].filter(key=>row[key]!=null).map(key=>[key,row[key]]));

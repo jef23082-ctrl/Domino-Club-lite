@@ -1,6 +1,6 @@
 // A bounded, server-confirmed compare-and-swap independent of the SDK's
 // WebSocket/reconnect queue. Firebase rules still apply to every HTTP request.
-export async function conditionalRoomWrite(reference, reducer, {fetcher=globalThis.fetch, timeoutMs=6000, attempts=6}={}) {
+export async function conditionalRoomWrite(reference, reducer, {fetcher=globalThis.fetch, timeoutMs=6000, attempts=6, signal}={}) {
   const address=String(reference);
   if(!/^https?:\/\//.test(address))throw new Error('Adresse de salle invalide.');
   const url=new URL(address.replace(/\/$/,'')+'.json');
@@ -11,14 +11,18 @@ export async function conditionalRoomWrite(reference, reducer, {fetcher=globalTh
     if(user)url.searchParams.set('auth',await user.getIdToken());
   }
   const request=async options=>{
+    if(signal?.aborted)throw Object.assign(new Error('La demande a été interrompue. Elle pourra être reprise.'),{code:'round-network-timeout'});
     const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+    const abort=()=>controller.abort();
+    if(signal?.aborted)controller.abort();
+    else signal?.addEventListener('abort',abort,{once:true});
     try{
       const response=await fetcher(url.href,{...options,cache:'no-store',signal:controller.signal});
       const body=await response.json();return {response,body};
     }catch(error){
       if(controller.signal.aborted)throw Object.assign(new Error('Le serveur ne confirme pas la manche. Nouvelle tentative possible.'),{code:'round-network-timeout'});
       throw error;
-    }finally{clearTimeout(timer);}
+    }finally{clearTimeout(timer);signal?.removeEventListener('abort',abort);}
   };
   for(let attempt=0;attempt<attempts;attempt++){
     const {response,body}=await request({headers:{'X-Firebase-ETag':'true'}});

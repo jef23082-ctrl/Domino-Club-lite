@@ -1,7 +1,7 @@
 // Three-seat, no-limit Texas Hold'em sit-and-go. All mutations are pure so a
 // Realtime Database transaction can replay them safely after contention.
-import { createLoungeName } from '../online/lounge-name.js?v=20261001T003934265';
-import { isPokerTableStyle, pokerTableStyle } from './poker-table-styles.js?v=20261001T003934265';
+import { createLoungeName } from '../online/lounge-name.js?v=20261001T025219457';
+import { isPokerTableStyle, pokerTableStyle } from './poker-table-styles.js?v=20261001T025219457';
 
 export const POKER_STARTING_STACK = 20000;
 export const POKER_STACK_CHOICES = Object.freeze([5000, 10000, 20000, 50000, 100000]);

@@ -1,5 +1,5 @@
 // Validated PNG artwork; continuous motion independent of player rerenders.
-import { loadOptimizedImage } from './image-source.js?v=20261001T003934265';
+import { loadOptimizedImage } from './image-source.js?v=20261001T025219457';
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const between=(t,a,b)=>clamp((t-a)/(b-a));
 const smooth=x=>x*x*(3-2*x);

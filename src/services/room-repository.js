@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20261001T003934265';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261001T025219457';
 import {
   createInitialRoom,
   cancelRoomInState,
@@ -15,11 +15,12 @@ import {
   startRematchInRoom,
   startNextRoundInRoom,
   timeoutTurnInRoom
-} from '../game/room-state.js?v=20261001T003934265';
-import { randomId } from './ids.js?v=20261001T003934265';
-import { liveTransaction } from './live-transaction.js?v=20261001T003934265';
-import { conditionalRoomWrite } from './conditional-room-write.js?v=20261001T003934265';
-import { createLoungeName } from '../online/lounge-name.js?v=20261001T003934265';
+} from '../game/room-state.js?v=20261001T025219457';
+import { randomId } from './ids.js?v=20261001T025219457';
+import { liveTransaction } from './live-transaction.js?v=20261001T025219457';
+import { conditionalRoomWrite } from './conditional-room-write.js?v=20261001T025219457';
+import { queueRoundTransition, commitRoundTransition } from '../game/round-transition.js?v=20261001T025219457';
+import { createLoungeName } from '../online/lounge-name.js?v=20261001T025219457';
 
 export class RoomRepository {
   constructor(database, { now = () => Date.now(), roundTransport = conditionalRoomWrite } = {}) {
@@ -100,6 +101,26 @@ export class RoomRepository {
     if(/^https?:\/\//.test(String(reference)))return this.roundTransport(reference,room=>startNextRoundInRoom(room,this.#withServerTime(context)));
     // In-memory test stores / adapters without a Firebase URL.
     return this.#reduce(code, room => startNextRoundInRoom(room, this.#withServerTime(context)));
+  }
+
+  // V50: durable room command -> atomic distribution + receipt. The old relay
+  // below is kept solely for compatibility with already-open V49 clients.
+  async queueRoundTransition(code, context, options = {}) {
+    return this.#roundReduce(code, room => queueRoundTransition(room, this.#withServerTime(context)), options);
+  }
+
+  async commitRoundTransition(code, context, options = {}) {
+    return this.#roundReduce(code, room => commitRoundTransition(room, this.#withServerTime(context)), options);
+  }
+
+  async readRoundState(code, options = {}) {
+    return this.#roundReduce(code, room => room, options);
+  }
+
+  async #roundReduce(code, reducer, options) {
+    const reference = this.rooms.child(String(code || '').toUpperCase());
+    if (/^https?:\/\//.test(String(reference))) return this.roundTransport(reference, reducer, options);
+    return this.#reduce(code, reducer);
   }
 
   async requestNextRound(code, request) {

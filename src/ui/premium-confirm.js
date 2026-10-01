@@ -1,4 +1,4 @@
-import { element, button } from './club-elements.js?v=20261001T003934265';
+import { element, button } from './club-elements.js?v=20261001T025219457';
 
 export function premiumConfirm(title, description) {
   return new Promise(resolve => {

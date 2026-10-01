@@ -1,5 +1,13 @@
-import { roomPlayers } from '../game/room-state.js?v=20261001T003934265';
-import { roundGateKey } from './round-gate.js?v=20261001T003934265';
+import { roomPlayers } from '../game/room-state.js?v=20261001T025219457';
+import { roundGateKey } from './round-gate.js?v=20261001T025219457';
+
+// A late acknowledgement for round N must not erase the intent for round N+1.
+export function sameRoundRequest(first, second) {
+  return Boolean(first && second
+    && String(first.matchId) === String(second.matchId)
+    && Number(first.roundNumber) === Number(second.roundNumber)
+    && Number(first.resultAt) === Number(second.resultAt));
+}
 
 export function createRoundAdvanceRequest(room, playerId) {
   if (room?.status !== 'playing' || room.game?.roundStatus !== 'ended' || !room.game.roundResult) throw new Error('La manche n’est pas terminée.');

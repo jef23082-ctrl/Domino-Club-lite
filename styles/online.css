@@ -334,7 +334,16 @@
 .online-result-card__copy small { color: #c9ac69; }
 .online-result-card__action { min-height: 2.2rem; padding: .42rem .65rem; border: 1px solid rgba(219, 179, 89, .72); border-radius: .55rem; background: linear-gradient(180deg, #8b6527, #4d3212); color: #fff0c5; font-size: clamp(10px, .65vw, 12px); font-weight: 800; cursor: pointer; }
 .online-result-card__action:disabled { cursor: wait; opacity: .62; }
-.online-result-controls { display:grid; gap:5px; }
+.online-result-controls { position:relative; z-index:2; display:grid; gap:5px; pointer-events:auto; }
+/* Result portraits, scores and domino summaries are informative only. They
+   must never intercept a round button, even when fonts/zoom overflow a row. */
+.online-result-overview, .online-result-hands { pointer-events:none; }
+.online-result-controls .online-result-card__action { pointer-events:auto; touch-action:manipulation; }
+.online-round-transition-status { min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#f1d18a; font-weight:700; font-size:11px; line-height:1.2; text-align:center; pointer-events:none; }
+.online-result-controls .online-round-transition-status { grid-column:1 / -1; grid-row:2; }
+/* No browser promise or countdown may lock a next-round request. */
+.online-result-card__action[data-round-action="next-round"],
+.online-result-card__action[data-round-action="next-round"][aria-busy="true"] { cursor:pointer; pointer-events:auto; }
 .online-result-card__back { background:transparent; border-color:#a38b5866; font-weight:500; }
 .online-result-card__icon { position:relative; }
 .online-result-card__icon .portal-avatar { width:clamp(34px,4vw,65px); height:clamp(34px,4vw,65px); }

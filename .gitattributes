@@ -1,0 +1,4 @@
+# Preserve the exact bytes of the validated release on Windows and GitHub.
+/index.html -text
+/styles/portal-v18.css -text
+/styles/table-layout.css -text

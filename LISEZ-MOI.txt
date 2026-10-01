@@ -1,4 +1,4 @@
-Domino Club V49 — 49.0.0
+Domino Club V50 — 50.0.0
 
 V47 : les annonces acceptent des images intégrées au texte par Ajouter une image ou par collage direct (Ctrl+V). PNG, JPEG, GIF et WebP sont acceptés, avec conservation des octets d’origine et des animations. Les images gardent leurs proportions et une hauteur égale à la police ; leur espace est réservé avant chargement pour assurer un défilement stable. Texte et images sont enregistrés ensemble dans les annonces du Firebase existant, sans nouveau service de stockage. Limites : 1 Mo par image, 2 Mo d’images et huit images par message. Aucun HTML ni lien d’image externe n’est exécuté. Les anciens messages, les auteurs et les dates sont conservés ; un ancien client qui change le texte remplace proprement le contenu enrichi. Les pages et les tables de jeu restent inchangées.
 

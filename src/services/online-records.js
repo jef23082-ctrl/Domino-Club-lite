@@ -1,5 +1,5 @@
-import { statsFromHistory } from '../game/online-stats.js?v=20261001T003934265';
-import { playerKey } from '../game/engine.js?v=20261001T003934265';
+import { statsFromHistory } from '../game/online-stats.js?v=20261001T025219457';
+import { playerKey } from '../game/engine.js?v=20261001T025219457';
 
 export function validFirebaseKey(value) {
   return typeof value === 'string' && value.length > 0 && !['__proto__', 'constructor', 'prototype'].includes(value) && !/[.#$\[\]/\u0000-\u001f\u007f]/.test(value);
