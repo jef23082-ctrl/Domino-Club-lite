@@ -1,18 +1,22 @@
-import { PokerRepository } from './poker-repository.js?v=20261001T025219457';
-import { applyPokerPortalSkin } from './poker-portal-skin.js?v=20261001T025219457';
-import { pokerRanking, pokerBlindStatus, pokerSettings, pokerSeatMap, pokerPotAward, POKER_STACK_CHOICES, POKER_LEVEL_MINUTES } from './poker-engine.js?v=20261001T025219457';
-import { createPokerCard, createChipStack } from './poker-cards.js?v=20261001T025219457';
-import { element as el, button, card, avatar } from '../ui/club-elements.js?v=20261001T025219457';
-import { characterIdForProfile } from '../online/profile-map.js?v=20261001T025219457';
-import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261001T025219457';
-import { POKER_TABLE_STYLES, pokerTableStyle } from './poker-table-styles.js?v=20261001T025219457';
-import { setOptimizedImage } from '../ui/image-source.js?v=20261001T025219457';
-import { requestAppFullscreen } from '../ui/app-shell.js?v=20261001T025219457';
-import { muteLoungeMusic, startLoungeMusic, stopLoungeMusic, toggleLoungeMusic, loungeMusicState, setLoungeMusicVolume } from '../ui/lounge-music.js?v=20261001T025219457';
-import { navigationIcon } from '../ui/navigation-icon.js?v=20261001T025219457';
-import { homeOrnament } from '../ui/home-ornaments.js?v=20261001T025219457';
-import { playSound, unlockSound, soundEffectState, setSoundEffectVolume, toggleSoundEffects } from '../ui/sound-player.js?v=20261001T025219457';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20261001T025219457';
+import { PokerRepository } from './poker-repository.js?v=20261004T170705413';
+import { applyPokerPortalSkin } from './poker-portal-skin.js?v=20261004T170705413';
+import { canCancelPokerTournament, pokerRanking, pokerBlindStatus, pokerSettings, pokerSeatMap, pokerPotAward, POKER_STACK_CHOICES, POKER_LEVEL_MINUTES } from './poker-engine.js?v=20261004T170705413';
+import { isRoomCancellationModerator } from '../config/room-cancellation.js?v=20261004T170705413';
+import { confirmRoomCancellation } from '../ui/room-cancel-dialog.js?v=20261004T170705413';
+import { createPokerCard, createChipStack } from './poker-cards.js?v=20261004T170705413';
+import { element as el, button, card, avatar } from '../ui/club-elements.js?v=20261004T170705413';
+import { characterIdForProfile } from '../online/profile-map.js?v=20261004T170705413';
+import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261004T170705413';
+import { POKER_TABLE_STYLES, pokerTableStyle } from './poker-table-styles.js?v=20261004T170705413';
+import { setOptimizedImage } from '../ui/image-source.js?v=20261004T170705413';
+import { syncPlayerMedallion } from '../ui/player-medallion.js?v=20261004T170705413';
+import { requestAppFullscreen } from '../ui/app-shell.js?v=20261004T170705413';
+import { muteLoungeMusic, startLoungeMusic, stopLoungeMusic, toggleLoungeMusic, loungeMusicState, setLoungeMusicVolume } from '../ui/lounge-music.js?v=20261004T170705413';
+import { navigationIcon } from '../ui/navigation-icon.js?v=20261004T170705413';
+import { homeOrnament } from '../ui/home-ornaments.js?v=20261004T170705413';
+import { playSound, unlockSound, soundEffectState, setSoundEffectVolume, toggleSoundEffects } from '../ui/sound-player.js?v=20261004T170705413';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20261004T170705413';
+import { connectedMembers, connectedMembersLabel } from '../ui/connected-members.js?v=20261004T170705413';
 
 const number = value => Number(value || 0).toLocaleString('fr-FR');
 const same = (left, right) => String(left) === String(right);
@@ -26,7 +30,7 @@ function hint(text) { return line(text, 'portal-muted'); }
 function enabledConnection(canWrite) { return canWrite?.() !== false; }
 
 export function createPokerApp({ database, identity, getLeaderId, getProfiles, access, canWrite, notify, now = () => Date.now() }) {
-  const repo = new PokerRepository(database, { now });
+  const repo = new PokerRepository(database, { now, identity });
   let rooms = {}, history = {}, handsHistory = {}, currentCode = '', currentRoom = null, chat = {}, role = 'spectator';
   let presences = {}, lobbyChat = {}, lobbyDraft = '', historyPage = 0, handsPage = 0;
   let chosenProfileId = '', sceneVisible = false, busy = false, callbacks = {};
@@ -231,18 +235,18 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     catch (error) { flash(error.message || 'Action impossible.', true); }
     finally { busy = false; renderScene(); }
   }
-  function requestCancel(room) {
-    if (!room || !['waiting', 'playing'].includes(room.status)) return;
-    const dialog = el('dialog', 'portal-dialog poker-confirm');
-    dialog.append(title('Annuler cette partie ?'), line('Les joueurs retourneront au salon. Aucun point de prestige ne sera attribué.'));
-    const keep = button('Continuer à jouer', () => dialog.close());
-    const confirm = button('Confirmer l’annulation', async () => {
-      confirm.disabled = true;
-      try { await repo.cancel(room.code, access.unlocked ? room.hostId : currentProfile()?.id); dialog.close(); }
-      catch (error) { flash(error.message, true); confirm.disabled = false; }
-    }, 'online-action--danger');
-    dialog.append(keep, confirm); dialog.addEventListener('close', () => dialog.remove());
-    (sceneVisible ? shell : app).append(dialog); dialog.showModal();
+  async function requestCancel(room = currentRoom, { choose = false } = {}) {
+    if (!enabledConnection(canWrite) || !currentProfile()) return;
+    const moderator = isRoomCancellationModerator(currentProfile().id);
+    const candidates = moderator && (choose || !room) ? roomList() : canCancelPokerTournament(room, currentProfile().id) ? [room] : [];
+    const target = await confirmRoomCancellation(candidates, { preferredCode: room?.code || currentCode, choose: moderator && (choose || !room) });
+    if (!target) return;
+    await submit(async () => {
+      await repo.cancel(target.code, currentProfile().id, {
+        expectedStatus: target.status, expectedCreatedAt: target.createdAt, expectedStartedAt: target.startedAt || 0
+      });
+      flash(`Partie ${target.code} annulée par ${currentProfile().name}.`);
+    });
   }
   function stopCurrent() {
     stopRoom?.(); stopChat?.(); stopRoom = null; stopChat = null;
@@ -258,7 +262,10 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     chat = {};
     stopRoom = repo.watchRoom(normalized, room => {
       if (!room || room.deleted || room.status === 'cancelled') {
-        currentRoom = null; currentCode = ''; stopCurrent(); hideScene(); callbacks.open?.('online'); flash('Cette table n’est plus disponible.'); return;
+        const cancelledBy = allProfiles().find(profile => same(profile.id, room?.cancelledBy))?.name
+          || (isRoomCancellationModerator(room?.cancelledBy) ? 'Khalil' : 'l’hôte');
+        currentRoom = null; currentCode = ''; stopCurrent(); hideScene(); callbacks.open?.('online');
+        flash(room?.status === 'cancelled' ? `Partie annulée par ${cancelledBy}.` : 'Cette table n’est plus disponible.'); return;
       }
       currentRoom = room; rooms[normalized] = room;
       role = room.players.some(player => same(player.id, currentProfile()?.id)) ? 'player' : 'spectator';
@@ -316,6 +323,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
       const asset = cutout ? playerCutoutAsset(characterId, seat) : playerAsset(characterId, seat);
       if (image.dataset.asset !== asset.src) { setOptimizedImage(image, asset.src); image.dataset.asset = asset.src; }
       image.dataset.characterId = characterId; image.dataset.renderMode = cutout ? 'cutout' : 'scene';
+      syncPlayerMedallion(image,characterId,seat);
       image.alt = `${player.name} assis à la table de poker`;
       const active = room.status === 'playing' && game?.status === 'betting' && same(game.turnId, player.id);
       view.slot.classList.toggle('is-turn', active);
@@ -520,7 +528,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     shell.dataset.pokerTable = pokerTableStyle(room.style);
     const sceneAsset = table.scene;
     if (sceneBase.dataset.asset !== sceneAsset) { setOptimizedImage(sceneBase, sceneAsset); sceneBase.dataset.asset = sceneAsset; }
-    cancelGame.hidden = !['waiting', 'playing'].includes(room.status) || !same(room.hostId, currentProfile()?.id);
+    cancelGame.hidden = !canCancelPokerTournament(room, currentProfile()?.id);
     renderSeats(room); renderBoard(room); renderLocal(room); renderOverlays(room);
     renderBlindClock(room); scheduleTimeline(room);
   }
@@ -554,7 +562,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
         start.disabled = room.players.length !== 3 || busy; section.append(start);
       }
     }
-    if (same(room.hostId, currentProfile()?.id)) section.append(button('Annuler la partie', () => requestCancel(room), 'poker-room-cancel'));
+    if (canCancelPokerTournament(room, currentProfile()?.id)) section.append(button('Annuler la partie', () => requestCancel(room), 'poker-room-cancel'));
     return section;
   }
   function settingsControls(room) {
@@ -578,7 +586,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     }
     return group;
   }
-  function connected() { return [...new Map(Object.values(presences).filter(p => p && now() - Number(p.lastSeen) < 120000).map(p => [String(p.playerId), p])).values()]; }
+  function connected() { return connectedMembers(presences, now()); }
   function pageHeading(icon, text, sub = '') {
     const head = el('div', 'portal-home-card-heading'), glyph = el('span', 'portal-home-heading-icon'); glyph.append(navigationIcon(icon));
     head.append(glyph, title(text)); if (sub) head.append(line(sub, 'portal-home-card-subtitle')); head.append(el('span', 'portal-home-heading-jewel', '◆')); return head;
@@ -611,14 +619,17 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     clubActions.append(homeAction('ranking','Classement Poker',`${number(mine?.points ?? 1000)} points de prestige`,()=>callbacks.open?.('ranking'),true),homeAction('history','Mes tournois','Revivez les dernières parties',()=>callbacks.open?.('history'),true));
     const active=roomList().find(r=>same(r.hostId,me?.id));const cancel=homeAction('cancel','Annuler ma partie','Fermer la table en cours',()=>requestCancel(active));cancel.disabled=!active;clubActions.append(cancel);
     club.append(clubActions,line('Même table, nouvelles histoires.','portal-home-signature'));layout.append(online,member,club);target.append(layout);
-    const strip=el('div','portal-connected-strip');strip.append(el('span','','En ligne :'));for(const p of connected()){const item=el('span','portal-connected-member');item.append(avatar(p),el('span','',p.name),el('i','portal-presence-dot'));strip.append(item);}if(!connected().length)strip.append(el('span','portal-muted','Le club vous attend.'));target.append(strip);
+    const strip=el('div','portal-connected-strip'),live=connected();strip.append(el('span','portal-connected-heading',connectedMembersLabel(live.length)));for(const p of live){const item=el('span','portal-connected-member');item.append(avatar(p),el('span','',p.name),el('i','portal-presence-dot'));strip.append(item);}if(!live.length)strip.append(el('span','portal-muted','Le club vous attend.'));target.append(strip);
   }
   function renderOnline(target) {
-    const live=card('Joueurs connectés');live.classList.add('poker-live-band');const members=el('div','poker-live-members');
+    const live=card(connectedMembersLabel(connected().length));live.classList.add('poker-live-band');const members=el('div','poker-live-members');
     for(const p of connected()){const item=el('span');item.append(avatar(p),el('i','portal-presence-dot'),el('strong','',p.name));members.append(item);}if(!connected().length)members.append(hint('Aucun autre joueur connecté.'));live.append(members);
     const create=el('div','poker-create-table');
     for (const [style, table] of Object.entries(POKER_TABLE_STYLES)) {
       create.append(button(`Créer une table ${table.label}`, () => createRoom(style), style === 'luxe' ? 'online-action--primary' : ''));
+    }
+    if (isRoomCancellationModerator(currentProfile()?.id)) {
+      create.append(button('Annuler la partie', () => requestCancel(currentRoom, { choose: true }), 'online-action--danger'));
     }
     const columns=el('div','poker-online-columns'),list=card('Tables du club');list.classList.add('poker-online-list');
     const active=roomList(), grid=el('div','poker-room-grid');if(!active.length){const empty=el('div','poker-empty');empty.append(navigationIcon('poker'),el('h3','','La prochaine partie vous attend'),line('Invitez deux partenaires et installez-vous à la table.'),button('Créer une salle',()=>createRoom(),'online-action--primary'));grid.append(empty);}else active.forEach(room=>grid.append(roomCard(room)));list.append(grid);
@@ -729,7 +740,7 @@ export function createPokerApp({ database, identity, getLeaderId, getProfiles, a
     for (const room of Object.values(rooms).filter(room => room && !room.deleted)) {
       const item = el('div', 'poker-admin-row');
       item.append(el('span', '', `${room.code} · ${STAGES[room.status] || room.status} · ${room.players.map(player => player.name).join(', ')}`));
-      if (['playing','waiting'].includes(room.status)) item.append(button('Annuler la partie',()=>requestCancel(room),'online-action--danger'));
+      if (canCancelPokerTournament(room, currentProfile()?.id)) item.append(button('Annuler la partie',()=>requestCancel(room),'online-action--danger'));
       item.append(button('Supprimer la partie', () => requestDelete(room.code), 'online-action--danger'));
       roomPanel.append(item);
     }

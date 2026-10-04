@@ -1,0 +1,54 @@
+/* Validated mechanical BOUDÉÉÉ: outer frame stays fixed; only its core moves. */
+#game-shell #pass-button.boude-mechanism {
+  position:absolute;left:32%;top:83.8%;width:36%;height:14%;padding:0;border:0;
+  background:none;background-clip:border-box;-webkit-background-clip:border-box;
+  -webkit-text-fill-color:initial;color:#f5cb72;letter-spacing:normal;
+  text-shadow:none;filter:none;overflow:visible;cursor:pointer;
+}
+.boude-mechanism { position:relative;display:block;isolation:isolate;container-type:inline-size;touch-action:manipulation; }
+.boude-mechanism > :not(.sr-only) { pointer-events:none; }
+.boude-fixed-art,.boude-moving-art { display:block;width:100%;height:100%;overflow:visible; }
+.boude-fixed-art { position:absolute;inset:0;z-index:4; }
+.boude-moving { position:absolute;inset:0;z-index:3;display:block;--rest-height:clamp(1px,.35cqw,3px);--press-depth:clamp(2px,1cqw,12px);--micro-return:clamp(.5px,.28cqw,2px);transform:translateY(calc(-1 * var(--rest-height)));filter:drop-shadow(0 7px 4px #000b);will-change:transform; }
+.boude-cavity { position:absolute;z-index:2;left:11.65%;top:18.3%;width:77.1%;height:56.5%;border-radius:13% / 48%;background:linear-gradient(180deg,#000 5%,#191006 70%,#58401b);box-shadow:inset 0 5px 6px #000e,inset 0 -1px #dbac634d;transition:box-shadow 130ms ease-in; }
+.boude-seat-light { position:absolute;z-index:5;left:11.65%;top:18.3%;width:77.1%;height:56.5%;border-radius:13% / 48%;box-shadow:inset 0 0 3px #f5c96d80,0 0 2px #e0ad5570;opacity:0; }
+.boude-metal-sheen { position:absolute;left:12%;top:19%;width:76%;height:55%;border-radius:13% / 48%;overflow:hidden; }
+.boude-metal-sheen::before { content:"";position:absolute;inset:-10% auto -10% -38%;width:30%;background:linear-gradient(110deg,transparent,#fbd49924 42%,#ffe9b53b 50%,#e7ba5920 58%,transparent);transform:translateX(0);opacity:0;mix-blend-mode:soft-light; }
+.boude-mechanism:not(:disabled):hover .boude-moving-art { filter:brightness(1.035); }
+.boude-mechanism:focus-visible { outline:2px solid #eac983;outline-offset:5px;border-radius:16px; }
+.boude-mechanism:disabled { opacity:1!important;cursor:not-allowed!important; }
+.boude-mechanism:disabled .boude-moving-art { filter:brightness(.83) saturate(.88); }
+.boude-mechanism[data-mechanical-phase="pressing"] .boude-moving { animation:boudePressDown 130ms cubic-bezier(.25,.02,.62,.93) forwards; }
+.boude-mechanism[data-mechanical-phase="pressed"] .boude-moving { transform:translateY(var(--press-depth));filter:drop-shadow(0 1px 1px #0004); }
+.boude-mechanism[data-mechanical-phase="releasing"] .boude-moving { animation:boudeSpringReturn 170ms cubic-bezier(.15,.62,.28,1) forwards; }
+.boude-mechanism[data-mechanical-phase="cancelled"] .boude-moving { transition:transform 120ms ease-out,filter 120ms ease-out; }
+.boude-mechanism:is([data-mechanical-phase="pressing"],[data-mechanical-phase="pressed"]) .boude-cavity { box-shadow:inset 0 8px 8px #000,inset 0 2px #000c,inset 0 -1px #f4c36b70; }
+.boude-mechanism:is([data-mechanical-phase="pressing"],[data-mechanical-phase="pressed"]) .boude-moving-art { filter:brightness(.94); }
+.boude-mechanism[data-mechanical-phase="pressed"] .boude-seat-light { animation:boudeSeatActivation 140ms ease-out both; }
+.boude-mechanism.is-mechanically-activated .boude-metal-sheen::before { animation:boudeChampagneSweep 320ms ease-out both; }
+.boude-mechanism.is-mechanically-activated .boude-seat-light { animation:boudeSeatActivation 220ms ease-out both; }
+@keyframes boudePressDown { from{transform:translateY(calc(-1 * var(--rest-height)));filter:drop-shadow(0 7px 4px #000b)}to{transform:translateY(var(--press-depth));filter:drop-shadow(0 1px 1px #0004)} }
+@keyframes boudeSpringReturn { 0%{transform:translateY(var(--press-depth));filter:drop-shadow(0 1px 1px #0004)}62%{transform:translateY(calc(-1 * (var(--rest-height) + var(--micro-return))));filter:drop-shadow(0 8px 4px #000b)}100%{transform:translateY(calc(-1 * var(--rest-height)));filter:drop-shadow(0 7px 4px #000b)} }
+@keyframes boudeChampagneSweep { 0%{transform:translateX(0);opacity:0}20%{opacity:.65}75%{opacity:.65}100%{transform:translateX(470%);opacity:0} }
+@keyframes boudeSeatActivation { 0%,25%,100%{opacity:0}52%{opacity:.28}65%{opacity:.15} }
+
+/* Underlying material of the mechanical seat follows the selected table. The
+   supplied polished gold, black marble, crown and letters are never recolored. */
+#game-shell[data-room-theme="luxe-red"] .boude-cavity { background:linear-gradient(#000,#140307 70%,#4d2b13); }
+#game-shell[data-room-theme="newyork"] .boude-cavity { background:linear-gradient(#000,#050b17 70%,#473e28); }
+#game-shell[data-room-theme="versailles"] .boude-cavity { background:linear-gradient(#0c0803,#211b12 70%,#9a7b46); }
+#game-shell[data-room-theme="classic"] .boude-cavity { background:linear-gradient(#000,#06150b 70%,#4a3012); }
+@media(prefers-reduced-motion:reduce) {
+  .boude-moving { --rest-height:0px;--press-depth:1px;--micro-return:0px;animation:none!important;transition:none!important;filter:none; }
+  .boude-mechanism:is([data-mechanical-phase="pressing"],[data-mechanical-phase="pressed"]) .boude-moving { transform:translateY(1px); }
+  .boude-mechanism[data-mechanical-phase="releasing"] .boude-moving { transform:translateY(0); }
+  .boude-metal-sheen,.boude-seat-light { display:none; }
+}
+
+/* Hidden by the existing game controller between rounds and outside tables. */
+#game-shell #pass-button.boude-mechanism[hidden] { display:none!important; }
+/* The existing eye has a 20px minimum touch target. Keep a small gap from the
+   larger fixed housing on short landscape screens, without moving the eye. */
+@media(max-height:450px) {
+  #game-shell #pass-button.boude-mechanism { top:84.6%; }
+}

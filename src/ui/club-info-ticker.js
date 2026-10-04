@@ -1,6 +1,6 @@
-import { announcementsForMode, announcementColor, DEFAULT_ANNOUNCEMENT_COLOR } from '../services/club-announcement-repository.js?v=20261001T025219457';
-import {createAnnouncementEditor,renderAnnouncementContent} from './club-announcement-editor.js?v=20261001T025219457';
-import {announcementContentText} from '../services/club-announcement-content.js?v=20261001T025219457';
+import { announcementsForMode, announcementColor, DEFAULT_ANNOUNCEMENT_COLOR } from '../services/club-announcement-repository.js?v=20261004T170705413';
+import {createAnnouncementEditor,renderAnnouncementContent} from './club-announcement-editor.js?v=20261004T170705413';
+import {announcementContentText} from '../services/club-announcement-content.js?v=20261004T170705413';
 
 const frameUrl=new URL('../../assets/ui/club-info-blue-v45.png',import.meta.url).href;
 const node=(tag,className='',text)=>{const n=document.createElement(tag);n.className=className;if(text!==undefined)n.textContent=text;return n;};
@@ -30,58 +30,60 @@ export function createClubInfoTicker({repository,identity}) {
   previous.setAttribute('aria-label','Message précédent');next.setAttribute('aria-label','Message suivant');
   const currentCopy=node('span','sr-only'),status=node('span','sr-only');status.setAttribute('aria-live','polite');root.append(openButton,previous,next,currentCopy,status);
   let all=[],items=[],selectedId=null,pendingSelectionId=null,mode='domino',visible=false,stopWatch=null,manager=null,disposed=false;
-  let timer=null,remaining=0,deadline=0,frame=null;
+  let timer=null,remaining=0,deadline=0,frame=null,waiting=false;
   const selectedByMode=new Map(),pauses=new Set(),views=new Set([view]);
   const selected=()=>items.find(item=>item.id===selectedId)||null;
-  function stopAnimation(target){target.animation?.cancel();target.animation=null;target.fingerprint=null;}
+  function stopAnimation(target){
+    if(target.animation){
+      // Cancelling a forwards-filled animation otherwise exposes the original
+      // initial inline transform for one frame before the next measurement.
+      target.track.style.transform=getComputedStyle(target.track).transform;
+      target.animation.cancel();
+    }
+    target.animation=null;target.fingerprint=null;
+  }
   function measure(target,item) {
     const width=target.root.getBoundingClientRect().width;if(width<=0||target.root.hidden)return;
     const text=item?.text||'Cliquez ici pour écrire un message',color=announcementColor(item?.textColor),duration=durationOf(item);
     const fingerprint=JSON.stringify([item?.id,text,item?.content,color,duration,width]);if(fingerprint===target.fingerprint)return;
     stopAnimation(target);target.fingerprint=fingerprint;
+    if(target===view){clearTimer();waiting=false;remaining=0;}
     const copy=node('span','club-info-original');renderAnnouncementContent(copy,item?.content?item:{text});copy.style.color=color;target.track.replaceChildren(copy);
     target.root.dataset.duration=String(duration);target.root.dataset.messageId=item?.id||'';
     // Club messages must scroll from the first display, including when the OS
     // requests reduced decorative motion. CSS still reduces hover transitions.
-    const start=target.lane.clientWidth/2,copyWidth=copy.getBoundingClientRect().width;
-    const gap=Math.max(42,target.lane.clientWidth-copyWidth+42),distance=copyWidth+gap;
+    const start=target.lane.clientWidth,copyWidth=copy.getBoundingClientRect().width;
     target.track.style.transform=`translateX(${start}px)`;
-    copy.style.paddingRight=`${gap}px`;for(let i=0;i<2;i++)target.track.append(copy.cloneNode(true));
-    // The first character starts at the centre, with a short reading pause.
-    // Identical copies one cycle apart keep subsequent loops seamless.
-    const hold=Math.min(1.2/duration,.2);
-    const frames=from=>[{transform:`translateX(${from}px)`,offset:0},{transform:`translateX(${from}px)`,offset:hold},{transform:`translateX(${from-distance}px)`,offset:1}];
-    const intro=target.track.animate(frames(start),{duration:duration*1000,iterations:1,easing:'linear'});target.animation=intro;
-    intro.addEventListener('finish',()=>{
-      if(disposed||target.animation!==intro)return;
-      // From the second copy onwards a preceding copy supplies the trailing
-      // text on the left. This avoids a cut/jump at the centred loop boundary.
-      target.animation=target.track.animate(frames(start-distance),{duration:duration*1000,iterations:Infinity,easing:'linear'});
-      intro.cancel();if(document.hidden||(!visible&&target===view))target.animation.pause();
+    // Exactly one copy, one complete passage. Keep the final off-screen state
+    // until the next message: no loop can expose the old beginning again.
+    const frames=[{transform:`translateX(${start}px)`,offset:0},{transform:`translateX(${-copyWidth}px)`,offset:1}];
+    const passage=target.track.animate(frames,{duration:duration*1000,iterations:1,easing:'linear',fill:'forwards'});target.animation=passage;
+    passage.addEventListener('finish',()=>{
+      if(disposed||target.animation!==passage||target!==view||!items.length)return;
+      waiting=true;remaining=0;resume();
     },{once:true});
     if(document.hidden||(!visible&&target===view))target.animation.pause();
   }
   function scheduleMeasure(){if(frame||disposed||!visible)return;frame=requestAnimationFrame(()=>{frame=null;measure(view,selected());});}
   function clearTimer(){if(timer!==null){remaining=Math.max(0,deadline-performance.now());clearTimeout(timer);timer=null;}}
-  function resume(){if(disposed||!visible||pauses.size||items.length<2||timer!==null)return;deadline=performance.now()+remaining;timer=setTimeout(()=>{timer=null;advance(1);},remaining);}
-  function resetTimer(){clearTimer();remaining=(durationOf(selected())+1.5)*1000;resume();}
+  function resume(){if(disposed||!visible||pauses.size||!waiting||!items.length||timer!==null)return;deadline=performance.now();timer=setTimeout(()=>{timer=null;waiting=false;advance(1);},0);}
   function pause(reason,on){if(on){clearTimer();pauses.add(reason);}else pauses.delete(reason);resume();}
   function render(manual=false,reset=true) {
     const item=selected();root.dataset.messageId=item?.id||'';currentCopy.textContent=item?.text||'Aucun message. Cliquez sur la plaque pour en créer un.';previous.disabled=next.disabled=items.length<2;
     if(manual)status.textContent=item?`Message ${items.findIndex(a=>a.id===selectedId)+1} sur ${items.length} : ${item.text}`:'';
-    scheduleMeasure();if(reset)resetTimer();
+    if(reset){clearTimer();waiting=false;remaining=0;stopAnimation(view);}scheduleMeasure();
   }
   function choose(id,manual=false){selectedId=id;selectedByMode.set(mode,id);render(manual);}
   function advance(direction,manual=false){if(!items.length)return;const i=items.findIndex(item=>item.id===selectedId);choose(items[(i+direction+items.length)%items.length].id,manual);}
   function filter() {
-    const oldCount=items.length,before=JSON.stringify(selected());items=announcementsForMode(all,mode);
+    const before=JSON.stringify(selected());items=announcementsForMode(all,mode);
     if(pendingSelectionId&&items.some(item=>item.id===pendingSelectionId)){selectedId=pendingSelectionId;pendingSelectionId=null;}
     if(!items.some(item=>item.id===selectedId))selectedId=items[0]?.id??null;selectedByMode.set(mode,selectedId);
     // Unrelated Firebase updates must not rewind the marquee or its timer.
-    render(false,before!==JSON.stringify(selected())||oldCount!==items.length);
+    render(false,before!==JSON.stringify(selected()));
   }
   function watch(){if(stopWatch)return;stopWatch=repository.watch(value=>{all=value;filter();manager?.refreshList();},error=>{status.textContent=`Infos du club indisponibles : ${error.message}`;manager?.error(error.message);});}
-  function visibility(){pause('document',document.hidden);for(const target of views){if(document.hidden||(!visible&&target===view))target.animation?.pause();else target.animation?.play();}}
+  function visibility(){pause('document',document.hidden);for(const target of views){const animation=target.animation;if(!animation||animation.playState==='finished')continue;if(document.hidden||(!visible&&target===view))animation.pause();else if(animation.playState==='paused')animation.play();}}
   // Hover pauses automatic message switching only. Text continues moving;
   // focus after saving can never freeze the approved marquee.
   root.addEventListener('pointerenter',()=>{if(matchMedia('(hover: hover)').matches)pause('hover',true);});root.addEventListener('pointerleave',()=>pause('hover',false));
@@ -149,6 +151,6 @@ export function createClubInfoTicker({repository,identity}) {
   }
   return {root,setContext(context){
     if(disposed)return;const changedMode=mode!==context.mode,wasVisible=visible;mode=context.mode;visible=Boolean(context.visible);root.hidden=!visible;
-    if(visible){watch();if(changedMode){selectedId=selectedByMode.get(mode)||null;filter();}else if(!wasVisible)render(false,false);scheduleMeasure();}else{manager?.dialog.close();pauses.delete('hover');view.animation?.pause();}pause('scene',!visible);visibility();
+    if(visible){watch();if(changedMode){selectedId=selectedByMode.get(mode)||null;filter();}else if(!wasVisible)render(false,false);scheduleMeasure();}else{manager?.dialog.close();pauses.delete('hover');if(view.animation?.playState==='running')view.animation.pause();}pause('scene',!visible);visibility();
   },dispose(){disposed=true;visible=false;clearTimer();if(frame)cancelAnimationFrame(frame);stopWatch?.();manager?.dialog.close();for(const target of views)stopAnimation(target);resize.disconnect();document.removeEventListener('visibilitychange',visibility);root.remove();}};
 }

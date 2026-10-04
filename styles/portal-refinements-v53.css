@@ -1,0 +1,37 @@
+/* Profile names are lowered without moving the portrait, statistics or frame. */
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="profiles"] .portal-profile-heading{
+  position:relative;top:calc(22 * var(--p-u));
+}
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="profiles"] .portal-player-card strong{
+  background:none;padding:calc(6 * var(--p-u)) calc(15 * var(--p-u)) calc(8 * var(--p-u));
+  text-shadow:0 2px 3px #000,0 0 7px #000,1px 0 2px #000,-1px 0 2px #000;
+}
+
+/* The archived cup is independent of the current-quarter table trophy. */
+.club-portal[data-mode="domino"][data-page="profiles"] .portal-profile-heading.has-historic-trophy{
+  padding-left:calc(75 * var(--p-u));
+}
+.portal-profile-historic-trophy{
+  position:absolute;left:0;top:0;margin:0;width:calc(70 * var(--p-u));
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.portal-profile-historic-trophy img{
+  width:100%;height:calc(60 * var(--p-u));object-fit:contain;
+  filter:drop-shadow(0 2px 3px #0009);
+}
+.portal-profile-historic-trophy figcaption{
+  font:700 clamp(11px,calc(14 * var(--p-u)),16px)/1.1 'Times New Roman',Times,serif;
+  color:#f2cc7d;white-space:nowrap;text-shadow:0 1px 2px #000;
+}
+@media(max-width:560px){
+  /* Use the vacant area left of the narrow heading, not its text width. */
+  .club-portal[data-mode="domino"][data-page="profiles"] .portal-profile-heading.has-historic-trophy{padding-left:0}
+  .club-portal[data-mode="domino"][data-page="profiles"] .portal-profile-historic-trophy{left:calc(-75 * var(--p-u))}
+}
+
+/* Identical count, typeface and size on the home and online presence plaques. */
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="online"] .portal-presence-card h2,
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="online"] .poker-live-band h2,
+.club-portal:is([data-mode="domino"],[data-mode="poker"])[data-page="home"] .portal-connected-strip .portal-connected-content>.portal-connected-heading{
+  font:700 20px/1 'Times New Roman',Times,serif;white-space:nowrap;
+}

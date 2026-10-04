@@ -9,9 +9,10 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20261001T025219457';
-import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20261001T025219457';
-import { ROOM_STYLES } from '../config/room-styles.js?v=20261001T025219457';
+} from './engine.js?v=20261004T170705413';
+import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20261004T170705413';
+import { ROOM_STYLES } from '../config/room-styles.js?v=20261004T170705413';
+import { isRoomCancellationModerator, isCancellableRoom } from '../config/room-cancellation.js?v=20261004T170705413';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -250,13 +251,27 @@ export function leaveWaitingRoom(room, { playerId, clientToken, at = Date.now() 
   return room;
 }
 
-export function cancelRoomInState(room, { clientToken, creatorName, at = Date.now() }) {
+export function canCancelRoom(room, { clientToken, playerId } = {}) {
+  return isCancellableRoom(room) && (isRoomCancellationModerator(playerId)
+    || Boolean(clientToken && (room.creatorToken || room.hostToken) === clientToken));
+}
+
+export function cancelRoomInState(room, { clientToken, playerId, creatorName, expectedStatus, expectedMatchId, expectedCreatedAt, at = Date.now() }) {
   rule(room, 'La salle n’existe plus.', 'room-not-found');
-  rule((room.creatorToken || room.hostToken) === clientToken, 'Seul le créateur peut annuler cette partie.', 'creator-only');
+  rule(isCancellableRoom(room), 'Cette partie ne peut plus être annulée.', 'room-inactive');
+  rule(canCancelRoom(room, { clientToken, playerId }), 'Seul le créateur ou Khalil peut annuler cette partie.', 'creator-only');
+  if (expectedStatus !== undefined) rule(room.status === expectedStatus, 'La partie a changé. Vérifie son état avant de réessayer.', 'stale-room');
+  if (expectedMatchId !== undefined) rule(String(room.matchId || '') === String(expectedMatchId), 'La partie a changé. Vérifie son état avant de réessayer.', 'stale-match');
+  if (expectedCreatedAt !== undefined) rule(Number(room.createdAt) === Number(expectedCreatedAt), 'Le salon a changé. Vérifie son état avant de réessayer.', 'stale-room');
   transitionRoom(room, ROOM_PHASE.CANCELLED, at);
   room.status = 'cancelled';
   room.cancelledAt = at;
-  room.cancelledBy = { token: clientToken, name: creatorName || 'le créateur' };
+  room.cancelledBy = { token: clientToken || null, playerId: playerId ?? roomPlayers(room).find(player => player.token === clientToken)?.playerId ?? null, name: creatorName || (isRoomCancellationModerator(playerId) ? 'Khalil' : 'le créateur') };
+  if (room.game) {
+    room.game.roundStatus = 'cancelled';
+    room.game.currentTurnId = null;
+    delete room.game.turnClock;
+  }
   room.updatedAt = at;
   return room;
 }

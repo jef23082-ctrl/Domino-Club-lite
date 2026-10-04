@@ -1,8 +1,11 @@
-import { displayName } from '../online/display-name.js?v=20261001T025219457';
-import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261001T025219457';
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261001T025219457';
-import { paginate } from './pagination.js?v=20261001T025219457';
-import { createPremiumCrown, createPremiumPig } from './premium-symbols.js?v=20261001T025219457';
+import { displayName } from '../online/display-name.js?v=20261004T170705413';
+import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261004T170705413';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261004T170705413';
+import { playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261004T170705413';
+import { PORTRAIT_BACKGROUNDS } from '../config/portrait-assets.js?v=20261004T170705413';
+import { syncPlayerMedallion } from './player-medallion.js?v=20261004T170705413';
+import { paginate } from './pagination.js?v=20261004T170705413';
+import { createPremiumCrown, createPremiumPig } from './premium-symbols.js?v=20261004T170705413';
 export function element(tag, className = '', text) {
   const node = document.createElement(tag); node.className = className;
   if (text !== undefined) node.textContent = displayName(text);
@@ -18,9 +21,12 @@ export function avatar(profile, { portrait = true } = {}) {
   const known = knownCharacterIdForProfile(profile);
   if (portrait && known) {
     const image = element('img', 'portal-character-portrait');
-    image.src = PLAYER_ASSETS[known].seats.top;
+    const background=PORTRAIT_BACKGROUNDS[known];
+    image.src = background&&hasPlayerCutout(known,'top')?playerCutoutAsset(known,'top').src:PLAYER_ASSETS[known].seats.top;
+    image.dataset.characterId=known;
+    if(background){box.style.backgroundImage=`url("${background}")`;box.style.backgroundSize='cover';box.style.backgroundPosition='center';box.style.backgroundRepeat='no-repeat';}
     image.alt = displayName(profile.name); image.loading = 'lazy'; image.decoding = 'async';
-    box.classList.add('has-character'); box.append(image); return box;
+    box.classList.add('has-character'); box.append(image);syncPlayerMedallion(image,known);return box;
   }
   const value = String(profile?.avatar || '❓');
   if (/^data:image\/(png|jpeg|webp|gif);base64,/i.test(value)) { const image = element('img'); image.src=value; image.alt=displayName(profile.name || 'Avatar'); box.append(image); }

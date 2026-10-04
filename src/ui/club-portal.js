@@ -1,25 +1,26 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20261001T025219457';
-import { profileDetails } from '../game/club-state.js?v=20261001T025219457';
-import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20261001T025219457';
-import { roomPlayers } from '../game/room-state.js?v=20261001T025219457';
-import { createChatComposer } from './chat-composer.js?v=20261001T025219457';
-import { navigationIcon } from './navigation-icon.js?v=20261001T025219457';
-import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20261001T025219457';
-import { displayName } from '../online/display-name.js?v=20261001T025219457';
-import { clubRankings } from '../online/combined-ranking.js?v=20261001T025219457';
-import { paginate } from './pagination.js?v=20261001T025219457';
-import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20261001T025219457';
-import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20261001T025219457';
-import { requestAppFullscreen } from './app-shell.js?v=20261001T025219457';
-import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20261001T025219457';
-import { homeOrnament } from './home-ornaments.js?v=20261001T025219457';
-import { applyClubPortalSkin } from '../poker/poker-portal-skin.js?v=20261001T025219457';
-import { createClubInfoTicker } from './club-info-ticker.js?v=20261001T025219457';
-import {currentPeriodRankings} from '../online/ranking-periods.js?v=20261001T025219457';
-import {createRankingArchivePicker} from './ranking-archive-picker.js?v=20261001T025219457';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20261004T170705413';
+import { profileDetails } from '../game/club-state.js?v=20261004T170705413';
+import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20261004T170705413';
+import { roomPlayers } from '../game/room-state.js?v=20261004T170705413';
+import { createChatComposer } from './chat-composer.js?v=20261004T170705413';
+import { navigationIcon } from './navigation-icon.js?v=20261004T170705413';
+import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20261004T170705413';
+import { displayName } from '../online/display-name.js?v=20261004T170705413';
+import { clubRankings } from '../online/combined-ranking.js?v=20261004T170705413';
+import { paginate } from './pagination.js?v=20261004T170705413';
+import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20261004T170705413';
+import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20261004T170705413';
+import { requestAppFullscreen } from './app-shell.js?v=20261004T170705413';
+import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20261004T170705413';
+import { homeOrnament } from './home-ornaments.js?v=20261004T170705413';
+import { applyClubPortalSkin } from '../poker/poker-portal-skin.js?v=20261004T170705413';
+import { createClubInfoTicker } from './club-info-ticker.js?v=20261004T170705413';
+import {currentPeriodRankings} from '../online/ranking-periods.js?v=20261004T170705413';
+import {createRankingArchivePicker} from './ranking-archive-picker.js?v=20261004T170705413';
+import {connectedMembers,connectedMembersLabel} from './connected-members.js?v=20261004T170705413';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
-export const SITE_VERSION='V50';
+export const SITE_VERSION='V56';
 export function createClubPortal({ ui, physical, access, stats, admin, chat, poker, announcements, rankingPeriods, identity, canWrite, notify, actions, onData, onLeader }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;
@@ -50,7 +51,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   gamesCard.classList.add('portal-tables');inviteCard.classList.add('portal-invites-card');presenceCard.classList.add('portal-presence-card');
   let data=null, snapshot=null, summary={history:[],stats:{},rooms:{}}, page='home', mode='domino', authenticated=false, inScene=false, profileId=null, editorId='new', generalChat=null, stopData, stopStats;
   let physicalFingerprint='', summaryFingerprint='', profilePresenceFingerprint='', dialogBusy=false, rankingMode='general', adminMode='players';
-  let periods={},archivedPeriod='',stopPeriods;
+  let periods={},archivedPeriod='',stopPeriods,periodsReady=!rankingPeriods;
   const pageNumbers={};
   function paged(target,items,key,size,render){const result=paginate(items,pageNumbers[key],size);pageNumbers[key]=result.page;const list=el('div','portal-paged-list');result.items.forEach((item,i)=>list.append(render(item,result.start+i)));target.append(list);if(result.pages>1){const controls=el('nav','portal-pagination');controls.setAttribute('aria-label',`Pages ${key}`);const prev=button('‹',()=>{pageNumbers[key]--;refresh();}),next=button('›',()=>{pageNumbers[key]++;refresh();});prev.setAttribute('aria-label',`Page précédente ${key}`);next.setAttribute('aria-label',`Page suivante ${key}`);prev.disabled=!result.page;next.disabled=result.page===result.pages-1;controls.append(prev,el('span','',`${result.page+1} / ${result.pages} · ${result.total} résultats`),next);target.append(controls);}function refresh(){if(page==='online')renderOnlineExtras();else renderPage();}}
   const activityTimer=setInterval(()=>{if(authenticated&&!inScene){if(page==='online')renderOnlineExtras();if(page==='profiles')refreshProfilePresence();}},15000);
@@ -92,10 +93,10 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   function renderOnlineExtras(){
     if(mode==='poker')return;
     if(!snapshot)return;
-    const now=Date.now(), live=Object.values(snapshot.presences||{}).filter(item=>item&&now-Number(item.lastSeen||0)<120000);
-    const unique=new Map();for(const item of live){const key=String(item.playerId),previous=unique.get(key),priority=value=>value?.roomCode?2:1;if(!previous||priority(item)>priority(previous)||priority(item)===priority(previous)&&Number(item.lastSeen)>Number(previous.lastSeen))unique.set(key,item);}
-    presences.replaceChildren(...[...unique.values()].map(item=>{const line=el('div','portal-list-row portal-member-row'),state=el('span','portal-member-state');state.append(el('i','portal-online-dot'),el('strong','',item.name),el('small','',`· ${item.roomCode ? item.role==='spectator'?'Spectateur':'En salle' : 'Disponible'}`));line.append(avatar(item),state);return line;}));
-    if(!unique.size)presences.append(el('p','portal-muted','Aucun joueur connecté.'));
+    const now=Date.now(),live=connectedMembers(snapshot.presences,now);
+    presenceCard.querySelector('h2').textContent=connectedMembersLabel(live.length);
+    presences.replaceChildren(...live.map(item=>{const line=el('div','portal-list-row portal-member-row'),state=el('span','portal-member-state');state.append(el('i','portal-online-dot'),el('strong','',item.name),el('small','',`· ${item.roomCode ? item.role==='spectator'?'Spectateur':'En salle' : 'Disponible'}`));line.append(avatar(item),state);return line;}));
+    if(!live.length)presences.append(el('p','portal-muted','Aucun joueur connecté.'));
     const valid=Object.entries(snapshot.invitations||{}).filter(([,item])=>item&&(!item.createdAt||now-Number(item.createdAt)<3600000));
     invites.replaceChildren();paged(invites,valid,'invitations',1,([id,v])=>invitationCard(id,v));
     if(!valid.length)invites.append(el('p','portal-muted','Aucune invitation.'));
@@ -117,10 +118,10 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     if(authenticated)return;authenticated=true;profileId=profile.id;
     ui.hub.classList.add('portal-online-panel');lobbyHost.append(ui.hub);
     generalChat=createChatComposer({repository:chat,channel:CLUB_CHAT_CHANNEL,identity:()=>({...identity(),role:'lobby'}),canWrite,notify,audible:()=>!inScene});chatSlot.append(generalChat.root);
-    stopData=physical.watch(value=>{const fingerprint=JSON.stringify(value);if(fingerprint===physicalFingerprint)return;physicalFingerprint=fingerprint;data=value;onData?.(value);updateCounts();onLeader?.(rankings().general[0]||null);
+    stopData=physical.watch(value=>{const fingerprint=JSON.stringify(value);if(fingerprint===physicalFingerprint)return;physicalFingerprint=fingerprint;data=value;onData?.(value);updateCounts();updateLeader();
       if(page!=='online' && page!=='admin')renderPage();},error=>{dataStatus.textContent=`Chargement impossible : ${error.message}`;});
-    stopStats=stats.watchSummary(value=>{summary=value;updateCounts();if(data)onLeader?.(rankings().general[0]||null);const fingerprint=JSON.stringify([value.history,value.stats]);if(fingerprint!==summaryFingerprint){summaryFingerprint=fingerprint;if(['home','ranking','profiles','history'].includes(page)&&!inScene)renderPage();}if(page==='admin'&&access.unlocked)renderOnlineAdmin();},error=>notify(error.message,'error'));
-    stopPeriods=rankingPeriods?.watch(value=>{periods=value;if(archivedPeriod&&!periods.archives?.[archivedPeriod])archivedPeriod='';if(page==='ranking'&&!inScene)renderPage();},error=>notify(`Archives du classement : ${error.message}`,'error'));
+    stopStats=stats.watchSummary(value=>{summary=value;updateCounts();updateLeader();const fingerprint=JSON.stringify([value.history,value.stats]);if(fingerprint!==summaryFingerprint){summaryFingerprint=fingerprint;if(['home','ranking','profiles','history'].includes(page)&&!inScene)renderPage();}if(page==='admin'&&access.unlocked)renderOnlineAdmin();},error=>notify(error.message,'error'));
+    stopPeriods=rankingPeriods?.watch(value=>{periods=value;periodsReady=true;if(archivedPeriod&&!periods.archives?.[archivedPeriod])archivedPeriod='';updateLeader();if(['ranking','profiles'].includes(page)&&!inScene)renderPage();},error=>notify(`Archives du classement : ${error.message}`,'error'));
     open('home');
   }
   function renderPage(){
@@ -134,6 +135,8 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     if(page==='admin')renderAdmin(target);
   }
   function rankings(){return clubRankings(data.players,data.history,summary.history,summary.stats);}
+  function currentRankings(){return periods.active?currentPeriodRankings(data.players,data.history,summary.history,periods.active):rankings();}
+  function updateLeader(){if(!data)return;if(!periodsReady){onLeader?.(null);return;}const leader=currentRankings().general[0];onLeader?.(leader?.totalGames?leader:null);}
   function invitationCard(id, invitation){
     const line=el('article','portal-invitation');
     line.append(avatar({name:invitation.fromName,avatar:invitation.fromAvatar}));
@@ -199,16 +202,16 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     physicalCard.append(physicalActions,el('p','portal-home-signature','Même table, meilleures histoires.'));
     showcase.append(onlineCard,member,physicalCard);target.append(showcase);
 
-    const connected=el('div','portal-connected-strip');connected.append(el('span','','En ligne :'));
-    const live=new Map(Object.values(snapshot?.presences||{}).filter(p=>p&&Date.now()-Number(p.lastSeen)<120000).map(p=>[String(p.playerId),p]));
-    for(const p of live.values()){const item=el('span','portal-connected-member');if(String(p.playerId)===String(selfId))item.classList.add('is-self');item.append(avatar(p),el('span','',p.name),el('i','portal-presence-dot'));connected.append(item);}if(!live.size)connected.append(el('span','portal-muted','Aucun autre membre connecté.'));target.append(connected);
+    const connected=el('div','portal-connected-strip'),live=connectedMembers(snapshot?.presences);
+    connected.append(el('span','portal-connected-heading',connectedMembersLabel(live.length)));
+    for(const p of live){const item=el('span','portal-connected-member');if(String(p.playerId)===String(selfId))item.classList.add('is-self');item.append(avatar(p),el('span','',p.name),el('i','portal-presence-dot'));connected.append(item);}if(!live.length)connected.append(el('span','portal-muted','Aucun autre membre connecté.'));target.append(connected);
   }
   function renderRanking(target){
     const archive=periods.archives?.[archivedPeriod];
     const section=card(archive?`Classement final · ${archive.label}`:periods.active?`Classement · ${periods.active.label}`:'Classement'),controls=el('div','portal-ranking-controls'),tabs=el('div','portal-ranking-tabs');tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','Type de classement');
     for(const[id,label]of [['general','Général'],['online','En ligne'],['physical','Club physique']]){const b=button(label,()=>{rankingMode=id;renderPage();pages.get('ranking').querySelector('[aria-selected="true"]').focus();});b.setAttribute('role','tab');b.id=`ranking-tab-${id}`;b.setAttribute('aria-controls','ranking-results');b.setAttribute('aria-selected',String(rankingMode===id));b.tabIndex=rankingMode===id?0:-1;b.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const ids=['general','online','physical'],i=ids.indexOf(rankingMode);rankingMode=e.key==='Home'?ids[0]:e.key==='End'?ids[2]:ids[(i+(e.key==='ArrowRight'?1:2))%3];renderPage();pages.get('ranking').querySelector('[aria-selected="true"]').focus();});tabs.append(b);}
     const archiveChoice=createRankingArchivePicker({periods,value:archivedPeriod,onChange:value=>{archivedPeriod=value;renderPage();}});controls.append(tabs,archiveChoice);
-    const rows=(archive?.rankings|| (periods.active?currentPeriodRankings(data.players,data.history,summary.history,periods.active):rankings()))[rankingMode],panel=el('div','portal-ranking-results');panel.id='ranking-results';panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',`ranking-tab-${rankingMode}`);
+    const rows=(archive?.rankings||currentRankings())[rankingMode],panel=el('div','portal-ranking-results');panel.id='ranking-results';panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',`ranking-tab-${rankingMode}`);
     const note=rankingMode==='general'?'Général = manches du club physique + parties complètes en ligne. Une victoire avec deux cochons vaut deux crédits, comme dans la V2. Les manches intermédiaires en ligne ne sont pas ajoutées.':rankingMode==='online'?'Parties complètes en ligne · Barème V2 conservé.':'Manches du club physique · Barème V2 conservé.';
     const podium=el('div','portal-podium');for(const index of [1,0,2]){const p=rows[index];if(!p||!p.totalGames&&!periods.active&&!archive)continue;const step=el('article',`portal-podium-place place-${index+1}`);step.append(el('span','portal-podium-rank',`#${index+1}`));step.append(avatar(p),el('h3','',p.name));const metrics=el('p','portal-podium-metrics');for(const [icon,value,label] of [['percent',`${p.percent||0}%`,'victoires'],['domino',p.totalGames,'parties'],['pig',p.coch||0,'cochons']]){const item=el('span');item.append(navigationIcon(icon),document.createTextNode(`${value} ${label}`));metrics.append(item);}step.append(metrics);podium.append(step);}panel.append(podium);
     panel.append(rows.length?rankingTable(rows,true,{selfId:identity().profile?.id,onDetails:p=>{profileId=p.id;open('profiles');}}):el('p','portal-muted','Aucun résultat enregistré.'));
@@ -222,6 +225,12 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     const portrait=el('div','portal-profile-portrait');portrait.append(avatar(player));const heading=el('div','portal-profile-heading');heading.append(el('h2','',player.name),el('p','portal-profile-membership','Membre du club'));
     const presence=Object.values(snapshot?.presences||{}).find(p=>p&&String(p.playerId)===String(player.id)&&Date.now()-Number(p.lastSeen)<120000);
     if(presence)heading.querySelector('h2').append(onlineDot());
+    const historicWinner=periods.archives?.['2026-T3']?.rankings?.general?.[0];
+    if(historicWinner&&String(historicWinner.id??historicWinner.playerId)===String(player.id)){
+      const trophy=el('figure','portal-profile-historic-trophy'),image=el('img');
+      image.src=new URL('../../assets/ui/coupe-palais-royale-v12.png',import.meta.url).href;image.alt='Coupe du vainqueur du T3 2026';image.draggable=false;
+      trophy.append(image,el('figcaption','','T3 2026'));heading.prepend(trophy);heading.classList.add('has-historic-trophy');
+    }
     const all=rankings(),generalRank=all.general.findIndex(p=>String(p.id)===String(player.id))+1,general=all.general.find(p=>String(p.id)===String(player.id)),online=all.online.find(p=>String(p.id)===String(player.id)),details=profileDetails(player,data),metrics=el('div','portal-profile-metrics');
     for(const [icon,value,label]of [['domino',general?.totalGames||0,'résultats'],['trophy',general?.vic||0,'victoires'],['percent',`${general?.percent||0}%`,'de victoire']]){const metric=el('div'),glyph=el('span','portal-metric-icon');glyph.append(navigationIcon(icon));metric.append(glyph,el('strong','',value),el('span','',label));metrics.append(metric);}
     const content=el('div','portal-profile-content');content.append(el('span','portal-profile-rank',generalRank?`#${generalRank}`:'—'),heading,metrics);

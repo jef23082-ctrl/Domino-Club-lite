@@ -1,6 +1,6 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20261001T025219457';
-import { clubData, recalculatePhysical, startPhysicalGame, recordPhysicalRound } from '../game/club-state.js?v=20261001T025219457';
-import { liveTransaction } from './live-transaction.js?v=20261001T025219457';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261004T170705413';
+import { clubData, recalculatePhysical, startPhysicalGame, recordPhysicalRound } from '../game/club-state.js?v=20261004T170705413';
+import { liveTransaction } from './live-transaction.js?v=20261004T170705413';
 
 export class PhysicalClubRepository {
   constructor(database, { requirePlayer = () => {}, requireAdmin = () => {} } = {}) {

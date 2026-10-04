@@ -11,6 +11,9 @@ export function bindHandInteractions(container, { getSnapshot, onSelect, onReord
   let gesture = null;
   let suppressClickUntil = 0;
 
+  const concealed = () => container.dataset.handHidden === 'true';
+  const actionable = tile => tile && !tile.disabled && !tile.classList.contains('is-concealed');
+
   function clearMarkers() {
     container.querySelectorAll('.drop-before, .drop-after').forEach(tile => tile.classList.remove('drop-before', 'drop-after'));
   }
@@ -34,14 +37,14 @@ export function bindHandInteractions(container, { getSnapshot, onSelect, onReord
   }
 
   function reconcile(snapshot = getSnapshot()) {
-    if (gesture && (!snapshot.enabled || snapshot.key !== gesture.key || !sameTiles(snapshot.hand, gesture.hand))) cancel();
+    if (gesture && (concealed() || !snapshot.enabled || snapshot.key !== gesture.key || !sameTiles(snapshot.hand, gesture.hand))) cancel();
   }
 
   function pointerDown(event) {
-    if (gesture || event.isPrimary === false || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    if (gesture || concealed() || event.isPrimary === false || (event.pointerType === 'mouse' && event.button !== 0)) return;
     const source = event.target.closest('.hand-domino');
     const snapshot = getSnapshot();
-    if (!source || !container.contains(source) || !snapshot.enabled || !snapshot.hand.includes(source.dataset.tileId)) return;
+    if (!actionable(source) || !container.contains(source) || !snapshot.enabled || !snapshot.hand.includes(source.dataset.tileId)) return;
     gesture = {
       pointerId: event.pointerId, source, tileId: source.dataset.tileId,
       startX: event.clientX, startY: event.clientY, key: snapshot.key,
@@ -97,13 +100,14 @@ export function bindHandInteractions(container, { getSnapshot, onSelect, onReord
   }
 
   function click(event) {
+    if (concealed()) return;
     if (Date.now() < suppressClickUntil || gesture?.moved) {
       event.preventDefault();
       event.stopPropagation();
       return;
     }
     const tile = event.target.closest('.hand-domino');
-    if (tile && container.contains(tile)) onSelect(tile.dataset.tileId);
+    if (actionable(tile) && container.contains(tile)) onSelect(tile.dataset.tileId);
   }
 
   function keydown(event) {
@@ -116,7 +120,7 @@ export function bindHandInteractions(container, { getSnapshot, onSelect, onReord
     if (!event.altKey || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     const tile = event.target.closest('.hand-domino');
     const snapshot = getSnapshot();
-    if (!tile || !container.contains(tile) || !snapshot.enabled) return;
+    if (concealed() || !actionable(tile) || !container.contains(tile) || !snapshot.enabled) return;
     event.preventDefault();
     const index = snapshot.hand.indexOf(tile.dataset.tileId);
     const offset = event.key === 'ArrowRight' ? 1 : -1;

@@ -1,4 +1,4 @@
-import { roomPlayers } from '../game/room-state.js?v=20261001T025219457';
+import { roomPlayers } from '../game/room-state.js?v=20261004T170705413';
 
 // Match the unchanged engine order to clockwise physical seats, for every viewer.
 // The club leader may be visually promoted to the top seat without changing the engine order.
@@ -10,7 +10,10 @@ export function seatedPlayers(room, leaderPlayerId = '') {
     ? players
     : order.map(id => players.find(p => String(p.playerId) === String(id)));
   const ordered = candidates.every(Boolean) && new Set(candidates).size === players.length ? candidates : players;
-  const leaderIndex = ordered.findIndex(player => leaderPlayerId && String(player.playerId) === String(leaderPlayerId));
+  const hasLeader = leaderPlayerId !== '' && leaderPlayerId != null;
+  const leaderIndex = ordered.findIndex(player => hasLeader && String(player.playerId) === String(leaderPlayerId));
   if (leaderIndex <= 0) return ordered;
-  return [ordered[leaderIndex], ...ordered.slice(0, leaderIndex), ...ordered.slice(leaderIndex + 1)];
+  // Rotate the whole circle, rather than moving only the leader. In particular,
+  // promoting the second player must keep their successor at the right seat.
+  return [...ordered.slice(leaderIndex), ...ordered.slice(0, leaderIndex)];
 }

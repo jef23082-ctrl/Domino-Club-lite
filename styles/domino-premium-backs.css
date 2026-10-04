@@ -1,0 +1,15 @@
+/* Paint only: the existing hand and opponent rack dimensions remain authoritative. */
+#game-shell #player-hand .hand-domino.is-concealed {
+  border-color:transparent;background:transparent;box-shadow:none;opacity:1;
+  filter:drop-shadow(0 5px 4px #0009);
+}
+#game-shell #player-hand .hand-domino.is-concealed::before,
+#game-shell #player-hand .hand-domino.is-concealed::after { content:none; }
+#game-shell #player-hand .hand-back {
+  position:absolute;inset:-2px;display:block;border:0;border-radius:0;
+  background:none;box-shadow:none;
+}
+.domino-back-art { display:block;width:100%;height:100%;overflow:visible;pointer-events:none;user-select:none; }
+#game-shell .rack-back { filter:drop-shadow(2px 4px 3px #000a); }
+/* The emblem is already part of the approved artwork; do not overlay a second fleur. */
+#game-shell .rack-back::after { content:none; }

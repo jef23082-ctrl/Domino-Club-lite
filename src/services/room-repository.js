@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20261001T025219457';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261004T170705413';
 import {
   createInitialRoom,
   cancelRoomInState,
@@ -15,20 +15,23 @@ import {
   startRematchInRoom,
   startNextRoundInRoom,
   timeoutTurnInRoom
-} from '../game/room-state.js?v=20261001T025219457';
-import { randomId } from './ids.js?v=20261001T025219457';
-import { liveTransaction } from './live-transaction.js?v=20261001T025219457';
-import { conditionalRoomWrite } from './conditional-room-write.js?v=20261001T025219457';
-import { queueRoundTransition, commitRoundTransition } from '../game/round-transition.js?v=20261001T025219457';
-import { createLoungeName } from '../online/lounge-name.js?v=20261001T025219457';
+} from '../game/room-state.js?v=20261004T170705413';
+import { randomId } from './ids.js?v=20261004T170705413';
+import { liveTransaction } from './live-transaction.js?v=20261004T170705413';
+import { conditionalRoomWrite } from './conditional-room-write.js?v=20261004T170705413';
+import { queueRoundTransition, commitRoundTransition } from '../game/round-transition.js?v=20261004T170705413';
+import { createLoungeName } from '../online/lounge-name.js?v=20261004T170705413';
+import { DEFAULT_ENVIRONMENT } from '../config/domino-environments.js?v=20261004T170705413';
+import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261004T170705413';
 
 export class RoomRepository {
-  constructor(database, { now = () => Date.now(), roundTransport = conditionalRoomWrite } = {}) {
+  constructor(database, { now = () => Date.now(), roundTransport = conditionalRoomWrite, identity = null } = {}) {
     this.database = database;
     this.rooms = database.ref(FIREBASE_PATHS.rooms);
     this.roundAdvanceRequests = database.ref(FIREBASE_PATHS.roundAdvanceRequests);
     this.now = now;
     this.roundTransport=roundTransport;
+    this.identity = identity;
   }
 
   async create({ profile, clientToken, at } = {}) {
@@ -36,6 +39,8 @@ export class RoomRepository {
     for (let attempt = 0; attempt < 8; attempt += 1) {
       const code = randomId(5);
       const room = createInitialRoom({ code, profile, clientToken, at: createdAt });
+      // Decor only: keep the initial room's rules, players, clocks and phase.
+      room.style = DEFAULT_ENVIRONMENT[knownCharacterIdForProfile(profile)] || room.style;
       room.lounge = createLoungeName(profile);
       const result = await this.rooms.child(code).transaction(current => current ? undefined : room, undefined, false);
       if (result.committed) return code;
@@ -144,7 +149,10 @@ export class RoomRepository {
   }
 
   async cancel(code, context) {
-    return this.#reduce(code, room => cancelRoomInState(room, this.#withServerTime(context)));
+    const actor = this.identity?.();
+    if (this.identity && (actor?.profile?.id === undefined || actor?.profile?.id === null || !actor?.clientToken)) throw new Error('Connecte-toi au club.');
+    const cancellation = actor ? { ...context, playerId: actor.profile.id, clientToken: actor.clientToken, creatorName: actor.profile.name } : context;
+    return this.#reduce(code, room => cancelRoomInState(room, this.#withServerTime(cancellation)));
   }
 
   async removeRoomData(code, repositories = {}) {

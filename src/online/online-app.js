@@ -1,58 +1,63 @@
-import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=20261001T025219457';
-import { normalizeTurnTimerSeconds, roomPlayers, TURN_TIMER_OPTIONS } from '../game/room-state.js?v=20261001T025219457';
-import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20261001T025219457';
-import { applyRoomStyle } from '../ui/room-style.js?v=20261001T025219457';
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261001T025219457';
-import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20261001T025219457';
-import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20261001T025219457';
-import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20261001T025219457';
-import { playSound, unlockSound } from '../ui/sound-player.js?v=20261001T025219457';
-import { createBoudeVerdict, verdictReadyToStart } from '../ui/boude-verdict.js?v=20261001T025219457';
-import { createReactionTrailParticle, createReactionVisual, isPremiumReaction } from '../ui/reaction-visual.js?v=20261001T025219457';
-import { HandOrderStore, handOrderKey, moveHandTile } from '../ui/hand-order.js?v=20261001T025219457';
-import { bindHandInteractions } from '../ui/hand-interactions.js?v=20261001T025219457';
-import { ChatRepository } from '../services/chat-repository.js?v=20261001T025219457';
-import { ClubChatSession, CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20261001T025219457';
-import { createFirebaseRuntime } from '../services/firebase-runtime.js?v=20261001T025219457';
-import { InvitationRepository } from '../services/invitation-repository.js?v=20261001T025219457';
-import { randomId } from '../services/ids.js?v=20261001T025219457';
-import { authenticateProfile } from '../services/profile-auth.js?v=20261001T025219457';
-import { PresenceService } from '../services/presence-service.js?v=20261001T025219457';
-import { ProfileRepository } from '../services/profile-repository.js?v=20261001T025219457';
-import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js?v=20261001T025219457';
-import { RoomRepository } from '../services/room-repository.js?v=20261001T025219457';
-import { SessionStore } from '../services/session-store.js?v=20261001T025219457';
-import { SpectatorService } from '../services/spectator-service.js?v=20261001T025219457';
-import { ServerClock } from '../services/server-clock.js?v=20261001T025219457';
-import { StatsRepository } from '../services/stats-repository.js?v=20261001T025219457';
-import { AdminAccess } from '../services/admin-access.js?v=20261001T025219457';
-import { AdminRepository } from '../services/admin-repository.js?v=20261001T025219457';
-import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=20261001T025219457';
-import { ClubAnnouncementRepository } from '../services/club-announcement-repository.js?v=20261001T025219457';
-import { RankingPeriodRepository } from '../services/ranking-period-repository.js?v=20261001T025219457';
-import { createPokerApp } from '../poker/poker-app.js?v=20261001T025219457';
-import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20261001T025219457';
-import { renderChatMessage } from '../ui/chat-renderer.js?v=20261001T025219457';
-import { ConnectionService } from '../services/connection-service.js?v=20261001T025219457';
-import { characterIdForProfile } from './profile-map.js?v=20261001T025219457';
-import { tileIntent } from './play-intent.js?v=20261001T025219457';
-import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20261001T025219457';
-import { displayName } from './display-name.js?v=20261001T025219457';
-import { createRoundGate, roundGateKey, roundGateRemaining } from './round-gate.js?v=20261001T025219457';
-import { RoundTransitionController } from './round-transition-controller.js?v=20261001T025219457';
-import { avatar } from '../ui/club-elements.js?v=20261001T025219457';
-import { reactionPicker } from '../ui/reaction-picker.js?v=20261001T025219457';
-import { premiumConfirm } from '../ui/premium-confirm.js?v=20261001T025219457';
-import { requestAppFullscreen } from '../ui/app-shell.js?v=20261001T025219457';
-import { createUniversalPlacementEngine, placeSeatOverlay, placeUniversalOverlay } from '../ui/overlay-layout.js?v=20261001T025219457';
-import { preloadRoomResources, warmPremiumResources } from '../ui/resource-loader.js?v=20261001T025219457';
-import { applyEventLighting, clearBoudeLighting, pulseBoudeLighting } from '../ui/event-lighting.js?v=20261001T025219457';
-import { applyInteractionFormat } from '../ui/interaction-format.js?v=20261001T025219457';
-import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20261001T025219457';
-import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20261001T025219457';
-import { createOpeningMascot } from '../ui/opening-mascot.js?v=20261001T025219457';
-import { createLeaderTrophy } from '../ui/leader-trophy.js?v=20261001T025219457';
-import { loungeTitle } from './lounge-name.js?v=20261001T025219457';
+import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=20261004T170705413';
+import { canCancelRoom, normalizeTurnTimerSeconds, roomPlayers, TURN_TIMER_OPTIONS } from '../game/room-state.js?v=20261004T170705413';
+import { isRoomCancellationModerator } from '../config/room-cancellation.js?v=20261004T170705413';
+import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20261004T170705413';
+import { applyRoomStyle } from '../ui/room-style.js?v=20261004T170705413';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261004T170705413';
+import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20261004T170705413';
+import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20261004T170705413';
+import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20261004T170705413';
+import { playSound, unlockSound } from '../ui/sound-player.js?v=20261004T170705413';
+import { createBoudeVerdict, verdictReadyToStart } from '../ui/boude-verdict.js?v=20261004T170705413';
+import { createReactionTrailParticle, createReactionVisual, isPremiumReaction } from '../ui/reaction-visual.js?v=20261004T170705413';
+import { HandOrderStore, handOrderKey, moveHandTile } from '../ui/hand-order.js?v=20261004T170705413';
+import { bindHandInteractions } from '../ui/hand-interactions.js?v=20261004T170705413';
+import { createHandVisibility } from '../ui/hand-visibility.js?v=20261004T170705413';
+import { createBoudeMechanism } from '../ui/boude-mechanism.js?v=20261004T170705413';
+import { ChatRepository } from '../services/chat-repository.js?v=20261004T170705413';
+import { ClubChatSession, CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20261004T170705413';
+import { createFirebaseRuntime } from '../services/firebase-runtime.js?v=20261004T170705413';
+import { InvitationRepository } from '../services/invitation-repository.js?v=20261004T170705413';
+import { randomId } from '../services/ids.js?v=20261004T170705413';
+import { authenticateProfile } from '../services/profile-auth.js?v=20261004T170705413';
+import { PresenceService } from '../services/presence-service.js?v=20261004T170705413';
+import { ProfileRepository } from '../services/profile-repository.js?v=20261004T170705413';
+import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js?v=20261004T170705413';
+import { RoomRepository } from '../services/room-repository.js?v=20261004T170705413';
+import { SessionStore } from '../services/session-store.js?v=20261004T170705413';
+import { SpectatorService } from '../services/spectator-service.js?v=20261004T170705413';
+import { ServerClock } from '../services/server-clock.js?v=20261004T170705413';
+import { StatsRepository } from '../services/stats-repository.js?v=20261004T170705413';
+import { AdminAccess } from '../services/admin-access.js?v=20261004T170705413';
+import { AdminRepository } from '../services/admin-repository.js?v=20261004T170705413';
+import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=20261004T170705413';
+import { ClubAnnouncementRepository } from '../services/club-announcement-repository.js?v=20261004T170705413';
+import { RankingPeriodRepository } from '../services/ranking-period-repository.js?v=20261004T170705413';
+import { EnvironmentSettingsRepository } from '../services/environment-settings-repository.js?v=20261004T170705413';
+import { bindEnvironmentSettings } from '../ui/domino-environment.js?v=20261004T170705413';
+import { createPokerApp } from '../poker/poker-app.js?v=20261004T170705413';
+import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20261004T170705413';
+import { renderChatMessage } from '../ui/chat-renderer.js?v=20261004T170705413';
+import { ConnectionService } from '../services/connection-service.js?v=20261004T170705413';
+import { characterIdForProfile } from './profile-map.js?v=20261004T170705413';
+import { tileIntent } from './play-intent.js?v=20261004T170705413';
+import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20261004T170705413';
+import { displayName } from './display-name.js?v=20261004T170705413';
+import { createRoundGate, roundGateKey, roundGateRemaining } from './round-gate.js?v=20261004T170705413';
+import { RoundTransitionController } from './round-transition-controller.js?v=20261004T170705413';
+import { avatar } from '../ui/club-elements.js?v=20261004T170705413';
+import { reactionPicker } from '../ui/reaction-picker.js?v=20261004T170705413';
+import { confirmRoomCancellation } from '../ui/room-cancel-dialog.js?v=20261004T170705413';
+import { requestAppFullscreen } from '../ui/app-shell.js?v=20261004T170705413';
+import { createUniversalPlacementEngine, placeSeatOverlay, placeUniversalOverlay } from '../ui/overlay-layout.js?v=20261004T170705413';
+import { preloadRoomResources, warmPremiumResources } from '../ui/resource-loader.js?v=20261004T170705413';
+import { applyEventLighting, clearBoudeLighting, pulseBoudeLighting } from '../ui/event-lighting.js?v=20261004T170705413';
+import { applyInteractionFormat } from '../ui/interaction-format.js?v=20261004T170705413';
+import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20261004T170705413';
+import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20261004T170705413';
+import { createOpeningMascot } from '../ui/opening-mascot.js?v=20261004T170705413';
+import { createLeaderTrophy } from '../ui/leader-trophy.js?v=20261004T170705413';
+import { loungeTitle } from './lounge-name.js?v=20261004T170705413';
 import {
   actionKey,
   celebrationState,
@@ -60,7 +65,7 @@ import {
   remainingTileCount,
   resultPresentation,
   shouldShowSpectatorPanel
-} from './presentation.js?v=20261001T025219457';
+} from './presentation.js?v=20261004T170705413';
 
 const FIREBASE_SCRIPTS = Object.freeze([
   'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js',
@@ -171,10 +176,12 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     roundTransitionState: { phase: 'idle', message: '' }
   };
   let repositories;
+  let environmentControls;
   let serverClock = { now: () => Date.now() };
   let toastTimer;
   let handOrder;
   let handInteractions;
+  let handVisibility;
   let handContextKey = '';
   let portal;
   const boudeVerdict = createBoudeVerdict({ stage: document.querySelector('#casino-stage'), onSound: playSound, isVisible: () => Boolean(portal?.isScene), now: () => serverClock.now() });
@@ -225,6 +232,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
 
   function setStatus(message) {
     ui.status.textContent = displayName(message);
+    ui.status.hidden = !message;
   }
 
   function toast(message, tone = 'gold') {
@@ -280,8 +288,25 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     return Boolean(room && room.hostToken === state.clientToken);
   }
 
-  function isCreator(room = state.room) {
-    return Boolean(room && (room.creatorToken || room.hostToken) === state.clientToken);
+  function canCancelCurrentRoom(room = state.room) {
+    return canCancelRoom(room, { clientToken: state.clientToken, playerId: state.profile?.id });
+  }
+
+  async function requestRoomCancellation(room = state.room) {
+    if (!canWrite() || !state.profile) return;
+    const moderator = isRoomCancellationModerator(state.profile.id);
+    const candidates = moderator
+      ? Object.values({ ...state.rooms, ...(state.room ? { [state.roomCode]: state.room } : {}) })
+      : room && canCancelCurrentRoom(room) ? [room] : [];
+    const target = await confirmRoomCancellation(candidates, { preferredCode: room?.code || state.roomCode, choose: moderator });
+    if (!target || !canWrite()) return;
+    try {
+      await repositories.rooms.cancel(target.code, {
+        clientToken: state.clientToken, playerId: state.profile.id, creatorName: state.profile.name,
+        expectedStatus: target.status, expectedMatchId: target.matchId || '', expectedCreatedAt: target.createdAt
+      });
+      toast(`Partie ${target.code} annulée par ${state.profile.name}.`);
+    } catch (error) { toast(error.message, 'error'); }
   }
 
   function livePresences() {
@@ -301,6 +326,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     openingMascot.reset();
     leaderTrophy.reset();
     handInteractions?.cancel();
+    handVisibility?.reset();
     handContextKey = '';
     state.selectedTileId = '';
     state.stopRoom?.();
@@ -435,6 +461,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     ui.hub.setAttribute('aria-busy', 'false');
     state.profile = profile;
     state.networkProfile = compactProfile(profile);
+    environmentControls?.syncAuthority();
     repositories.session.playerId = profile.id;
     await repositories.presence.connect({
       clientToken: state.clientToken,
@@ -456,7 +483,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     }, error => toast(error.message, 'error'));
     if (!state.stopPresence) state.stopPresence = repositories.presence.watch(value => {
       state.presences = value; portal?.update(state);
-      if (state.view === 'lobby') setStatus(`${state.profile.name} · ${livePresences().length} joueur(s) connecté(s)`);
+      if (state.view === 'lobby') setStatus('');
       if (state.view === 'waiting' && portal?.page === 'online') renderWaitingRoom();
       if (state.view === 'playing') {
         renderWorkingIndicators();
@@ -494,7 +521,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     ui.hub.dataset.view = 'lobby';
     showHub(true);
     ui.menu.hidden = true;
-    setStatus(`${state.profile.name} · ${livePresences().length} joueur(s) connecté(s)`);
+    setStatus('');
     clearContent();
 
     const actions = node('div', 'online-lobby-actions');
@@ -515,6 +542,11 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
 
     const identityCard = node('section', 'portal-lobby-card');
     identityCard.append(node('h2', 'online-section__title', 'Ton identité'), node('p', 'online-summary', state.profile.name), create);
+    if (isRoomCancellationModerator(state.profile.id)) {
+      const cancel = actionButton('Annuler la partie', 'online-action online-action--danger');
+      cancel.addEventListener('click', () => requestRoomCancellation());
+      identityCard.append(cancel);
+    }
     actions.append(identityCard);
     ui.content.append(actions);
 
@@ -618,15 +650,9 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         await returnToLobby();
       } catch (error) { toast(error.message, 'error'); }
     });
-    if (isCreator()) {
+    if (canCancelCurrentRoom()) {
       const cancel = actionButton('Annuler la partie', 'online-action online-action--danger');
-      cancel.addEventListener('click', async () => {
-        const code=state.roomCode;
-        if (!canWrite() || !await premiumConfirm('Annuler ce salon ?', 'Cette annulation concerne tous les joueurs présents.')) return;
-        if(code!==state.roomCode||state.room?.status!=='waiting')return toast('Le salon a changé. Vérifie son état avant de réessayer.','error');
-        try { await repositories.rooms.cancel(code, { clientToken: state.clientToken, creatorName: state.profile.name }); }
-        catch (error) { toast(error.message, 'error'); }
-      });
+      cancel.addEventListener('click', () => requestRoomCancellation());
       controls.append(cancel);
     }
     controls.append(leave);
@@ -648,15 +674,9 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       else { portal.open('home'); toast('La partie reste en cours et pourra être reprise depuis En ligne.'); }
     });
     ui.content.append(leave);
-    if (state.room?.status === 'playing' && isCreator()) {
+    if (canCancelCurrentRoom() || isRoomCancellationModerator(state.profile?.id)) {
       const cancel = actionButton('Annuler la partie', 'online-action online-action--danger');
-      cancel.addEventListener('click', async () => {
-        const code=state.roomCode,matchId=state.room?.matchId;
-        if (!canWrite() || !await premiumConfirm('Annuler cette partie ?', 'La partie sera arrêtée pour tous les joueurs. Pour revenir au menu en conservant ta place, ferme cette fenêtre.')) return;
-        if(code!==state.roomCode||matchId!==state.room?.matchId||state.room?.status!=='playing')return toast('La partie a changé. Vérifie son état avant de réessayer.','error');
-        try { await repositories.rooms.cancel(code, { clientToken: state.clientToken, creatorName: state.profile.name }); }
-        catch (error) { toast(error.message, 'error'); }
-      });
+      cancel.addEventListener('click', () => requestRoomCancellation());
       ui.content.append(cancel);
     }
   }
@@ -1307,20 +1327,23 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     const me = myRoomPlayer(room);
     const key = me ? handOrderKey(room, me.playerId) : '';
     const hand = key ? handOrder.ordered(key, room?.game?.hands?.[playerKey(me.playerId)] || []) : [];
-    return { key, hand, enabled: Boolean(me && room?.status === 'playing' && room?.game?.roundStatus === 'playing' && hand.length > 1) };
+    return { key, hand, enabled: Boolean(!handVisibility?.hidden && me && room?.status === 'playing' && room?.game?.roundStatus === 'playing' && hand.length > 1) };
   }
 
   function renderLiveHand(room = state.room) {
     const game = room?.game || {};
     const me = myRoomPlayer(room);
     const snapshot = handSnapshot(room);
+    const hidden = handVisibility?.reconcile({ key: snapshot.key, available: Boolean(me && snapshot.hand.length) }) || false;
+    snapshot.enabled = Boolean(!hidden && me && room?.status === 'playing' && game.roundStatus === 'playing' && snapshot.hand.length > 1);
     handInteractions?.reconcile(snapshot);
-    if (handContextKey !== snapshot.key || !snapshot.hand.includes(state.selectedTileId)) state.selectedTileId = '';
+    if (hidden || handContextKey !== snapshot.key || !snapshot.hand.includes(state.selectedTileId)) state.selectedTileId = '';
     handContextKey = snapshot.key;
     const container = document.querySelector('#player-hand');
-    container.title = 'Glissez un domino pour ranger la main · Alt + flèches au clavier';
-    renderHand(container, snapshot.hand);
+    container.title = hidden ? 'Dominos masqués · Cliquez sur l’œil pour les afficher' : 'Glissez un domino pour ranger la main · Alt + flèches au clavier';
+    renderHand(container, snapshot.hand, { hidden });
     container.querySelectorAll('.hand-domino').forEach(tile => {
+      if (hidden) return;
       const selected = tile.dataset.tileId === state.selectedTileId;
       tile.classList.toggle('is-selected', selected);
       tile.setAttribute('aria-pressed', String(selected));
@@ -1331,7 +1354,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       tile.title = !intent.playable ? 'Non jouable — peut être rangé' : intent.automaticSide ? 'Un clic pour jouer — glisser pour ranger' : 'Sélectionner puis choisir gauche ou droite — glisser pour ranger';
     });
     document.querySelector('.hand-dock').setAttribute('aria-label', me ? `Main de ${displayName(me.name)}` : 'Vue spectateur');
-    const canAct = Boolean(connection?.connected && !state.recoveringConnection && !pendingPlay && !turnIsPaused(room) && me && room?.status === 'playing' && game.roundStatus === 'playing' && String(game.currentTurnId) === String(me.playerId));
+    const canAct = Boolean(!hidden && connection?.connected && !state.recoveringConnection && !pendingPlay && !turnIsPaused(room) && me && room?.status === 'playing' && game.roundStatus === 'playing' && String(game.currentTurnId) === String(me.playerId));
     const openingAllowed = Boolean(game.board?.placements?.length || !game.forcedOpeningTileId || state.selectedTileId === game.forcedOpeningTileId);
     const sides = canAct && state.selectedTileId && openingAllowed ? validSides(state.selectedTileId, game.board) : [];
     const dualChoice = sides.includes('left') && sides.includes('right');
@@ -1534,7 +1557,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
 
   async function submitTile(tileId, side) {
     const me = myRoomPlayer();
-    if (!me || !renderLiveHand() || !handSnapshot().hand.includes(tileId)) return;
+    if (handVisibility?.hidden || !me || !renderLiveHand() || !handSnapshot().hand.includes(tileId)) return;
     const roomCode = state.roomCode;
     await playAction(async () => {
       await repositories.rooms.play(roomCode, { playerId: me.playerId, tileId, side });
@@ -1544,13 +1567,23 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   }
 
   function bindGameActions() {
+    createBoudeMechanism(document.querySelector('#pass-button'));
     document.addEventListener('pointerdown', () => { unlockSound(); primeLoungeMusic(); }, { once: true });
     const announce = message => { document.querySelector('#hand-reorder-status').textContent = message; };
+    handVisibility = createHandVisibility({
+      stage: document.querySelector('#casino-stage'),
+      onChange(hidden) {
+        state.selectedTileId = '';
+        handInteractions?.cancel();
+        renderLiveHand();
+        announce(hidden ? 'Dominos masqués. Le nombre de pièces est conservé.' : 'Dominos affichés.');
+      }
+    });
     handInteractions = bindHandInteractions(document.querySelector('#player-hand'), {
       getSnapshot: () => handSnapshot(),
       onAnnounce: announce,
       onSelect(tileId) {
-        if (!handSnapshot().hand.includes(tileId)) return;
+        if (handVisibility.hidden || !handSnapshot().hand.includes(tileId)) return;
         state.selectedTileId = tileId;
         const canAct = renderLiveHand();
         const intent = tileIntent(state.room?.game, tileId);
@@ -1712,7 +1745,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     repositories = {
       session,
       profiles: new ProfileRepository(runtime.database),
-      rooms: new RoomRepository(runtime.database, { now: () => serverClock.now() }),
+      rooms: new RoomRepository(runtime.database, { now: () => serverClock.now(), identity: () => ({ profile: state.networkProfile, clientToken: state.clientToken }) }),
       presence: new PresenceService(runtime.database, { serverTimestamp: runtime.serverTimestamp, publishPresence:(token,presence)=>chatSession.enter(token,presence),onHeartbeat:()=>chatSession.heartbeat() }),
       invitations: new InvitationRepository(runtime.database, { serverTimestamp: runtime.serverTimestamp }),
       spectators: new SpectatorService(runtime.database, { serverTimestamp: runtime.serverTimestamp }),
@@ -1722,6 +1755,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     };
     const adminAccess = suppliedAdminAccess || new AdminAccess();
     const requirePlayer = () => { connection.require(); if (!state.profile) throw new Error('Connecte-toi au club.'); };
+    environmentControls=bindEnvironmentSettings(new EnvironmentSettingsRepository(runtime.database,{requirePlayer,identity:()=>({profile:state.networkProfile}),serverTimestamp:runtime.serverTimestamp}),{identity:()=>({profile:state.networkProfile}),canWrite,notify:toast});
     const admin = new AdminRepository(runtime.database, { require() { requirePlayer(); adminAccess.require(); } });
     const physical = new PhysicalClubRepository(runtime.database, { requirePlayer, requireAdmin: () => adminAccess.require() });
     const announcements = new ClubAnnouncementRepository(runtime.database,{requirePlayer,identity:()=>({profile:state.networkProfile}),privilegedPlayerId:()=>state.profiles.find(p=>String(p.name).trim().toLowerCase()==='khalil')?.id??3,serverTimestamp:runtime.serverTimestamp});

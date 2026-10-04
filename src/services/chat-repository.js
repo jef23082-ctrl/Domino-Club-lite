@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20261001T025219457';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261004T170705413';
 
 export class ChatRepository {
   constructor(database, { serverTimestamp = () => Date.now() } = {}) {

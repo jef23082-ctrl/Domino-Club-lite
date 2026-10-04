@@ -1,4 +1,4 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20261001T025219457';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261004T170705413';
 
 export class PresenceService {
   constructor(database, { heartbeatMs = 45000, serverTimestamp = () => Date.now(), publishPresence = null, onHeartbeat = null } = {}) {

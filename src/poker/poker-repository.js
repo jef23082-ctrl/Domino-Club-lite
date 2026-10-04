@@ -1,17 +1,18 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20261001T025219457';
-import { randomId } from '../services/ids.js?v=20261001T025219457';
-import { liveTransaction } from '../services/live-transaction.js?v=20261001T025219457';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261004T170705413';
+import { randomId } from '../services/ids.js?v=20261004T170705413';
+import { liveTransaction } from '../services/live-transaction.js?v=20261004T170705413';
 import {
   createPokerRoom, joinPokerRoom, leavePokerRoom, choosePokerStyle,
   startPokerTournament, pokerAction, nextPokerHand, pokerHistoryRecord,
   shuffleDeck, normalizePokerRoom, cancelPokerTournament,
   advancePokerTimeline, showPokerCards, previewRemainingPokerBoard, choosePokerSettings
-} from './poker-engine.js?v=20261001T025219457';
+} from './poker-engine.js?v=20261004T170705413';
 
 export class PokerRepository {
-  constructor(database, { now = () => Date.now() } = {}) {
+  constructor(database, { now = () => Date.now(), identity = null } = {}) {
     this.database = database;
     this.now = now;
+    this.identity = identity;
     this.rooms = database.ref(FIREBASE_PATHS.pokerRooms);
     this.history = database.ref(FIREBASE_PATHS.pokerHistory);
     this.hands = database.ref(FIREBASE_PATHS.pokerHands);
@@ -49,7 +50,11 @@ export class PokerRepository {
   leave(code, playerId) { return this.#change(code, room => leavePokerRoom(room, playerId)); }
   style(code, playerId, style) { return this.#change(code, room => choosePokerStyle(room, playerId, style)); }
   settings(code, playerId, settings) { return this.#change(code, room => choosePokerSettings(room, playerId, settings)); }
-  cancel(code, playerId) { return this.#change(code, room => cancelPokerTournament(room, playerId, this.now())); }
+  cancel(code, playerId, expected = {}) {
+    const actor = this.identity?.();
+    if (this.identity && (actor?.profile?.id === undefined || actor?.profile?.id === null)) throw new Error('Connecte-toi au club.');
+    return this.#change(code, room => cancelPokerTournament(room, actor?.profile?.id ?? playerId, this.now(), expected));
+  }
   start(code, playerId) {
     const deck = shuffleDeck(), at = this.now();
     return this.#change(code, room => startPokerTournament(room, playerId, at, deck));

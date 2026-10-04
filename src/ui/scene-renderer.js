@@ -1,5 +1,6 @@
-import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261001T025219457';
-import { setOptimizedImage } from './image-source.js?v=20261001T025219457';
+import { playerAsset, playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261004T170705413';
+import { setOptimizedImage } from './image-source.js?v=20261004T170705413';
+import { syncPlayerMedallion } from './player-medallion.js?v=20261004T170705413';
 
 export function renderCharacterPlate(seat, characterId) {
   const image = document.querySelector(`#character-${seat}`);
@@ -13,4 +14,5 @@ export function renderCharacterPlate(seat, characterId) {
   image.alt = `${asset.displayName} ${seated} au siège ${seat === 'top' ? 'supérieur' : seat === 'left' ? 'gauche' : 'droit'}`;
   image.dataset.characterId = characterId;
   image.dataset.renderMode = cutout ? 'cutout' : luxe ? 'silhouette' : 'scene';
+  syncPlayerMedallion(image,characterId,seat);
 }

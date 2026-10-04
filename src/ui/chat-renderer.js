@@ -1,6 +1,8 @@
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261001T025219457';
-import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261001T025219457';
-import { displayName } from '../online/display-name.js?v=20261001T025219457';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261004T170705413';
+import { playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261004T170705413';
+import { PORTRAIT_BACKGROUNDS } from '../config/portrait-assets.js?v=20261004T170705413';
+import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261004T170705413';
+import { displayName } from '../online/display-name.js?v=20261004T170705413';
 
 export function renderChatMessage(message) {
   const article = document.createElement('article');
@@ -9,10 +11,12 @@ export function renderChatMessage(message) {
   avatar.className = 'chat-avatar';
   avatar.title = displayName(message.name || 'Joueur');
   avatar.setAttribute('aria-label', avatar.title);
-  const character = PLAYER_ASSETS[knownCharacterIdForProfile(message)];
+  const characterId=knownCharacterIdForProfile(message),character = PLAYER_ASSETS[characterId];
   if (character) {
     avatar.classList.add('chat-avatar--portrait');
-    avatar.style.backgroundImage = `url("${character.seats.top}")`;
+    const background=PORTRAIT_BACKGROUNDS[characterId];
+    avatar.style.backgroundImage = background&&hasPlayerCutout(characterId,'top')?`url("${playerCutoutAsset(characterId,'top').src}"),url("${background}")`:`url("${character.seats.top}")`;
+    if(background){avatar.style.backgroundSize='1000% auto,cover';avatar.style.backgroundPosition='50% 0,center';}
   } else avatar.textContent = String(message.name || '?').charAt(0).toUpperCase();
   const text = document.createElement('p');
   const sender=document.createElement('strong');sender.className='chat-sender';sender.textContent=displayName(message.name||'Joueur');

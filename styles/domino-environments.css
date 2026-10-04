@@ -1,0 +1,38 @@
+.environment-layer{position:absolute;inset:0;z-index:0;pointer-events:none!important;overflow:hidden;contain:layout paint;isolation:isolate;--weather-strength:1;--quality-strength:1;--strength:calc(var(--weather-strength) * var(--motion-level,1) * var(--quality-strength));--light-strength:calc(var(--motion-level,1) * var(--quality-strength))}
+.environment-layer *{pointer-events:none!important}
+#game-shell[data-room-style="luxe"] #casino-stage>.environment-layer{inset:auto;left:0;top:-14%;width:100%;height:114%;transform:none;z-index:0}
+.environment-settings{display:grid;gap:.45rem;border-top:1px solid #b98e4360;padding-top:.6rem;margin-top:.25rem}
+.environment-settings[hidden]{display:none!important}
+.environment-settings legend{color:#efd28d;font-weight:800;padding-right:.4rem}
+.environment-settings fieldset{margin:0;border:0;padding:0}
+.environment-settings__status{margin:0;font-size:.72rem;line-height:1.35;color:#e6ca91}
+.environment-settings__local{display:grid;gap:.35rem}
+.music-panel:has(#environment-global-settings:not([hidden])){width:min(19rem,48%);max-height:86%;overflow-y:auto}
+.environment-layer svg{display:block;width:100%;height:100%;overflow:hidden}
+/* Explicit preview modes override the game's universal animation:none rule
+   only on decorative elements. AUTO resolves reduced motion in the engine;
+   no gameplay animation or operating-system setting is changed. */
+.environment-layer .flag-strip{animation:cloth-drift var(--duration) cubic-bezier(.42,0,.35,1) infinite!important;animation-delay:var(--delay)!important;transform-box:view-box}
+.environment-layer .fabric-light{animation:fabric-light 7.7s ease-in-out infinite!important;opacity:.02;mix-blend-mode:soft-light}
+.environment-layer .water-ray{stroke:#ffe6b1;stroke-linecap:round;fill:none;animation:water-reflection var(--duration) ease-in-out infinite!important;animation-delay:var(--delay)!important;opacity:0}
+.environment-layer .vegetation-moving{animation:plant-drift var(--duration) cubic-bezier(.45,0,.3,1) infinite!important;animation-delay:var(--delay)!important;transform-origin:var(--origin);transform-box:view-box}
+.environment-layer .lamp-glow{animation:lamp-breath var(--duration) ease-in-out infinite!important;animation-delay:var(--delay)!important;mix-blend-mode:screen}
+.environment-layer .city-light{animation:city-breath var(--duration) ease-in-out infinite!important;animation-delay:var(--delay)!important}
+.environment-layer .cloud{animation:cloud-drift 139s linear infinite!important;opacity:.035}
+.environment-layer .drifting-leaf{animation:leaf-passage var(--duration) linear infinite!important;animation-delay:var(--delay)!important;opacity:0;transform-box:fill-box;transform-origin:center}
+.environment-layer[data-quality="REDUCED"]{--quality-strength:.18}
+.environment-layer[data-quality="REDUCED"] .flag-strip{animation-duration:9s!important}
+.environment-layer[data-quality="REDUCED"] .fabric-light{animation:none!important;opacity:0}
+.environment-layer[data-quality="REDUCED"] .water-ray{animation-duration:12s!important}
+.environment-layer[data-weather="calm"]{--weather-strength:.35}
+.environment-layer[data-weather="breeze"]{--weather-strength:1}
+.environment-layer[data-weather="windy"]{--weather-strength:1.35}
+.environment-layer[data-paused="true"] *{animation-play-state:paused!important}
+@keyframes cloth-drift{0%,100%{transform:translate(0,0)}17%{transform:translate(calc(var(--travel) * .3 * var(--strength)),calc(var(--travel) * -.4 * var(--strength)))}36%{transform:translate(calc(var(--travel) * -.5 * var(--strength)),calc(var(--travel) * .8 * var(--strength)))}59%{transform:translate(calc(var(--travel) * .7 * var(--strength)),calc(var(--travel) * .2 * var(--strength)))}73%{transform:translate(calc(var(--travel) * -.2 * var(--strength)),calc(var(--travel) * -.7 * var(--strength)))}89%{transform:translate(calc(var(--travel) * .2 * var(--strength)),calc(var(--travel) * .5 * var(--strength)))}}
+@keyframes fabric-light{0%,100%{transform:translateX(-75px);opacity:calc(.02 * var(--light-strength))}43%{opacity:calc(.08 * var(--light-strength))}76%{transform:translateX(95px);opacity:calc(.025 * var(--light-strength))}}
+@keyframes water-reflection{0%,100%{transform:translateX(calc(-7px * var(--strength)));opacity:calc(.03 * var(--light-strength))}27%{opacity:calc(.18 * var(--light-strength))}51%{transform:translateX(calc(12px * var(--strength)));opacity:calc(.06 * var(--light-strength))}79%{opacity:calc(.24 * var(--light-strength))}}
+@keyframes plant-drift{0%,100%{transform:rotate(0deg)}19%{transform:rotate(calc(var(--tilt) * -.2 * var(--strength)))}41%{transform:rotate(calc(var(--tilt) * .75 * var(--strength)))}63%{transform:rotate(calc(var(--tilt) * .15 * var(--strength)))}78%{transform:rotate(calc(var(--tilt) * -.5 * var(--strength)))}}
+@keyframes lamp-breath{0%,100%{opacity:calc(.12 * var(--light-strength))}14%{opacity:calc(.26 * var(--light-strength))}29%{opacity:calc(.16 * var(--light-strength))}36%{opacity:calc(.3 * var(--light-strength))}62%{opacity:calc(.19 * var(--light-strength))}81%{opacity:calc(.29 * var(--light-strength))}91%{opacity:calc(.15 * var(--light-strength))}}
+@keyframes city-breath{0%,100%{opacity:calc(.14 * var(--light-strength))}41%{opacity:calc(.38 * var(--light-strength))}77%{opacity:calc(.19 * var(--light-strength))}}
+@keyframes cloud-drift{from{transform:translateX(-55px)}to{transform:translateX(100px)}}
+@keyframes leaf-passage{0%,63%{opacity:0;transform:translate(0,0) rotate(-15deg)}65%{opacity:.45}75%{transform:translate(34px,18px) rotate(33deg)}85%{opacity:.5;transform:translate(66px,42px) rotate(72deg)}96%{opacity:0;transform:translate(112px,81px) rotate(135deg)}100%{opacity:0;transform:translate(112px,81px) rotate(135deg)}}

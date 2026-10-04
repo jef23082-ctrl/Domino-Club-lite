@@ -1,5 +1,6 @@
-import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20261001T025219457';
-import { setOptimizedImage } from './image-source.js?v=20261001T025219457';
+import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20261004T170705413';
+import { setOptimizedImage } from './image-source.js?v=20261004T170705413';
+import { applyDominoEnvironment } from './domino-environment.js?v=20261004T170705413';
 
 const NS = 'http://www.w3.org/2000/svg';
 
@@ -39,7 +40,7 @@ function ensureMasks() {
 
 export function applyRoomStyle(value) {
   const style = roomStyle(value);
-  const { layout, scene } = ROOM_STYLES[style];
+  const { layout, scene, originalImage } = ROOM_STYLES[style];
   const shell = document.getElementById('game-shell');
   const stage = document.getElementById('casino-stage');
   if (!shell || !stage) return;
@@ -54,6 +55,10 @@ export function applyRoomStyle(value) {
   shell.style.setProperty('--domino-room-scene', sceneUrl);
   document.body.style.setProperty('--domino-room-scene', sceneUrl);
   const background = stage.querySelector('.scene-base');
-  if (background) setOptimizedImage(background, scene);
+  if (background) {
+    if (originalImage) {background.onerror=null;if(background.getAttribute('src')!==scene)background.src=scene;}
+    else setOptimizedImage(background, scene);
+  }
   document.body.classList.toggle('has-luxe-room', layout === 'luxe');
+  applyDominoEnvironment(style);
 }

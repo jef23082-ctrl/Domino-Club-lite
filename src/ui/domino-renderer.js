@@ -1,6 +1,7 @@
-import { parseTile } from '../game/engine.js?v=20261001T025219457';
-import { displayName } from '../online/display-name.js?v=20261001T025219457';
-import { createWorkBeacon } from './work-beacon.js?v=20261001T025219457';
+import { parseTile } from '../game/engine.js?v=20261004T170705413';
+import { displayName } from '../online/display-name.js?v=20261004T170705413';
+import { createWorkBeacon } from './work-beacon.js?v=20261004T170705413';
+import { createDominoBackArt } from './domino-back-art.js?v=20261004T170705413';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -122,20 +123,40 @@ export function createPremiumDomino(tileId, className = '') {
   return domino;
 }
 
-export function renderHand(container, tileIds) {
+export function renderHand(container, tileIds, { hidden = false } = {}) {
+  container.dataset.handHidden = String(Boolean(hidden));
   const existing = new Map([...container.querySelectorAll('.hand-domino')].map(button => [button.dataset.tileId, button]));
   let cursor = container.firstElementChild;
   for (const tileId of tileIds) {
     let button = existing.get(tileId);
     if (!button) {
-      const tile = parseTile(tileId);
       button = document.createElement('button');
       button.type = 'button';
       button.className = 'hand-domino';
       button.dataset.tileId = tileId;
       button.draggable = false;
+    }
+    const wasHidden = button.classList.contains('is-concealed');
+    button.classList.toggle('is-concealed', Boolean(hidden));
+    button.disabled = Boolean(hidden);
+    if (hidden) {
+      button.setAttribute('aria-label', 'Domino masqué');
+      button.removeAttribute('title');
+      button.removeAttribute('aria-keyshortcuts');
+      button.removeAttribute('aria-describedby');
+      button.removeAttribute('aria-pressed');
+      button.classList.remove('is-selected', 'is-unplayable', 'is-dragging', 'drop-before', 'drop-after');
+      if (!wasHidden || !button.firstElementChild) {
+        const back = document.createElement('span');
+        back.className = 'hand-back';
+        back.setAttribute('aria-hidden', 'true');
+        back.append(createDominoBackArt());
+        button.replaceChildren(back);
+      }
+    } else {
+      const tile = parseTile(tileId);
       button.setAttribute('aria-label', `Domino ${tile.a}-${tile.b}`);
-      button.append(createHandHalf(tile.a), createHandHalf(tile.b));
+      if (wasHidden || !button.firstElementChild) button.replaceChildren(createHandHalf(tile.a), createHandHalf(tile.b));
     }
     if (cursor === button) cursor = cursor.nextElementSibling;
     else container.insertBefore(button, cursor);
@@ -152,21 +173,7 @@ export function renderOpponentRack(container, count) {
     const tile = document.createElement('span');
     tile.className = 'rack-back';
     tile.setAttribute('aria-hidden', 'true');
-    const drawing = svgElement('svg', { viewBox: '0 0 40 64', preserveAspectRatio: 'none', focusable: 'false' });
-    const textureId = `rack-weave-${container.dataset.seat || 'seat'}-${index}`;
-    const defs = svgElement('defs');
-    const pattern = svgElement('pattern', { id: textureId, width: 5, height: 5, patternUnits: 'userSpaceOnUse' });
-    pattern.append(svgElement('path', { d: 'M-1 1L1-1M0 5L5 0M4 6L6 4', fill: 'none', stroke: '#786345', 'stroke-width': .45, opacity: .48 }));
-    defs.append(pattern);
-    drawing.append(defs,
-      svgElement('ellipse', { cx: 20, cy: 61, rx: 19, ry: 2.6, fill: '#000', opacity: .58 }),
-      svgElement('path', { d: 'M32 3L38 1L38 55L32 60Z', fill: '#6d512a', stroke: '#c5a46a', 'stroke-width': .8 }),
-      svgElement('path', { d: 'M2 4L8 1L38 1L32 4Z', fill: '#c6a76f', stroke: '#e1c88f', 'stroke-width': .65 }),
-      svgElement('rect', { x: 2, y: 3, width: 31, height: 57, rx: 1.8, fill: '#080d0b', stroke: '#cca965', 'stroke-width': 1.4 }),
-      svgElement('rect', { x: 4.3, y: 5.3, width: 26.4, height: 52.4, rx: .7, fill: `url(#${textureId})`, stroke: '#7c693e', 'stroke-width': .5 }),
-      svgElement('path', { d: 'M3 57L3 5L30 5', fill: 'none', stroke: '#efdaad', opacity: .28, 'stroke-width': .7 })
-    );
-    tile.append(drawing);
+    tile.append(createDominoBackArt());
     rack.append(tile);
   }
   container.append(rack);

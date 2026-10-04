@@ -1,13 +1,13 @@
-import {clubData,recalculatePhysical,physicalRanking} from '../game/club-state.js?v=20261001T025219457';
-import {clubRankings} from './combined-ranking.js?v=20261001T025219457';
-import {visibleHistory} from '../services/online-records.js?v=20261001T025219457';
+import {clubData,recalculatePhysical,physicalRanking} from '../game/club-state.js?v=20261004T170705413';
+import {clubRankings} from './combined-ranking.js?v=20261004T170705413';
+import {visibleHistory} from '../services/online-records.js?v=20261004T170705413';
 
 export const physicalResultIdentity=record=>JSON.stringify([record.createdAt??null,record.dateIso??'',record.date??'',record.table??[]]);
 const publicRow=row=>Object.fromEntries(['id','playerId','name','avatar','vic','coch','saved','totalGames','currentStreak','percent','score','physicalGames','onlineGames','played','won','pigs','streak'].filter(key=>row[key]!=null).map(key=>[key,row[key]]));
 export const freezeRankings=rankings=>Object.fromEntries(Object.entries(rankings).map(([mode,rows])=>[mode,rows.map(publicRow)]));
 export function periodLabel(id){const m=String(id).match(/^(\d{4})-T([1-4])$/);if(!m)throw new Error('Trimestre invalide.');return `T${m[2]} ${m[1]}`;}
 
-// Only the ranking page uses this view. Histories and lifetime profile counters
+// The current ranking and table trophy use this view. Lifetime profile counters
 // are never reset, rewritten or replaced by the quarterly projection.
 export function currentPeriodRankings(players,physicalHistory,onlineHistory,period){
   if(!period)return clubRankings(players,physicalHistory,onlineHistory,{});

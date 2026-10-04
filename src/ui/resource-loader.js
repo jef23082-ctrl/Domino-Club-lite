@@ -1,7 +1,7 @@
-import { PLAYER_ASSETS, hasPlayerCutout, playerAsset, playerCutoutAsset } from '../config/player-assets.js?v=20261001T025219457';
-import { REACTION_ASSETS, REACTION_PARTICLES, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20261001T025219457';
-import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20261001T025219457';
-import { imageSourceSet } from './image-source.js?v=20261001T025219457';
+import { PLAYER_ASSETS, hasPlayerCutout, playerAsset, playerCutoutAsset } from '../config/player-assets.js?v=20261004T170705413';
+import { REACTION_ASSETS, REACTION_PARTICLES, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20261004T170705413';
+import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20261004T170705413';
+import { imageSourceSet } from './image-source.js?v=20261004T170705413';
 
 const requested = new Map();
 let warmScheduled = false;
@@ -23,8 +23,8 @@ export function roomResourcePlan({ style, seats = [] }) {
   return { critical: [...new Set(critical)], deferred: [] };
 }
 
-export function preloadImage(source, { priority = 'auto' } = {}) {
-  const candidates = imageSourceSet(source);
+export function preloadImage(source, { priority = 'auto', original = false } = {}) {
+  const candidates = original ? {preferred:source,fallback:source} : imageSourceSet(source);
   const url = absolute(candidates.preferred);
   if (!url || typeof Image === 'undefined') return Promise.resolve(url);
   if (requested.has(url)) return requested.get(url);
@@ -48,7 +48,8 @@ export function preloadImage(source, { priority = 'auto' } = {}) {
 
 export function preloadRoomResources(options) {
   const plan = roomResourcePlan(options);
-  return Promise.all(plan.critical.map(source => preloadImage(source, { priority: 'high' })));
+  const style=ROOM_STYLES[roomStyle(options.style)];
+  return Promise.all(plan.critical.map(source => preloadImage(source, { priority: 'high', original:style.originalImage&&source===style.scene })));
 }
 
 export function warmPremiumResources() {

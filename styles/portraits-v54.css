@@ -1,0 +1,3 @@
+/* Decorative pin only. No layout, borders or portrait crop changes. */
+.player-medallion-layer{pointer-events:none;user-select:none}
+.player-medallion-layer[hidden]{display:none!important}

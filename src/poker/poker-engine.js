@@ -1,7 +1,8 @@
 // Three-seat, no-limit Texas Hold'em sit-and-go. All mutations are pure so a
 // Realtime Database transaction can replay them safely after contention.
-import { createLoungeName } from '../online/lounge-name.js?v=20261001T025219457';
-import { isPokerTableStyle, pokerTableStyle } from './poker-table-styles.js?v=20261001T025219457';
+import { createLoungeName } from '../online/lounge-name.js?v=20261004T170705413';
+import { isPokerTableStyle, pokerTableStyle } from './poker-table-styles.js?v=20261004T170705413';
+import { isRoomCancellationModerator, isCancellableRoom } from '../config/room-cancellation.js?v=20261004T170705413';
 
 export const POKER_STARTING_STACK = 20000;
 export const POKER_STACK_CHOICES = Object.freeze([5000, 10000, 20000, 50000, 100000]);
@@ -132,9 +133,19 @@ export function pokerSeatMap(room, leaderId) {
   return { top: players[topIndex], right: players.length > 1 ? players[(topIndex + 1) % players.length] : null, left: players.length > 2 ? players[(topIndex + 2) % players.length] : null };
 }
 
-export function cancelPokerTournament(room, playerId, at = Date.now()) {
-  if (!room || !['waiting', 'playing'].includes(room.status)) throw new Error('Cette partie ne peut plus être annulée.');
-  if (key(room.hostId) !== key(playerId)) throw new Error('Seul l’hôte peut annuler cette partie.');
+export function canCancelPokerTournament(room, playerId) {
+  return isCancellableRoom(room) && playerId !== null && playerId !== undefined
+    && (isRoomCancellationModerator(playerId) || key(room.hostId) === key(playerId));
+}
+
+export function cancelPokerTournament(room, playerId, at = Date.now(), expected = {}) {
+  if (!isCancellableRoom(room)) throw new Error('Cette partie ne peut plus être annulée.');
+  if (!canCancelPokerTournament(room, playerId)) throw new Error('Seul l’hôte ou Khalil peut annuler cette partie.');
+  if (expected.expectedStatus !== undefined && room.status !== expected.expectedStatus
+    || expected.expectedStartedAt !== undefined && Number(room.startedAt || 0) !== Number(expected.expectedStartedAt)
+    || expected.expectedCreatedAt !== undefined && Number(room.createdAt) !== Number(expected.expectedCreatedAt)) {
+    throw new Error('La partie a changé. Vérifie son état avant de réessayer.');
+  }
   const next = normalizePokerRoom(room);
   next.status = 'cancelled'; next.cancelledAt = at; next.cancelledBy = playerId;
   next.phase = POKER_PHASES.CANCELLED;

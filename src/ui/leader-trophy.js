@@ -1,7 +1,7 @@
 const TROPHY_ASSET = './assets/ui/coupe-cochon-or-v10.png';
 const LUXE_TROPHY_ASSET = './assets/ui/coupe-palais-royale-v12.png';
-import { setOptimizedImage } from './image-source.js?v=20261001T025219457';
-import { roomLayout } from '../config/room-styles.js?v=20261001T025219457';
+import { setOptimizedImage } from './image-source.js?v=20261004T170705413';
+import { roomLayout } from '../config/room-styles.js?v=20261004T170705413';
 
 const element = (tag, className = '') => {
   const node = document.createElement(tag);

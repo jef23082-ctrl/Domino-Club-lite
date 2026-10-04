@@ -9,6 +9,7 @@ export const FIREBASE_CONFIG = Object.freeze({
 });
 
 export const FIREBASE_PATHS = Object.freeze({
+  environmentSettings: 'domino_environment_settings',
   clubAnnouncements: 'club_announcements',
   rankingPeriods: 'domino_ranking_periods',
   legacyData: 'domino_data',
