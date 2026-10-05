@@ -1,4 +1,4 @@
-import {announcementContent,announcementContentText,announcementImage,normalizeAnnouncementContent,MAX_IMAGE_BYTES,IMAGE_FORMATS} from '../services/club-announcement-content.js?v=20261004T170705413';
+import {announcementContent,announcementContentText,announcementImage,normalizeAnnouncementContent,MAX_IMAGE_BYTES,IMAGE_FORMATS} from '../services/club-announcement-content.js?v=20261005T162819119';
 let editorSequence=0;
 const clipboardType='application/x-domino-club-announcement';
 

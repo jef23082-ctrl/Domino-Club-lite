@@ -1,4 +1,4 @@
-import { ROOM_STYLES } from '../config/room-styles.js?v=20261004T170705413';
+import { ROOM_STYLES } from '../config/room-styles.js?v=20261005T162819119';
 
 // Poker scene choices are independent of the Domino room-style setting. The
 // three bespoke Poker scenes share the same seat and card layout.

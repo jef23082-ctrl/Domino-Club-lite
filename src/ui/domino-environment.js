@@ -1,6 +1,6 @@
-import {getEnvironment} from '../config/domino-environments.js?v=20261004T170705413';
-import {EnvironmentAnimator} from './environment-animator.js?v=20261004T170705413';
-import {DEFAULT_ENVIRONMENT_SETTINGS,canConfigureEnvironment} from '../services/environment-settings-repository.js?v=20261004T170705413';
+import {getEnvironment} from '../config/domino-environments.js?v=20261005T162819119';
+import {EnvironmentAnimator} from './environment-animator.js?v=20261005T162819119';
+import {DEFAULT_ENVIRONMENT_SETTINGS,canConfigureEnvironment} from '../services/environment-settings-repository.js?v=20261005T162819119';
 
 const QUALITY_KEY='domino-club-environment-quality';
 const QUALITIES=['AUTO','FULL','REDUCED','OFF'];

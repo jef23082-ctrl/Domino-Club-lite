@@ -1,6 +1,6 @@
-import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20261004T170705413';
-import { setOptimizedImage } from './image-source.js?v=20261004T170705413';
-import { applyDominoEnvironment } from './domino-environment.js?v=20261004T170705413';
+import { ROOM_STYLES, roomStyle } from '../config/room-styles.js?v=20261005T162819119';
+import { setOptimizedImage } from './image-source.js?v=20261005T162819119';
+import { applyDominoEnvironment } from './domino-environment.js?v=20261005T162819119';
 
 const NS = 'http://www.w3.org/2000/svg';
 

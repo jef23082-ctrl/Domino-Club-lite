@@ -1,7 +1,7 @@
-import { element as el, button } from './club-elements.js?v=20261004T170705413';
-import { renderChatMessage } from './chat-renderer.js?v=20261004T170705413';
-import { playSound } from './sound-player.js?v=20261004T170705413';
-import { displayName } from '../online/display-name.js?v=20261004T170705413';
+import { element as el, button } from './club-elements.js?v=20261005T162819119';
+import { renderChatMessage } from './chat-renderer.js?v=20261005T162819119';
+import { playSound } from './sound-player.js?v=20261005T162819119';
+import { displayName } from '../online/display-name.js?v=20261005T162819119';
 
 export function createChatComposer({ repository, channel, identity, canWrite, notify, audible=()=>true, title = 'Discussion commune' }) {
   const root=el('section','portal-card portal-chat'), messages=el('div','portal-chat-messages'), typing=el('p','portal-typing');

@@ -2,10 +2,10 @@
 // remain untouched; Kyllian has no new asset or active profile here.
 export const PORTRAIT_BACKGROUNDS = Object.freeze(Object.fromEntries([
   'khalil','thomas','eddy','alexis','cedric','christopher','jean-claude','emmanuelle','ryad'
-].map(id => [id, `./assets/portraits-v54/${id}-background.png?v=20261004T170705413`])));
+].map(id => [id, `./assets/portraits-v54/${id}-background.png?v=20261005T162819119`])));
 
 export const JEAN_CLAUDE_MEDALLION = Object.freeze({
-  src: './assets/portraits-v54/jean-claude-medallion-reference.png?v=20261004T170705413',
+  src: './assets/portraits-v54/jean-claude-medallion-reference.png?v=20261005T162819119',
   // Use the supplied pin itself, not a redrawn or generated interpretation.
   sourceWidth: 1774, sourceHeight: 887, crop: '961 371 33 65',
   seats: Object.freeze({

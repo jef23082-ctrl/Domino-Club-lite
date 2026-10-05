@@ -1,8 +1,8 @@
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261004T170705413';
-import { playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261004T170705413';
-import { PORTRAIT_BACKGROUNDS } from '../config/portrait-assets.js?v=20261004T170705413';
-import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261004T170705413';
-import { displayName } from '../online/display-name.js?v=20261004T170705413';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261005T162819119';
+import { playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261005T162819119';
+import { PORTRAIT_BACKGROUNDS } from '../config/portrait-assets.js?v=20261005T162819119';
+import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261005T162819119';
+import { displayName } from '../online/display-name.js?v=20261005T162819119';
 
 export function renderChatMessage(message) {
   const article = document.createElement('article');

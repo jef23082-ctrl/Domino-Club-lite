@@ -1,11 +1,11 @@
-import { displayName } from '../online/display-name.js?v=20261004T170705413';
-import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261004T170705413';
-import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261004T170705413';
-import { playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261004T170705413';
-import { PORTRAIT_BACKGROUNDS } from '../config/portrait-assets.js?v=20261004T170705413';
-import { syncPlayerMedallion } from './player-medallion.js?v=20261004T170705413';
-import { paginate } from './pagination.js?v=20261004T170705413';
-import { createPremiumCrown, createPremiumPig } from './premium-symbols.js?v=20261004T170705413';
+import { displayName } from '../online/display-name.js?v=20261005T162819119';
+import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261005T162819119';
+import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261005T162819119';
+import { playerCutoutAsset, hasPlayerCutout } from '../config/player-assets.js?v=20261005T162819119';
+import { PORTRAIT_BACKGROUNDS } from '../config/portrait-assets.js?v=20261005T162819119';
+import { syncPlayerMedallion } from './player-medallion.js?v=20261005T162819119';
+import { paginate } from './pagination.js?v=20261005T162819119';
+import { createPremiumCrown, createPremiumPig } from './premium-symbols.js?v=20261005T162819119';
 export function element(tag, className = '', text) {
   const node = document.createElement(tag); node.className = className;
   if (text !== undefined) node.textContent = displayName(text);

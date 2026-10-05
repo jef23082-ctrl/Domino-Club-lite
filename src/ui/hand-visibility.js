@@ -1,4 +1,4 @@
-import { navigationIcon } from './navigation-icon.js?v=20261004T170705413';
+import { navigationIcon } from './navigation-icon.js?v=20261005T162819119';
 
 // Deliberately kept in memory: concealment is a local viewing preference, not
 // a room action, and must not follow another player or a different round.

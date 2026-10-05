@@ -1,4 +1,4 @@
-import { JEAN_CLAUDE_MEDALLION as badge } from '../config/portrait-assets.js?v=20261004T170705413';
+import { JEAN_CLAUDE_MEDALLION as badge } from '../config/portrait-assets.js?v=20261005T162819119';
 
 const ns='http://www.w3.org/2000/svg';
 const layers=new WeakMap();

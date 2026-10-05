@@ -1,6 +1,6 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20261004T170705413';
-import { randomId } from './ids.js?v=20261004T170705413';
-import {normalizeAnnouncementContent,announcementContentText,announcementContent} from './club-announcement-content.js?v=20261004T170705413';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261005T162819119';
+import { randomId } from './ids.js?v=20261005T162819119';
+import {normalizeAnnouncementContent,announcementContentText,announcementContent} from './club-announcement-content.js?v=20261005T162819119';
 
 export const DEFAULT_ANNOUNCEMENT_COLOR='#dcf7ff';
 export const announcementColor=value=>/^#[0-9a-f]{6}$/i.test(String(value))?String(value).toLowerCase():DEFAULT_ANNOUNCEMENT_COLOR;

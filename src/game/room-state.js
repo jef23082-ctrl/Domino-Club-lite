@@ -9,10 +9,11 @@ import {
   placeTile,
   playerKey,
   validSides
-} from './engine.js?v=20261004T170705413';
-import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20261004T170705413';
-import { ROOM_STYLES } from '../config/room-styles.js?v=20261004T170705413';
-import { isRoomCancellationModerator, isCancellableRoom } from '../config/room-cancellation.js?v=20261004T170705413';
+} from './engine.js?v=20261005T162819119';
+import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20261005T162819119';
+import { ROOM_STYLES } from '../config/room-styles.js?v=20261005T162819119';
+import { isRoomCancellationModerator, isCancellableRoom } from '../config/room-cancellation.js?v=20261005T162819119';
+import { roomActor, roomHostId, roomCreatorId, isRoomHost, isRoomCreator } from './room-membership.js?v=20261005T162819119';
 
 export class GameRuleError extends Error {
   constructor(message, code) {
@@ -78,6 +79,8 @@ export function createInitialRoom({ code, profile, clientToken, at = Date.now() 
     turnTimerSeconds: 15,
     hostToken: clientToken,
     creatorToken: clientToken,
+    hostPlayerId: profile.id,
+    creatorPlayerId: profile.id,
     createdAt: at,
     updatedAt: at,
     players: { [playerKey(profile.id)]: player },
@@ -93,6 +96,8 @@ export function joinWaitingRoom(room, { profile, clientToken, at = Date.now() })
   const existing = room.players[key];
   rule(existing || Object.keys(room.players).length < 3, 'La salle est déjà complète.', 'room-full');
   const previousToken = existing?.token;
+  room.hostPlayerId = roomHostId(room);
+  room.creatorPlayerId = roomCreatorId(room);
   if (existing && room.hostToken === previousToken) room.hostToken = clientToken;
   if (existing && room.creatorToken === previousToken) room.creatorToken = clientToken;
   room.players[key] = {
@@ -104,7 +109,7 @@ export function joinWaitingRoom(room, { profile, clientToken, at = Date.now() })
     connected: true,
     isHost: room.hostToken === clientToken
   };
-  Object.values(room.players).forEach(player => { player.isHost = player.token === room.hostToken; });
+  Object.values(room.players).forEach(player => { player.isHost = String(player.playerId) === String(room.hostPlayerId); });
   room.updatedAt = at;
   return room;
 }
@@ -115,6 +120,8 @@ export function reattachPlayerInRoom(room, { profile, clientToken, at = Date.now
   const existing = room.players?.[key];
   rule(existing, 'Ce profil ne possède pas de place dans cette salle.', 'player-not-seated');
   const previousToken = existing.token;
+  room.hostPlayerId = roomHostId(room);
+  room.creatorPlayerId = roomCreatorId(room);
   existing.token = clientToken;
   existing.name = profile.name || existing.name;
   existing.avatar = profile.avatar || existing.avatar || '❓';
@@ -122,15 +129,15 @@ export function reattachPlayerInRoom(room, { profile, clientToken, at = Date.now
   if (room.hostToken === previousToken) room.hostToken = clientToken;
   if (room.creatorToken === previousToken) room.creatorToken = clientToken;
   Object.values(room.players || {}).forEach(player => {
-    player.isHost = player.token === room.hostToken;
+    player.isHost = String(player.playerId) === String(room.hostPlayerId);
   });
   room.updatedAt = at;
   return room;
 }
 
-export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex = null, at = Date.now(), randomIndex }) {
+export function startMatchInRoom(room, { playerId, clientToken, matchId, musicTrackIndex = null, at = Date.now(), randomIndex }) {
   rule(room, 'La salle n’existe plus.', 'room-not-found');
-  rule(room.hostToken === clientToken, 'Seul l’hôte peut lancer la partie.', 'host-only');
+  rule(isRoomHost(room, { playerId, clientToken }), 'Seul l’hôte peut lancer la partie.', 'host-only');
   rule(room.status === 'waiting', 'La partie a déjà commencé.', 'room-started');
   const players = roomPlayers(room);
   rule(players.length === 3, 'Il faut exactement trois joueurs.', 'players-count');
@@ -151,15 +158,17 @@ export function startMatchInRoom(room, { clientToken, matchId, musicTrackIndex =
   return room;
 }
 
-export function startRematchInRoom(room, { clientToken, matchId, at = Date.now(), randomIndex }) {
+export function startRematchInRoom(room, { playerId, clientToken, matchId, at = Date.now(), randomIndex }) {
   rule(room, 'La salle n’existe plus.', 'room-not-found');
   rule(room.status === 'finished', 'La partie n’est pas terminée.', 'match-not-finished');
   const players = roomPlayers(room);
   rule(players.length === 3, 'Il faut exactement trois joueurs.', 'players-count');
-  rule(players.some(player => player.token === clientToken), 'Seul un joueur de la salle peut relancer.', 'player-only');
+  const member = roomActor(room, { playerId, clientToken });
+  rule(member, 'Seul un joueur de la salle peut relancer.', 'player-only');
   room.hostToken = clientToken;
+  room.hostPlayerId = member.playerId;
   Object.values(room.players || {}).forEach(player => {
-    player.isHost = player.token === clientToken;
+    player.isHost = String(player.playerId) === String(member.playerId);
   });
   transitionRoom(room, ROOM_PHASE.LAUNCHING, at);
   room.status = 'playing';
@@ -179,9 +188,9 @@ export function startRematchInRoom(room, { clientToken, matchId, at = Date.now()
   return room;
 }
 
-export function selectRoomStyle(room, { clientToken, style, at = Date.now() }) {
+export function selectRoomStyle(room, { playerId, clientToken, style, at = Date.now() }) {
   rule(room, 'Salle introuvable.', 'room-not-found');
-  rule(room.hostToken === clientToken, 'Seul l’hôte choisit le style de la salle.', 'host-only');
+  rule(isRoomHost(room, { playerId, clientToken }), 'Seul l’hôte choisit le style de la salle.', 'host-only');
   rule(room.status === 'waiting', 'Le style doit être choisi avant de lancer la partie.', 'room-started');
   rule(Object.hasOwn(ROOM_STYLES, style), 'Ce style de salle n’existe pas.', 'invalid-room-style');
   room.style = style;
@@ -189,9 +198,9 @@ export function selectRoomStyle(room, { clientToken, style, at = Date.now() }) {
   return room;
 }
 
-export function selectTurnTimerInRoom(room, { clientToken, seconds, at = Date.now() }) {
+export function selectTurnTimerInRoom(room, { playerId, clientToken, seconds, at = Date.now() }) {
   rule(room, 'Salle introuvable.', 'room-not-found');
-  rule(room.hostToken === clientToken, 'Seul l’hôte règle le compte à rebours.', 'host-only');
+  rule(isRoomHost(room, { playerId, clientToken }), 'Seul l’hôte règle le compte à rebours.', 'host-only');
   rule(room.status === 'waiting', 'Le compte à rebours doit être réglé avant de lancer la partie.', 'room-started');
   const normalized = normalizeTurnTimerSeconds(seconds, -1);
   rule(normalized >= 0, 'Cette durée de compte à rebours n’existe pas.', 'invalid-turn-timer');
@@ -200,9 +209,9 @@ export function selectTurnTimerInRoom(room, { clientToken, seconds, at = Date.no
   return room;
 }
 
-export function setTurnClockPausedInRoom(room, { clientToken, paused, expectedTurnId, at = Date.now() }) {
+export function setTurnClockPausedInRoom(room, { playerId, clientToken, paused, expectedTurnId, at = Date.now() }) {
   rule(room?.status === 'playing' && room.game?.roundStatus === 'playing', 'La manche n’est pas active.', 'round-inactive');
-  rule(roomPlayers(room).some(player => player.token === clientToken), 'Seul un joueur de la salle peut synchroniser la pause.', 'player-only');
+  rule(roomActor(room, { playerId, clientToken }), 'Seul un joueur de la salle peut synchroniser la pause.', 'player-only');
   const clock = room.game.turnClock;
   if (!clock) return room;
   rule(String(room.game.currentTurnId) === String(expectedTurnId) && String(clock.turnId) === String(expectedTurnId), 'Le tour a déjà changé.', 'stale-turn');
@@ -223,9 +232,9 @@ export function setTurnClockPausedInRoom(room, { clientToken, paused, expectedTu
   return room;
 }
 
-export function selectRoomMusic(room, { clientToken, trackIndex, at = Date.now() }) {
+export function selectRoomMusic(room, { playerId, clientToken, trackIndex, at = Date.now() }) {
   rule(room && room.status !== 'cancelled', 'Salle introuvable.', 'room-not-found');
-  rule(room.hostToken === clientToken, 'Seul l’hôte choisit la musique de la table.', 'host-only');
+  rule(isRoomHost(room, { playerId, clientToken }), 'Seul l’hôte choisit la musique de la table.', 'host-only');
   const nextTrack = Math.min(2, Math.max(0, Math.round(Number(trackIndex) || 0)));
   room.music = {
     trackIndex: nextTrack,
@@ -238,11 +247,14 @@ export function selectRoomMusic(room, { clientToken, trackIndex, at = Date.now()
 
 export function leaveWaitingRoom(room, { playerId, clientToken, at = Date.now() }) {
   rule(room?.status === 'waiting', 'La salle ne peut plus être quittée de cette façon.', 'room-not-waiting');
+  rule(roomActor(room, { playerId, clientToken }), 'Ce profil ne possède pas de place dans cette salle.', 'player-not-seated');
+  const wasHost = isRoomHost(room, { playerId, clientToken });
   delete room.players?.[playerKey(playerId)];
   const remaining = roomPlayers(room);
   if (!remaining.length) return null;
-  if (room.hostToken === clientToken) {
+  if (wasHost) {
     room.hostToken = remaining[0].token;
+    room.hostPlayerId = remaining[0].playerId;
     remaining.forEach(player => {
       player.isHost = player.token === room.hostToken;
     });
@@ -253,7 +265,7 @@ export function leaveWaitingRoom(room, { playerId, clientToken, at = Date.now() 
 
 export function canCancelRoom(room, { clientToken, playerId } = {}) {
   return isCancellableRoom(room) && (isRoomCancellationModerator(playerId)
-    || Boolean(clientToken && (room.creatorToken || room.hostToken) === clientToken));
+    || isRoomCreator(room, { playerId, clientToken }));
 }
 
 export function cancelRoomInState(room, { clientToken, playerId, creatorName, expectedStatus, expectedMatchId, expectedCreatedAt, at = Date.now() }) {

@@ -1,7 +1,7 @@
-import { parseTile } from '../game/engine.js?v=20261004T170705413';
-import { displayName } from '../online/display-name.js?v=20261004T170705413';
-import { createWorkBeacon } from './work-beacon.js?v=20261004T170705413';
-import { createDominoBackArt } from './domino-back-art.js?v=20261004T170705413';
+import { parseTile } from '../game/engine.js?v=20261005T162819119';
+import { displayName } from '../online/display-name.js?v=20261005T162819119';
+import { createWorkBeacon } from './work-beacon.js?v=20261005T162819119';
+import { createDominoBackArt } from './domino-back-art.js?v=20261005T162819119';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 

@@ -1,5 +1,5 @@
-import { roomPlayers } from '../game/room-state.js?v=20261004T170705413';
-import { roundGateKey } from './round-gate.js?v=20261004T170705413';
+import { roomPlayers } from '../game/room-state.js?v=20261005T162819119';
+import { roundGateKey } from './round-gate.js?v=20261005T162819119';
 
 // A late acknowledgement for round N must not erase the intent for round N+1.
 export function sameRoundRequest(first, second) {

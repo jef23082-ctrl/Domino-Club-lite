@@ -1,5 +1,5 @@
-import { FIREBASE_PATHS } from '../config/firebase.js?v=20261004T170705413';
-import { KHALIL_PROFILE_ID } from '../config/room-cancellation.js?v=20261004T170705413';
+import { FIREBASE_PATHS } from '../config/firebase.js?v=20261005T162819119';
+import { KHALIL_PROFILE_ID } from '../config/room-cancellation.js?v=20261005T162819119';
 
 export const DEFAULT_ENVIRONMENT_SETTINGS=Object.freeze({weather:'breeze',intensity:85});
 export const WEATHER_MODES=Object.freeze(['calm','breeze','windy']);

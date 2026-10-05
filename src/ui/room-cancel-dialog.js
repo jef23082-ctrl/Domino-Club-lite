@@ -1,6 +1,6 @@
-import { element, button } from './club-elements.js?v=20261004T170705413';
-import { loungeTitle } from '../online/lounge-name.js?v=20261004T170705413';
-import { isCancellableRoom } from '../config/room-cancellation.js?v=20261004T170705413';
+import { element, button } from './club-elements.js?v=20261005T162819119';
+import { loungeTitle } from '../online/lounge-name.js?v=20261005T162819119';
+import { isCancellableRoom } from '../config/room-cancellation.js?v=20261005T162819119';
 
 export function confirmRoomCancellation(rooms, { preferredCode = '', choose = false } = {}) {
   return new Promise(resolve => {

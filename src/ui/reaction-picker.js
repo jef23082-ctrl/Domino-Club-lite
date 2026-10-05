@@ -1,7 +1,7 @@
-import { element as el, button } from './club-elements.js?v=20261004T170705413';
-import { createWorkBeacon } from './work-beacon.js?v=20261004T170705413';
-import { createReactionVisual } from './reaction-visual.js?v=20261004T170705413';
-import { displayName } from '../online/display-name.js?v=20261004T170705413';
+import { element as el, button } from './club-elements.js?v=20261005T162819119';
+import { createWorkBeacon } from './work-beacon.js?v=20261005T162819119';
+import { createReactionVisual } from './reaction-visual.js?v=20261005T162819119';
+import { displayName } from '../online/display-name.js?v=20261005T162819119';
 
 // Out-of-flow overlay: it never participates in the casino's layout.
 export function reactionPicker({ mine, player, sender, actions, working = false, onSend, onClose }) {
