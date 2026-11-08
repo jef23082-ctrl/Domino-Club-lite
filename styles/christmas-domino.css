@@ -1,0 +1,18 @@
+.christmas-decoration,.christmas-table-layer{position:absolute;pointer-events:none!important;user-select:none}
+.christmas-decoration img{width:100%;height:100%;object-fit:contain;display:block}
+.christmas-garland img{object-fit:fill}
+.christmas-decoration i{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff0be;box-shadow:0 0 6px 2px #ffd37a99;animation:christmas-light var(--duration) ease-in-out var(--delay) infinite alternate}
+.christmas-garland i{width:2px;height:2px;animation-name:christmas-garland-light}
+.club-portal:not(.christmas-domino) .christmas-decoration{display:none!important}
+.christmas-domino>.christmas-tree{z-index:-1}
+.christmas-domino .portal-header>.christmas-garland{position:fixed;width:38vw;height:75px;left:31vw;top:-15px;z-index:3}
+.christmas-domino .portal-nav>.christmas-garland{position:fixed;width:27vw;height:55px;left:36.5vw;bottom:-18px;z-index:3}
+.christmas-domino .portal-card{position:relative}
+.christmas-domino .christmas-corner{width:115px;height:48px;left:-15px;top:-12px;transform:rotate(-28deg);z-index:2}
+.christmas-domino .christmas-corner-right{left:auto;right:-12px;transform:rotate(28deg)}
+.christmas-table-layer{inset:0;z-index:1;overflow:hidden}
+.christmas-table-layer .christmas-decoration i{width:3px;height:3px}
+@keyframes christmas-light{from{opacity:.65}55%{opacity:1}to{opacity:.8}}
+@keyframes christmas-garland-light{from{opacity:.75}to{opacity:1}}
+@media(max-width:700px){.christmas-domino>.christmas-tree{width:27%!important;left:73%!important;height:32%!important}.christmas-domino .christmas-corner{width:48px;height:22px;top:-9px}.christmas-domino .portal-nav>.christmas-garland{height:30px;bottom:-19px}.christmas-domino .portal-header>.christmas-garland{height:32px;top:-19px}}
+@media(prefers-reduced-motion:reduce){.christmas-decoration i{animation:none!important;opacity:.85}}

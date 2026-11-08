@@ -56,7 +56,7 @@ import { applyEventLighting, clearBoudeLighting, pulseBoudeLighting } from '../u
 import { applyInteractionFormat } from '../ui/interaction-format.js?v=20261005T162819119';
 import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20261005T162819119';
 import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20261005T162819119';
-import { createOpeningMascot } from '../ui/opening-mascot.js?v=20261005T162819119';
+import { createOpeningMascot } from '../ui/opening-mascot.js?v=58-noel';
 import { createLeaderTrophy } from '../ui/leader-trophy.js?v=20261005T162819119';
 import { loungeTitle } from './lounge-name.js?v=20261005T162819119';
 import {

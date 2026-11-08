@@ -1,4 +1,4 @@
-Domino Club V57 — 57.0.0
+Domino Club V58 NOËL — Poker conservé en V57
 
 V56 : les listes Style de salle et Temps par tour reprennent le fond noir texturé d'origine, les lettres jaunes et les contours dorés. Sélecteurs, options et logique conservés. Voir DOMINO-V56.md.
 

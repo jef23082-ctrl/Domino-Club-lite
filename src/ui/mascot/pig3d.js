@@ -1,5 +1,6 @@
 import * as T from '../../vendor/three/three.module.js?v=20261005T162819119';
 
+import {christmasCostume} from './christmas-costume.js';
 // One persistent, volumetric character. Expressions never replace an image.
 const V=(x,y,z)=>new T.Vector3(x,y,z);
 const smooth=(a,b,t)=>a+(b-a)*t;
@@ -94,12 +95,14 @@ export class Pig3D {
     this.offered=this.makeDomino(false);this.body.add(this.offered);
     const ground=new T.Mesh(new T.PlaneGeometry(8,8),new T.ShadowMaterial({opacity:.25}));ground.rotation.x=-Math.PI/2;ground.position.y=.08;ground.receiveShadow=true;this.scene.add(ground);
     this.open=1;this.yawn=0;this.blinkStart=0;this.nextBlink=2;this.pack=0;
+    this.updateChristmas=christmasCostume(this);this.updateChristmas();
   }
   ell(parent,mat,pos,scale){const m=new T.Mesh(new T.SphereGeometry(1,40,28),mat);m.position.set(...pos);m.scale.set(...scale);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
   line(parent,points,r,mat){const curve=new T.CatmullRomCurve3(points.map(p=>V(...p)));const mesh=new T.Mesh(new T.TubeGeometry(curve,32,r,8,false),mat);parent.add(mesh);return mesh}
   box(parent,mat,pos,size,r){const [w,h,d]=size;const shape=new T.Shape();const x=-w/2,y=-d/2;shape.moveTo(x+r,y);shape.lineTo(x+w-r,y);shape.quadraticCurveTo(x+w,y,x+w,y+r);shape.lineTo(x+w,y+d-r);shape.quadraticCurveTo(x+w,y+d,x+w-r,y+d);shape.lineTo(x+r,y+d);shape.quadraticCurveTo(x,y+d,x,y+d-r);shape.lineTo(x,y+r);shape.quadraticCurveTo(x,y,x+r,y);const geo=new T.ExtrudeGeometry(shape,{depth:h-r*2,bevelEnabled:true,bevelSegments:3,bevelSize:r,bevelThickness:r,steps:1,curveSegments:12});geo.rotateX(-Math.PI/2);const m=new T.Mesh(geo,mat);m.position.set(...pos);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
   makeDomino(back){const group=new T.Group();this.box(group,this.gold,[0,0,0],[.24,.075,.4],.016);this.box(group,back?this.green:surface('#f4e6c9',.3),[0,.032,0],[.215,.045,.374],.012);if(back){this.line(group,[[-.07,.085,-.12],[.07,.085,-.12],[.07,.085,.12],[-.07,.085,.12],[-.07,.085,-.12]],.004,this.gold)}else{this.line(group,[[-.085,.085,0],[.085,.085,0]],.004,this.gold);for(const [x,z] of [[-.05,-.14],[0,-.10],[.05,-.06],[-.05,.06],[.05,.06],[0,.1],[-.05,.14],[.05,.14]])this.ell(group,this.dark,[x,.086,z],[.017,.005,.017])}return group}
   render({mode,t,elapsed,dt,look,slow}){
+    this.updateChristmas();
     const follow=1-Math.exp(-dt*9),breath=slow?0:Math.sin(t*2.1)*.012;
     this.body.position.y=breath;this.head.rotation.y=smooth(this.head.rotation.y,look.x*.09,follow);
     this.head.rotation.z=smooth(this.head.rotation.z,(mode==='guard'?-.06:mode==='bow'?.035:look.x*-.045),follow);
