@@ -1,5 +1,11 @@
 import {CHRISTMAS_THEME,CHRISTMAS_TABLES,isChristmasTable} from '../config/christmas.js?v=58-r2';
 const assets=new URL('../../assets/christmas/v58/domino/',import.meta.url);
+const LIGHTS_KEY='domino-club-christmas-tree-lights';
+const lightModes=['auto','blink','fixed'];
+let lightMode='auto';
+try{const saved=localStorage.getItem(LIGHTS_KEY);if(lightModes.includes(saved))lightMode=saved;}catch{}
+const requestedLights=new URLSearchParams(location.search).get('treeLights');
+if(lightModes.includes(requestedLights)){lightMode=requestedLights;try{localStorage.setItem(LIGHTS_KEY,lightMode);}catch{}}
 const images={tree:'tree/tree-r2.webp',garland:'garlands/garland.png',corner:'ui/corner-r2.webp',perimeter:'tables/perimeter-r2.webp',gifts:'ui/gifts-r2.webp'};
 // Bulbs follow the actual photographed branches; six independent circuits.
 const treeLights=[[50,7],[46,13],[54,14],[42,17],[59,19],[48,20],[53,22],[40,26],[58,27],[34,30],[49,31],[67,32],[30,37],[40,39],[62,39],[72,43],[23,47],[49,47],[67,48],[32,52],[60,54],[21,56],[76,57],[37,60],[58,62],[29,65],[71,65],[16,69],[44,69],[63,73],[31,75],[80,75],[20,79],[51,80],[72,82],[39,85]];
@@ -28,6 +34,7 @@ function sync(){
   queued=false;if(!CHRISTMAS_THEME)return;
   const portal=document.querySelector('#club-portal');
   if(portal){
+    if(portal.dataset.christmasTreeLights!==lightMode)portal.dataset.christmasTreeLights=lightMode;
     const domino=portal.dataset.mode==='domino';portal.classList.toggle('christmas-domino',domino);
     const badge=portal.querySelector('.portal-site-version');if(badge&&badge.textContent!==(domino?'V58 NOËL':'V57'))badge.textContent=domino?'V58 NOËL':'V57';
     if(domino){
@@ -41,6 +48,7 @@ function sync(){
     }
   }
   const stage=document.querySelector('#casino-stage');
+  if(stage&&stage.dataset.christmasTreeLights!==lightMode)stage.dataset.christmasTreeLights=lightMode;
   if(stage&&activeStyle!==stage.dataset.roomTheme){
     activeStyle=stage.dataset.roomTheme;stage.querySelectorAll(':scope > .christmas-table-layer').forEach(n=>n.remove());
     if(isChristmasTable(activeStyle)){
@@ -50,6 +58,17 @@ function sync(){
   }
   const select=document.querySelector('#music-track');
   if(select&&!select.querySelector('[data-christmas-audio]'))for(const name of ['Noël — Lounge','Noël — Jazz Club']){const option=document.createElement('option');option.textContent=`${name} (fichier à fournir)`;option.disabled=true;option.dataset.christmasAudio='pending';select.append(option);}
+  const musicPanel=document.querySelector('#music-panel');
+  if(musicPanel&&!musicPanel.querySelector('.christmas-tree-light-control')){
+    const field=document.createElement('fieldset');field.className='christmas-tree-light-control';
+    const legend=document.createElement('legend');legend.textContent='Guirlandes du sapin';
+    const control=document.createElement('select');control.setAttribute('aria-label','Guirlandes du sapin');
+    for(const [value,label] of [['auto','Automatique · réglages de l’appareil'],['blink','Clignotantes · vert, rouge et blanc'],['fixed','Fixes']]){const option=document.createElement('option');option.value=value;option.textContent=label;control.append(option);}
+    control.value=lightMode;control.addEventListener('change',()=>{lightMode=control.value;try{localStorage.setItem(LIGHTS_KEY,lightMode);}catch{}sync();});
+    field.append(legend,control);musicPanel.append(field);
+  }
+  const lightControl=musicPanel?.querySelector('.christmas-tree-light-control');
+  if(lightControl){lightControl.hidden=!isChristmasTable(stage?.dataset.roomTheme);lightControl.querySelector('select').value=lightMode;}
 }
 function schedule(){if(!queued){queued=true;queueMicrotask(sync);}}
 const options={subtree:true,childList:true,attributes:true,attributeFilter:['data-mode','data-page','data-room-theme']};

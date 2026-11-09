@@ -28,3 +28,10 @@
 @keyframes christmas-tree-blink{0%,30%{opacity:1}43%,76%{opacity:.05}90%,100%{opacity:1}}
 @media(max-width:700px){.christmas-domino>.christmas-tree{width:28%!important;left:72%!important;height:31%!important}.christmas-domino .portal-header>.christmas-garland{width:56vw;left:22vw;height:62px;top:-20px}.christmas-domino>.christmas-nav-sash{width:42%;height:40px;left:29%;bottom:-18px}.christmas-domino>.christmas-gifts{width:15%!important;height:10%!important}}
 @media(prefers-reduced-motion:reduce){.christmas-circuit{animation:none!important;opacity:.9}}
+/* An explicit local choice may enable tree lights. No global animation rule,
+   OS preference, gameplay, other scenery or Poker animation is overridden. */
+:is(#club-portal,#casino-stage)[data-christmas-tree-lights="blink"] .christmas-tree>.christmas-circuit{animation:christmas-tree-blink var(--duration) linear var(--delay) infinite!important}
+:is(#club-portal,#casino-stage)[data-christmas-tree-lights="fixed"] .christmas-tree>.christmas-circuit{animation:none!important;opacity:.9}
+.christmas-tree-light-control{margin-top:.7em;padding:.6em;border:1px solid #b99a58;color:#efd28d}
+.christmas-tree-light-control[hidden]{display:none}
+.christmas-tree-light-control select{max-width:100%;width:100%;font:inherit;color:#f7dda1;background:#071b12;border:1px solid #b99a58;padding:.4em}
