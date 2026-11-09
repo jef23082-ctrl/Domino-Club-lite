@@ -2,7 +2,7 @@
   "version": "v58-noel",
   "baseVersion": "v57",
   "baseCommit": "9e2df2eb4ca6c94c5bba8fc8709d3267d3f16fe4",
-  "generatedAt": "2026-11-09T16:36:55.540Z",
+  "generatedAt": "2026-11-09T16:44:29.446Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -1696,13 +1696,13 @@
     },
     {
       "path": "DOMINO-V58-NOEL.md",
-      "bytes": 7521,
-      "sha256": "586e8ab4108e9db1c014d426f9ab297936503f1c28fa9872f6d501298461ba53"
+      "bytes": 7963,
+      "sha256": "92b679deecf1acf81e40a93fb1f0875ed783be573c3db273fb115852d03d49cb"
     },
     {
       "path": "index.html",
       "bytes": 13337,
-      "sha256": "ce34ae0d6c248fe88ffb6e9927f5f05200523dee5db4b1a8ab2b48033c601ea3"
+      "sha256": "372aea745cf828ebb9026c4ef7cc85eed225311016ceaeb90ed5d489ae2f60bd"
     },
     {
       "path": "LISEZ-MOI.txt",
@@ -2091,8 +2091,8 @@
     },
     {
       "path": "src/ui/christmas-domino.js",
-      "bytes": 7099,
-      "sha256": "915b4d7f107a7ac907aad81c967fb7bd3cc8cd2f26b0e1cd7fcddcd287dd3bc7"
+      "bytes": 7481,
+      "sha256": "1c07c317aec941d4cf6609129c064ee7c0c22b2b5ddcfad01857fd48f8f87913"
     },
     {
       "path": "src/ui/christmas-nose.js",
@@ -2321,8 +2321,8 @@
     },
     {
       "path": "styles/christmas-domino.css",
-      "bytes": 4304,
-      "sha256": "6fea7796e5694d82c1c968c1702e5099e4581a3ec3eb17f2570d2305c1fa15fe"
+      "bytes": 4589,
+      "sha256": "2f10dfe3260b22d72df2dd1977e90bc142ba220e5dc06cd82a98e40de473be1d"
     },
     {
       "path": "styles/club-info-v45.css",

@@ -9,10 +9,10 @@ if(lightModes.includes(requestedLights)){lightMode=requestedLights;try{localStor
 const images={tree:'tree/tree-r2.webp',garland:'garlands/garland.png',corner:'ui/corner-r2.webp',perimeter:'tables/perimeter-r2.webp',gifts:'ui/gifts-r2.webp'};
 // Bulbs follow the actual photographed branches; six independent circuits.
 const treeLights=[[50,7],[46,13],[54,14],[42,17],[59,19],[48,20],[53,22],[40,26],[58,27],[34,30],[49,31],[67,32],[30,37],[40,39],[62,39],[72,43],[23,47],[49,47],[67,48],[32,52],[60,54],[21,56],[76,57],[37,60],[58,62],[29,65],[71,65],[16,69],[44,69],[63,73],[31,75],[80,75],[20,79],[51,80],[72,82],[39,85]];
-function lights(node,points){
+function lights(node,points,colored=node.classList.contains('christmas-tree')){
   for(let group=0;group<6;group++){
     const circuit=document.createElement('span');circuit.className='christmas-circuit';circuit.style.cssText=`--duration:${2.1+group*.43}s;--delay:${-group*.67}s`;
-    points.filter((_,i)=>i%6===group).forEach(([x,y])=>{const bulb=document.createElement('i');bulb.style.left=`${x}%`;bulb.style.top=`${y}%`;if(node.classList.contains('christmas-tree'))bulb.dataset.bulbColor=['green','red','white'][group%3];circuit.append(bulb);});node.append(circuit);
+    points.filter((_,i)=>i%6===group).forEach(([x,y])=>{const bulb=document.createElement('i');bulb.style.left=`${x}%`;bulb.style.top=`${y}%`;if(colored)bulb.dataset.bulbColor=['green','red','white'][group%3];circuit.append(bulb);});node.append(circuit);
   }
 }
 function ornament(type,box){
@@ -21,7 +21,11 @@ function ornament(type,box){
   if(box){const [x,y,w,h,r=0]=box;Object.assign(node.style,{left:`${x}%`,top:`${y}%`,width:`${w}%`,height:`${h}%`,transform:`rotate(${r}deg)`});}
   if(type==='tree')lights(node,treeLights);
   if(type==='garland')lights(node,[[12,46],[27,57],[38,47],[61,48],[74,57],[88,46]]);
-  if(type==='perimeter')lights(node,[[25,25],[32,23],[37,24],[62,23],[68,25],[73,27],[7,65],[12,74],[19,82],[25,88],[33,94],[66,93],[73,87],[81,80]]);
+  if(type==='perimeter'){
+    lights(node,[[25,25],[32,23],[37,24],[62,23],[68,25],[73,27],[7,65],[12,74],[19,82],[25,88],[33,94],[66,93],[73,87],[81,80]]);
+    const rim=document.createElement('span');rim.className='christmas-rim-lights';
+    lights(rim,[[6.5,63.5],[8.5,68.5],[10.5,72.5],[13,77],[16,80.5],[19,83.5],[22,87],[25.5,89],[29,92],[32.5,94],[36,96],[40,97.8],[44.5,98],[49,98.5],[54,98],[58.5,97.5],[62.5,96],[66,94],[69.5,91.5],[73,89],[76.5,85.5],[80,81.5],[83,77],[86,72]],true);node.append(rim);
+  }
   return node;
 }
 function cornerPair(target,compact=false){
@@ -61,8 +65,8 @@ function sync(){
   const musicPanel=document.querySelector('#music-panel');
   if(musicPanel&&!musicPanel.querySelector('.christmas-tree-light-control')){
     const field=document.createElement('fieldset');field.className='christmas-tree-light-control';
-    const legend=document.createElement('legend');legend.textContent='Guirlandes du sapin';
-    const control=document.createElement('select');control.setAttribute('aria-label','Guirlandes du sapin');
+    const legend=document.createElement('legend');legend.textContent='Guirlandes de Noël';
+    const control=document.createElement('select');control.setAttribute('aria-label','Guirlandes de Noël');
     for(const [value,label] of [['auto','Automatique · réglages de l’appareil'],['blink','Clignotantes · vert, rouge et blanc'],['fixed','Fixes']]){const option=document.createElement('option');option.value=value;option.textContent=label;control.append(option);}
     control.value=lightMode;control.addEventListener('change',()=>{lightMode=control.value;try{localStorage.setItem(LIGHTS_KEY,lightMode);}catch{}sync();});
     field.append(legend,control);musicPanel.append(field);

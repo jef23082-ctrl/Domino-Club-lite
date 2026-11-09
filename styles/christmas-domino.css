@@ -3,14 +3,15 @@
 .christmas-decoration img{width:100%;height:100%;object-fit:fill;display:block}
 .christmas-circuit{inset:0;animation:christmas-circuit var(--duration) ease-in-out var(--delay) infinite alternate}
 .christmas-circuit i{position:absolute;translate:-50% -50%;width:3px;height:3px;border-radius:50%;background:#fff6d8;box-shadow:0 0 3px 1px #fff0c9,0 0 10px 3px #ffce70aa,0 0 21px 7px #eaa94238}
-.christmas-tree .christmas-circuit{animation:christmas-tree-blink var(--duration) linear var(--delay) infinite}
-.christmas-tree .christmas-circuit i{width:clamp(3px,.32vw,6px);height:clamp(3px,.32vw,6px);background:var(--bulb-core);box-shadow:0 0 3px 1px var(--bulb-core),0 0 10px 4px var(--bulb-color),0 0 22px 8px var(--bulb-halo)}
-.christmas-tree [data-bulb-color="green"]{--bulb-core:#bcffd0;--bulb-color:#00f55b;--bulb-halo:#00df635c}
-.christmas-tree [data-bulb-color="red"]{--bulb-core:#ffb3b7;--bulb-color:#ff1239;--bulb-halo:#ff123966}
-.christmas-tree [data-bulb-color="white"]{--bulb-core:#fff;--bulb-color:#fff;--bulb-halo:#fff9}
-.christmas-tree .christmas-circuit i::after{content:'';position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(var(--bulb-color),transparent 72%);opacity:.42}
+:is(.christmas-tree,.christmas-rim-lights) .christmas-circuit{animation:christmas-tree-blink var(--duration) linear var(--delay) infinite}
+:is(.christmas-tree,.christmas-rim-lights) .christmas-circuit i{width:clamp(3px,.32vw,6px);height:clamp(3px,.32vw,6px);background:var(--bulb-core);box-shadow:0 0 3px 1px var(--bulb-core),0 0 10px 4px var(--bulb-color),0 0 22px 8px var(--bulb-halo)}
+:is(.christmas-tree,.christmas-rim-lights) [data-bulb-color="green"]{--bulb-core:#bcffd0;--bulb-color:#00f55b;--bulb-halo:#00df635c}
+:is(.christmas-tree,.christmas-rim-lights) [data-bulb-color="red"]{--bulb-core:#ffb3b7;--bulb-color:#ff1239;--bulb-halo:#ff123966}
+:is(.christmas-tree,.christmas-rim-lights) [data-bulb-color="white"]{--bulb-core:#fff;--bulb-color:#fff;--bulb-halo:#fff9}
+:is(.christmas-tree,.christmas-rim-lights) .christmas-circuit i::after{content:'';position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(var(--bulb-color),transparent 72%);opacity:.42}
+.christmas-rim-lights{position:absolute;inset:0;pointer-events:none}
 .christmas-garland .christmas-circuit{animation-name:christmas-garland-circuit}
-.christmas-garland .christmas-circuit i,.christmas-perimeter .christmas-circuit i{width:2px;height:2px;box-shadow:0 0 5px 2px #ffd77caa,0 0 12px 4px #f5b75540}
+.christmas-garland .christmas-circuit i,.christmas-perimeter>.christmas-circuit i{width:2px;height:2px;box-shadow:0 0 5px 2px #ffd77caa,0 0 12px 4px #f5b75540}
 .club-portal:not(.christmas-domino) .christmas-decoration{display:none!important}
 .christmas-domino>.christmas-tree,.christmas-domino>.christmas-gifts{z-index:-1}
 .christmas-gifts img{object-fit:contain}
@@ -30,8 +31,8 @@
 @media(prefers-reduced-motion:reduce){.christmas-circuit{animation:none!important;opacity:.9}}
 /* An explicit local choice may enable tree lights. No global animation rule,
    OS preference, gameplay, other scenery or Poker animation is overridden. */
-:is(#club-portal,#casino-stage)[data-christmas-tree-lights="blink"] .christmas-tree>.christmas-circuit{animation:christmas-tree-blink var(--duration) linear var(--delay) infinite!important}
-:is(#club-portal,#casino-stage)[data-christmas-tree-lights="fixed"] .christmas-tree>.christmas-circuit{animation:none!important;opacity:.9}
+:is(#club-portal,#casino-stage)[data-christmas-tree-lights="blink"] :is(.christmas-tree,.christmas-rim-lights)>.christmas-circuit{animation:christmas-tree-blink var(--duration) linear var(--delay) infinite!important}
+:is(#club-portal,#casino-stage)[data-christmas-tree-lights="fixed"] :is(.christmas-tree,.christmas-rim-lights)>.christmas-circuit{animation:none!important;opacity:.9}
 .christmas-tree-light-control{margin-top:.7em;padding:.6em;border:1px solid #b99a58;color:#efd28d}
 .christmas-tree-light-control[hidden]{display:none}
 .christmas-tree-light-control select{max-width:100%;width:100%;font:inherit;color:#f7dda1;background:#071b12;border:1px solid #b99a58;padding:.4em}
