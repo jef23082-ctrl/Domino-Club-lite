@@ -1,5 +1,17 @@
 # V58 — Christmas Edition Domino
 
+## Révision 2 — décors enrichis du 9 novembre 2026
+
+La première V58 reste conservée dans le tag `v58-noel`. Cette révision utilise les références originales comme cibles : guirlandes photoréalistes continues suivant le rebord supérieur et l'avant de la table, neige sur les branches, grands nœuds de velours, baies, pommes de pin et cadeaux. Chaque panneau reçoit deux coins décorés ; une guirlande et un nœud habillent la navigation. Les positions des contenus et commandes sont conservées.
+
+Le nouveau sapin comporte un éclairage photographique chaud et six circuits d'animation indépendants (36 ampoules et halos locaux), avec durées et décalages différents. Les animations s'arrêtent en mode mouvement réduit. Les décors ne reçoivent aucun zoom ni déplacement global.
+
+Le clic sur le nez du cochon des sept tables de Noël joue `assets/christmas/v58/domino/audio/nose-christmas-r2.wav` : un carillon original de 2,6 secondes généré localement. Le lecteur existant du groin, le volume et le mute des effets sont réutilisés. La source originale est restaurée à la fin du son ou à la sortie de la table. Aucun nouveau lecteur ni changement de l'audio Poker. Le bonnet suit la tête et réagit légèrement au clic. Le carillon est un effet court, pas l'une des deux musiques de fond encore à fournir.
+
+Nouveaux assets produits avec l'outil Imagegen intégré, sauvegardés avec les originaux PNG et des versions WebP d'affichage : `tables/perimeter-r2`, `tree/tree-r2`, `ui/corner-r2`, `ui/gifts-r2`. Prompts : extraire les ornements du pourtour de la référence table en conservant une zone centrale transparente ; reproduire le sapin fortement éclairé de la référence des pages ; reproduire le coin de sapin avec baies et flocon doré ; reproduire les cadeaux rouges et dorés isolés. Les fonds géographiques V57 restent identiques, aucun fond Poker n'est modifié.
+
+Les validations supplémentaires contrôlent un vrai clic sur le nez, la lecture effective du fichier, la restauration de la source, le respect du volume et du mute, l'absence d'action de jeu, le scintillement réel et les coordonnées des éléments de jeu. Les scénarios utilisent exclusivement des données mémoire isolées.
+
 Base exacte : commit V57 `9e2df2eb4ca6c94c5bba8fc8709d3267d3f16fe4`, protégé par le tag `v57`.
 Préparation isolée sur la branche `v58-noel`. Aucun déploiement effectué.
 

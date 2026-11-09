@@ -2,7 +2,7 @@
   "version": "v58-noel",
   "baseVersion": "v57",
   "baseCommit": "9e2df2eb4ca6c94c5bba8fc8709d3267d3f16fe4",
-  "generatedAt": "2026-11-08T02:55:45.908Z",
+  "generatedAt": "2026-11-09T16:09:14.893Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -40,6 +40,11 @@
       "sha256": "1c3d7b63b87e4d85c0db20e0649e72fe4ba2aa9fd8da11424b23e8deb9c6fa37"
     },
     {
+      "path": "assets/christmas/v58/domino/audio/nose-christmas-r2.wav",
+      "bytes": 229364,
+      "sha256": "50aa28795cb51b094849462e93e1ab756a6e70ff1575d693802563d523d342b6"
+    },
+    {
       "path": "assets/christmas/v58/domino/audio/README.md",
       "bytes": 470,
       "sha256": "ff6c7acef366567001c348f1a461fbc6298d2e57adf94df24e00e8c9d645a596"
@@ -50,9 +55,49 @@
       "sha256": "0188a5d1e38db3d78017cfc974fce10c652b94d3874e4aa1359815aa7a6642ab"
     },
     {
+      "path": "assets/christmas/v58/domino/tables/perimeter-r2.png",
+      "bytes": 845332,
+      "sha256": "9ee2bd06f25b9ee65b3e96b36bbf7f42b2c6ba8dc7708dac3e5ed68da3bdc2d7"
+    },
+    {
+      "path": "assets/christmas/v58/domino/tables/perimeter-r2.webp",
+      "bytes": 255820,
+      "sha256": "73cfb17f66e575120daf0e486a28a3104ff2536b684095985556e39b4a1f48af"
+    },
+    {
+      "path": "assets/christmas/v58/domino/tree/tree-r2.png",
+      "bytes": 2854682,
+      "sha256": "e4525465e8cdb5ad00aaa94192de655b8c87fe2332d5306809badfeb7bd15043"
+    },
+    {
+      "path": "assets/christmas/v58/domino/tree/tree-r2.webp",
+      "bytes": 623590,
+      "sha256": "ffcce15b2202f9c43b2fdb04505c22c08fc92c0c27ea5e43e3d5c7fa73c98f8c"
+    },
+    {
       "path": "assets/christmas/v58/domino/tree/tree.png",
       "bytes": 2740780,
       "sha256": "68a270ab9251aeeaf1cc789a020959759f8f582c48f856236c3ff4c1bc6bb5b1"
+    },
+    {
+      "path": "assets/christmas/v58/domino/ui/corner-r2.png",
+      "bytes": 1291722,
+      "sha256": "0ecbab9972f000dce30221130119254cb3c2b0d28c39118b5675a2641b59e290"
+    },
+    {
+      "path": "assets/christmas/v58/domino/ui/corner-r2.webp",
+      "bytes": 400836,
+      "sha256": "2e12ecb9d28b12ac587362b5d3296a9c61a009463bfeb486215fcbba7a4fbda7"
+    },
+    {
+      "path": "assets/christmas/v58/domino/ui/gifts-r2.png",
+      "bytes": 2220771,
+      "sha256": "0084c94c0cc6203dfe6403903d291dad2fa07b95423618e93273967e35459cbb"
+    },
+    {
+      "path": "assets/christmas/v58/domino/ui/gifts-r2.webp",
+      "bytes": 489780,
+      "sha256": "35cdb49eb29964293f3f879d3c2e1b2b3f0e12cc72744c3673269d4c66499818"
     },
     {
       "path": "assets/domino-environments-v55/algeria.png",
@@ -1651,13 +1696,13 @@
     },
     {
       "path": "DOMINO-V58-NOEL.md",
-      "bytes": 3897,
-      "sha256": "c3bd9419ef2c54d2506ca6e5814b5b29d832ef2b5418c3143e41a1f02058da79"
+      "bytes": 6141,
+      "sha256": "489a0f92647397ff23834b6fc4ef79e0be56dc892d5bfdc75ef496359893bfc5"
     },
     {
       "path": "index.html",
-      "bytes": 13333,
-      "sha256": "f2b41288d9977c1cce6adbb504f19bc836834121a57d9ad6b398509473cf6fa4"
+      "bytes": 13337,
+      "sha256": "47f7d5a70128c1fe5dce89bbef9cedbcfe0c1a7647163918f053c44281deef59"
     },
     {
       "path": "LISEZ-MOI.txt",
@@ -1781,8 +1826,8 @@
     },
     {
       "path": "src/main.js",
-      "bytes": 177,
-      "sha256": "ec1fdcdfe71cc70542ca6d5cb78d7733fd94501f80dd8b65fef35eb89417b269"
+      "bytes": 175,
+      "sha256": "1c51680b1170c2f1ae3d46af02e041e62df66247d8fd7a8b57dfcbcb20014e2d"
     },
     {
       "path": "src/online/club-presentation.js",
@@ -1806,8 +1851,8 @@
     },
     {
       "path": "src/online/online-app.js",
-      "bytes": 96365,
-      "sha256": "8e554b8662f1c5d53b8d08f7392eda0341670ff6699da565ca4c8e00eb2865c3"
+      "bytes": 96363,
+      "sha256": "316b83eb91cb12332a22cf21ea50cf370cb095a79a62d011e66aa712cc18fef0"
     },
     {
       "path": "src/online/play-intent.js",
@@ -2046,8 +2091,13 @@
     },
     {
       "path": "src/ui/christmas-domino.js",
-      "bytes": 3687,
-      "sha256": "355ce0ddfcdd806b8e82778445c0bf7751829bd6613737ce8520584e4a24fd2d"
+      "bytes": 5226,
+      "sha256": "25a640d5f091dc07aa2ee7528a3985fbe316820755efd275f55c290e1380c6d1"
+    },
+    {
+      "path": "src/ui/christmas-nose.js",
+      "bytes": 943,
+      "sha256": "594c9ed28ab3e75ee7fe0b81f744f1efea9e023b28000d87ffe0fe5823eb6782"
     },
     {
       "path": "src/ui/club-announcement-editor.js",
@@ -2141,13 +2191,13 @@
     },
     {
       "path": "src/ui/mascot/christmas-costume.js",
-      "bytes": 1740,
-      "sha256": "2770df8c710e13db55decb563cea093311cd0211cf5ccf158afaab25ffc6cf59"
+      "bytes": 2027,
+      "sha256": "54b8cf9275c9a9fdd2894efda922032ad3658f655430acadde01a93c333ad4fa"
     },
     {
       "path": "src/ui/mascot/pig3d.js",
-      "bytes": 14573,
-      "sha256": "bed01378408308416177325bf80df50459c74aca24d804b3d39d74874846e34b"
+      "bytes": 14600,
+      "sha256": "ec4a05ccc8da9a733b815aaa500e5541aad96985878e91ae53c85f132e5ad88f"
     },
     {
       "path": "src/ui/navigation-icon.js",
@@ -2161,8 +2211,8 @@
     },
     {
       "path": "src/ui/opening-mascot.js",
-      "bytes": 8465,
-      "sha256": "d37a32ecafe3851babf972bbeb93f3cc0b3e7b67417fc4c434972c45c0c07d40"
+      "bytes": 8827,
+      "sha256": "f6e3557ba279efc62ebe2ad3b2e0cc19b9ae31e2524d22af2f010c1e13a07501"
     },
     {
       "path": "src/ui/overlay-layout.js",
@@ -2271,8 +2321,8 @@
     },
     {
       "path": "styles/christmas-domino.css",
-      "bytes": 1869,
-      "sha256": "2bb20e16d6f0594424ab2c6d359145a11683be68c74319b8a0545bad1051a26f"
+      "bytes": 2861,
+      "sha256": "749c6916bdf6a945b882afcfdbd908be6cc7f05b87472e8f48bceffc81f031da"
     },
     {
       "path": "styles/club-info-v45.css",
