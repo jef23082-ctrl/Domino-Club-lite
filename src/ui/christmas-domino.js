@@ -6,7 +6,7 @@ const treeLights=[[50,7],[46,13],[54,14],[42,17],[59,19],[48,20],[53,22],[40,26]
 function lights(node,points){
   for(let group=0;group<6;group++){
     const circuit=document.createElement('span');circuit.className='christmas-circuit';circuit.style.cssText=`--duration:${2.1+group*.43}s;--delay:${-group*.67}s`;
-    points.filter((_,i)=>i%6===group).forEach(([x,y])=>{const bulb=document.createElement('i');bulb.style.left=`${x}%`;bulb.style.top=`${y}%`;circuit.append(bulb);});node.append(circuit);
+    points.filter((_,i)=>i%6===group).forEach(([x,y])=>{const bulb=document.createElement('i');bulb.style.left=`${x}%`;bulb.style.top=`${y}%`;if(node.classList.contains('christmas-tree'))bulb.dataset.bulbColor=['green','red','white'][group%3];circuit.append(bulb);});node.append(circuit);
   }
 }
 function ornament(type,box){

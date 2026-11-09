@@ -1,5 +1,7 @@
 # V58 — Christmas Edition Domino
 
+Révision 3 : les guirlandes des sapins utilisent désormais 12 ampoules vertes, 12 rouges et 12 blanches, avec des halos colorés visibles et six circuits décalés. Chaque circuit alterne un plateau allumé et un plateau presque éteint, à un rythme lent (2,1 à 4,25 secondes). Les autres guirlandes restent dorées. Le mode mouvement réduit conserve les trois couleurs en éclairage fixe. Aucun nouvel asset ni changement du jeu ou de Poker.
+
 ## Révision 2 — décors enrichis du 9 novembre 2026
 
 La première V58 reste conservée dans le tag `v58-noel`. Cette révision utilise les références originales comme cibles : guirlandes photoréalistes continues suivant le rebord supérieur et l'avant de la table, neige sur les branches, grands nœuds de velours, baies, pommes de pin et cadeaux. Chaque panneau reçoit deux coins décorés ; une guirlande et un nœud habillent la navigation. Les positions des contenus et commandes sont conservées.
