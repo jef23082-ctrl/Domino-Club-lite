@@ -23,8 +23,11 @@ function ornament(type,box){
   if(type==='garland')lights(node,[[12,46],[27,57],[38,47],[61,48],[74,57],[88,46]]);
   if(type==='perimeter'){
     lights(node,[[25,25],[32,23],[37,24],[62,23],[68,25],[73,27],[7,65],[12,74],[19,82],[25,88],[33,94],[66,93],[73,87],[81,80]]);
-    const rim=document.createElement('span');rim.className='christmas-rim-lights';
+    const rim=document.createElement('span');rim.className='christmas-rim-lights christmas-lower-lights';
     lights(rim,[[6.5,63.5],[8.5,68.5],[10.5,72.5],[13,77],[16,80.5],[19,83.5],[22,87],[25.5,89],[29,92],[32.5,94],[36,96],[40,97.8],[44.5,98],[49,98.5],[54,98],[58.5,97.5],[62.5,96],[66,94],[69.5,91.5],[73,89],[76.5,85.5],[80,81.5],[83,77],[86,72]],true);node.append(rim);
+    const upper=document.createElement('span');upper.className='christmas-rim-lights christmas-upper-lights';
+    const left=[[21.5,27.2],[23,25.8],[24.6,24.4],[26.5,25.4],[28.2,25.2],[30.4,24.3],[32.2,25.6],[34.1,24.2],[36.4,22.4],[38.3,23.2],[40.2,24.2],[42,25.4]];
+    lights(upper,[...left,...left.map(([x,y])=>[100-x,y])],true);node.append(upper);
   }
   return node;
 }
