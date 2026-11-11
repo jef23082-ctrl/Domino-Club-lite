@@ -5,7 +5,20 @@ import { liveTransaction } from './live-transaction.js?v=20261005T162819119';
 export class AdminRepository {
   constructor(database, access) {
     this.root = database.ref(FIREBASE_PATHS.onlineRoot);
+    this.hideHands = database.ref(FIREBASE_PATHS.environmentSettings).child('hideHandsWhileWorking');
     this.access = access;
+  }
+
+  watchHideHandsWhileWorking(onValue, onError) {
+    const listener = snapshot => onValue(snapshot.val() !== false);
+    this.hideHands.on('value', listener, onError);
+    return () => this.hideHands.off('value', listener);
+  }
+
+  async setHideHandsWhileWorking(enabled) {
+    this.access.require();
+    if (typeof enabled !== 'boolean') throw new Error('Choisis un état valide pour le masquage.');
+    await this.hideHands.set(enabled);
   }
 
   async #change(reducer) {

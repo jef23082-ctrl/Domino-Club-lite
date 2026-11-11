@@ -2,7 +2,7 @@ import {CHRISTMAS_THEME,CHRISTMAS_TABLES,isChristmasTable} from '../config/chris
 const assets=new URL('../../assets/christmas/v58/domino/',import.meta.url);
 const LIGHTS_KEY='domino-club-christmas-tree-lights';
 const lightModes=['auto','blink','fixed'];
-let lightMode='auto';
+let lightMode='blink';
 try{const saved=localStorage.getItem(LIGHTS_KEY);if(lightModes.includes(saved))lightMode=saved;}catch{}
 const requestedLights=new URLSearchParams(location.search).get('treeLights');
 if(lightModes.includes(requestedLights)){lightMode=requestedLights;try{localStorage.setItem(LIGHTS_KEY,lightMode);}catch{}}
@@ -63,8 +63,6 @@ function sync(){
       const config=CHRISTMAS_TABLES[activeStyle];layer.append(ornament('tree',config.tree),ornament('perimeter',[0,0,100,100]));stage.querySelector('.scene-base').after(layer);
     }
   }
-  const select=document.querySelector('#music-track');
-  if(select&&!select.querySelector('[data-christmas-audio]'))for(const name of ['Noël — Lounge','Noël — Jazz Club']){const option=document.createElement('option');option.textContent=`${name} (fichier à fournir)`;option.disabled=true;option.dataset.christmasAudio='pending';select.append(option);}
   const musicPanel=document.querySelector('#music-panel');
   if(musicPanel&&!musicPanel.querySelector('.christmas-tree-light-control')){
     const field=document.createElement('fieldset');field.className='christmas-tree-light-control';

@@ -17,6 +17,16 @@ export const BOARD_GEOMETRY = Object.freeze({
   layoutVersion: 12
 });
 export const ROUND_RESTART_DELAY_MS = 10000;
+export const ROUND_WIN_RESTART_DELAY_MS = 5000;
+
+export function roundWinReadyAt(room) {
+  const result = room?.game?.roundResult;
+  const endedAt = Number(result?.at);
+  return room?.status === 'playing' && room.game?.roundStatus === 'ended'
+    && result?.type === 'winner' && Number.isFinite(endedAt) && endedAt > 0
+    ? endedAt + ROUND_WIN_RESTART_DELAY_MS
+    : 0;
+}
 
 export function playerKey(id) {
   return `p_${String(id)}`;
@@ -524,6 +534,7 @@ export function placeTile(board, tileId, side, playerId, playedAt = now()) {
 export function finishRoundInRoom(room, winnerId, cause, details = {}, at = now()) {
   const game = room.game;
   const key = playerKey(winnerId);
+  const winnerToken = room.players?.[key]?.token || null;
   const remainingHands = Object.fromEntries(
     (game.playerOrder || []).map(id => [playerKey(id), [...(game.hands?.[playerKey(id)] || [])]])
   );
@@ -540,13 +551,14 @@ export function finishRoundInRoom(room, winnerId, cause, details = {}, at = now(
   game.roundResult = {
     type: 'winner',
     winnerId,
+    winnerToken,
     cause,
     points: details.points ?? 0,
     handPoints: details.handPoints || handPointTotals,
     remainingHands,
     lastTileId,
     at,
-    nextRoundReadyAt: at + ROUND_RESTART_DELAY_MS
+    nextRoundReadyAt: at + ROUND_WIN_RESTART_DELAY_MS
   };
   room.roundLog = room.roundLog || [];
   room.roundLog.push({
@@ -569,6 +581,7 @@ export function finishRoundInRoom(room, winnerId, cause, details = {}, at = now(
     game.matchResult = {
       type: 'victory',
       winnerId,
+      winnerToken,
       cochonIds,
       savedId: null,
       scores: { ...game.roundWins },

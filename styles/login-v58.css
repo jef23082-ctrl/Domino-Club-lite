@@ -1,0 +1,201 @@
+/* Register the live form on the exact 1672 × 941 artwork. */
+#online-hub[data-view="login"] {
+  --login-u: min(calc(100vw / 1672), calc(100dvh / 941));
+  --login-image: url('../assets/menus/club-login-noel-v58.png');
+  position: fixed;
+  inset: 0;
+  z-index: 350;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  background: #071009 var(--login-image) center / cover no-repeat;
+  backdrop-filter: none;
+}
+
+#online-hub[data-view="login"]::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  background: inherit;
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+#online-hub[data-view="login"] .online-hub__frame {
+  position: absolute;
+  left: calc((100vw - 1672 * var(--login-u)) / 2);
+  top: calc((100dvh - 941 * var(--login-u)) / 2);
+  width: calc(1672 * var(--login-u));
+  height: calc(941 * var(--login-u));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: var(--login-image) center / 100% 100% no-repeat;
+  box-shadow: none;
+}
+
+#online-hub[data-view="login"] .online-hub__eyebrow { display: none; }
+#online-hub[data-view="login"] :is(.online-hub__title, .online-hub__status) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#online-hub[data-view="login"] :is(.online-hub__content, .online-form) { display: contents; }
+#online-hub[data-view="login"] .online-label { display: contents; font-size: 0; color: transparent; }
+#online-hub[data-view="login"] .online-label::before,
+#online-hub[data-view="login"] .online-label:focus-within::after {
+  content: '';
+  position: absolute;
+  left: calc(588 * var(--login-u));
+  top: calc(578 * var(--login-u));
+  width: calc(492 * var(--login-u));
+  height: calc(50 * var(--login-u));
+  border-radius: calc(9 * var(--login-u));
+}
+#online-hub[data-view="login"] .online-label::before { cursor: text; }
+#online-hub[data-view="login"] .online-label:focus-within::after {
+  box-shadow: 0 0 0 2px #f8d58188, 0 0 14px #dca84433;
+  pointer-events: none;
+}
+#online-hub[data-view="login"] .online-input {
+  position: absolute;
+  left: calc(632 * var(--login-u));
+  top: calc(585 * var(--login-u));
+  width: calc(435 * var(--login-u));
+  height: calc(36 * var(--login-u));
+  min-height: 0;
+  padding: 0 calc(9 * var(--login-u));
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: #050e08;
+  color: #ffe4a3;
+  box-shadow: none;
+  outline: none;
+  text-transform: none;
+  font: 400 calc(17 * var(--login-u))/1 Arial, sans-serif;
+  letter-spacing: 0;
+}
+#online-hub[data-view="login"] .online-input:placeholder-shown { background: transparent; }
+#online-hub[data-view="login"] .online-input::placeholder { color: transparent; }
+#online-hub[data-view="login"] .online-action--primary {
+  position: absolute;
+  left: calc(588 * var(--login-u));
+  top: calc(643 * var(--login-u));
+  width: calc(492 * var(--login-u));
+  height: calc(57 * var(--login-u));
+  min-height: 0;
+  border: 0;
+  border-radius: calc(11 * var(--login-u));
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: transparent;
+  font-size: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+#online-hub[data-view="login"] .online-action--primary:hover { background: #ffe39a12; }
+#online-hub[data-view="login"] .online-action--primary:focus-visible { outline: 2px solid #fff0b2; outline-offset: 4px; }
+#online-hub[data-view="login"] .online-action--primary:active { background: #4e280033; }
+#online-hub[data-view="login"] .online-action--primary:disabled { opacity: 1; filter: none; cursor: wait; }
+#online-hub[data-view="login"] .online-input:disabled { opacity: 1; }
+
+#online-hub[data-view="login"] .online-error {
+  position: absolute;
+  z-index: 3;
+  left: calc(588 * var(--login-u));
+  top: calc(705 * var(--login-u));
+  width: calc(492 * var(--login-u));
+  margin: 0;
+  padding: 2px 5px;
+  text-align: center;
+  border-radius: 6px;
+  background: #08160df5;
+  color: #ffc3a7;
+  font: 700 max(12px, calc(15 * var(--login-u)))/1.2 Arial, sans-serif;
+}
+#online-hub[data-view="login"] .online-error[hidden] { display: none; }
+
+@media (max-width: 620px), (max-height: 420px) {
+  #online-hub[data-view="login"] {
+    --login-u: min(calc(100vw / 1672), calc(50dvh / 941));
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  #online-hub[data-view="login"] .online-hub__frame {
+    top: max(12px, calc((100dvh - 941 * var(--login-u) - 180px) / 2));
+  }
+  #online-hub[data-view="login"] .online-hub__frame::after {
+    content: '';
+    position: absolute;
+    left: calc(578 * var(--login-u));
+    top: calc(550 * var(--login-u));
+    width: calc(512 * var(--login-u));
+    height: calc(155 * var(--login-u));
+    background: linear-gradient(#001008, #000a04);
+    pointer-events: none;
+  }
+  #online-hub[data-view="login"] .online-hub__content {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    width: min(calc(100vw - 32px), 440px);
+    transform: translateX(-50%);
+    padding: 14px;
+    border: 1px solid #b48b45;
+    border-radius: 12px;
+    background: #03140d;
+    box-shadow: 0 6px 20px #0009;
+  }
+  #online-hub[data-view="login"] .online-form {
+    display: grid;
+    gap: 10px;
+  }
+  #online-hub[data-view="login"] .online-label {
+    display: grid;
+    gap: 6px;
+    color: #f5d999;
+    font: 700 14px/1.3 Arial, sans-serif;
+  }
+  #online-hub[data-view="login"] .online-label::before,
+  #online-hub[data-view="login"] .online-label:focus-within::after { display: none; }
+  #online-hub[data-view="login"] .online-input {
+    position: static;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid #b48b45;
+    border-radius: 7px;
+    font-size: 16px;
+  }
+  #online-hub[data-view="login"] .online-input::placeholder { color: #d8c7a0; }
+  #online-hub[data-view="login"] .online-input:focus-visible { outline: 2px solid #ffe1a0; }
+  #online-hub[data-view="login"] .online-action--primary {
+    position: static;
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid #dba957;
+    border-radius: 7px;
+    background: linear-gradient(#ffe4a2, #b97a26);
+    color: #241204;
+    font: 700 17px/1.2 Georgia, serif;
+  }
+  #online-hub[data-view="login"] .online-action--primary:hover { background: linear-gradient(#fff2c8, #c98830); }
+  #online-hub[data-view="login"] .online-error {
+    position: static;
+    width: auto;
+  }
+}

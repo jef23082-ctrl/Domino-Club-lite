@@ -1,0 +1,60 @@
+#club-portal[data-mode="domino"][data-page="home"] .portal-home-showcase {
+  position: relative;
+}
+
+#club-portal[data-mode="domino"][data-page="home"] .portal-home-flag {
+  position: absolute;
+  right: calc(100% - 4 * var(--p-u));
+  bottom: calc(-66 * var(--p-u));
+  width: calc(183 * var(--p-u));
+  aspect-ratio: 216 / 440;
+  margin: 0;
+  pointer-events: none;
+}
+
+.portal-home-flag::before {
+  content: '';
+  position: absolute;
+  left: 30%;
+  bottom: -1.5%;
+  width: 72%;
+  height: 6%;
+  transform: translateX(-48%);
+  background: radial-gradient(ellipse, #080501de 12%, #0b070572 52%, transparent 75%);
+}
+
+.portal-home-flag__stand {
+  position: absolute;
+  left: 30%;
+  top: 0;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  transform: translateX(-50%);
+}
+
+.portal-home-flag__cloth {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1050px), (max-height: 660px) {
+  #club-portal[data-mode="domino"][data-page="home"] .portal-home-flag {
+    bottom: auto;
+    top: 8px;
+    width: min(125px, calc((100vw - 520px) / 2 - 24px));
+  }
+}
+
+@media (max-width: 710px) {
+  #club-portal[data-mode="domino"][data-page="home"] .portal-home-flag {
+    position: relative;
+    inset: auto;
+    width: 70px;
+    flex: none;
+    order: -1;
+    margin: -7px 0 0 15px;
+  }
+}

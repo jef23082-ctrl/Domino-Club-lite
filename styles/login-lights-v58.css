@@ -1,0 +1,98 @@
+.login-christmas-lights {
+  display: none;
+}
+
+#online-hub[data-view="login"] .login-christmas-lights {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.login-christmas-lights i {
+  position: absolute;
+  left: calc(var(--x) * var(--login-u));
+  top: calc(var(--y) * var(--login-u));
+  translate: -50% -50%;
+}
+
+.login-tree-bulb {
+  --bulb-size: max(3px, calc(7 * var(--login-u)));
+  --halo-size: max(3px, calc(15 * var(--login-u)));
+  width: var(--bulb-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--bulb-core);
+  box-shadow: 0 0 4px 2px var(--bulb), 0 0 var(--halo-size) 4px var(--bulb);
+  animation: login-bulb-blink var(--duration, 2.4s) ease-in-out var(--delay) infinite;
+}
+
+.login-tree-bulb[data-color="green"] { --bulb: #00ed48; --bulb-core: #afffbd; }
+.login-tree-bulb[data-color="red"] { --bulb: #ff1738; --bulb-core: #ffa5a8; }
+.login-tree-bulb[data-color="white"] { --bulb: #fff5da; --bulb-core: #fff; }
+.login-tree-bulb[data-circuit="1"] { --duration: 2.8s; }
+.login-tree-bulb[data-circuit="2"] { --duration: 3.3s; }
+.login-tree-bulb[data-circuit="3"] { --duration: 3.8s; }
+
+@keyframes login-bulb-blink {
+  0%, 20%, 86%, 100% { opacity: .03; }
+  31%, 62% { opacity: 1; }
+  72% { opacity: .52; }
+}
+
+.login-fire-glow, .login-candle-halo {
+  width: calc(142 * var(--login-u));
+  height: calc(68 * var(--login-u));
+  background: radial-gradient(ellipse, #ffcb729e, #ff7e273e 44%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: login-fire-light 1.75s ease-in-out var(--delay) infinite;
+}
+
+.login-candle-halo {
+  width: calc(66 * var(--login-u));
+  height: calc(72 * var(--login-u));
+  animation-duration: 2.3s;
+}
+
+.login-fire-flame, .login-candle-flame {
+  translate: -50% -100%;
+  width: calc(23 * var(--login-u));
+  height: calc(44 * var(--login-u));
+  border-radius: 70% 30% 47% 53% / 75% 65% 35% 25%;
+  transform-origin: 50% 100%;
+  background: radial-gradient(ellipse at 50% 77%, #fffde8 0%, #fff1a3 21%, #ffac2f 49%, #ff67175c 74%, transparent 85%);
+  mix-blend-mode: screen;
+  animation: login-flame 1.65s ease-in-out var(--delay) infinite;
+}
+
+.login-fire-flame[data-flame="left"], .login-fire-flame[data-flame="right"] {
+  width: calc(16 * var(--login-u));
+  height: calc(30 * var(--login-u));
+}
+
+.login-candle-flame {
+  width: max(3px, calc(11 * var(--login-u)));
+  height: max(6px, calc(25 * var(--login-u)));
+  animation-duration: 2.15s;
+}
+
+@keyframes login-flame {
+  0%, 100% { transform: scale(.7, .66) rotate(-6deg); opacity: .31; }
+  25% { transform: scale(.95, 1.12) rotate(4deg); opacity: .95; }
+  50% { transform: scale(.83, .86) rotate(-5deg); opacity: .5; }
+  74% { transform: scale(1.05, 1.25) rotate(6deg); opacity: 1; }
+}
+
+@keyframes login-fire-light {
+  0%, 100% { opacity: .15; }
+  22% { opacity: .95; }
+  49% { opacity: .35; }
+  72% { opacity: .82; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-tree-bulb { animation-duration: 5s; }
+  .login-fire-flame, .login-candle-flame,
+  .login-fire-glow, .login-candle-halo { animation-duration: 4s; }
+}

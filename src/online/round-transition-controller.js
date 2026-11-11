@@ -1,6 +1,7 @@
 import { createRoundAdvanceRequest } from './round-advance.js?v=20261005T162819119';
 import { roomPlayers } from '../game/room-state.js?v=20261005T162819119';
-import { roundTransitionConfirmed, roundTransitionMatches, roundTransitionId } from '../game/round-transition.js?v=20261005T162819119';
+import { roundWinReadyAt } from '../game/engine.js?v=58-r7';
+import { roundTransitionConfirmed, roundTransitionMatches, roundTransitionId } from '../game/round-transition.js?v=58-r7';
 
 const TERMINAL = new Set(['player-not-seated', 'stale-match', 'stale-result', 'room-not-found']);
 
@@ -8,9 +9,9 @@ const TERMINAL = new Set(['player-not-seated', 'stale-match', 'stale-result', 'r
 // only a subscriber: it cannot hold a launch lock or cancel a durable command.
 export class RoundTransitionController {
   constructor({ repository, roomCode, playerId, storage, legacyStorage, onState = () => {},
-    onRoom = () => {}, onDiagnostic = () => {}, stepTimeoutMs = 7000, retryDelayMs = 1500 }) {
+    onRoom = () => {}, onDiagnostic = () => {}, stepTimeoutMs = 7000, retryDelayMs = 1500, now = Date.now }) {
     Object.assign(this, { repository, roomCode, playerId, storage, legacyStorage,
-      onState, onRoom, onDiagnostic, stepTimeoutMs, retryDelayMs });
+      onState, onRoom, onDiagnostic, stepTimeoutMs, retryDelayMs, now });
     this.storageKey = `domino-next-round:v2:${playerId}:${roomCode}`;
     this.legacyKey = `domino-round-request:${playerId}:${roomCode}`;
     this.room = null;
@@ -90,7 +91,12 @@ export class RoundTransitionController {
 
   wake() {
     if (this.disposed || !this.intent || !this.room || this.running || this.timer || !this.#isPlayer(this.room)) return;
-    this.timer = setTimeout(() => { this.timer = null; this.#run(); }, 0);
+    const delay = Math.max(0, roundWinReadyAt(this.room) - this.now());
+    this.timer = setTimeout(() => {
+      this.timer = null;
+      if (roundWinReadyAt(this.room) > this.now()) this.wake();
+      else this.#run();
+    }, delay);
   }
 
   async #step(operation, run) {

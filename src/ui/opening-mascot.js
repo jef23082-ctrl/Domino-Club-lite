@@ -1,6 +1,5 @@
 import { OpeningMascotState } from './opening-mascot-state.js?v=20261005T162819119';
-import { stopPigGrunt } from './sound-player.js?v=20261005T162819119';
-import {playMascotNose,stopChristmasNose} from './christmas-nose.js?v=58-r2';
+import { playDominoCue } from './domino-audio-cues.js?v=58-r14';
 import {isChristmasTable} from '../config/christmas.js?v=58-r2';
 
 export function createOpeningMascot({ stage, shell, notify = () => {} }) {
@@ -26,7 +25,7 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
   function invitation(){return canPlay?'À toi de jouer':'À vous de jouer';}
   function resume(){setMode(selection&&canPlay?'select':'offer',selection&&canPlay?'Juste ici, à toi !':invitation());}
   function halt(){cancelAnimationFrame(frame);frame=0;last=0;}
-  function hide(){generation++;loading=false;halt();mode='gone';layer.dataset.mode=mode;layer.hidden=true;layer.classList.remove('is-departing');particles.length=0;stopPigGrunt();stopChristmasNose();}
+  function hide(){generation++;loading=false;halt();mode='gone';layer.dataset.mode=mode;layer.hidden=true;layer.classList.remove('is-departing');particles.length=0;}
   function freeModel(){if(pig){const previous=pig;pig=null;previous.renderer.domElement.remove();previous.dispose();}}
   async function ensureModel(){
     if(pig||loading||failed||!visible()||mode==='gone')return;
@@ -47,11 +46,12 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
   }
   function react(next){
     if(!lifecycle.active||!pig||layer.hidden)return;
+    const touchedNose=next==='nose';
     const now=performance.now();clicks=clicks.filter(t=>now-t<1250);clicks.push(now);
     if(clicks.length>=4){next='guard';clicks=[];}
     const christmas=isChristmasTable(stage.dataset.roomTheme);
     setMode(next,{nose:christmas?'Joyeux Noël !':'Groin-groin !',bow:christmas?'Prêt pour les fêtes !':'Toujours élégant.',guard:'Hé, doucement !'}[next]);
-    if(next==='nose')playMascotNose(stage.dataset.roomTheme).then(result=>{
+    if(touchedNose)playDominoCue('nose').then(result=>{
       if(result==='muted')notify('Effets coupés : active-les dans les réglages musicaux.');
       else if(result==='blocked'||result==='error')notify('Grognement indisponible. Réessaie depuis « Écouter le cochon » dans les réglages musicaux.');
     });
@@ -59,8 +59,8 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
   const onNose=()=>react('nose'),onBow=()=>react('bow');nose.addEventListener('click',onNose);bow.addEventListener('click',onBow);
   const move=event=>{const r=stage.getBoundingClientRect();pointer.x=Math.max(-1,Math.min(1,(event.clientX-r.left-r.width/2)/(r.width*.35)));pointer.y=Math.max(-1,Math.min(1,(event.clientY-r.top-r.height*.44)/(r.height*.35)));};
   const leave=()=>{pointer.x=0;pointer.y=0;};stage.addEventListener('pointermove',move);stage.addEventListener('pointerleave',leave);
-  const observer=new MutationObserver(()=>{if(!visible()){stopPigGrunt();stopChristmasNose();}wake();});observer.observe(shell,{attributes:true,attributeFilter:['hidden']});
-  const onVisibility=()=>{if(!visible()){stopPigGrunt();stopChristmasNose();}wake();};document.addEventListener('visibilitychange',onVisibility);
+  const observer=new MutationObserver(wake);observer.observe(shell,{attributes:true,attributeFilter:['hidden']});
+  document.addEventListener('visibilitychange',wake);
   function sparkle(dt,progress){
     const width=stage.clientWidth,height=stage.clientHeight,dpr=Math.min(devicePixelRatio||1,2);
     if(effects.width!==Math.round(width*dpr)||effects.height!==Math.round(height*dpr)){effects.width=Math.round(width*dpr);effects.height=Math.round(height*dpr);}
@@ -102,7 +102,7 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
       setMode('arrival','Joue avec moi');if(pig)layer.hidden=false;wake();
     }else if(action==='finish'){
       if(!pig||!visible()||layer.hidden){hide();return;}
-      finishedAt=time||.001;selection='';nose.disabled=true;bow.disabled=true;stopPigGrunt();stopChristmasNose();
+      finishedAt=time||.001;selection='';nose.disabled=true;bow.disabled=true;
       // Move beside the first real tile; never cover it or delay its transaction.
       layer.classList.add('is-departing');setMode('clap','Bien joué !');wake();
     }
@@ -115,6 +115,6 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
     else if(mode==='offer'&&bubble.textContent!==invitation())bubble.textContent=invitation();
   }
   const reset=()=>{lifecycle.reset();hide();freeModel();};
-  function dispose(){disposed=true;reset();observer.disconnect();document.removeEventListener('visibilitychange',onVisibility);stage.removeEventListener('pointermove',move);stage.removeEventListener('pointerleave',leave);layer.remove();}
+  function dispose(){disposed=true;reset();observer.disconnect();document.removeEventListener('visibilitychange',wake);stage.removeEventListener('pointermove',move);stage.removeEventListener('pointerleave',leave);layer.remove();}
   return {update,select,reset,dispose};
 }

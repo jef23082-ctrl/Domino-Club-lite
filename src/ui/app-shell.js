@@ -4,7 +4,8 @@ import {
   syncLoungeMusicControls,
   toggleLoungeMusic
 } from './lounge-music.js?v=20261005T162819119';
-import { playPigGrunt, setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20261005T162819119';
+import { setSoundEffectVolume, syncSoundControls, toggleSoundEffects } from './sound-player.js?v=20261005T162819119';
+import { playDominoCue } from './domino-audio-cues.js?v=58-r14';
 import { bindVisualQuality } from './visual-quality.js?v=20261005T162819119';
 
 export async function requestAppFullscreen() {
@@ -76,9 +77,9 @@ export function bindAppShell() {
   soundVolume?.addEventListener('input', event => setSoundEffectVolume(Number(event.currentTarget.value) / 100));
   document.querySelector('#pig-sound-test')?.addEventListener('click', async () => {
     const status = document.querySelector('#pig-sound-status');
-    const result = await playPigGrunt();
+    const result = await playDominoCue('nose');
     if (status) status.textContent = {
-      playing: 'Lecture du vrai grognement.',
+      playing: 'Lecture du son du cochon.',
       muted: 'Active les effets et monte leur volume pour écouter.',
       blocked: 'Lecture bloquée par le navigateur. Réessaie ce bouton.',
       error: 'Enregistrement indisponible. Recharge la page.'

@@ -82,7 +82,7 @@ export function unlockSound() {
   if (current?.state === 'suspended') current.resume().catch(() => {});
 }
 
-function tone(current, frequency, delay, duration, volume = .055, type = 'sine', endFrequency = frequency) {
+function tone(current, frequency, delay, duration, volume = .055, type = 'sine', endFrequency = frequency, output = masterGain || current.destination) {
   const start = current.currentTime + delay;
   const oscillator = current.createOscillator();
   const gain = current.createGain();
@@ -92,12 +92,12 @@ function tone(current, frequency, delay, duration, volume = .055, type = 'sine',
   gain.gain.setValueAtTime(.0001, start);
   gain.gain.exponentialRampToValueAtTime(volume, start + .015);
   gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
-  oscillator.connect(gain).connect(masterGain || current.destination);
+  oscillator.connect(gain).connect(output);
   oscillator.start(start);
   oscillator.stop(start + duration + .025);
 }
 
-function impact(current, delay, duration, frequency, volume) {
+function impact(current, delay, duration, frequency, volume, output = masterGain || current.destination) {
   const start = current.currentTime + delay;
   const frames = Math.max(1, Math.floor(current.sampleRate * duration));
   const buffer = current.createBuffer(1, frames, current.sampleRate);
@@ -114,9 +114,45 @@ function impact(current, delay, duration, frequency, volume) {
   filter.Q.setValueAtTime(.8, start);
   gain.gain.setValueAtTime(volume, start);
   gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
-  source.connect(filter).connect(gain).connect(masterGain || current.destination);
+  source.connect(filter).connect(gain).connect(output);
   source.start(start);
   source.stop(start + duration);
+}
+
+export function playDominoCelebrationSound(kind, elapsedMs, fireworks) {
+  if (muted || volume === 0) return;
+  const current = context();
+  if (current?.state !== 'running') return;
+  const output = current.createGain();
+  output.gain.value = .72;
+  output.connect(masterGain);
+  const elapsed = Math.max(0, elapsedMs / 1000);
+  const schedule = (delay, play) => {
+    if (delay >= elapsed) play(delay - elapsed);
+  };
+  const bell = (frequency, delay, level) => schedule(delay, start => {
+    tone(current, frequency, start, .91, level, 'sine', frequency, output);
+    tone(current, frequency * 2.756, start, .52, level * .23, 'sine', frequency * 2.756, output);
+    tone(current, frequency * 4.02, start, .32, level * .11, 'sine', frequency * 4.02, output);
+  });
+  const noise = (delay, duration, frequency, level) => schedule(delay, start => {
+    impact(current, start, duration, frequency, level, output);
+  });
+  if (kind === 'round') {
+    noise(.13, .52, 1800, .08);
+    [523.25,659.25,783.99,1046.5,1318.51].forEach((frequency, index) => bell(frequency, .22 + index * .105, .1 - index * .011));
+  } else {
+    noise(.09, .7, 920, .15);
+    for (const [index, time] of fireworks.entries()) {
+      noise(time - .23, .21, 2550, .052);
+      noise(time, .26, 370, .24);
+      noise(time + .015, .24, 2300, .18);
+      schedule(time, start => tone(current, 115, start, .39, .16, 'sine', 44, output));
+      for (let crackle = 0; crackle < 5; crackle++) noise(time + .08 + crackle * .05, .05, 3500 + index * 120, .068 / (1 + crackle * .23));
+    }
+    for (let clap = 0; clap < 10; clap++) noise(1.1 + clap * .21, .09, 1550 + (clap % 3) * 240, .073);
+  }
+  return () => output.disconnect();
 }
 
 export function playSound(kind) {

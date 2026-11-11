@@ -1,0 +1,226 @@
+#casino-stage .scene-player-plate[data-character-id="jean-claude"]:is(.scene-player-plate--left,.scene-player-plate--right) {
+  clip-path: none !important;
+  mask: none !important;
+  -webkit-mask: none !important;
+  /* Reframe around the elbows so the head gains clearance and the hands stay at the rim. */
+  scale: .91;
+  transform-origin: var(--jean-claude-elbow-x) 37%;
+}
+#casino-stage .scene-player-plate--left { --jean-claude-elbow-x: 14%; }
+#casino-stage .scene-player-plate--right { --jean-claude-elbow-x: 86%; }
+
+#casino-stage[data-work-hands-hidden] .opponent-rack {
+  visibility: hidden;
+}
+
+#casino-stage > :is(.domino-ceremony-lounge, .domino-ceremony-back, .domino-ceremony-actors, .domino-ceremony-front, .domino-ceremony-award) {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+#casino-stage[data-domino-ceremony] > :is(.domino-ceremony-back, .domino-ceremony-front, .domino-ceremony-award),
+#casino-stage[data-domino-ceremony="match"] > :is(.domino-ceremony-lounge, .domino-ceremony-actors) {
+  display: block;
+}
+
+#casino-stage > :is(.domino-ceremony-lounge, .domino-ceremony-back, .domino-ceremony-actors, .domino-ceremony-front) {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#casino-stage > .domino-ceremony-lounge { z-index: 2; object-fit: fill; }
+#casino-stage > .domino-ceremony-back { z-index: 2; }
+#casino-stage > .domino-ceremony-actors { z-index: 3; }
+#casino-stage > .domino-ceremony-award { z-index: 12; }
+#casino-stage > .domino-ceremony-front { z-index: 13; }
+
+#casino-stage[data-domino-ceremony="match"] > :is(.scene-player-plate, .scene-vignette, .leader-trophy) {
+  visibility: hidden;
+}
+
+#casino-stage[data-domino-ceremony] > :is(.board-plane, .turn-banner) {
+  visibility: hidden;
+}
+
+#casino-stage[data-domino-ceremony] > :is(.hand-dock, #hand-visibility-button) {
+  display: none;
+}
+
+.domino-ceremony-seat {
+  position: absolute;
+  inset: 0;
+}
+
+.domino-ceremony-seat--top {
+  clip-path: polygon(28% 0,72% 0,72% 44.8%,65% 43%,57% 42.3%,50% 42%,43% 42.3%,35% 43%,28% 44.8%);
+}
+
+.domino-ceremony-seat--left {
+  clip-path: polygon(0 0,32% 0,32% 44.4%,25% 46.5%,20% 49%,15% 52%,10% 56.7%,6% 62%,0 72%);
+}
+
+.domino-ceremony-seat--right {
+  clip-path: polygon(68% 0,100% 0,100% 72%,94% 62%,90% 56.7%,85% 52%,80% 49%,75% 46.5%,68% 44.4%);
+}
+
+.domino-ceremony-pose {
+  position: absolute;
+  object-fit: fill;
+  filter: drop-shadow(0 .4cqw .38cqw #060301b0);
+}
+
+.domino-ceremony-seat--top > .domino-ceremony-pose {
+  left: 40%;
+  top: 14.5%;
+  width: 20%;
+  height: 31%;
+}
+
+.domino-ceremony-seat--left > .domino-ceremony-pose,
+.domino-ceremony-seat--right > .domino-ceremony-pose {
+  top: 19%;
+  width: 21.5%;
+  height: 38%;
+}
+
+.domino-ceremony-seat--left > .domino-ceremony-pose { left: 3.1%; }
+.domino-ceremony-seat--right > .domino-ceremony-pose { right: 3.1%; }
+.domino-ceremony-seat--top.is-winner > .domino-ceremony-pose { left: 36.8%; top: 1%; width: 26.4%; height: 46%; }
+.domino-ceremony-seat--left.is-winner > .domino-ceremony-pose { left: 1.7%; top: 8.8%; width: 25.5%; height: 49.2%; }
+.domino-ceremony-seat--right.is-winner > .domino-ceremony-pose { right: 1.7%; top: 8.8%; width: 25.5%; height: 49.2%; }
+
+#casino-stage[data-domino-ceremony="round"] .player-seat--top .player-plaque { top: 47%; }
+#casino-stage[data-domino-ceremony="round"] .player-seat--top .opponent-rack { left: 96%; top: 80%; width: 58%; height: 14%; }
+#casino-stage[data-domino-ceremony="match"] .player-seat--top { top: 18.6%; }
+#casino-stage[data-domino-ceremony="match"] .player-seat--top .opponent-rack { left: 76%; top: 75%; width: 40%; height: 10%; }
+#casino-stage[data-domino-ceremony="match"] .player-seat--left .opponent-rack { left: 20%; top: 94%; }
+#casino-stage[data-domino-ceremony="match"] .player-seat--right .opponent-rack { right: 20%; top: 94%; }
+#casino-stage[data-domino-ceremony="match"] .seat-pig { top: 75%; width: 11%; }
+#casino-stage[data-domino-ceremony="match"] .player-seat--top .seat-pig { top: 58%; left: 87%; }
+#casino-stage[data-domino-ceremony="match"] .player-seat--left .seat-pig { left: 82%; }
+#casino-stage[data-domino-ceremony="match"] .player-seat--right .seat-pig { left: 18%; }
+
+.domino-ceremony-award {
+  left: 25.6%;
+  top: 42.9%;
+  width: 48.8%;
+  height: 24.5%;
+  animation: domino-award-appear .28s ease-out both;
+}
+
+[data-domino-ceremony="round"] > .domino-ceremony-award {
+  left: 26.1%;
+  top: 23.8%;
+  width: 47.8%;
+  height: 42.1%;
+}
+
+.domino-ceremony-art { width: 100%; height: 100%; }
+.domino-ceremony-medal { display: none; }
+[data-domino-ceremony="round"] .domino-ceremony-medal {
+  display: block;
+  position: absolute;
+  inset: 15% 39% 47.8%;
+  overflow: hidden;
+  clip-path: ellipse(50% 62% at 50% 62%);
+}
+.domino-ceremony-portrait {
+  position: absolute;
+  top: 8%;
+  left: 5%;
+  width: 90%;
+  height: 126%;
+  object-fit: cover;
+  object-position: center top;
+}
+.domino-ceremony-name {
+  display: block;
+  position: absolute;
+  inset: 72% 33% auto;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 700 clamp(10px,1.45cqw,26px)/1.1 Georgia,serif;
+  color: #ffe6a1;
+  text-shadow: 0 2px 4px #000;
+}
+[data-domino-ceremony="round"] .domino-ceremony-name {
+  inset: 53.7% 34% auto;
+  color: #201000;
+  text-shadow: 0 1px #fff0ae;
+  font-size: clamp(9px,1.65cqw,29px);
+}
+
+#casino-stage[data-domino-ceremony] .online-result-card.has-round-summary {
+  left: .8%;
+  right: 18.35%;
+  bottom: 2%;
+  width: auto;
+  height: 29%;
+  grid-template-columns: minmax(0,31%) minmax(0,1fr);
+  gap: .45cqw .7cqw;
+  padding: .65cqw;
+}
+#casino-stage[data-domino-ceremony] .online-result-card .online-result-overview { gap: .65cqw; }
+#casino-stage[data-domino-ceremony] .online-result-card .portal-avatar { width: 5cqw; height: 5cqw; }
+#casino-stage[data-domino-ceremony] .online-result-card__copy > strong { font-size: clamp(10px,1.48cqw,25px); }
+#casino-stage[data-domino-ceremony] .online-result-card__copy > span { font-size: clamp(8px,.87cqw,15px); }
+#casino-stage[data-domino-ceremony] .online-result-scores { grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: .5cqw; }
+#casino-stage[data-domino-ceremony] .online-result-scores > div {
+  font-size: clamp(8px,.9cqw,15px);
+  padding: .14cqw .24cqw;
+  gap: .2cqw;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#casino-stage[data-domino-ceremony] .online-result-scores > div > span:first-child { flex: 0 0 auto; }
+#casino-stage[data-domino-ceremony] .online-result-card > .online-result-hands {
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  grid-template-rows: auto minmax(0,1fr);
+  gap: .45cqw .55cqw;
+  padding-left: .7cqw;
+}
+#casino-stage[data-domino-ceremony] .online-result-hands > h3 { grid-column: 1/-1; font-size: clamp(10px,1.25cqw,22px); }
+#casino-stage[data-domino-ceremony] .online-result-hand {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  gap: .2cqw;
+  min-width: 0;
+  padding: .55cqw;
+}
+#casino-stage[data-domino-ceremony] .online-result-hand header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: .55cqw;
+}
+#casino-stage[data-domino-ceremony] .online-result-hand header strong { font-size: clamp(9px,1.13cqw,19px); }
+#casino-stage[data-domino-ceremony] .online-result-hand__tiles { min-height: 0; gap: .18cqw; }
+#casino-stage[data-domino-ceremony] .online-result-hand__tiles .result-domino {
+  width: min(12.6%,2.5cqw);
+  padding: 1px;
+  border-radius: .26cqw;
+  border-width: 1px;
+}
+#casino-stage[data-domino-ceremony] .result-domino .hand-pip { min-width: 0; }
+#casino-stage[data-domino-ceremony] .online-result-last-tile { gap: .3cqw; }
+#casino-stage[data-domino-ceremony] .online-result-last-tile .result-domino { width: 2.5cqw; }
+#casino-stage[data-domino-ceremony] .online-result-card .online-result-controls { gap: .3cqw; }
+#casino-stage[data-domino-ceremony] .online-result-card__action {
+  min-height: clamp(22px,2.25cqw,42px);
+  padding: .23cqw .35cqw;
+  font-size: clamp(8px,.95cqw,16px);
+}
+#casino-stage[data-domino-ceremony] .online-result-card__action:disabled { cursor: wait; }
+
+@keyframes domino-award-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .domino-ceremony-award { animation: none; }
+}

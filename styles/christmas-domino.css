@@ -32,7 +32,8 @@
 /* An explicit local choice may enable tree lights. No global animation rule,
    OS preference, gameplay, other scenery or Poker animation is overridden. */
 :is(#club-portal,#casino-stage)[data-christmas-tree-lights="blink"] :is(.christmas-tree,.christmas-rim-lights)>.christmas-circuit{animation:christmas-tree-blink var(--duration) linear var(--delay) infinite!important}
-:is(#club-portal,#casino-stage)[data-christmas-tree-lights="fixed"] :is(.christmas-tree,.christmas-rim-lights)>.christmas-circuit{animation:none!important;opacity:.9}
+:is(#club-portal,#casino-stage)[data-christmas-tree-lights="blink"] :is(.christmas-garland,.christmas-perimeter)>.christmas-circuit{animation:christmas-garland-circuit var(--duration) ease-in-out var(--delay) infinite alternate!important}
+:is(#club-portal,#casino-stage)[data-christmas-tree-lights="fixed"] .christmas-circuit{animation:none!important;opacity:.9}
 .christmas-tree-light-control{margin-top:.7em;padding:.6em;border:1px solid #b99a58;color:#efd28d}
 .christmas-tree-light-control[hidden]{display:none}
 .christmas-tree-light-control select{max-width:100%;width:100%;font:inherit;color:#f7dda1;background:#071b12;border:1px solid #b99a58;padding:.4em}

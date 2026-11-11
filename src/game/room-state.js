@@ -8,10 +8,12 @@ import {
   hasPlayableTile,
   placeTile,
   playerKey,
+  roundWinReadyAt,
   validSides
-} from './engine.js?v=20261005T162819119';
+} from './engine.js?v=58-r14';
 import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20261005T162819119';
 import { ROOM_STYLES } from '../config/room-styles.js?v=20261005T162819119';
+import { normalizeDominoTrackIndex } from '../config/domino-audio.js?v=58-r8';
 import { isRoomCancellationModerator, isCancellableRoom } from '../config/room-cancellation.js?v=20261005T162819119';
 import { roomActor, roomHostId, roomCreatorId, isRoomHost, isRoomCreator } from './room-membership.js?v=20261005T162819119';
 
@@ -145,9 +147,10 @@ export function startMatchInRoom(room, { playerId, clientToken, matchId, musicTr
   room.status = 'playing';
   room.matchId = matchId;
   room.matchStartedAt = at;
+  room.matchStartedByToken = clientToken || null;
   room.roundLog = [];
   room.music = {
-    trackIndex: Math.min(2, Math.max(0, Math.round(Number(musicTrackIndex ?? room.music?.trackIndex) || 0))),
+    trackIndex: normalizeDominoTrackIndex(musicTrackIndex ?? room.music?.trackIndex),
     startedAt: at,
     changedAt: at
   };
@@ -174,9 +177,10 @@ export function startRematchInRoom(room, { playerId, clientToken, matchId, at = 
   room.status = 'playing';
   room.matchId = matchId;
   room.matchStartedAt = at;
+  room.matchStartedByToken = clientToken || null;
   room.roundLog = [];
   room.music = {
-    trackIndex: Math.min(2, Math.max(0, Math.round(Number(room.music?.trackIndex) || 0))),
+    trackIndex: normalizeDominoTrackIndex(room.music?.trackIndex),
     startedAt: at,
     changedAt: at
   };
@@ -235,7 +239,7 @@ export function setTurnClockPausedInRoom(room, { playerId, clientToken, paused, 
 export function selectRoomMusic(room, { playerId, clientToken, trackIndex, at = Date.now() }) {
   rule(room && room.status !== 'cancelled', 'Salle introuvable.', 'room-not-found');
   rule(isRoomHost(room, { playerId, clientToken }), 'Seul l’hôte choisit la musique de la table.', 'host-only');
-  const nextTrack = Math.min(2, Math.max(0, Math.round(Number(trackIndex) || 0)));
+  const nextTrack = normalizeDominoTrackIndex(trackIndex);
   room.music = {
     trackIndex: nextTrack,
     startedAt: room.status === 'playing' ? at : null,
@@ -360,7 +364,8 @@ export function startNextRoundInRoom(room, { at = Date.now(), randomIndex, expec
   rule(room?.status === 'playing' && room.game?.roundStatus === 'ended', 'La manche n’est pas terminée.', 'round-not-ended');
   if (expectedRoundNumber !== undefined) rule(Number(room.game.roundNumber) === Number(expectedRoundNumber), 'La manche suivante est déjà lancée.', 'stale-round');
   if (expectedResultAt !== undefined) rule(Number(room.game.roundResult?.at) === Number(expectedResultAt), 'Le résultat de la manche a changé.', 'stale-result');
-  // Identity, not a browser timer, controls this atomic transition.
+  rule(at >= roundWinReadyAt(room), 'La manche suivante sera disponible dans quelques secondes.', 'round-too-early');
+  // The result identity still makes the transition atomic and idempotent.
   const starterId = room.game.roundResult?.type === 'winner' ? room.game.roundResult.winnerId : null;
   transitionRoom(room, ROOM_PHASE.NEXT_ROUND, at);
   room.game = buildRound(

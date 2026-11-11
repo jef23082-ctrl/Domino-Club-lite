@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Domino Club — V58 Noël · Poker Club V57">
   <title>Domino Club — Le Roi du Cochon V58 NOËL</title>
-  <link rel="preload" as="image" href="./assets/menus/club-login-v41.png" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/menus/club-login-noel-v58.png" fetchpriority="high">
   <link rel="stylesheet" href="./styles/foundation.css?v=20261005T162819119">
   <link rel="stylesheet" href="./styles/casino-scene.css?v=20261005T162819119">
   <link rel="stylesheet" href="./styles/dominoes.css?v=20261005T162819119">
@@ -30,7 +30,9 @@
   <link rel="stylesheet" href="./styles/poker-portal-v36.css?v=20261005T162819119">
   <link rel="stylesheet" href="./styles/poker-portal-v38.css?v=20261005T162819119">
   <link rel="stylesheet" href="./styles/domino-portal-v39.css?v=20261005T162819119">
-  <link rel="stylesheet" href="./styles/login-v41.css?v=20261005T162819119">
+  <link rel="stylesheet" href="./styles/login-v58.css?v=58-r13">
+  <link rel="stylesheet" href="./styles/login-lights-v58.css?v=58-r13">
+  <link rel="stylesheet" href="./styles/home-flag-v58.css?v=58-r10">
   <link rel="stylesheet" href="./styles/portal-refinements-v42.css?v=20261005T162819119">
   <link rel="stylesheet" href="./styles/profile-history-v43.css?v=20261005T162819119">
   <link rel="stylesheet" href="./styles/portal-refinements-v44.css?v=20261005T162819119">
@@ -48,11 +50,56 @@
   <!-- LOGIN_BOOT_START: visible before any JavaScript or Firebase request. -->
   <aside id="online-hub" class="online-hub" data-view="login" data-login-pending="true" aria-label="Connexion et salons en ligne" aria-busy="true">
     <div class="online-hub__frame">
+      <div class="login-christmas-lights" aria-hidden="true">
+        <i class="login-tree-bulb" style="--x:1354;--y:43;--delay:0s" data-color="green" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1343;--y:66;--delay:-0.37s" data-color="red" data-circuit="1"></i>
+        <i class="login-tree-bulb" style="--x:1371;--y:71;--delay:-0.74s" data-color="white" data-circuit="2"></i>
+        <i class="login-tree-bulb" style="--x:1328;--y:89;--delay:-1.11s" data-color="green" data-circuit="3"></i>
+        <i class="login-tree-bulb" style="--x:1354;--y:97;--delay:-1.48s" data-color="red" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1385;--y:105;--delay:-1.85s" data-color="white" data-circuit="1"></i>
+        <i class="login-tree-bulb" style="--x:1317;--y:126;--delay:-2.22s" data-color="green" data-circuit="2"></i>
+        <i class="login-tree-bulb" style="--x:1345;--y:132;--delay:-0.29s" data-color="red" data-circuit="3"></i>
+        <i class="login-tree-bulb" style="--x:1379;--y:142;--delay:-0.66s" data-color="white" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1404;--y:152;--delay:-1.03s" data-color="green" data-circuit="1"></i>
+        <i class="login-tree-bulb" style="--x:1300;--y:165;--delay:-1.4s" data-color="red" data-circuit="2"></i>
+        <i class="login-tree-bulb" style="--x:1333;--y:178;--delay:-1.77s" data-color="white" data-circuit="3"></i>
+        <i class="login-tree-bulb" style="--x:1360;--y:188;--delay:-2.14s" data-color="green" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1399;--y:195;--delay:-0.21s" data-color="red" data-circuit="1"></i>
+        <i class="login-tree-bulb" style="--x:1422;--y:207;--delay:-0.58s" data-color="white" data-circuit="2"></i>
+        <i class="login-tree-bulb" style="--x:1290;--y:215;--delay:-0.95s" data-color="green" data-circuit="3"></i>
+        <i class="login-tree-bulb" style="--x:1315;--y:230;--delay:-1.32s" data-color="red" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1344;--y:240;--delay:-1.69s" data-color="white" data-circuit="1"></i>
+        <i class="login-tree-bulb" style="--x:1380;--y:249;--delay:-2.06s" data-color="green" data-circuit="2"></i>
+        <i class="login-tree-bulb" style="--x:1412;--y:260;--delay:-0.13s" data-color="red" data-circuit="3"></i>
+        <i class="login-tree-bulb" style="--x:1432;--y:274;--delay:-0.5s" data-color="white" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1271;--y:264;--delay:-0.87s" data-color="green" data-circuit="1"></i>
+        <i class="login-tree-bulb" style="--x:1298;--y:288;--delay:-1.24s" data-color="red" data-circuit="2"></i>
+        <i class="login-tree-bulb" style="--x:1330;--y:299;--delay:-1.61s" data-color="white" data-circuit="3"></i>
+        <i class="login-tree-bulb" style="--x:1363;--y:307;--delay:-1.98s" data-color="green" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1397;--y:313;--delay:-0.05s" data-color="red" data-circuit="1"></i>
+        <i class="login-tree-bulb" style="--x:1403;--y:321;--delay:-0.42s" data-color="white" data-circuit="2"></i>
+        <i class="login-tree-bulb" style="--x:1411;--y:338;--delay:-0.79s" data-color="green" data-circuit="3"></i>
+        <i class="login-tree-bulb" style="--x:1255;--y:315;--delay:-1.16s" data-color="red" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1280;--y:331;--delay:-1.53s" data-color="white" data-circuit="1"></i>
+        <i class="login-tree-bulb" style="--x:1312;--y:344;--delay:-1.9s" data-color="green" data-circuit="2"></i>
+        <i class="login-tree-bulb" style="--x:1350;--y:350;--delay:-2.27s" data-color="red" data-circuit="3"></i>
+        <i class="login-tree-bulb" style="--x:1382;--y:362;--delay:-0.34s" data-color="white" data-circuit="0"></i>
+        <i class="login-tree-bulb" style="--x:1403;--y:354;--delay:-0.71s" data-color="green" data-circuit="1"></i>
+        <i class="login-fire-glow" style="--x:832;--y:191;--delay:-0.32s"></i>
+        <i class="login-fire-flame" style="--x:813;--y:199;--delay:-0.36s" data-flame="left"></i>
+        <i class="login-fire-flame" style="--x:832;--y:205;--delay:-0.6s" data-flame="center"></i>
+        <i class="login-fire-flame" style="--x:852;--y:199;--delay:-0.14s" data-flame="right"></i>
+        <i class="login-candle-halo" style="--x:332;--y:585;--delay:0s"></i>
+        <i class="login-candle-flame" style="--x:332;--y:585;--delay:0s"></i>
+        <i class="login-candle-halo" style="--x:1255;--y:577;--delay:-0.61s"></i>
+        <i class="login-candle-flame" style="--x:1255;--y:577;--delay:-0.49s"></i>
+        <i class="login-candle-halo" style="--x:1613;--y:745;--delay:-1.22s"></i>
+        <i class="login-candle-flame" style="--x:1613;--y:745;--delay:-0.98s"></i>
+      </div>
       <p class="online-hub__eyebrow">Domino &amp; Poker Club</p>
       <h1 class="online-hub__title">Domino &amp; Poker Club — Casino privé en ligne</h1>
       <p id="online-status" class="online-hub__status">V58 NOËL</p>
       <div id="online-content" class="online-hub__content">
-        <svg class="login-reference-mask" viewBox="620 514 432 18" preserveAspectRatio="none" aria-hidden="true"><image href="./assets/menus/club-login-v41.png" width="1672" height="941"/></svg>
         <form class="online-form">
           <label class="online-label">Mot de passe joueur<input class="online-input" type="password" placeholder="Votre mot de passe" autocomplete="new-password" aria-label="Mot de passe joueur" value="" disabled></label>
           <button class="online-action online-action--primary" type="submit" disabled>Entrer dans le club</button>
@@ -104,7 +151,9 @@
               <option value="0">Musique 1</option>
               <option value="1">Musique 2</option>
               <option value="2">Musique 3</option>
+              <option value="3">C Noël</option>
             </select>
+            <small id="music-track-authority">L’hôte choisit la musique de la table.</small>
           </div>
           <label class="music-panel__volume" for="music-volume"><span>Volume</span><output id="music-volume-value" for="music-volume">76 %</output></label>
           <input id="music-volume" type="range" min="0" max="100" step="1" value="76">
@@ -179,8 +228,9 @@
       </div>
     </section>
   </main>
-    <script type="module" src="./src/main.js?v=58-r2"></script>
-    <link rel="stylesheet" href="./styles/christmas-domino.css?v=58-r6">
-    <script type="module" src="./src/ui/christmas-domino.js?v=58-r6"></script>
+    <script type="module" src="./src/main.js?v=58-r14"></script>
+    <link rel="stylesheet" href="./styles/christmas-domino.css?v=58-r8">
+    <link rel="stylesheet" href="./styles/domino-celebrations.css?v=58-r9">
+    <script type="module" src="./src/ui/christmas-domino.js?v=58-r13"></script>
 </body>
 </html>

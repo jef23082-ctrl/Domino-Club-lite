@@ -1,8 +1,6 @@
 {
-  "version": "v58-noel",
-  "baseVersion": "v57",
-  "baseCommit": "9e2df2eb4ca6c94c5bba8fc8709d3267d3f16fe4",
-  "generatedAt": "2026-11-09T16:48:49.558Z",
+  "version": "v58-noel-r14",
+  "generatedAt": "2026-11-11T12:20:18.749Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -13,6 +11,11 @@
       "path": ".nojekyll",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assets/audio/cnoel.mp3",
+      "bytes": 73876508,
+      "sha256": "3c0c0d349adb25197282be7dd486ff69b50e8f07eba12728b20e9d3a59011ad0"
     },
     {
       "path": "assets/audio/musique1.mp3",
@@ -40,6 +43,26 @@
       "sha256": "1c3d7b63b87e4d85c0db20e0649e72fe4ba2aa9fd8da11424b23e8deb9c6fa37"
     },
     {
+      "path": "assets/audio/v58/bienvenue.mp3",
+      "bytes": 234240,
+      "sha256": "1047c7ad6ded5484b1d7bcfbcac3949de101f9f1ab367fd010b36e48d6e8b564"
+    },
+    {
+      "path": "assets/audio/v58/c-are-the-champion.mp3",
+      "bytes": 125596,
+      "sha256": "69d963a912009988a70742883eb17749cb2f32614b91b7fd87a8b4258afb926f"
+    },
+    {
+      "path": "assets/audio/v58/cochon-nez-effet.mp3",
+      "bytes": 117864,
+      "sha256": "e962b80990efa75abe4f506bdb96da9602dd7d5fbe46f17e076841dc57e75148"
+    },
+    {
+      "path": "assets/audio/v58/opening.mp3",
+      "bytes": 23520,
+      "sha256": "5dbf4885ac33a6fad476f778fea063fa4ae9b456b8a843a4507b85c340191a23"
+    },
+    {
       "path": "assets/christmas/v58/domino/audio/nose-christmas-r2.wav",
       "bytes": 229364,
       "sha256": "50aa28795cb51b094849462e93e1ab756a6e70ff1575d693802563d523d342b6"
@@ -48,6 +71,56 @@
       "path": "assets/christmas/v58/domino/audio/README.md",
       "bytes": 470,
       "sha256": "ff6c7acef366567001c348f1a461fbc6298d2e57adf94df24e00e8c9d645a596"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/algeria.png",
+      "bytes": 9503,
+      "sha256": "35fbdaa5e1c9889a9d823970f56f7b861fa03a417abafea9066ef3e74fc1e056"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/bulgarie.png",
+      "bytes": 3522,
+      "sha256": "a9fc6d51d2f651bd034615694a12bc8bcd7225fb6b37884d39865c74a7f2b558"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/corsica.png",
+      "bytes": 21239,
+      "sha256": "2876340220c1bb74a29c11182718f74a957df6a49b7a915fdc789b34aa39caaa"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/CREDITS.md",
+      "bytes": 1993,
+      "sha256": "40423de59589266e887813433e9bfc9d79c30e7d83fd441631eeeac5a10e1418"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/france.png",
+      "bytes": 5189,
+      "sha256": "1ae98a635e847a8c76972e9bff9c2c49968d3d16526e7ae75689c503a38dc0bf"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/guadeloupe.png",
+      "bytes": 29792,
+      "sha256": "50b3a48d62e59007d9f0580e861b982025c4deb63efc3dd5591e1d16da459463"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/martinique.png",
+      "bytes": 5941,
+      "sha256": "571c795c51e1df9975f8643d4f8ab33af1ed863f8bae2a4e21ff8c000f8acb76"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/morocco.png",
+      "bytes": 9418,
+      "sha256": "78476ffa0497f65254f6139ee18e11b5fb3986810b4675e0c1107ba9fb08160f"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/stand.webp",
+      "bytes": 36966,
+      "sha256": "5ec9dfe7c499765f734ca242d45dd9a625f2534a6597b122e8a8aed3e1af0669"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/suriname.png",
+      "bytes": 6834,
+      "sha256": "4c13e9aea550b4bbeaaf8b4df3a9a54abc146a86b4b59f919d7ce6da14bec286"
     },
     {
       "path": "assets/christmas/v58/domino/garlands/garland.png",
@@ -523,6 +596,11 @@
       "path": "assets/interactions/vivalgeria.webp",
       "bytes": 874906,
       "sha256": "932bcfe48681dd31295f905dde0b0dff1e85621b52a27e9aa3f6bc9178611c97"
+    },
+    {
+      "path": "assets/menus/club-login-noel-v58.png",
+      "bytes": 2991111,
+      "sha256": "2ec18fc4ee852c071748b0c9a44b3d2ca8f1581e209729f05ddac1ee017aa804"
     },
     {
       "path": "assets/menus/club-login-v41.png",
@@ -1650,6 +1728,291 @@
       "sha256": "192fd69b2d46733b54aa214ee62bf5e1c7b060358f7f659b2524ce79223df0db"
     },
     {
+      "path": "assets/v58-celebrations/match-lounge.webp",
+      "bytes": 350488,
+      "sha256": "be7ecc195767289de76d4d342a4642457d6a2b41d2b8f8a8032e037439352cad"
+    },
+    {
+      "path": "assets/v58-celebrations/match-ribbon.webp",
+      "bytes": 338932,
+      "sha256": "0305cd5d4e6f0b6c13fd9eaf325dccd8c3b067cb37864571a1f699220ec264bb"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/alexis-left-applause.webp",
+      "bytes": 40012,
+      "sha256": "8a966ed2a6b8086cab7d8069e9823b7145491330a4e3fb30cfa50a32c5f0704e"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/alexis-left-trophy.webp",
+      "bytes": 50968,
+      "sha256": "056a667fdeb89ea37fc35c852111c9c3eb94f28bdfd1f39c635687e2f6a4765b"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/alexis-right-applause.webp",
+      "bytes": 42786,
+      "sha256": "079c9b88f4514d13af647b6a984bc9af0d2f0fe83e2406a32d33591e250503ea"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/alexis-right-trophy.webp",
+      "bytes": 52240,
+      "sha256": "d1ec77fa03790f1049c2219c8b3601535c22b6264f0d9a1b616f5eef5615a9a8"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/alexis-top-applause.webp",
+      "bytes": 42444,
+      "sha256": "481179e1bb7df61b33ac9ad857571049de3665cc005d44f482ba11e2f01130fe"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/alexis-top-trophy.webp",
+      "bytes": 50026,
+      "sha256": "c59433e86cc64dd7b8b56c525448e32c51ab7800914fff0e5cedb92d9afa5b60"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/cedric-left-applause.webp",
+      "bytes": 48034,
+      "sha256": "cc7fdb6b704bce7922aa0e1925ad80b3601ab2ef11804e699037a0fdbc341d8c"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/cedric-left-trophy.webp",
+      "bytes": 62332,
+      "sha256": "c1cd02c9efa1d2b769f7e68a49c3ee3b2a3cca161468918eea7f1239b2f67d06"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/cedric-right-applause.webp",
+      "bytes": 47698,
+      "sha256": "ec64d3e533c64fb26c631efbe91b8ee670715f27815bfd921f770d25f5629572"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/cedric-right-trophy.webp",
+      "bytes": 61510,
+      "sha256": "23da60038bcc292da8d124c8bf4f506ff23efc37571b883dc0b28f9cfb163518"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/cedric-top-applause.webp",
+      "bytes": 48544,
+      "sha256": "a0f3cdf863a70f2660807a7720b986cc75f05b41e7feddec0515695d2bfc002e"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/cedric-top-trophy.webp",
+      "bytes": 59592,
+      "sha256": "4c2d54c659044b02bbb38c78d5135684211ca5238d21d66d38460b59c212de30"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/christopher-left-applause.webp",
+      "bytes": 41242,
+      "sha256": "0dfe4f7e9d90c4559f1cbb8cbb05a01730165ae41bbc200a0fd4f459c1921319"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/christopher-left-trophy.webp",
+      "bytes": 59370,
+      "sha256": "405478fa3ee2fadcf4eb0fbc66ada12bb7e30a3f3730b2a158fb37544c3379e3"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/christopher-right-applause.webp",
+      "bytes": 43296,
+      "sha256": "a40689d16419b5b2f5fdc3f3c1df772910898873fbd0dd6ed6442c0013a86ba6"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/christopher-right-trophy.webp",
+      "bytes": 59868,
+      "sha256": "3299c57169560e7beff9297ffdc87506b09c39e3d301a6a1cef0a9c6b83908fc"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/christopher-top-applause.webp",
+      "bytes": 41176,
+      "sha256": "85ea33425f63290ad178a56aac5168097f2548299b5b6ca879e1ce0698159162"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/christopher-top-trophy.webp",
+      "bytes": 63346,
+      "sha256": "4c8ff8427e6df1a3c5ac51887a5d60ee3fb75132f8e137bfc98e2ef24b920aa3"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/eddy-left-applause.webp",
+      "bytes": 42718,
+      "sha256": "5c799430988bfe280b9f853cb4f1d191ced33ae586d8d17b68e827ad319973d5"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/eddy-left-trophy.webp",
+      "bytes": 58552,
+      "sha256": "83c1159969e0d95fe4b615cc7ed8f287b1721f34590eb1f0e457a5472a8ea81f"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/eddy-right-applause.webp",
+      "bytes": 44534,
+      "sha256": "31795a154846cefee9b24f1428b4dcdeb252368b065496cf7964f0683f93d18a"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/eddy-right-trophy.webp",
+      "bytes": 59128,
+      "sha256": "1879d21f68b7f7302b6e84ce0ab38440d0110b6bd4b3779b3151b093b03c87ff"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/eddy-top-applause.webp",
+      "bytes": 42054,
+      "sha256": "d726945ea3abc9d041165c7df52eec5093c4f9c542002d339dda30da2db5c266"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/eddy-top-trophy.webp",
+      "bytes": 56990,
+      "sha256": "945e4cbea7f227941ad636ffeac55cd54b503c6cf5b3d386761ee955c8e6c4a6"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/emmanuelle-left-applause.webp",
+      "bytes": 42488,
+      "sha256": "8ae648a1d1879f84614753a02c1ea705e790adef66816ad8ca2ca27660b9974f"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/emmanuelle-left-trophy.webp",
+      "bytes": 53042,
+      "sha256": "c1be907ae7eca799d77a661b923004beca75947b6aeeaa7fd0e5329520817f76"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/emmanuelle-right-applause.webp",
+      "bytes": 41070,
+      "sha256": "f25e73ea7c3388a966e78d07bdb3211ce02099a5ff6178e8b79b0264d3253d22"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/emmanuelle-right-trophy.webp",
+      "bytes": 56206,
+      "sha256": "5f4695ee661c8043aed2ca1bbf39fd91d432b709c2b80d92730650307a621cd8"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/emmanuelle-top-applause.webp",
+      "bytes": 39204,
+      "sha256": "ae33f93928723293ac00323c269153a4b289f960ee7d9fd84436ba18a2c1a804"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/emmanuelle-top-trophy.webp",
+      "bytes": 55844,
+      "sha256": "29fd62df2d80742c4822c2fcb9e18921e2cecae626da41821cd97b7316338d76"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/jean-claude-left-applause.webp",
+      "bytes": 42458,
+      "sha256": "c448b24c3be394828cf1e9e1bfb4899dc07c10ba3641b9c929f9064729deca30"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/jean-claude-left-trophy.webp",
+      "bytes": 55668,
+      "sha256": "b783a9942a09cb45dc7ffb6b08f8d3cb82af5911d5c5872488229ba0fe38a235"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/jean-claude-right-applause.webp",
+      "bytes": 41098,
+      "sha256": "7dddb8372689ede7b1615eeaa23dd044237885f787d60de0f04f09394d6babcf"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/jean-claude-right-trophy.webp",
+      "bytes": 53336,
+      "sha256": "d9dc2f2b0253a2a590218cd943c4969c5c75890bd60e5ef0f8d5588ecd8174a8"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/jean-claude-top-applause.webp",
+      "bytes": 40372,
+      "sha256": "d475ff65f0078bc9bd2dddc4c7bc2bbc712df6cf7cfc3e1799212cce9dd0458b"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/jean-claude-top-trophy.webp",
+      "bytes": 54342,
+      "sha256": "dea51000f62548ef3b44419986b4815d30519d12a6bd339666a751f9b59d7a4d"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/khalil-left-applause.webp",
+      "bytes": 43452,
+      "sha256": "8e060ff9c980decbd06148da34602b5f44c43e5efde58b0f62976b2557425d22"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/khalil-left-trophy.webp",
+      "bytes": 56246,
+      "sha256": "b19c5553a056d5dd85ebd4cd08f995b1bfaf057e74c62f25d5cab0a5242dc6cd"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/khalil-right-applause.webp",
+      "bytes": 46778,
+      "sha256": "51d0d7821fa43671702d900c147d91aced9260ec2d62348e6cada16f50eaf776"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/khalil-right-trophy.webp",
+      "bytes": 57640,
+      "sha256": "fbffbb1f4ca2bdbf1a02247b14edbcd403fd366f14ff580eccd59e0ba49e7dad"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/khalil-top-applause.webp",
+      "bytes": 45060,
+      "sha256": "f572f964cf387c80ea0390487035302117c405c8f2bb41329e82ca6a24da30f7"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/khalil-top-trophy.webp",
+      "bytes": 55046,
+      "sha256": "5eb0e41bba6cded254aa8c6a0c32ce6d8f2ece3c70cac381c1215f6d3cdfd6a9"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/ryad-left-applause.webp",
+      "bytes": 39890,
+      "sha256": "28122d0cb5f6c2ec582f9447626c2895497ee4859ccfd7ed53980bef4705d15c"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/ryad-left-trophy.webp",
+      "bytes": 54164,
+      "sha256": "dedad229f97de2fcaaf83f976a14343d95bb9689e5dd6c620071bf648b272b2c"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/ryad-right-applause.webp",
+      "bytes": 38836,
+      "sha256": "59f2ece5504d89b0035967b21cfd76e8d01b1ea8947de79b38c99bd8d93fa156"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/ryad-right-trophy.webp",
+      "bytes": 55136,
+      "sha256": "47175b38dcd9370f4df9703e94c7fe9c2dee753ca72210cb18e50675a1c210e7"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/ryad-top-applause.webp",
+      "bytes": 38822,
+      "sha256": "07c63c9a4e58fe43001a22b577f55c060e4edf751431db86ee847f3e23c916a8"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/ryad-top-trophy.webp",
+      "bytes": 53864,
+      "sha256": "71f5635adbe551aadb12095de7f8a362eab8f24e948cb1ebd3504f9ef6f2c36a"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/thomas-left-applause.webp",
+      "bytes": 47680,
+      "sha256": "d74062d1a96243b76b34f6fc89a23a73b28a66fda70965b065cddf74464790e6"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/thomas-left-trophy.webp",
+      "bytes": 59796,
+      "sha256": "0ee5fdf79cdd58a4c4451f92a341b2f29a493dfab41efedf977599d60402d1f3"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/thomas-right-applause.webp",
+      "bytes": 44594,
+      "sha256": "bec825f22411d4d65af6ece76683d91cbee48abceb7885e50b8e51de1f9953a8"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/thomas-right-trophy.webp",
+      "bytes": 61392,
+      "sha256": "34d142c66d08971d503a7f0227636db50189e1246273022dcf4e32f95b77d189"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/thomas-top-applause.webp",
+      "bytes": 44806,
+      "sha256": "a276cfa253decf8b3df66b6ceaeb78e7edab7c18a5fdafe50008006581b9a487"
+    },
+    {
+      "path": "assets/v58-celebrations/poses/thomas-top-trophy.webp",
+      "bytes": 58628,
+      "sha256": "f7a6f348be1db63616a6f6a7be2c0cc155a2a88bf79024f9fe7dc2c725503a8e"
+    },
+    {
+      "path": "assets/v58-celebrations/round-plaque.webp",
+      "bytes": 236456,
+      "sha256": "52f82f57b29d886231440a76965e0f3d51d35bf9f4d1abb63bd3acae5f441699"
+    },
+    {
       "path": "DOMINO-V39.md",
       "bytes": 1531,
       "sha256": "c2adb54c81d9e5ff1abe70715d9e16479ae1d71057692027209d06528dccbc7c"
@@ -1701,8 +2064,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 13337,
-      "sha256": "e6d67c512cc9e3fc79ac6c2b684f3d7551c0016261c89e387e00895044387566"
+      "bytes": 18350,
+      "sha256": "8f314127d4e990fd4a290b56c3f239d3f7f8c458b92d757a36db1d56474037ea"
     },
     {
       "path": "LISEZ-MOI.txt",
@@ -1743,6 +2106,11 @@
       "path": "src/config/christmas.js",
       "bytes": 1034,
       "sha256": "4a5ef5ec98fce278ab949efbfa286807626ba6ae6ca66c93a1a7841a75983b44"
+    },
+    {
+      "path": "src/config/domino-audio.js",
+      "bytes": 407,
+      "sha256": "12378fdbaa2f4016d4ef53c767fb71f45ce7f36d68ca0784673db50d78cd291b"
     },
     {
       "path": "src/config/domino-environments.js",
@@ -1796,8 +2164,8 @@
     },
     {
       "path": "src/game/engine.js",
-      "bytes": 20508,
-      "sha256": "7246c411b22858e621e2ae0760d8242144654129682df6411f9ab08376bc0a40"
+      "bytes": 20979,
+      "sha256": "6eb1c5e62b871752fba023ba60206ca1a9460e729395bdd5d891d6d2dab5518b"
     },
     {
       "path": "src/game/online-stats.js",
@@ -1816,18 +2184,18 @@
     },
     {
       "path": "src/game/room-state.js",
-      "bytes": 18510,
-      "sha256": "78465960f72f3230d2f8032beab3e3ee2f5c1fce35528ebddb039b1a419caa13"
+      "bytes": 18748,
+      "sha256": "6add8709f9577ef093575424a0ae71629aa430cc76c7673787570f3d330e6c9f"
     },
     {
       "path": "src/game/round-transition.js",
-      "bytes": 3453,
-      "sha256": "23b274a10220677e35499a9674819199ae731faee28d9b8771a1a0353b258331"
+      "bytes": 3440,
+      "sha256": "5a6640ebf325e7741744cf7557ae152727307312d0d5fcaad0dcb77bca627a3e"
     },
     {
       "path": "src/main.js",
-      "bytes": 175,
-      "sha256": "1c51680b1170c2f1ae3d46af02e041e62df66247d8fd7a8b57dfcbcb20014e2d"
+      "bytes": 164,
+      "sha256": "8051ec0dfab2332ddc449eb63288a1ba465e0dedb6568f02967ceb913f4c9eb2"
     },
     {
       "path": "src/online/club-presentation.js",
@@ -1851,8 +2219,8 @@
     },
     {
       "path": "src/online/online-app.js",
-      "bytes": 96363,
-      "sha256": "316b83eb91cb12332a22cf21ea50cf370cb095a79a62d011e66aa712cc18fef0"
+      "bytes": 98250,
+      "sha256": "b7f0ebe205517462fddea5816da3a41c04824e34703c8d90c0f903865a7cb4f4"
     },
     {
       "path": "src/online/play-intent.js",
@@ -1886,18 +2254,23 @@
     },
     {
       "path": "src/online/round-gate.js",
-      "bytes": 731,
-      "sha256": "eb21bf0521aa25e7134c030d30f2d49c420ac9824f31c65cb35fb549c2c154a7"
+      "bytes": 778,
+      "sha256": "ca9ce20a435ef5edc25d96ac9b267ac2235a961a61c92f27fd05405abd0bdc83"
     },
     {
       "path": "src/online/round-transition-controller.js",
-      "bytes": 7679,
-      "sha256": "432822cea032c8c2784c4aec0ff17e10de0c698d7e8e3e765cdf958b5f712819"
+      "bytes": 7909,
+      "sha256": "4f9de68564c8bb3dae711836ed53b71254deb780eace2fe7f408443569f40392"
     },
     {
       "path": "src/online/seat-order.js",
       "bytes": 1208,
       "sha256": "88b70b3ec653542e3c57ae257d632bf6c98dc6a69f55868b14c13d669411aaa8"
+    },
+    {
+      "path": "src/online/win-rate.js",
+      "bytes": 340,
+      "sha256": "afa825d46d66aff5e9508d29b0e927ac2c471dfa2d7dd5e2bdd2cc12d1a87b64"
     },
     {
       "path": "src/poker/poker-app.js",
@@ -1936,8 +2309,8 @@
     },
     {
       "path": "src/services/admin-repository.js",
-      "bytes": 2689,
-      "sha256": "114934d580da49c3e9d2633a631ccb4a79477e31d4a7cc72e9453fc5dd38a7c1"
+      "bytes": 3235,
+      "sha256": "d8eabdae2cebdcdc97f790cefd3badd5219fdae326b88d7f0032d6fae428a7cf"
     },
     {
       "path": "src/services/bounded-operation.js",
@@ -2041,8 +2414,8 @@
     },
     {
       "path": "src/services/room-repository.js",
-      "bytes": 13824,
-      "sha256": "dd3675c11ac1e7a53b6d62faa7fe9210afa75816c1134e06b1f467ebe9b04c6e"
+      "bytes": 13799,
+      "sha256": "6c18f7c8de6a798c37ceee6a3129b021af2bf7dbed23488c6f9d2f18e4a1f7e8"
     },
     {
       "path": "src/services/server-clock.js",
@@ -2066,8 +2439,8 @@
     },
     {
       "path": "src/ui/app-shell.js",
-      "bytes": 4768,
-      "sha256": "305bb9a975de2555d7607fd24fa9265c9c6b65a9f5af762a2c5cba65a783c603"
+      "bytes": 4824,
+      "sha256": "c4c1129d5f0451e2a36d33ef20aa2e0669e2249e92761439cf7644658f9232fe"
     },
     {
       "path": "src/ui/boude-mechanism.js",
@@ -2091,8 +2464,8 @@
     },
     {
       "path": "src/ui/christmas-domino.js",
-      "bytes": 7857,
-      "sha256": "c0b4e712230f11ddce03e02ff59268ca5208dedf9d7f3c1c6cdb6059c574a1c0"
+      "bytes": 7499,
+      "sha256": "516d3e44aa273092f7f7bd88d594a1ce87d560543f45502be37c68e277f0a0b7"
     },
     {
       "path": "src/ui/christmas-nose.js",
@@ -2106,8 +2479,8 @@
     },
     {
       "path": "src/ui/club-elements.js",
-      "bytes": 5760,
-      "sha256": "450819b4de1d01c98280a703ce0cc39b2c81b3947c236dead301fb72db3f44ec"
+      "bytes": 5872,
+      "sha256": "fa088e46476600f866b2899378f565641159d54a05ebc61fdd81b20db5ea369d"
     },
     {
       "path": "src/ui/club-info-ticker.js",
@@ -2116,8 +2489,8 @@
     },
     {
       "path": "src/ui/club-portal.js",
-      "bytes": 44748,
-      "sha256": "9a50ff86f8e8cac7a3fc213c0ff5e9aff39db97e042812edf85456ce1e4cb06d"
+      "bytes": 46610,
+      "sha256": "974c771a527f5d4d6e61bcf1c5d24cc811b1083094911532b79da2495f8eadae"
     },
     {
       "path": "src/ui/connected-members.js",
@@ -2125,9 +2498,24 @@
       "sha256": "ba5a11109972e35119ec6c0a393831c6405b9b8898a9d473661fcb5108903a73"
     },
     {
+      "path": "src/ui/domino-audio-cues.js",
+      "bytes": 3463,
+      "sha256": "dbdeea5b48d340c8c2166c7ae5ca7cd98c4d46c0a49f05c3d701958926c70250"
+    },
+    {
       "path": "src/ui/domino-back-art.js",
       "bytes": 1158,
       "sha256": "7bbae19617225e289787cd842ce52b6a4e9d9c886f6bbcbdebe64e41e90fd700"
+    },
+    {
+      "path": "src/ui/domino-celebration-effects.js",
+      "bytes": 8933,
+      "sha256": "361eb8e1c930917611217f7305141f8fe5fb205533a7ddd2a2524132ee7bd7f3"
+    },
+    {
+      "path": "src/ui/domino-celebration.js",
+      "bytes": 4489,
+      "sha256": "fb76b9f66b3d16345cab9910f6a2e0af40f6de6d7ef4b39bc1c8b5f266eed488"
     },
     {
       "path": "src/ui/domino-environment.js",
@@ -2150,6 +2538,11 @@
       "sha256": "8313167df5f38b090d844d79d2b33ccebf232ae7447b1d8dbcb461ea346e3845"
     },
     {
+      "path": "src/ui/flag-cloth-renderer.js",
+      "bytes": 4916,
+      "sha256": "50419d535c6bbb9554096080bf990d7e9383033df0d33d725eeb2aadf47e6b56"
+    },
+    {
       "path": "src/ui/hand-interactions.js",
       "bytes": 6421,
       "sha256": "186eebb8ed2b27930731a2dd1e839da2f51cd88ba5a3d9c327fc14b417fa6275"
@@ -2161,8 +2554,8 @@
     },
     {
       "path": "src/ui/hand-visibility.js",
-      "bytes": 2127,
-      "sha256": "01adbe5f950ff6cd6847ddb284d01bf553e8248fcfe54c61465c862aa1d2c031"
+      "bytes": 2477,
+      "sha256": "c99d890e884955a36f032f2587f5a567dafad4e31e66f46e4a82ccbd3328904c"
     },
     {
       "path": "src/ui/home-ornaments.js",
@@ -2186,8 +2579,8 @@
     },
     {
       "path": "src/ui/lounge-music.js",
-      "bytes": 6976,
-      "sha256": "4512ab1aca8122476f50a668cf9467a235e0407553c6dd5a6c8698720f9031af"
+      "bytes": 7495,
+      "sha256": "00ec3966a5983d2e29653748061a4e66470f85be2d7e67ff3c1567b6a833f00d"
     },
     {
       "path": "src/ui/mascot/christmas-costume.js",
@@ -2211,8 +2604,8 @@
     },
     {
       "path": "src/ui/opening-mascot.js",
-      "bytes": 8827,
-      "sha256": "f6e3557ba279efc62ebe2ad3b2e0cc19b9ae31e2524d22af2f010c1e13a07501"
+      "bytes": 8530,
+      "sha256": "77fdd09f383446a66872c29e42cd14e2004bb0bdc05ac958459d5b609bf02e83"
     },
     {
       "path": "src/ui/overlay-layout.js",
@@ -2230,9 +2623,14 @@
       "sha256": "b570e0071876983f6937bdd553ef1d0de4cea3cf3cd41cbe0be9de5aac99b557"
     },
     {
+      "path": "src/ui/portal-home-flag.js",
+      "bytes": 6393,
+      "sha256": "3fad3374b1025e06ee29f1ba5384862b118e86129252303b40df872f809bd43d"
+    },
+    {
       "path": "src/ui/premium-confirm.js",
-      "bytes": 766,
-      "sha256": "d9a04cc95cbf5194e4ae7c508fab25a682d9303f7a3b9f886cfd94c1467f53d0"
+      "bytes": 780,
+      "sha256": "c8835b9d15b471823bc75db68348ad2701279521bfc4cc25a9c30de491848096"
     },
     {
       "path": "src/ui/premium-symbols.js",
@@ -2271,13 +2669,13 @@
     },
     {
       "path": "src/ui/scene-renderer.js",
-      "bytes": 1142,
-      "sha256": "db10fa4678c74cfe6e4d3d36e5390d2042aaec03cfc4b2c160f90da9b797a237"
+      "bytes": 1401,
+      "sha256": "697fc479bbf9c1eb6b71ea91ea52b340117da8fa02d8a8f8f7d5601a17e18c4c"
     },
     {
       "path": "src/ui/sound-player.js",
-      "bytes": 14349,
-      "sha256": "e5ffe1f761c76e9fc90c855ca24b36d187853b249012be0100c078f2fecd8950"
+      "bytes": 16083,
+      "sha256": "9f7caf5af2ecb2c771dcd4023f657995468b84a75fb18461ea453a864a641a4a"
     },
     {
       "path": "src/ui/visual-quality.js",
@@ -2321,13 +2719,18 @@
     },
     {
       "path": "styles/christmas-domino.css",
-      "bytes": 4589,
-      "sha256": "2f10dfe3260b22d72df2dd1977e90bc142ba220e5dc06cd82a98e40de473be1d"
+      "bytes": 4785,
+      "sha256": "57be49ecd2a98cc91920104890e428e776819d8d63b9d919881b481ab54f3655"
     },
     {
       "path": "styles/club-info-v45.css",
       "bytes": 8997,
       "sha256": "ea0c9cb318eb43b7fbe431ddae6132e0b36f92578db386530a04fa1e3a3e7e54"
+    },
+    {
+      "path": "styles/domino-celebrations.css",
+      "bytes": 8234,
+      "sha256": "ba953d2dd0500e8e899b9af9a4894ad267ecc589605047667bad4bc25c8d00f3"
     },
     {
       "path": "styles/domino-environments.css",
@@ -2360,6 +2763,11 @@
       "sha256": "d86db0fcfd69e4d1b7ff0e4288fd9b59b24962ba4f057a80f2470f7183e88dc9"
     },
     {
+      "path": "styles/home-flag-v58.css",
+      "bytes": 1302,
+      "sha256": "a82f0d7107a8e5ab1b126150d5c01a1158ae84fd445455bc6da3931b8cf2c6bd"
+    },
+    {
       "path": "styles/home-v11.css",
       "bytes": 21234,
       "sha256": "33735ddfec7e48142d760ea0f143541ed40459696402826b94b90c233c1e915b"
@@ -2375,9 +2783,19 @@
       "sha256": "12b00c9bc7e20bde51b012f09ab21f8269706e2412475267d1be19c155244ec7"
     },
     {
+      "path": "styles/login-lights-v58.css",
+      "bytes": 3066,
+      "sha256": "cae8d06fdd076def8614fe0fa3f671d6f2b7fff57f6d06cd4e2b67108ca59c19"
+    },
+    {
       "path": "styles/login-v41.css",
       "bytes": 5175,
       "sha256": "39c22ef8b7624603852ee8750d74cd6aab06986bf046d03e04c1e44ca7c3f43f"
+    },
+    {
+      "path": "styles/login-v58.css",
+      "bytes": 6417,
+      "sha256": "44561e541fcac376b402122fe9f2d8a223b9c3424b33eb15c53642225c5ddb25"
     },
     {
       "path": "styles/online.css",

@@ -7,26 +7,31 @@ export class HandVisibilityState {
     this.key = '';
     this.available = false;
     this.hidden = false;
+    this.locked = false;
   }
 
-  reconcile({ key = '', available = false } = {}) {
+  reconcile({ key = '', available = false, locked = false } = {}) {
     const nextKey = String(key || '');
     const nextAvailable = Boolean(nextKey && available);
     if (nextKey !== this.key || !nextAvailable) this.hidden = false;
     this.key = nextKey;
     this.available = nextAvailable;
-    return this.hidden;
+    this.locked = nextAvailable && locked;
+    return this.effectiveHidden;
   }
 
+  get effectiveHidden() { return this.hidden || this.locked; }
+
   toggle() {
-    if (this.available) this.hidden = !this.hidden;
-    return this.hidden;
+    if (this.available && !this.locked) this.hidden = !this.hidden;
+    return this.effectiveHidden;
   }
 
   reset() {
     this.key = '';
     this.available = false;
     this.hidden = false;
+    this.locked = false;
   }
 }
 
@@ -41,16 +46,17 @@ export function createHandVisibility({ stage, onChange = () => {} }) {
 
   function render() {
     button.hidden = !state.available;
-    button.disabled = !state.available;
-    const label = state.hidden ? 'Afficher mes dominos' : 'Masquer mes dominos';
+    button.disabled = !state.available || state.locked;
+    const label = state.locked ? 'Main masquée pendant la pause « Je travaille »'
+      : state.hidden ? 'Afficher mes dominos' : 'Masquer mes dominos';
     button.setAttribute('aria-label', label);
-    button.setAttribute('aria-pressed', String(state.hidden));
+    button.setAttribute('aria-pressed', String(state.effectiveHidden));
     button.title = label;
-    button.replaceChildren(navigationIcon(state.hidden ? 'eye-off' : 'eye'));
+    button.replaceChildren(navigationIcon(state.effectiveHidden ? 'eye-off' : 'eye'));
   }
 
   function toggle() {
-    if (!state.available) return;
+    if (!state.available || state.locked) return;
     state.toggle();
     render();
     onChange(state.hidden);
@@ -59,8 +65,8 @@ export function createHandVisibility({ stage, onChange = () => {} }) {
   button.addEventListener('click', toggle);
   render();
   return {
-    get hidden() { return state.hidden; },
-    reconcile(snapshot) { state.reconcile(snapshot); render(); return state.hidden; },
+    get hidden() { return state.effectiveHidden; },
+    reconcile(snapshot) { const hidden = state.reconcile(snapshot); render(); return hidden; },
     reset() { state.reset(); render(); },
     destroy() { button.removeEventListener('click', toggle); button.remove(); state.reset(); }
   };

@@ -1,5 +1,5 @@
-import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=20261005T162819119';
-import { canCancelRoom, normalizeTurnTimerSeconds, roomPlayers, TURN_TIMER_OPTIONS } from '../game/room-state.js?v=20261005T162819119';
+import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=58-r7';
+import { canCancelRoom, normalizeTurnTimerSeconds, roomPlayers, TURN_TIMER_OPTIONS } from '../game/room-state.js?v=58-r14';
 import { roomActor, isRoomHost } from '../game/room-membership.js?v=20261005T162819119';
 import { isRoomCancellationModerator } from '../config/room-cancellation.js?v=20261005T162819119';
 import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20261005T162819119';
@@ -7,13 +7,15 @@ import { applyRoomStyle } from '../ui/room-style.js?v=20261005T162819119';
 import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261005T162819119';
 import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20261005T162819119';
 import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20261005T162819119';
-import { renderCharacterPlate } from '../ui/scene-renderer.js?v=20261005T162819119';
+import { renderCharacterPlate } from '../ui/scene-renderer.js?v=58-r7';
+import { createDominoCelebration } from '../ui/domino-celebration.js?v=58-r14';
+import { fadeDominoCue, playDominoCue } from '../ui/domino-audio-cues.js?v=58-r14';
 import { playSound, unlockSound } from '../ui/sound-player.js?v=20261005T162819119';
 import { createBoudeVerdict, verdictReadyToStart } from '../ui/boude-verdict.js?v=20261005T162819119';
 import { createReactionTrailParticle, createReactionVisual, isPremiumReaction } from '../ui/reaction-visual.js?v=20261005T162819119';
 import { HandOrderStore, handOrderKey, moveHandTile } from '../ui/hand-order.js?v=20261005T162819119';
 import { bindHandInteractions } from '../ui/hand-interactions.js?v=20261005T162819119';
-import { createHandVisibility } from '../ui/hand-visibility.js?v=20261005T162819119';
+import { createHandVisibility } from '../ui/hand-visibility.js?v=58-r7';
 import { createBoudeMechanism } from '../ui/boude-mechanism.js?v=20261005T162819119';
 import { ChatRepository } from '../services/chat-repository.js?v=20261005T162819119';
 import { ClubChatSession, CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20261005T162819119';
@@ -24,14 +26,14 @@ import { authenticateProfile } from '../services/profile-auth.js?v=20261005T1628
 import { PresenceService } from '../services/presence-service.js?v=20261005T162819119';
 import { ProfileRepository } from '../services/profile-repository.js?v=20261005T162819119';
 import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js?v=20261005T162819119';
-import { RoomRepository, roomCommandFrame } from '../services/room-repository.js?v=20261005T162819119';
+import { RoomRepository, roomCommandFrame } from '../services/room-repository.js?v=58-r14';
 import { SessionStore } from '../services/session-store.js?v=20261005T162819119';
 import { SpectatorService } from '../services/spectator-service.js?v=20261005T162819119';
 import { ServerClock } from '../services/server-clock.js?v=20261005T162819119';
 import { StatsRepository } from '../services/stats-repository.js?v=20261005T162819119';
 import { AdminAccess } from '../services/admin-access.js?v=20261005T162819119';
-import { AdminRepository } from '../services/admin-repository.js?v=20261005T162819119';
-import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=20261005T162819119';
+import { AdminRepository } from '../services/admin-repository.js?v=58-r7';
+import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=58-r12';
 import { ClubAnnouncementRepository } from '../services/club-announcement-repository.js?v=20261005T162819119';
 import { RankingPeriodRepository } from '../services/ranking-period-repository.js?v=20261005T162819119';
 import { EnvironmentSettingsRepository } from '../services/environment-settings-repository.js?v=20261005T162819119';
@@ -40,12 +42,12 @@ import { createPokerApp } from '../poker/poker-app.js?v=20261005T162819119';
 import { PhysicalClubRepository } from '../services/physical-club-repository.js?v=20261005T162819119';
 import { renderChatMessage } from '../ui/chat-renderer.js?v=20261005T162819119';
 import { ConnectionService } from '../services/connection-service.js?v=20261005T162819119';
-import { characterIdForProfile } from './profile-map.js?v=20261005T162819119';
+import { characterIdForProfile, knownCharacterIdForProfile } from './profile-map.js?v=20261005T162819119';
 import { tileIntent } from './play-intent.js?v=20261005T162819119';
 import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20261005T162819119';
 import { displayName } from './display-name.js?v=20261005T162819119';
-import { createRoundGate, roundGateKey, roundGateRemaining } from './round-gate.js?v=20261005T162819119';
-import { RoundTransitionController } from './round-transition-controller.js?v=20261005T162819119';
+import { createRoundGate, roundGateKey, roundGateRemaining } from './round-gate.js?v=58-r7';
+import { RoundTransitionController } from './round-transition-controller.js?v=58-r7';
 import { avatar } from '../ui/club-elements.js?v=20261005T162819119';
 import { reactionPicker } from '../ui/reaction-picker.js?v=20261005T162819119';
 import { confirmRoomCancellation } from '../ui/room-cancel-dialog.js?v=20261005T162819119';
@@ -56,7 +58,7 @@ import { applyEventLighting, clearBoudeLighting, pulseBoudeLighting } from '../u
 import { applyInteractionFormat } from '../ui/interaction-format.js?v=20261005T162819119';
 import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20261005T162819119';
 import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20261005T162819119';
-import { createOpeningMascot } from '../ui/opening-mascot.js?v=58-r2';
+import { createOpeningMascot } from '../ui/opening-mascot.js?v=58-r14';
 import { createLeaderTrophy } from '../ui/leader-trophy.js?v=20261005T162819119';
 import { loungeTitle } from './lounge-name.js?v=20261005T162819119';
 import {
@@ -162,6 +164,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   });
   const openingMascot = createOpeningMascot({ stage: document.querySelector('#casino-stage'), shell: document.querySelector('#game-shell'), notify: message => toast(message) });
   const leaderTrophy = createLeaderTrophy({ stage: document.querySelector('#casino-stage'), onSound: playSound });
+  const dominoCelebration = createDominoCelebration(document.querySelector('#casino-stage'));
   const state = {
     view: 'loading', profiles: [], profile: null, networkProfile: null, enterSceneOnStart: false,
     clientToken: '', roomCode: '', role: 'player', room: null,
@@ -170,6 +173,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     renderedReactionId: '', renderedActionKey: '', renderedCelebrationKey: '', lastTurnId: null, leaderPlayerId: '',
     lastCountdownSoundKey: '', pendingTurnTimeoutKey: '', pendingClockPauseKey: '',
     recordedMatchIds: new Set(), chatBoundAt: 0, recoveringConnection: false, presenceState:'disconnected',
+    hideHandsWhileWorking: true,
     stopRoom: null, stopRooms: null, stopPresence: null, stopInvitations: null,
     stopChat: null, stopTyping: null, typingTimer: null, stopReactions: null, reactionTimer: null, celebrationTimer: null, turnClockTimer: null,
     roundGate: null, pendingRematchKey: '', turnCountdownNode: null, turnCountdownKey: '',
@@ -197,11 +201,12 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   let pendingRoomStartCode = '';
   let roundTransition;
   // One permanent listener. Firebase notifications cannot detach its handler.
-  // No disabled/pending flag and no ceremony gate for a next-round request.
+  // The deadline is tied to the result, independently of the celebration.
   ui.resultLayer.addEventListener('click', event => {
     const action = event.target.closest?.('[data-round-action="next-round"]');
     if (!action || !ui.resultLayer.contains(action) || state.role !== 'player') return;
     if (action.dataset.roundKey !== roundGateKey(state.room)) return;
+    if (roundGateRemaining(state.roundGate, performance.now()) > 0) return;
     try {
       if (!roundTransition) throw new Error('La relance n’est pas initialisée. Recharge la page pour reprendre la salle.');
       roundTransition.request();
@@ -209,7 +214,9 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     catch (error) { roundDiagnostic('request-rejected', { message: error.message }); toast(error.message, 'error'); }
   });
   window.addEventListener('online', () => roundTransition?.wake());
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) roundTransition?.wake(); });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) { refreshResultAction(); roundTransition?.wake(); }
+  });
 
   function canWrite(showError = true) {
     try {
@@ -351,10 +358,13 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     state.renderedActionKey = '';
     openingMascot.reset();
     leaderTrophy.reset();
+    dominoCelebration.clear();
+    document.querySelector('#casino-stage').removeAttribute('data-work-hands-hidden');
     handInteractions?.cancel();
     handVisibility?.reset();
     handContextKey = '';
     state.selectedTileId = '';
+    state.workingHandKey = '';
     state.stopRoom?.();
     state.stopRoom = null;
     state.stopRoundAdvanceRequest?.(); state.stopRoundAdvanceRequest = null;
@@ -417,20 +427,6 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     ui.menu.hidden = true;
     setStatus(SITE_VERSION);
     clearContent();
-    // Sample only blank material from the reference to replace its old V2 line.
-    // The original raster is preserved; all form controls remain native HTML.
-    const ns = 'http://www.w3.org/2000/svg';
-    const mask = document.createElementNS(ns, 'svg');
-    mask.classList.add('login-reference-mask');
-    mask.setAttribute('viewBox', '620 514 432 18');
-    mask.setAttribute('preserveAspectRatio', 'none');
-    mask.setAttribute('aria-hidden', 'true');
-    const material = document.createElementNS(ns, 'image');
-    material.setAttribute('href', new URL('../../assets/menus/club-login-v41.png', import.meta.url).href);
-    material.setAttribute('width', '1672');
-    material.setAttribute('height', '941');
-    mask.append(material);
-    ui.content.append(mask);
     const form = node('form', 'online-form');
     form.autocomplete = 'off';
     const label = node('label', 'online-label', 'Mot de passe joueur');
@@ -479,7 +475,6 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       attemptLogin(true);
     });
     ui.content.append(form);
-    input.focus();
   }
 
   async function completeLogin(profile, restored = false) {
@@ -497,7 +492,10 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     bindLobbyFeeds();
     portal.activate(profile);
     portal.update(state);
-    if (!restored) toast(`Bienvenue ${profile.name}`);
+    if (!restored) {
+      toast(`Bienvenue ${profile.name}`);
+      void playDominoCue('welcome', `welcome:${state.clientToken}`);
+    }
     const savedRoom = repositories.session.room;
     if (savedRoom.code) attachRoom(savedRoom.code, savedRoom.role, true).catch(error=>{toast(error.message,'error');renderLobby();});
     else renderLobby();
@@ -1202,8 +1200,8 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     const remaining = roundGateRemaining(state.roundGate, performance.now());
     const pending = waiting && state.pendingRematchKey === action.dataset.roundKey;
     const launching = !waiting && ['submitting', 'queued', 'retrying'].includes(state.roundTransitionState.phase);
-    action.disabled = waiting && (remaining > 0 || pending);
-    action.textContent = waiting && remaining > 0 ? `Cérémonie · ${Math.max(1, Math.ceil(remaining / 1000))} s`
+    action.disabled = remaining > 0 || pending;
+    action.textContent = remaining > 0 ? `${action.dataset.roundLabel} · ${Math.ceil(remaining / 1000)} s`
       : pending ? 'Lancement en cours…'
         : launching ? 'Manche demandée · Réessayer' : action.dataset.roundLabel;
     action.setAttribute('aria-busy', String(pending || launching));
@@ -1215,15 +1213,19 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     const presentation = resultPresentation(room);
     if (!presentation) {
       clearTimeout(state.celebrationTimer);
+      dominoCelebration.clear();
       ui.resultLayer.replaceChildren();
       return;
     }
     const celebration = celebrationState(room, serverClock.now());
     const gateKey = roundGateKey(room);
-    const renderKey = `${gateKey}:${state.role}:${presentation.action}:${state.dismissedCelebrationKey || ''}`;
+    const renderKey = `${gateKey}:${state.role}:${presentation.action}`;
     // Ended-round content is immutable. Heartbeats, reconnects and request
     // notifications must not remove a button between pointerdown and click.
     if (ui.resultLayer.firstElementChild?.dataset.resultKey === renderKey) {
+      if (presentation.kind === 'match-victory' && celebration) {
+        dominoCelebration.updateCast(celebrationPlayers(room), celebration.winnerId);
+      }
       refreshResultAction();
       return;
     }
@@ -1243,11 +1245,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     action.dataset.roundAction = presentation.action;
     action.dataset.roundKey = gateKey;
     action.dataset.roundLabel = presentation.actionLabel;
-    if(remaining>0&&winner&&state.dismissedCelebrationKey!==celebration.key){
-      card.classList.add('is-ceremony');
-      const dismiss=actionButton('×','online-result-dismiss');dismiss.setAttribute('aria-label','Revoir la table');
-      dismiss.addEventListener('click',()=>{state.dismissedCelebrationKey=celebration.key;renderResult(state.room);});card.append(dismiss);
-    }
+    const showCeremony = winner && ['round-victory', 'match-victory'].includes(presentation.kind);
     const scores=node('div','online-result-scores');
     for(const player of roomPlayers(room)){
       const row=node('div','');row.append(node('span','',player.name),node('strong','',Number((room.game.matchResult?.scores||room.game.roundWins)?.[playerKey(player.playerId)]||0)));
@@ -1257,10 +1255,6 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     copy.append(scores);
     card.classList.add('has-round-summary');
     const waitForCeremony=presentation.action!=='next-round';
-    action.disabled = waitForCeremony && (remaining > 0 || state.pendingRematchKey === gateKey);
-    action.textContent = waitForCeremony&&remaining > 0 ? `Cérémonie · ${Math.max(1, Math.ceil(remaining / 1000))} s`
-      : state.pendingRematchKey === gateKey ? 'Lancement en cours…'
-        : presentation.actionLabel;
     action.addEventListener('click', async () => {
       if(presentation.action==='next-round')return; // Permanent delegated listener above.
       if(!canWrite())return;
@@ -1308,14 +1302,18 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     refreshResultAction();
     renderOutcomeBadges(room);
 
-    if (celebration && remaining > 0 && state.renderedCelebrationKey !== celebration.key) {
+    if (showCeremony) {
+      const result = celebration.type === 'match' ? room.game.matchResult : room.game.roundResult;
+      const audible = isLocalWinner(room, result)
+        && (celebration.type === 'match' || celebration.remaining > 0)
+        && state.renderedCelebrationKey !== celebration.key && portal.isScene && portal.mode === 'domino';
       state.renderedCelebrationKey = celebration.key;
-      const topPlayer = seatedPlayers(room, state.leaderPlayerId)[0];
-      if (topPlayer && String(topPlayer.playerId) === String(state.leaderPlayerId) && String(celebration.winnerId) === String(topPlayer.playerId)) leaderTrophy.celebrate(celebration.key);
-      playSound('victory');
-      if (celebration.type === 'match' && celebration.cochonIds.length) {
-        setTimeout(() => { if (state.room?.matchId === room.matchId) playSound('pig'); }, 720);
-      }
+      dominoCelebration.show({
+        kind: celebration.type, key: celebration.key, elapsed: celebration.elapsed,
+        players: celebrationPlayers(room), winnerId: winner.playerId, winnerName: displayName(winner.name), audible
+      });
+    } else {
+      dominoCelebration.clear();
     }
     if (remaining > 0) {
       const updateCountdown = () => {
@@ -1324,13 +1322,12 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         const left = roundGateRemaining(state.roundGate, performance.now());
         if (left <= 0) {
           refreshResultAction();
-          card.classList.remove('is-ceremony');
           return;
         }
-        if(waitForCeremony)refreshResultAction();
-        state.celebrationTimer = setTimeout(updateCountdown, Math.min(250, left + 20));
+        refreshResultAction();
+        state.celebrationTimer = setTimeout(updateCountdown, Math.min(200, left));
       };
-      state.celebrationTimer = setTimeout(updateCountdown, Math.min(250, remaining + 20));
+      state.celebrationTimer = setTimeout(updateCountdown, Math.min(200, remaining));
     }
   }
 
@@ -1361,13 +1358,20 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     const game = room?.game || {};
     const me = myRoomPlayer(room);
     const snapshot = handSnapshot(room);
-    const hidden = handVisibility?.reconcile({ key: snapshot.key, available: Boolean(me && snapshot.hand.length) }) || false;
+    const roundKey = `${room?.matchId || room?.code}:${game.roundNumber}`;
+    const locked = state.hideHandsWhileWorking && room?.status === 'playing' && game.roundStatus === 'playing'
+      && (hasWorkingPlayer(room) || (state.workingHandKey === roundKey && game.turnClock?.paused));
+    state.workingHandKey = locked ? roundKey : '';
+    document.querySelector('#casino-stage').toggleAttribute('data-work-hands-hidden', locked);
+    const hidden = handVisibility?.reconcile({ key: snapshot.key, available: Boolean(me && snapshot.hand.length), locked }) || false;
     snapshot.enabled = Boolean(!hidden && me && room?.status === 'playing' && game.roundStatus === 'playing' && snapshot.hand.length > 1);
     handInteractions?.reconcile(snapshot);
     if (hidden || handContextKey !== snapshot.key || !snapshot.hand.includes(state.selectedTileId)) state.selectedTileId = '';
     handContextKey = snapshot.key;
     const container = document.querySelector('#player-hand');
-    container.title = hidden ? 'Dominos masqués · Cliquez sur l’œil pour les afficher' : 'Glissez un domino pour ranger la main · Alt + flèches au clavier';
+    container.title = locked ? 'Dominos masqués pendant la pause « Je travaille »'
+      : hidden ? 'Dominos masqués · Cliquez sur l’œil pour les afficher'
+      : 'Glissez un domino pour ranger la main · Alt + flèches au clavier';
     renderHand(container, snapshot.hand, { hidden });
     container.querySelectorAll('.hand-domino').forEach(tile => {
       if (hidden) return;
@@ -1413,8 +1417,48 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     panel.setAttribute('aria-label', `Spectateurs : ${spectators.map(spectator => displayName(spectator.name || 'Spectateur')).join(', ')}`);
   }
 
+  function celebrationPlayers(room) {
+    return seatedPlayers(room, state.leaderPlayerId).map((player, index) => ({
+      playerId: player.playerId,
+      characterId: knownCharacterIdForProfile(player),
+      seat: SEATS[index]
+    }));
+  }
+
+  function isLocalWinner(room, result) {
+    if (state.role !== 'player' || result?.winnerId == null
+      || String(result.winnerId) !== String(state.networkProfile?.id)) return false;
+    const winnerToken = result.winnerToken || room.players?.[playerKey(result.winnerId)]?.token;
+    return Boolean(winnerToken && winnerToken === state.clientToken);
+  }
+
+  function playMatchCue(room, previous) {
+    if (!room.matchId || state.role !== 'player' || portal.mode !== 'domino') return;
+    if (room.status === 'playing') {
+      const firstRound = Number(room.game?.roundNumber) === 1;
+      const startKey = `start:${room.matchId}`;
+      if (previous?.matchId !== room.matchId) {
+        fadeDominoCue('win');
+        if (firstRound && room.matchStartedByToken === state.clientToken
+          && serverClock.now() - Number(room.matchStartedAt) < 12000) {
+          void playDominoCue('start', startKey);
+        }
+      }
+      if (firstRound && Object.keys(room.game?.board?.placements || {}).length) {
+        fadeDominoCue('start', startKey);
+      }
+    }
+    if (room.status === 'finished' && room.game?.matchResult?.type === 'victory'
+      && isLocalWinner(room, room.game.matchResult)
+      && (previous?.status !== 'finished' || previous.matchId !== room.matchId)
+      && serverClock.now() - Number(room.game.matchResult.at || room.endedAt) < 12000) {
+      void playDominoCue('win', `win:${room.matchId}`);
+    }
+  }
+
   function renderLiveScene(room) {
     const players = seatedPlayers(room, state.leaderPlayerId);
+    dominoCelebration.prepare(celebrationPlayers(room));
     preloadRoomResources({
       style: room.style,
       seats: players.map((player, index) => ({ seat: SEATS[index], characterId: characterIdForProfile(player) }))
@@ -1514,7 +1558,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       try { storage = localStorage; legacyStorage = sessionStorage; } catch {}
       roundTransition = new RoundTransitionController({
         repository: repositories.rooms, roomCode: controllerRoomCode, playerId: state.networkProfile.id,
-        storage, legacyStorage,
+        storage, legacyStorage, now: () => serverClock.now(),
         onState: status => { state.roundTransitionState = status; refreshResultAction(); },
         onDiagnostic: roundDiagnostic,
         onRoom: updated => {
@@ -1541,6 +1585,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         return;
       }
       if(state.room&&String(state.room.matchId)===String(room.matchId)&&Number(room.game?.roundNumber)<Number(state.room.game?.roundNumber))return;
+      const previous = state.room;
       state.room = room;
       roundTransition?.observe(room);
       synchronizeLoungeMusic(room.music || {});
@@ -1561,6 +1606,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         renderWaitingRoom();
       }
       else {
+        playMatchCue(room, previous);
         state.view = 'playing';
         renderLiveScene(room);
         if (!state.stopChat) bindChat(state.roomCode);
@@ -1762,6 +1808,11 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     const requirePlayer = () => { connection.require(); if (!state.profile) throw new Error('Connecte-toi au club.'); };
     environmentControls=bindEnvironmentSettings(new EnvironmentSettingsRepository(runtime.database,{requirePlayer,identity:()=>({profile:state.networkProfile}),serverTimestamp:runtime.serverTimestamp}),{identity:()=>({profile:state.networkProfile}),canWrite,notify:toast});
     const admin = new AdminRepository(runtime.database, { require() { requirePlayer(); adminAccess.require(); } });
+    admin.watchHideHandsWhileWorking(enabled => {
+      state.hideHandsWhileWorking = enabled;
+      portal?.setHideHandsWhileWorking(enabled);
+      if (state.view === 'playing') renderLiveHand();
+    }, error => toast(error.message, 'error'));
     const physical = new PhysicalClubRepository(runtime.database, { requirePlayer, requireAdmin: () => adminAccess.require() });
     const announcements = new ClubAnnouncementRepository(runtime.database,{requirePlayer,identity:()=>({profile:state.networkProfile}),privilegedPlayerId:()=>state.profiles.find(p=>String(p.name).trim().toLowerCase()==='khalil')?.id??3,serverTimestamp:runtime.serverTimestamp});
     const poker = createPokerApp({ database: runtime.database, identity: () => ({ profile: state.networkProfile, clientToken: state.clientToken }),

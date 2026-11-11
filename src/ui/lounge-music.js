@@ -1,12 +1,11 @@
+import { DOMINO_LOUNGE_TRACKS, normalizeDominoTrackIndex } from '../config/domino-audio.js?v=58-r8';
+
 const MUTE_STORAGE_KEY = 'domino-club-lounge-muted';
 const VOLUME_STORAGE_KEY = 'domino-club-lounge-volume';
 const TRACK_STORAGE_KEY = 'domino-club-lounge-track';
+const STANDARD_TRACK_STORAGE_KEY = 'domino-club-lounge-standard-track';
 
-export const LOUNGE_TRACKS = Object.freeze([
-  Object.freeze({ name: 'Musique 1', source: './assets/audio/musique1.mp3' }),
-  Object.freeze({ name: 'Musique 2', source: './assets/audio/musique2.mp3' }),
-  Object.freeze({ name: 'Musique 3', source: './assets/audio/musique3.mp3' })
-]);
+export const LOUNGE_TRACKS = DOMINO_LOUNGE_TRACKS;
 
 function storage() {
   try { return globalThis.localStorage; }
@@ -30,6 +29,7 @@ function remember(key, value) {
 let muted = storage()?.getItem(MUTE_STORAGE_KEY) === 'true';
 let volume = readNumber(VOLUME_STORAGE_KEY, .82, 0, 1);
 let selectedTrackIndex = readNumber(TRACK_STORAGE_KEY, 0, 0, LOUNGE_TRACKS.length - 1, true);
+let standardTrackIndex = readNumber(STANDARD_TRACK_STORAGE_KEY, Math.min(2, selectedTrackIndex), 0, 2, true);
 let sceneActive = false;
 let hostCanChoose = false;
 let synchronizedStartedAt = null;
@@ -39,8 +39,10 @@ let duckTimer = 0;
 
 function appliedVolume() { return muted ? 0 : volume * duckFactor; }
 
-function trackUrl(index = selectedTrackIndex) {
-  return new URL(`../../assets/audio/musique${index + 1}.mp3`, import.meta.url).href;
+function activeTrack() {
+  const track = LOUNGE_TRACKS[selectedTrackIndex];
+  const poker = globalThis.document?.getElementById('poker-shell');
+  return track.dominoOnly && poker && !poker.hidden ? LOUNGE_TRACKS[standardTrackIndex] : track;
 }
 
 function player() {
@@ -74,7 +76,9 @@ function correctPlaybackPosition(force = false) {
 function ensureSource(forcePosition = false) {
   const current = player();
   if (!current) return null;
-  const source = trackUrl();
+  const track = activeTrack();
+  const source = new URL(`../../assets/audio/${track.file}`, import.meta.url).href;
+  current.preload = track.dominoOnly ? 'none' : 'auto';
   if (current.src !== source) {
     current.src = source;
     current.load();
@@ -105,7 +109,9 @@ function updateControls() {
     select.disabled = !hostCanChoose;
   }
   const field = documentRef.querySelector('#music-track-field');
-  if (field) field.hidden = !hostCanChoose;
+  if (field) field.hidden = false;
+  const hint = documentRef.querySelector('#music-track-authority');
+  if (hint) hint.hidden = hostCanChoose;
   const range = documentRef.querySelector('#music-volume');
   if (range) range.value = String(Math.round(volume * 100));
   const output = documentRef.querySelector('#music-volume-value');
@@ -155,7 +161,11 @@ export function toggleLoungeMusic() {
 }
 
 export function selectLoungeTrack(index) {
-  selectedTrackIndex = Math.min(LOUNGE_TRACKS.length - 1, Math.max(0, Math.round(Number(index) || 0)));
+  selectedTrackIndex = normalizeDominoTrackIndex(index);
+  if (!LOUNGE_TRACKS[selectedTrackIndex].dominoOnly) {
+    standardTrackIndex = selectedTrackIndex;
+    remember(STANDARD_TRACK_STORAGE_KEY, standardTrackIndex);
+  }
   remember(TRACK_STORAGE_KEY, selectedTrackIndex);
   ensureSource(true);
   if (sceneActive && !muted) audio?.play().catch(() => {});
@@ -164,11 +174,12 @@ export function selectLoungeTrack(index) {
 }
 
 export function synchronizeLoungeMusic(music = {}) {
-  const index = Math.min(LOUNGE_TRACKS.length - 1, Math.max(0, Math.round(Number(music.trackIndex) || 0)));
+  const index = normalizeDominoTrackIndex(music.trackIndex);
   const startedAt = Number(music.startedAt) > 0 ? Number(music.startedAt) : null;
   const sourceChanged = index !== selectedTrackIndex;
   const timingChanged = startedAt !== synchronizedStartedAt;
   selectedTrackIndex = index;
+  if (!LOUNGE_TRACKS[index].dominoOnly) standardTrackIndex = index;
   synchronizedStartedAt = startedAt;
   // Room snapshots arrive after every domino and presence update. Only seek
   // when the host actually changes the track or its shared start time.
@@ -211,7 +222,7 @@ export function loungeMusicState() {
     sceneActive,
     trackCount: LOUNGE_TRACKS.length,
     selectedTrackIndex,
-    trackName: LOUNGE_TRACKS[selectedTrackIndex].name,
+    trackName: activeTrack().name,
     volume,
     hostCanChoose,
     synchronizedStartedAt

@@ -1,4 +1,4 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=20261005T162819119';
+import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=58-r7';
 import { profileDetails } from '../game/club-state.js?v=20261005T162819119';
 import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20261005T162819119';
 import { roomPlayers } from '../game/room-state.js?v=20261005T162819119';
@@ -18,6 +18,8 @@ import { createClubInfoTicker } from './club-info-ticker.js?v=20261005T162819119
 import {currentPeriodRankings} from '../online/ranking-periods.js?v=20261005T162819119';
 import {createRankingArchivePicker} from './ranking-archive-picker.js?v=20261005T162819119';
 import {connectedMembers,connectedMembersLabel} from './connected-members.js?v=20261005T162819119';
+import { formatWinRate } from '../online/win-rate.js?v=58-r7';
+import { createPortalHomeFlag } from './portal-home-flag.js?v=58-r12';
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
 export const SITE_VERSION='V57';
@@ -42,6 +44,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   const motto=el('span','portal-home-motto');motto.append(homeOrnament('crown'),el('span','','RESPECT\nSTRATÉGIE\nCONVIVIALITÉ'));nav.prepend(monogram);nav.append(motto);
   root.append(scroll,nav,pageTransition);app.append(root);
   const clubInfo=createClubInfoTicker({repository:announcements,identity});root.append(clubInfo.root);
+  const homeFlag=createPortalHomeFlag();
   const online=pages.get('online');
   const presenceCard=card('Joueurs connectés'), inviteCard=card('Tes invitations'), gamesCard=card('Tables du club');
   const presences=el('div','portal-live-list'), invites=el('div','portal-live-list'), games=el('div','portal-live-list');
@@ -51,6 +54,8 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   gamesCard.classList.add('portal-tables');inviteCard.classList.add('portal-invites-card');presenceCard.classList.add('portal-presence-card');
   let data=null, snapshot=null, summary={history:[],stats:{},rooms:{}}, page='home', mode='domino', authenticated=false, inScene=false, profileId=null, editorId='new', generalChat=null, stopData, stopStats;
   let physicalFingerprint='', summaryFingerprint='', profilePresenceFingerprint='', dialogBusy=false, rankingMode='general', adminMode='players';
+  let hideHandsWhileWorking = true;
+  let savingHideHands = false;
   let periods={},archivedPeriod='',stopPeriods,periodsReady=!rankingPeriods;
   const pageNumbers={};
   function paged(target,items,key,size,render){const result=paginate(items,pageNumbers[key],size);pageNumbers[key]=result.page;const list=el('div','portal-paged-list');result.items.forEach((item,i)=>list.append(render(item,result.start+i)));target.append(list);if(result.pages>1){const controls=el('nav','portal-pagination');controls.setAttribute('aria-label',`Pages ${key}`);const prev=button('‹',()=>{pageNumbers[key]--;refresh();}),next=button('›',()=>{pageNumbers[key]++;refresh();});prev.setAttribute('aria-label',`Page précédente ${key}`);next.setAttribute('aria-label',`Page suivante ${key}`);prev.disabled=!result.page;next.disabled=result.page===result.pages-1;controls.append(prev,el('span','',`${result.page+1} / ${result.pages} · ${result.total} résultats`),next);target.append(controls);}function refresh(){if(page==='online')renderOnlineExtras();else renderPage();}}
@@ -61,6 +66,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
   function reparentNotices(parent){parent.append(ui.toast,ui.network);}
   function open(next='home') {
     if(!authenticated)return;
+    if (mode !== 'domino' || next !== 'home') homeFlag.pause();
     const animate=!root.hidden&&next!==page;
     if(animate){root.classList.remove('is-page-transitioning');void root.offsetWidth;root.classList.add('is-page-transitioning');setTimeout(()=>root.classList.remove('is-page-transitioning'),480);}
     if(page==='admin' && next!=='admin')access.lock();
@@ -86,7 +92,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     else if(next==='online'){actions.renderOnline();renderOnlineExtras();} else renderPage();
     applyClubPortalSkin(root);
   }
-  function showTable(){if(mode==='poker'||!snapshot?.room?.game)return;clubInfo.setContext({visible:false,mode});requestAppFullscreen();startLoungeMusic();access.lock();inScene=true;root.hidden=true;game.hidden=false;ui.hub.hidden=true;ui.menu.hidden=false;reparentNotices(game);document.querySelector('#casino-stage').classList.remove('is-online-dimmed');}
+  function showTable(){if(mode==='poker'||!snapshot?.room?.game)return;homeFlag.pause();clubInfo.setContext({visible:false,mode});requestAppFullscreen();startLoungeMusic();access.lock();inScene=true;root.hidden=true;game.hidden=false;ui.hub.hidden=true;ui.menu.hidden=false;reparentNotices(game);document.querySelector('#casino-stage').classList.remove('is-online-dimmed');}
   function showPokerTable(){if(mode!=='poker')return;clubInfo.setContext({visible:false,mode});access.lock();inScene=false;root.hidden=true;game.hidden=true;ui.menu.hidden=true;poker.showScene();}
   function refreshPoker(){if(!authenticated||mode!=='poker'||poker.isScene)return;updateCounts();poker.renderPage(page,pages.get(page),{profiles:data?.players||[]});}
   function row(text, actionLabel, action){const node=el('div','portal-list-row');node.append(el('span','',text));if(actionLabel)node.append(button(actionLabel,action,'online-action--small'));return node;}
@@ -184,7 +190,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     const member=el('section','portal-card portal-member-card portal-home-card portal-home-profile');
     if(me){
       const metrics=el('div','portal-member-metrics');
-      for(const [icon,value,label]of [['domino',mine?.totalGames||0,'parties'],['trophy',mine?.vic||0,'victoires'],['percent',`${mine?.percent||0}%`,'de victoire']]){
+      for(const [icon,value,label]of [['domino',mine?.totalGames||0,'parties'],['trophy',mine?.vic||0,'victoires'],['percent',formatWinRate(mine?.vic,mine?.totalGames),'de victoire']]){
         const metric=el('div'),glyph=el('span','portal-member-metric-icon');glyph.append(icon==='percent'?homeOrnament('growth'):navigationIcon(icon));metric.append(glyph,el('strong','',value),el('span','',label));metrics.append(metric);
       }
       const portrait=avatar(me);portrait.classList.add('portal-home-profile-avatar');
@@ -201,6 +207,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     physicalActions.append(makeAction('play','Nouvelle partie',openNewGame,'portal-home-action--gold','Démarrer une partie au club'),makeAction('finish','Fin de manche',openRound,'portal-home-action--gold','Enregistrer le résultat'),cancel);
     physicalCard.append(physicalActions,el('p','portal-home-signature','Même table, meilleures histoires.'));
     showcase.append(onlineCard,member,physicalCard);target.append(showcase);
+    homeFlag.mount(showcase, me || identity().profile);
 
     const connected=el('div','portal-connected-strip'),live=connectedMembers(snapshot?.presences);
     connected.append(el('span','portal-connected-heading',connectedMembersLabel(live.length)));
@@ -213,7 +220,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     const archiveChoice=createRankingArchivePicker({periods,value:archivedPeriod,onChange:value=>{archivedPeriod=value;renderPage();}});controls.append(tabs,archiveChoice);
     const rows=(archive?.rankings||currentRankings())[rankingMode],panel=el('div','portal-ranking-results');panel.id='ranking-results';panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',`ranking-tab-${rankingMode}`);
     const note=rankingMode==='general'?'Général = manches du club physique + parties complètes en ligne. Une victoire avec deux cochons vaut deux crédits, comme dans la V2. Les manches intermédiaires en ligne ne sont pas ajoutées.':rankingMode==='online'?'Parties complètes en ligne · Barème V2 conservé.':'Manches du club physique · Barème V2 conservé.';
-    const podium=el('div','portal-podium');for(const index of [1,0,2]){const p=rows[index];if(!p||!p.totalGames&&!periods.active&&!archive)continue;const step=el('article',`portal-podium-place place-${index+1}`);step.append(el('span','portal-podium-rank',`#${index+1}`));step.append(avatar(p),el('h3','',p.name));const metrics=el('p','portal-podium-metrics');for(const [icon,value,label] of [['percent',`${p.percent||0}%`,'victoires'],['domino',p.totalGames,'parties'],['pig',p.coch||0,'cochons']]){const item=el('span');item.append(navigationIcon(icon),document.createTextNode(`${value} ${label}`));metrics.append(item);}step.append(metrics);podium.append(step);}panel.append(podium);
+    const podium=el('div','portal-podium');for(const index of [1,0,2]){const p=rows[index];if(!p||!p.totalGames&&!periods.active&&!archive)continue;const step=el('article',`portal-podium-place place-${index+1}`);step.append(el('span','portal-podium-rank',`#${index+1}`));step.append(avatar(p),el('h3','',p.name));const metrics=el('p','portal-podium-metrics');for(const [icon,value,label] of [['percent',`${formatWinRate(p.vic,p.totalGames)}`,'victoires'],['domino',p.totalGames,'parties'],['pig',p.coch||0,'cochons']]){const item=el('span');item.append(navigationIcon(icon),document.createTextNode(`${value} ${label}`));metrics.append(item);}step.append(metrics);podium.append(step);}panel.append(podium);
     panel.append(rows.length?rankingTable(rows,true,{selfId:identity().profile?.id,onDetails:p=>{profileId=p.id;open('profiles');}}):el('p','portal-muted','Aucun résultat enregistré.'));
     const help=button('ⓘ Comprendre le classement',()=>{const {dialog,cancel,show}=modal('Le barème du club');cancel.textContent='Fermer';dialog.append(el('p','',note),el('p','','Le classement conserve le tri V2 : taux de crédits de victoire, puis score (victoires moins cochons). Série : victoires consécutives par date. « — » indique un historique incomplet. Le taux peut dépasser 100 %.'),cancel);show();},'portal-ranking-help');panel.append(help);
     section.append(controls,panel);target.append(section);
@@ -232,12 +239,12 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
       trophy.append(image,el('figcaption','','T3 2026'));heading.prepend(trophy);heading.classList.add('has-historic-trophy');
     }
     const all=rankings(),generalRank=all.general.findIndex(p=>String(p.id)===String(player.id))+1,general=all.general.find(p=>String(p.id)===String(player.id)),online=all.online.find(p=>String(p.id)===String(player.id)),details=profileDetails(player,data),metrics=el('div','portal-profile-metrics');
-    for(const [icon,value,label]of [['domino',general?.totalGames||0,'résultats'],['trophy',general?.vic||0,'victoires'],['percent',`${general?.percent||0}%`,'de victoire']]){const metric=el('div'),glyph=el('span','portal-metric-icon');glyph.append(navigationIcon(icon));metric.append(glyph,el('strong','',value),el('span','',label));metrics.append(metric);}
+    for(const [icon,value,label]of [['domino',general?.totalGames||0,'résultats'],['trophy',general?.vic||0,'victoires'],['percent',formatWinRate(general?.vic,general?.totalGames),'de victoire']]){const metric=el('div'),glyph=el('span','portal-metric-icon');glyph.append(navigationIcon(icon));metric.append(glyph,el('strong','',value),el('span','',label));metrics.append(metric);}
     const content=el('div','portal-profile-content');content.append(el('span','portal-profile-rank',generalRank?`#${generalRank}`:'—'),heading,metrics);
     const blockedAverage=averageBlockedWinPoints(summary.history,player.id),blockedLabel=blockedAverage===null?'—':`${blockedAverage.toLocaleString('fr-FR',{maximumFractionDigits:1})} pt${blockedAverage>1?'s':''}`;
     const badges=el('div','portal-profile-badges');badges.append(el('span','portal-profile-record',`☆ Record physique : ${details.record}`),el('span','portal-profile-blocked-average',`Moyenne dominant restant : ${blockedLabel}`));content.append(badges);
     const isSelf=String(player.id)===String(identity().profile?.id);const invite=button(isSelf?'Voir mon classement':'Inviter à ma table',()=>isSelf?open('ranking'):actions.inviteProfile(player),'online-action--primary');invite.disabled=!isSelf&&(!presence||Boolean(presence.roomCode));invite.title=invite.disabled?'Le joueur doit être connecté et disponible.':'';content.append(invite);
-    const facts=el('div','portal-profile-facts');facts.append(el('p','',`Club physique · ${player.totalGames||0} manches · ${player.vic||0} victoires · ${player.coch||0} cochons · ${player.saved||0} sauvé(s)`),el('p','',`En ligne · ${online?.totalGames||0} parties · ${online?.vic||0} victoires · ${online?.coch||0} cochons · ${online?.saved||0} sauvé(s)`),el('p','',`Taux physique : ${player.totalGames?Math.round(player.vic/player.totalGames*100):0}% · Score : ${(player.vic||0)-(player.coch||0)} · Cochon préféré : ${details.favoriteVictim} · Victime de : ${details.favoriteGiver}`));
+    const facts=el('div','portal-profile-facts');facts.append(el('p','',`Club physique · ${player.totalGames||0} manches · ${player.vic||0} victoires · ${player.coch||0} cochons · ${player.saved||0} sauvé(s)`),el('p','',`En ligne · ${online?.totalGames||0} parties · ${online?.vic||0} victoires · ${online?.coch||0} cochons · ${online?.saved||0} sauvé(s)`),el('p','',`Taux physique : ${formatWinRate(player.vic,player.totalGames)} · Score : ${(player.vic||0)-(player.coch||0)} · Cochon préféré : ${details.favoriteVictim} · Victime de : ${details.favoriteGiver}`));
     section.append(portrait,content,facts);target.append(section);
   }
   function renderHistory(target){
@@ -276,11 +283,47 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     const commit=button('Valider',()=>saveDialog(dialog,commit,()=>physical.record({winnerId:winner.get()[0]??null,savedId:saved.get()[0]??null,cochonIds:cochons.get(),incoming:incoming.get()},table,version)),'online-action--primary');dialog.append(cancel,commit);show();
   }
   function confirmAction(title,description,operation){const {dialog,cancel,show}=modal(title);dialog.append(el('p','',description));const commit=button('Confirmer la suppression',()=>saveDialog(dialog,commit,operation),'online-action--danger');dialog.append(cancel,commit);show();}
+  function setHideHandsWhileWorking(enabled) {
+    hideHandsWhileWorking = enabled;
+    const setting = root.querySelector('#domino-hide-hands-while-working');
+    if (setting) {
+      setting.checked = enabled;
+      setting.disabled = savingHideHands;
+    }
+  }
+  function renderPauseSettings(target) {
+    const section = card('Pause « Je travaille »');
+    const field = el('label', 'online-label');
+    const setting = el('input');
+    setting.type = 'checkbox';
+    setting.id = 'domino-hide-hands-while-working';
+    setting.checked = hideHandsWhileWorking;
+    setting.disabled = savingHideHands;
+    field.append(setting, document.createTextNode(' Masquer les mains de tous les joueurs pendant la pause'));
+    section.append(field);
+    target.append(section);
+    setting.addEventListener('change', async () => {
+      if (savingHideHands) return;
+      const next = setting.checked;
+      savingHideHands = setting.disabled = true;
+      try {
+        await admin.setHideHandsWhileWorking(next);
+        hideHandsWhileWorking = next;
+        notify('Réglage enregistré pour toutes les tables Domino.');
+      } catch (error) {
+        notify(error.message, 'error');
+      } finally {
+        savingHideHands = false;
+        setHideHandsWhileWorking(hideHandsWhileWorking);
+      }
+    });
+  }
   function renderAdmin(target){
     if(!access.unlocked){const section=card('Zone Admin'), form=el('form','portal-admin-login'), label=el('label','online-label','Mot de passe administrateur'), input=el('input','online-input');input.type='password';input.autocomplete='off';label.append(input);const submit=button('Valider');submit.type='submit';form.append(label,submit,button('Retour à l’accueil',()=>open('home')));form.addEventListener('submit',async event=>{event.preventDefault();submit.disabled=true;try{const accepted=await access.unlock(input.value);input.value='';if(page!=='admin')return;if(accepted)renderPage();else notify('Mot de passe admin incorrect.','error');}finally{submit.disabled=false;}});section.append(form);target.append(section);return;}
-    const adminTabs=el('nav','portal-admin-tabs');adminTabs.setAttribute('aria-label','Gestion du club');for(const [id,label]of [['players','Joueurs'],['physical','Manches physiques'],['online','Parties en ligne']]){const b=button(label,()=>{adminMode=id;renderPage();});b.setAttribute('aria-pressed',String(adminMode===id));adminTabs.append(b);}adminTabs.append(button('Reverrouiller',()=>{access.lock();renderPage();},'online-action--small'));target.append(adminTabs);
+    const adminTabs=el('nav','portal-admin-tabs');adminTabs.setAttribute('aria-label','Gestion du club');for(const [id,label]of [['players','Joueurs'],['physical','Manches physiques'],['online','Parties en ligne'],['pause','Pause « Je travaille »']]){const b=button(label,()=>{adminMode=id;renderPage();});b.setAttribute('aria-pressed',String(adminMode===id));adminTabs.append(b);}adminTabs.append(button('Reverrouiller',()=>{access.lock();renderPage();},'online-action--small'));target.append(adminTabs);
     if(adminMode==='physical'){const history=card('Corriger l’Historique (Suppression)');history.classList.add('portal-history-column');paged(history,data.history,'administration physique',4,(match,index)=>{const row=physicalHistoryRow(match,index);row.append(button('Supprimer cette manche',()=>confirmAction('Supprimer cette manche ?',`${match.date} · ${match.winner}. Les scores, séries et cochons seront recalculés. Une sauvegarde préalable est conservée.`,()=>physical.deleteHistory(match)),'online-action--danger online-action--small'));return row;});if(!data.history.length)history.append(el('p','portal-muted','Aucune manche.'));target.append(history);return;}
     if(adminMode==='online'){const slot=el('div','portal-admin-online');slot.id='portal-admin-online';target.append(slot);renderOnlineAdmin();return;}
+    if(adminMode==='pause'){renderPauseSettings(target);return;}
     const editor=card('Ajouter / Modifier un Joueur');editor.classList.add('portal-player-editor');const picker=select('Sélectionner un joueur',[['new','— CRÉER UN NOUVEAU JOUEUR —'],...data.players.map(p=>[p.id,p.name])],editorId,id=>{editorId=id;renderPage();});editor.append(picker.field);
     const existing=data.players.find(p=>String(p.id)===String(editorId));let imageData=existing?.avatar||'❓';
     const nameLabel=el('label','online-label','Nom du Joueur'), name=el('input','online-input');name.value=displayName(existing?.name||'');name.maxLength=60;nameLabel.append(name);
@@ -298,5 +341,5 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     if(!summary.history.length)history.append(el('p','portal-muted','Aucun résultat.'));slot.append(rooms,history);
   }
   poker.setCallbacks({refresh:refreshPoker,showScene:showPokerTable,open});
-  return {activate,open,showTable,showPokerTable,update,get isScene(){return inScene||poker.isScene;},get mode(){return mode;},get page(){return page;},get authenticated(){return authenticated;},dispose(){clubInfo.dispose();clearInterval(activityTimer);stopData?.();stopStats?.();stopPeriods?.();generalChat?.dispose();poker.dispose();chatDock.remove();root.remove();}};
+  return {activate,open,showTable,showPokerTable,update,setHideHandsWhileWorking,get isScene(){return inScene||poker.isScene;},get mode(){return mode;},get page(){return page;},get authenticated(){return authenticated;},dispose(){homeFlag.dispose();clubInfo.dispose();clearInterval(activityTimer);stopData?.();stopStats?.();stopPeriods?.();generalChat?.dispose();poker.dispose();chatDock.remove();root.remove();}};
 }

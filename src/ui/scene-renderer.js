@@ -6,7 +6,9 @@ export function renderCharacterPlate(seat, characterId) {
   const image = document.querySelector(`#character-${seat}`);
   if (!image) throw new Error(`Calque du siège ${seat} introuvable.`);
   const luxe = document.querySelector('#casino-stage')?.dataset.roomStyle === 'luxe';
-  const cutout = luxe && hasPlayerCutout(characterId, seat);
+  // Jean-Claude's personalized side angles extend past the generic scene masks.
+  const fullSidePortrait = characterId === 'jean-claude' && seat !== 'top';
+  const cutout = (luxe || fullSidePortrait) && hasPlayerCutout(characterId, seat);
   const asset = cutout ? playerCutoutAsset(characterId, seat) : playerAsset(characterId, seat);
   image.hidden = false;
   setOptimizedImage(image, asset.src);
@@ -14,5 +16,6 @@ export function renderCharacterPlate(seat, characterId) {
   image.alt = `${asset.displayName} ${seated} au siège ${seat === 'top' ? 'supérieur' : seat === 'left' ? 'gauche' : 'droit'}`;
   image.dataset.characterId = characterId;
   image.dataset.renderMode = cutout ? 'cutout' : luxe ? 'silhouette' : 'scene';
+  image.toggleAttribute('data-full-side-portrait', fullSidePortrait && cutout);
   syncPlayerMedallion(image,characterId,seat);
 }
