@@ -1,6 +1,7 @@
 import { OpeningMascotState } from './opening-mascot-state.js?v=20261005T162819119';
 import { playDominoCue } from './domino-audio-cues.js?v=58-r14';
 import {isChristmasTable} from '../config/christmas.js?v=58-r2';
+import { createChristmasSleigh } from './christmas-sleigh.js?v=58-r16';
 
 export function createOpeningMascot({ stage, shell, notify = () => {} }) {
   const lifecycle = new OpeningMascotState();
@@ -19,6 +20,7 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
   const pointer={x:0,y:0},look={x:0,y:0};
   let pig=null, loading=false, generation=0, failed=false, mode='gone', time=0, since=0;
   let frame=0,last=0,finishedAt=0,canPlay=false,selection='',clicks=[],disposed=false;
+  let seasonal = false;
   const particles=[];
   const visible=()=>!document.hidden&&!shell.hidden&&shell.getBoundingClientRect().width>0;
   function setMode(next,message){mode=next;since=time;layer.dataset.mode=next;if(message)bubble.textContent=message;}
@@ -44,6 +46,13 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
     if(!pig){ensureModel();return;}
     if(!frame){last=performance.now();frame=requestAnimationFrame(tick);}
   }
+  function playNose() {
+    return playDominoCue('nose').then(result=>{
+      if(result==='muted')notify('Effets coupés : active-les dans les réglages musicaux.');
+      else if(result==='blocked'||result==='error')notify('Grognement indisponible. Réessaie depuis « Écouter le cochon » dans les réglages musicaux.');
+    });
+  }
+  const sleigh = createChristmasSleigh({ stage, shell, onNose: playNose });
   function react(next){
     if(!lifecycle.active||!pig||layer.hidden)return;
     const touchedNose=next==='nose';
@@ -51,10 +60,7 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
     if(clicks.length>=4){next='guard';clicks=[];}
     const christmas=isChristmasTable(stage.dataset.roomTheme);
     setMode(next,{nose:christmas?'Joyeux Noël !':'Groin-groin !',bow:christmas?'Prêt pour les fêtes !':'Toujours élégant.',guard:'Hé, doucement !'}[next]);
-    if(touchedNose)playDominoCue('nose').then(result=>{
-      if(result==='muted')notify('Effets coupés : active-les dans les réglages musicaux.');
-      else if(result==='blocked'||result==='error')notify('Grognement indisponible. Réessaie depuis « Écouter le cochon » dans les réglages musicaux.');
-    });
+    if(touchedNose)playNose();
   }
   const onNose=()=>react('nose'),onBow=()=>react('bow');nose.addEventListener('click',onNose);bow.addEventListener('click',onBow);
   const move=event=>{const r=stage.getBoundingClientRect();pointer.x=Math.max(-1,Math.min(1,(event.clientX-r.left-r.width/2)/(r.width*.35)));pointer.y=Math.max(-1,Math.min(1,(event.clientY-r.top-r.height*.44)/(r.height*.35)));};
@@ -95,6 +101,18 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
     sparkle(dt,exit);frame=requestAnimationFrame(tick);
   }
   function update(room){
+    const christmas = isChristmasTable(stage.dataset.roomTheme);
+    if (christmas !== seasonal) {
+      lifecycle.reset();
+      hide();
+      freeModel();
+      sleigh.reset();
+      seasonal = christmas;
+    }
+    if (seasonal) {
+      sleigh.update(room);
+      return;
+    }
     const action=lifecycle.update(room);
     if(action==='hide'){hide();return;}
     if(action==='start'){
@@ -114,7 +132,7 @@ export function createOpeningMascot({ stage, shell, notify = () => {} }) {
     if(next!==selection){selection=next;if(selection)setMode('select','Juste ici, à toi !');else if(mode==='select')resume();}
     else if(mode==='offer'&&bubble.textContent!==invitation())bubble.textContent=invitation();
   }
-  const reset=()=>{lifecycle.reset();hide();freeModel();};
-  function dispose(){disposed=true;reset();observer.disconnect();document.removeEventListener('visibilitychange',wake);stage.removeEventListener('pointermove',move);stage.removeEventListener('pointerleave',leave);layer.remove();}
+  const reset=()=>{lifecycle.reset();hide();freeModel();sleigh.reset();};
+  function dispose(){disposed=true;reset();sleigh.dispose();observer.disconnect();document.removeEventListener('visibilitychange',wake);stage.removeEventListener('pointermove',move);stage.removeEventListener('pointerleave',leave);layer.remove();}
   return {update,select,reset,dispose};
 }

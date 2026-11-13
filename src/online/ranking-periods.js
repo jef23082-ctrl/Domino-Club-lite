@@ -1,5 +1,5 @@
-import {clubData,recalculatePhysical,physicalRanking} from '../game/club-state.js?v=20261005T162819119';
-import {clubRankings} from './combined-ranking.js?v=20261005T162819119';
+import {clubData,recalculatePhysical,physicalRanking} from '../game/club-state.js?v=58-r15';
+import {clubRankings} from './combined-ranking.js?v=58-r15';
 import {visibleHistory} from '../services/online-records.js?v=20261005T162819119';
 
 export const physicalResultIdentity=record=>JSON.stringify([record.createdAt??null,record.dateIso??'',record.date??'',record.table??[]]);

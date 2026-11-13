@@ -1,4 +1,4 @@
-import { element as el, button, card, avatar, select, rankingTable } from './club-elements.js?v=58-r7';
+import { element as el, button, card, avatar as memberAvatar, select, rankingTable } from './club-elements.js?v=58-r15';
 import { profileDetails } from '../game/club-state.js?v=20261005T162819119';
 import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20261005T162819119';
 import { roomPlayers } from '../game/room-state.js?v=20261005T162819119';
@@ -6,7 +6,7 @@ import { createChatComposer } from './chat-composer.js?v=20261005T162819119';
 import { navigationIcon } from './navigation-icon.js?v=20261005T162819119';
 import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20261005T162819119';
 import { displayName } from '../online/display-name.js?v=20261005T162819119';
-import { clubRankings } from '../online/combined-ranking.js?v=20261005T162819119';
+import { clubRankings } from '../online/combined-ranking.js?v=58-r15';
 import { paginate } from './pagination.js?v=20261005T162819119';
 import { loungeTitle, loungeIdentity } from '../online/lounge-name.js?v=20261005T162819119';
 import { CLUB_CHAT_CHANNEL } from '../services/club-chat-session.js?v=20261005T162819119';
@@ -15,11 +15,13 @@ import { startLoungeMusic, stopLoungeMusic } from './lounge-music.js?v=20261005T
 import { homeOrnament } from './home-ornaments.js?v=20261005T162819119';
 import { applyClubPortalSkin } from '../poker/poker-portal-skin.js?v=20261005T162819119';
 import { createClubInfoTicker } from './club-info-ticker.js?v=20261005T162819119';
-import {currentPeriodRankings} from '../online/ranking-periods.js?v=20261005T162819119';
+import {currentPeriodRankings} from '../online/ranking-periods.js?v=58-r15';
 import {createRankingArchivePicker} from './ranking-archive-picker.js?v=20261005T162819119';
 import {connectedMembers,connectedMembersLabel} from './connected-members.js?v=20261005T162819119';
 import { formatWinRate } from '../online/win-rate.js?v=58-r7';
 import { createPortalHomeFlag } from './portal-home-flag.js?v=58-r12';
+
+const avatar = (profile, options) => memberAvatar(profile, { ...options, domino: true });
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
 export const SITE_VERSION='V57';

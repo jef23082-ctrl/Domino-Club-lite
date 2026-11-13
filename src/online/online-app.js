@@ -7,8 +7,8 @@ import { applyRoomStyle } from '../ui/room-style.js?v=20261005T162819119';
 import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261005T162819119';
 import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20261005T162819119';
 import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20261005T162819119';
-import { renderCharacterPlate } from '../ui/scene-renderer.js?v=58-r7';
-import { createDominoCelebration } from '../ui/domino-celebration.js?v=58-r14';
+import { renderCharacterPlate } from '../ui/scene-renderer.js?v=58-r15';
+import { createDominoCelebration } from '../ui/domino-celebration.js?v=58-r15';
 import { fadeDominoCue, playDominoCue } from '../ui/domino-audio-cues.js?v=58-r14';
 import { playSound, unlockSound } from '../ui/sound-player.js?v=20261005T162819119';
 import { createBoudeVerdict, verdictReadyToStart } from '../ui/boude-verdict.js?v=20261005T162819119';
@@ -33,7 +33,7 @@ import { ServerClock } from '../services/server-clock.js?v=20261005T162819119';
 import { StatsRepository } from '../services/stats-repository.js?v=20261005T162819119';
 import { AdminAccess } from '../services/admin-access.js?v=20261005T162819119';
 import { AdminRepository } from '../services/admin-repository.js?v=58-r7';
-import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=58-r12';
+import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=58-r15';
 import { ClubAnnouncementRepository } from '../services/club-announcement-repository.js?v=20261005T162819119';
 import { RankingPeriodRepository } from '../services/ranking-period-repository.js?v=20261005T162819119';
 import { EnvironmentSettingsRepository } from '../services/environment-settings-repository.js?v=20261005T162819119';
@@ -48,17 +48,17 @@ import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20261
 import { displayName } from './display-name.js?v=20261005T162819119';
 import { createRoundGate, roundGateKey, roundGateRemaining } from './round-gate.js?v=58-r7';
 import { RoundTransitionController } from './round-transition-controller.js?v=58-r7';
-import { avatar } from '../ui/club-elements.js?v=20261005T162819119';
+import { avatar as memberAvatar } from '../ui/club-elements.js?v=58-r15';
 import { reactionPicker } from '../ui/reaction-picker.js?v=20261005T162819119';
 import { confirmRoomCancellation } from '../ui/room-cancel-dialog.js?v=20261005T162819119';
 import { requestAppFullscreen } from '../ui/app-shell.js?v=20261005T162819119';
 import { createUniversalPlacementEngine, placeSeatOverlay, placeUniversalOverlay } from '../ui/overlay-layout.js?v=20261005T162819119';
-import { preloadRoomResources, warmPremiumResources } from '../ui/resource-loader.js?v=20261005T162819119';
+import { preloadRoomResources, warmPremiumResources } from '../ui/resource-loader.js?v=58-r15';
 import { applyEventLighting, clearBoudeLighting, pulseBoudeLighting } from '../ui/event-lighting.js?v=20261005T162819119';
 import { applyInteractionFormat } from '../ui/interaction-format.js?v=20261005T162819119';
 import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20261005T162819119';
 import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20261005T162819119';
-import { createOpeningMascot } from '../ui/opening-mascot.js?v=58-r14';
+import { createOpeningMascot } from '../ui/opening-mascot.js?v=58-r16';
 import { createLeaderTrophy } from '../ui/leader-trophy.js?v=20261005T162819119';
 import { loungeTitle } from './lounge-name.js?v=20261005T162819119';
 import {
@@ -69,6 +69,8 @@ import {
   resultPresentation,
   shouldShowSpectatorPanel
 } from './presentation.js?v=20261005T162819119';
+
+const avatar = (profile, options) => memberAvatar(profile, { ...options, domino: true });
 
 const FIREBASE_SCRIPTS = Object.freeze([
   'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js',

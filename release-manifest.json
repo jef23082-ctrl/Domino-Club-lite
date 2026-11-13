@@ -1,6 +1,6 @@
 {
-  "version": "v58-noel-r14",
-  "generatedAt": "2026-11-11T12:20:18.749Z",
+  "version": "v58-noel-r16",
+  "generatedAt": "2026-11-13T14:26:50.003Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -126,6 +126,21 @@
       "path": "assets/christmas/v58/domino/garlands/garland.png",
       "bytes": 1859174,
       "sha256": "0188a5d1e38db3d78017cfc974fce10c652b94d3874e4aa1359815aa7a6642ab"
+    },
+    {
+      "path": "assets/christmas/v58/domino/sleigh/reindeer-lead.webp",
+      "bytes": 64390,
+      "sha256": "b9750f63ac220ad685eea0c4352c3158b56f2eac88340c8943503259f074f767"
+    },
+    {
+      "path": "assets/christmas/v58/domino/sleigh/reindeer-near.webp",
+      "bytes": 67952,
+      "sha256": "02c5b9a579bb5ff2c37fe22546d16d529fb4ebaa6c3a98e8860c10a7a80f7a37"
+    },
+    {
+      "path": "assets/christmas/v58/domino/sleigh/santa-sleigh.webp",
+      "bytes": 159928,
+      "sha256": "2384dafed2facba327e27903b7dd330bb7fec95b25f17e1b9601f4428fdc38bd"
     },
     {
       "path": "assets/christmas/v58/domino/tables/perimeter-r2.png",
@@ -1118,6 +1133,51 @@
       "sha256": "afaa06c2fe7bb95a4e7c6c47d3775972ac53005e586c763d76e006e4541dd09c"
     },
     {
+      "path": "assets/players-personalized-v58/alexis/alexis-left-applause.webp",
+      "bytes": 31190,
+      "sha256": "6f73790c93644afa3281cd63c450114ee5c01f854134a6f71bdbe6c7deb410ec"
+    },
+    {
+      "path": "assets/players-personalized-v58/alexis/alexis-left-neutral.webp",
+      "bytes": 34402,
+      "sha256": "15a8c21fb649a2eac54cd8c1354184a689005e43979bb9177bfa82c4e0ed858f"
+    },
+    {
+      "path": "assets/players-personalized-v58/alexis/alexis-left-trophy.webp",
+      "bytes": 36270,
+      "sha256": "f97b96b130192c07ee513669e316841ccf2b0f8d91b421f2c98d7b893c1bb7b4"
+    },
+    {
+      "path": "assets/players-personalized-v58/alexis/alexis-right-applause.webp",
+      "bytes": 31242,
+      "sha256": "f17e9febe3904b5334166cc938e8f13d177297ff1f1629c6e2347157eb3915ad"
+    },
+    {
+      "path": "assets/players-personalized-v58/alexis/alexis-right-neutral.webp",
+      "bytes": 37088,
+      "sha256": "1ae9aeff7db33e18595df7789a280af217e4ba875c6339f2bfe854145291f4c1"
+    },
+    {
+      "path": "assets/players-personalized-v58/alexis/alexis-right-trophy.webp",
+      "bytes": 36586,
+      "sha256": "9875d681f39d65b9e47f1bd1986f4423a3bc558bf60b0d40ba57e65c2b4d0697"
+    },
+    {
+      "path": "assets/players-personalized-v58/alexis/alexis-top-applause.webp",
+      "bytes": 31940,
+      "sha256": "61529a862bf62b84631cd205576f8317d83003140047ca865a33e107927835a8"
+    },
+    {
+      "path": "assets/players-personalized-v58/alexis/alexis-top-neutral.webp",
+      "bytes": 25006,
+      "sha256": "f816d1c6ac753067768564c1c78b9fd066f9792592b0a3f217b9e295a6e89cdf"
+    },
+    {
+      "path": "assets/players-personalized-v58/alexis/alexis-top-trophy.webp",
+      "bytes": 36508,
+      "sha256": "51206ae6fa1767058db6341f3918ae836f67ff0e8a9c8b1e63b261a665aa50d3"
+    },
+    {
       "path": "assets/players/alexis/alexis-left-scene-v1.png",
       "bytes": 1842202,
       "sha256": "da7d01a69f9d7970c2c80d1e15c2f5415035d4981accd449307b559ba7fd9f72"
@@ -2064,8 +2124,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 18350,
-      "sha256": "8f314127d4e990fd4a290b56c3f239d3f7f8c458b92d757a36db1d56474037ea"
+      "bytes": 18338,
+      "sha256": "6496e286afe41dabe8a9ae68cf9d53f2f8a1c5adcb08b9677f47f34d084fc561"
     },
     {
       "path": "LISEZ-MOI.txt",
@@ -2106,6 +2166,11 @@
       "path": "src/config/christmas.js",
       "bytes": 1034,
       "sha256": "4a5ef5ec98fce278ab949efbfa286807626ba6ae6ca66c93a1a7841a75983b44"
+    },
+    {
+      "path": "src/config/domino-aleksi.js",
+      "bytes": 171,
+      "sha256": "c023d915d7b9bf6e80959cd11bb89fc6da9640ef4efa086454e7f646dbbeeab8"
     },
     {
       "path": "src/config/domino-audio.js",
@@ -2159,8 +2224,8 @@
     },
     {
       "path": "src/game/club-state.js",
-      "bytes": 6222,
-      "sha256": "a352b985696972e75a3b80411a07c1500647c1335e7fd7ba9d628d1393aa976c"
+      "bytes": 6570,
+      "sha256": "f0d6f1cbc32952f22a37f4831fd9ace0003579025e7f5c46d888b74c49a71f6c"
     },
     {
       "path": "src/game/engine.js",
@@ -2195,7 +2260,7 @@
     {
       "path": "src/main.js",
       "bytes": 164,
-      "sha256": "8051ec0dfab2332ddc449eb63288a1ba465e0dedb6568f02967ceb913f4c9eb2"
+      "sha256": "4ac663532eb792a5393d3a3f4e2bec74130fcdbb180f8b6663458d55a5ed29c7"
     },
     {
       "path": "src/online/club-presentation.js",
@@ -2204,8 +2269,8 @@
     },
     {
       "path": "src/online/combined-ranking.js",
-      "bytes": 2620,
-      "sha256": "1a68b8ba9a42fd48b90f19db673e67b8c08607165210d67dc8ee4b70280cba6c"
+      "bytes": 2608,
+      "sha256": "c88a8435871698fabef632a9b17369d3274f26b28b16afad91e5f2aafb3bbf26"
     },
     {
       "path": "src/online/display-name.js",
@@ -2219,8 +2284,8 @@
     },
     {
       "path": "src/online/online-app.js",
-      "bytes": 98250,
-      "sha256": "b7f0ebe205517462fddea5816da3a41c04824e34703c8d90c0f903865a7cb4f4"
+      "bytes": 98334,
+      "sha256": "77628b6b5d6d6e7840161286118b1ffaac30a860485f9683a30aee09481d717f"
     },
     {
       "path": "src/online/play-intent.js",
@@ -2239,8 +2304,8 @@
     },
     {
       "path": "src/online/ranking-periods.js",
-      "bytes": 3342,
-      "sha256": "302a8d3032a08cfaa3bc3e373b0afea76989459a1b97ebe6976bcb9888230a5a"
+      "bytes": 3318,
+      "sha256": "0e76747661b61de5981414279ea270f10916d048554e7eecfa9ab604b8a8e6b4"
     },
     {
       "path": "src/online/room-activity.js",
@@ -2473,14 +2538,19 @@
       "sha256": "594c9ed28ab3e75ee7fe0b81f744f1efea9e023b28000d87ffe0fe5823eb6782"
     },
     {
+      "path": "src/ui/christmas-sleigh.js",
+      "bytes": 10718,
+      "sha256": "237d958d3d37fdfc63dc5b10ae85fb286af8ca13c8ae24bbbb65341988e706ee"
+    },
+    {
       "path": "src/ui/club-announcement-editor.js",
       "bytes": 9061,
       "sha256": "bb14f909e271fc3e8450653b9b708ec4fbddbe45b88ae4181ea0b75d79569477"
     },
     {
       "path": "src/ui/club-elements.js",
-      "bytes": 5872,
-      "sha256": "fa088e46476600f866b2899378f565641159d54a05ebc61fdd81b20db5ea369d"
+      "bytes": 6031,
+      "sha256": "dab664d4e7ef5b0ea0c2b11a2e8a468c6edd96b21a7e5b3ab7b9bdf50897de19"
     },
     {
       "path": "src/ui/club-info-ticker.js",
@@ -2489,8 +2559,8 @@
     },
     {
       "path": "src/ui/club-portal.js",
-      "bytes": 46610,
-      "sha256": "974c771a527f5d4d6e61bcf1c5d24cc811b1083094911532b79da2495f8eadae"
+      "bytes": 46694,
+      "sha256": "2c37af9a9b37242189fe7cac3a54463f4b461eafd03dd45a92f57e549c0bbcbf"
     },
     {
       "path": "src/ui/connected-members.js",
@@ -2514,8 +2584,8 @@
     },
     {
       "path": "src/ui/domino-celebration.js",
-      "bytes": 4489,
-      "sha256": "fb76b9f66b3d16345cab9910f6a2e0af40f6de6d7ef4b39bc1c8b5f266eed488"
+      "bytes": 4643,
+      "sha256": "520542999824c0c1c9bef73ab75b5df8bb232b25605499ef928d594ace427342"
     },
     {
       "path": "src/ui/domino-environment.js",
@@ -2604,8 +2674,8 @@
     },
     {
       "path": "src/ui/opening-mascot.js",
-      "bytes": 8530,
-      "sha256": "77fdd09f383446a66872c29e42cd14e2004bb0bdc05ac958459d5b609bf02e83"
+      "bytes": 9065,
+      "sha256": "237ef889bb6b9c15eb5700ba571ed2bdf7dfbf1f92335078cd98fa38221b6cd1"
     },
     {
       "path": "src/ui/overlay-layout.js",
@@ -2654,8 +2724,8 @@
     },
     {
       "path": "src/ui/resource-loader.js",
-      "bytes": 3370,
-      "sha256": "ef43f5df8810745fa3f10a112b6004118a7ae4bb7204e993ee16a9b0f96ddc39"
+      "bytes": 3508,
+      "sha256": "9b27af7ebbb08064d6234b145e77e97dd672706afadfad62d3bdc93c25fe0b34"
     },
     {
       "path": "src/ui/room-cancel-dialog.js",
@@ -2669,8 +2739,8 @@
     },
     {
       "path": "src/ui/scene-renderer.js",
-      "bytes": 1401,
-      "sha256": "697fc479bbf9c1eb6b71ea91ea52b340117da8fa02d8a8f8f7d5601a17e18c4c"
+      "bytes": 1566,
+      "sha256": "0136c2fba2271c863afda1fe37c7d214205fb150409087fbf07a73192de52aa9"
     },
     {
       "path": "src/ui/sound-player.js",
@@ -2804,8 +2874,8 @@
     },
     {
       "path": "styles/opening-mascot.css",
-      "bytes": 1616,
-      "sha256": "66f1ec3e0e0fca2187a01bffcc9c962c134b0ace7fa8e8c22bbc190e66beeaed"
+      "bytes": 2100,
+      "sha256": "cbfa9420a043d27b2149359a580b5883a9adf8ff3c45b87589fdd84bcdb9256a"
     },
     {
       "path": "styles/poker-portal-v36.css",

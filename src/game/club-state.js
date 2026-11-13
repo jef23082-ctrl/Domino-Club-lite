@@ -27,9 +27,17 @@ export function recalculatePhysical(players, history, preserveEmpty = false) {
   return result;
 }
 export function physicalRanking(players) {
-  return players.map(player => ({ ...player, percent: player.totalGames ? Math.round(player.vic / player.totalGames * 100) : 0,
-    score: Number(player.vic || 0) - Number(player.coch || 0) }))
-    .sort((a, b) => (b.totalGames ? b.percent : -1) - (a.totalGames ? a.percent : -1) || b.score - a.score);
+  return players.map(player => {
+    const played = Number(player.totalGames) || 0;
+    const won = Number(player.vic) || 0;
+    return { ...player, percent: played > 0 ? Math.round(won / played * 100) : 0,
+      score: won - (Number(player.coch) || 0) };
+  }).sort((a, b) => {
+    const playedA = Number(a.totalGames) || 0, playedB = Number(b.totalGames) || 0;
+    if (playedA <= 0 || playedB <= 0) return Number(playedB > 0) - Number(playedA > 0) || b.score - a.score;
+    // Compare wins / games without rounding the displayed percentage first.
+    return (Number(b.vic) || 0) * playedA - (Number(a.vic) || 0) * playedB || b.score - a.score;
+  });
 }
 const localDay = date => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 export function nightKey(date) { const day = new Date(date); if (day.getHours() < 12) day.setDate(day.getDate() - 1); return localDay(day); }

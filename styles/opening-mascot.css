@@ -14,3 +14,17 @@
 .mascot-audio-credit{font-size:10px;line-height:1.4;color:#c0b48f;margin:.35rem 0 0}
 .mascot-audio-credit a{color:inherit}
 .music-panel:has(#pig-sound-test){max-height:90%;overflow-y:auto;overscroll-behavior:contain}
+.christmas-sleigh {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+}
+.christmas-sleigh[hidden], .christmas-sleigh__nose[hidden] { display: none; }
+.christmas-sleigh canvas { display: block; width: 100%; height: 100%; }
+.christmas-sleigh__nose { transform: translate(-50%, -50%); }
+.christmas-sleigh[data-phase="takeoff"] { z-index: 7; }
+#casino-stage:has(> .christmas-sleigh[data-phase="takeoff"]) > .board-plane {
+  visibility: hidden;
+}
