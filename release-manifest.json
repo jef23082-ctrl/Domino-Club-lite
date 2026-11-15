@@ -1,6 +1,6 @@
 {
-  "version": "v58-noel-r16",
-  "generatedAt": "2026-11-13T14:26:50.003Z",
+  "version": "v59",
+  "generatedAt": "2026-11-15T17:36:00.428Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -341,6 +341,21 @@
       "path": "assets/interactions/cvousquifait.webp",
       "bytes": 515664,
       "sha256": "73f155467c7f0d3e747a12ca15c9c34ade6713dc789ecd0fbf5e61a3d7f6dcfa"
+    },
+    {
+      "path": "assets/interactions/domino-throw/thomas-left.webp",
+      "bytes": 262876,
+      "sha256": "31b711a257d60b42920056d0bbb12f93aa7818000f870352237f47f5dda119b9"
+    },
+    {
+      "path": "assets/interactions/domino-throw/thomas-right.webp",
+      "bytes": 208566,
+      "sha256": "2a52e8fc135941e3f95877bc2ab6c96490cee4223a529f55f64e80c6230d630e"
+    },
+    {
+      "path": "assets/interactions/domino-throw/thomas-top.webp",
+      "bytes": 275046,
+      "sha256": "f91d0c179038c23e4dcd246d67854c44a4fd3e9cd9723204a4d7abbe8612cdba"
     },
     {
       "path": "assets/interactions/doubtful.png",
@@ -2124,13 +2139,13 @@
     },
     {
       "path": "index.html",
-      "bytes": 18338,
-      "sha256": "6496e286afe41dabe8a9ae68cf9d53f2f8a1c5adcb08b9677f47f34d084fc561"
+      "bytes": 18318,
+      "sha256": "7b309892b7977146c9bd50ea5b183bae1dadb2c989db99588629f0b3de068857"
     },
     {
       "path": "LISEZ-MOI.txt",
-      "bytes": 27088,
-      "sha256": "15c270729118755dc1baca83f0fcc191d17beb3534720cbf9d1a2685792ee15e"
+      "bytes": 27397,
+      "sha256": "15c63dded89bcd24f32aa1a948f53cd45349aee4585b15cb1bdd9d354c31e064"
     },
     {
       "path": "POKER-V27.md",
@@ -2259,8 +2274,8 @@
     },
     {
       "path": "src/main.js",
-      "bytes": 164,
-      "sha256": "4ac663532eb792a5393d3a3f4e2bec74130fcdbb180f8b6663458d55a5ed29c7"
+      "bytes": 163,
+      "sha256": "ed23ecc584d0879097cd5836f77a6f2dffceb1c8d71a76ca3f71a3be43545952"
     },
     {
       "path": "src/online/club-presentation.js",
@@ -2284,8 +2299,8 @@
     },
     {
       "path": "src/online/online-app.js",
-      "bytes": 98334,
-      "sha256": "77628b6b5d6d6e7840161286118b1ffaac30a860485f9683a30aee09481d717f"
+      "bytes": 99248,
+      "sha256": "9317e43b93a60e5207e84f84cd5e3ce4ec2b7d04a5a1b085b491b645c4c13f89"
     },
     {
       "path": "src/online/play-intent.js",
@@ -2530,7 +2545,7 @@
     {
       "path": "src/ui/christmas-domino.js",
       "bytes": 7499,
-      "sha256": "516d3e44aa273092f7f7bd88d594a1ce87d560543f45502be37c68e277f0a0b7"
+      "sha256": "4812d2632959d46d17aa910c194b960a04a6c35321e41ebb8c13b537cc7f40c4"
     },
     {
       "path": "src/ui/christmas-nose.js",
@@ -2559,8 +2574,8 @@
     },
     {
       "path": "src/ui/club-portal.js",
-      "bytes": 46694,
-      "sha256": "2c37af9a9b37242189fe7cac3a54463f4b461eafd03dd45a92f57e549c0bbcbf"
+      "bytes": 46801,
+      "sha256": "4dcc9f3f00508bc4cc3fbac6538321833ea673a8a562872278ac7d36656cdc90"
     },
     {
       "path": "src/ui/connected-members.js",
@@ -2593,9 +2608,24 @@
       "sha256": "1f48314de9d8245d9ab58fe7f51f3fc581474342ed03710d55ff873d2ea27a5b"
     },
     {
+      "path": "src/ui/domino-glide.js",
+      "bytes": 3147,
+      "sha256": "4730d55e326f1426453ebd27ec53e59e1a975f341c66fd9e36ac6ef0a9a0c301"
+    },
+    {
       "path": "src/ui/domino-renderer.js",
       "bytes": 8277,
       "sha256": "52a0682c6205d7c7bac6c506ea7d7191c7a403681d37a217598dac490b8d3931"
+    },
+    {
+      "path": "src/ui/domino-throw-gesture.js",
+      "bytes": 6435,
+      "sha256": "9a09e7eddb4692e962e9c45ec3621c8811decce5bd885b33af0c243dac8d35ef"
+    },
+    {
+      "path": "src/ui/domino-throw.js",
+      "bytes": 7499,
+      "sha256": "2338287f096895ea8fc83ca12c7a82ed77378180bb394c84355577d72f6996cd"
     },
     {
       "path": "src/ui/environment-animator.js",
@@ -2944,8 +2974,8 @@
     },
     {
       "path": "styles/premium-system-v23.css",
-      "bytes": 5187,
-      "sha256": "60d2762849d4e80c552fe33d5015231ff750881714a0bfe4674d36976a48b7b8"
+      "bytes": 5102,
+      "sha256": "a26023af4c0aeb42346d62ef7ada2d55729a053c8510d8f9f55339964de65659"
     },
     {
       "path": "styles/profile-history-v43.css",

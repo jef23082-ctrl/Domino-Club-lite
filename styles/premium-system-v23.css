@@ -40,10 +40,13 @@
   mix-blend-mode:screen;
 }
 .board-domino{filter:drop-shadow(0 .42rem .28rem rgba(0,0,0,.52)) drop-shadow(0 0 .12rem rgba(255,218,126,.16))}
-.board-domino.is-just-played{animation:dominoContactLight .52s cubic-bezier(.2,.8,.25,1) both}
+.board-domino.domino-in-flight{visibility:hidden}
+.domino-throw-flight{pointer-events:none}
+.board-domino.domino-throw-tile{filter:none}
+.domino-throw-portrait{opacity:0!important}
+#casino-stage[data-domino-throw-seat="top"] #seat-top .player-plaque{opacity:0;animation:none!important;transition:opacity 90ms}
 .scene-player-plate[data-render-mode="cutout"]{filter:drop-shadow(0 .45cqw .28cqw rgba(0,0,0,.72)) saturate(1.02)}
 .leader-trophy{filter:drop-shadow(0 .28cqw .2cqw rgba(0,0,0,.82)) drop-shadow(0 0 .24cqw rgba(255,212,105,.24))}
-@keyframes dominoContactLight{0%{opacity:.4;filter:brightness(1.5) drop-shadow(0 .12rem .08rem #0008) drop-shadow(0 0 .65rem #ffe090)}55%{filter:brightness(1.1) drop-shadow(0 .45rem .3rem #0008) drop-shadow(0 0 .22rem #eeb94c)}100%{opacity:1;filter:brightness(1) drop-shadow(0 .42rem .28rem #0008)}}
 
 /* A 440 ms curtain keeps page changes luxurious without delaying navigation. */
 .portal-page-transition{position:absolute;z-index:300;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0;background:#0000}

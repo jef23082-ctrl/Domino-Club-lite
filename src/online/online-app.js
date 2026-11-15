@@ -8,6 +8,8 @@ import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261005T162819119';
 import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20261005T162819119';
 import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20261005T162819119';
 import { renderCharacterPlate } from '../ui/scene-renderer.js?v=58-r15';
+import { createDominoThrow } from '../ui/domino-throw.js?v=59-r2';
+import { prepareThrowGestures } from '../ui/domino-throw-gesture.js?v=59';
 import { createDominoCelebration } from '../ui/domino-celebration.js?v=58-r15';
 import { fadeDominoCue, playDominoCue } from '../ui/domino-audio-cues.js?v=58-r14';
 import { playSound, unlockSound } from '../ui/sound-player.js?v=20261005T162819119';
@@ -33,7 +35,7 @@ import { ServerClock } from '../services/server-clock.js?v=20261005T162819119';
 import { StatsRepository } from '../services/stats-repository.js?v=20261005T162819119';
 import { AdminAccess } from '../services/admin-access.js?v=20261005T162819119';
 import { AdminRepository } from '../services/admin-repository.js?v=58-r7';
-import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=58-r15';
+import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=59';
 import { ClubAnnouncementRepository } from '../services/club-announcement-repository.js?v=20261005T162819119';
 import { RankingPeriodRepository } from '../services/ranking-period-repository.js?v=20261005T162819119';
 import { EnvironmentSettingsRepository } from '../services/environment-settings-repository.js?v=20261005T162819119';
@@ -191,6 +193,18 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   let handVisibility;
   let handContextKey = '';
   let portal;
+  const animations = document.querySelector('#environment-quality');
+  const dominoThrow = createDominoThrow({
+    stage: document.querySelector('#casino-stage'),
+    isVisible: () => Boolean(portal?.isScene && portal.mode === 'domino'),
+    motionPreference: () => animations?.value || 'AUTO',
+    onContact: () => playSound('placement'),
+    onSettled: () => {
+      if (!state.room?.game) return;
+      openingMascot.update(state.room);
+      if (state.room.game.roundStatus === 'ended') renderResult(state.room);
+    }
+  });
   const boudeVerdict = createBoudeVerdict({ stage: document.querySelector('#casino-stage'), onSound: playSound, isVisible: () => Boolean(portal?.isScene), now: () => serverClock.now() });
   const placementEngine = createUniversalPlacementEngine(document.querySelector('#casino-stage'));
   let connection;
@@ -355,6 +369,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   }
 
   function stopRoomBindings() {
+    dominoThrow.reset();
     boudeVerdict.reset();
     clearBoudeLighting(document.querySelector('#casino-stage'));
     state.renderedActionKey = '';
@@ -1137,9 +1152,6 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     if (action.type === 'play') {
       boudeVerdict.reset();
       clearBoudeLighting(document.querySelector('#casino-stage'));
-      const tile = [...document.querySelectorAll('.board-domino')].find(item => item.dataset.tileId === action.tileId);
-      tile?.classList.add('is-just-played');
-      playSound('placement');
     } else if (action.type === 'pass') {
       if (!verdictReadyToStart(action.at, serverClock.now())) return;
       const seatName = seatForPlayer(action.playerId);
@@ -1487,6 +1499,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       image.style.opacity = '1';
       const characterId = characterIdForProfile(player);
       renderCharacterPlate(seatName, characterId);
+      if (characterId === 'thomas') prepareThrowGestures();
       const count = remainingTileCount(room, playerKey(player.playerId));
       const active = room.status === 'playing' && game.roundStatus === 'playing' && String(game.currentTurnId) === String(player.playerId);
       renderPlayerPlaque(seat, {
@@ -1503,8 +1516,15 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     renderTurnCountdown(room, players);
     synchronizeTurnPause();
 
-    renderBoard(document.querySelector('#domino-board'), game.board || { placements: [] });
-    openingMascot.update(room);
+    const board = game.board || { placements: [] };
+    renderBoard(document.querySelector('#domino-board'), board);
+    const throwing = dominoThrow.sync({
+      key: JSON.stringify([room.code, room.matchId, room.matchStartedAt, game.roundNumber]),
+      placements: board.placements || [],
+      seatFor: playerId => seatForPlayer(playerId, room),
+      now: serverClock.now()
+    });
+    if (!throwing) openingMascot.update(room);
     renderSpectators(room);
     const canAct = renderLiveHand(room);
 
@@ -1516,7 +1536,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     state.lastTurnId = String(game.currentTurnId ?? '');
     if (room.status !== 'playing' || game.roundStatus !== 'playing') closeReactionMenu();
     renderLastAction(game);
-    renderResult(room);
+    if (!throwing || game.roundStatus !== 'ended') renderResult(room);
     renderReaction(state.activeReaction);
     ensureResultRecorded(room);
     warmPremiumResources();

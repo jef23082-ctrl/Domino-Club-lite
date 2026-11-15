@@ -43,9 +43,9 @@ function sync(){
   if(portal){
     if(portal.dataset.christmasTreeLights!==lightMode)portal.dataset.christmasTreeLights=lightMode;
     const domino=portal.dataset.mode==='domino';portal.classList.toggle('christmas-domino',domino);
-    const badge=portal.querySelector('.portal-site-version');if(badge&&badge.textContent!==(domino?'V58 NOËL':'V57'))badge.textContent=domino?'V58 NOËL':'V57';
+    const badge=portal.querySelector('.portal-site-version');if(badge&&badge.textContent!==(domino?'V59 NOËL':'V57'))badge.textContent=domino?'V59 NOËL':'V57';
     if(domino){
-      if(!portal.hidden&&document.title.includes('V57'))document.title=document.title.replace('V57','V58 NOËL');
+      if(!portal.hidden&&document.title.includes('V57'))document.title=document.title.replace('V57','V59 NOËL');
       if(!portal.querySelector(':scope > .christmas-tree'))portal.append(ornament('tree',[79,-3,19,45]));
       if(!portal.querySelector(':scope > .christmas-gifts')){const left=ornament('gifts',[1,60,15,17]),right=ornament('gifts',[87,65,12,14]);right.classList.add('christmas-gifts-right');portal.append(left,right);}
       for(const selector of ['.portal-header','.portal-nav']){const target=portal.querySelector(selector);if(target&&!target.querySelector(':scope > .christmas-garland'))target.append(ornament('garland'));}

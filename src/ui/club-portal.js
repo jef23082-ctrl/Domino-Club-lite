@@ -24,7 +24,8 @@ import { createPortalHomeFlag } from './portal-home-flag.js?v=58-r12';
 const avatar = (profile, options) => memberAvatar(profile, { ...options, domino: true });
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
-export const SITE_VERSION='V57';
+export const SITE_VERSION='V59 NOËL';
+const POKER_VERSION='V57';
 export function createClubPortal({ ui, physical, access, stats, admin, chat, poker, announcements, rankingPeriods, identity, canWrite, notify, actions, onData, onLeader }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;
@@ -77,7 +78,8 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     root.dataset.page=next;root.dataset.mode=mode;header.querySelector('h1').textContent=mode==='poker'?'POKER CLUB':'DOMINO CLUB';
     clubInfo.setContext({visible:true,mode});
     header.querySelector('.portal-subtitle').textContent=mode==='poker'?'Le Roi des Fish':'Le Roi du Cochon';
-    document.title=mode==='poker'?`Poker Club — Le Roi des Fish ${SITE_VERSION}`:`Domino Club — Le Roi du Cochon ${SITE_VERSION}`;
+    siteVersion.textContent=mode==='poker'?POKER_VERSION:SITE_VERSION;
+    document.title=mode==='poker'?`Poker Club — Le Roi des Fish ${POKER_VERSION}`:`Domino Club — Le Roi du Cochon ${SITE_VERSION}`;
     modeButton.querySelector('span:last-child').textContent='Poker';
     modeButton.setAttribute('aria-label',mode==='poker'?'Quitter le mode Poker et revenir au Domino':'Passer en mode Poker');
     modeButton.title=mode==='poker'?'Revenir au Domino':'Passer au Poker';

@@ -1,4 +1,6 @@
-Domino Club V58 NOËL — Poker conservé en V57
+Domino Club V59 NOËL — Poker V57
+
+V59 ajoute le lancer des dominos depuis les trois sièges sur les 14 tables. Après le lancer, la pièce glisse jusqu’à la position confirmée par le moteur ou atterrit directement à cet emplacement si l’espace est trop serré. Le réglage « Animations sur cet appareil » permet d’activer le lancer complet.
 
 V56 : les listes Style de salle et Temps par tour reprennent le fond noir texturé d'origine, les lettres jaunes et les contours dorés. Sélecteurs, options et logique conservés. Voir DOMINO-V56.md.
 
