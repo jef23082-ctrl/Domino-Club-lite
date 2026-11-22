@@ -1,7 +1,7 @@
-import { element as el, button, card, avatar as memberAvatar, select, rankingTable } from './club-elements.js?v=58-r15';
+import { element as el, button, card, avatar as memberAvatar, select, rankingTable } from './club-elements.js?v=60';
 import { profileDetails } from '../game/club-state.js?v=20261005T162819119';
 import { averageBlockedWinPoints, historyDescription, formatMatchDate, formatMatchDuration, roomDeletionTarget } from '../online/club-presentation.js?v=20261005T162819119';
-import { roomPlayers } from '../game/room-state.js?v=20261005T162819119';
+import { roomPlayers } from '../game/room-state.js?v=60';
 import { createChatComposer } from './chat-composer.js?v=20261005T162819119';
 import { navigationIcon } from './navigation-icon.js?v=20261005T162819119';
 import { activeRooms, waitingRooms } from '../online/room-activity.js?v=20261005T162819119';
@@ -24,9 +24,9 @@ import { createPortalHomeFlag } from './portal-home-flag.js?v=58-r12';
 const avatar = (profile, options) => memberAvatar(profile, { ...options, domino: true });
 
 const SECTIONS=[['home','Accueil','⌂'],['online','En ligne','◎'],['ranking','Classement','☷'],['profiles','Profils','♙'],['history','Historique','◷'],['admin','Admin','⚙']];
-export const SITE_VERSION='V59 NOËL';
+export const SITE_VERSION='V60 NOËL';
 const POKER_VERSION='V57';
-export function createClubPortal({ ui, physical, access, stats, admin, chat, poker, announcements, rankingPeriods, identity, canWrite, notify, actions, onData, onLeader }) {
+export function createClubPortal({ ui, physical, access, stats, admin, chat, poker, announcements, rankingPeriods, identity, canWrite, notify, actions, onData, onLeader, onHistory }) {
   const app=document.querySelector('#app'), game=document.querySelector('#game-shell');
   const root=el('section','club-portal');root.id='club-portal';root.hidden=true;
   const pageTransition=el('div','portal-page-transition');pageTransition.setAttribute('aria-hidden','true');pageTransition.append(el('i'),el('span'));
@@ -130,7 +130,7 @@ export function createClubPortal({ ui, physical, access, stats, admin, chat, pok
     generalChat=createChatComposer({repository:chat,channel:CLUB_CHAT_CHANNEL,identity:()=>({...identity(),role:'lobby'}),canWrite,notify,audible:()=>!inScene});chatSlot.append(generalChat.root);
     stopData=physical.watch(value=>{const fingerprint=JSON.stringify(value);if(fingerprint===physicalFingerprint)return;physicalFingerprint=fingerprint;data=value;onData?.(value);updateCounts();updateLeader();
       if(page!=='online' && page!=='admin')renderPage();},error=>{dataStatus.textContent=`Chargement impossible : ${error.message}`;});
-    stopStats=stats.watchSummary(value=>{summary=value;updateCounts();updateLeader();const fingerprint=JSON.stringify([value.history,value.stats]);if(fingerprint!==summaryFingerprint){summaryFingerprint=fingerprint;if(['home','ranking','profiles','history'].includes(page)&&!inScene)renderPage();}if(page==='admin'&&access.unlocked)renderOnlineAdmin();},error=>notify(error.message,'error'));
+    stopStats=stats.watchSummary(value=>{summary=value;updateCounts();updateLeader();const fingerprint=JSON.stringify([value.history,value.stats]);if(fingerprint!==summaryFingerprint){summaryFingerprint=fingerprint;onHistory?.(value.history);if(['home','ranking','profiles','history'].includes(page)&&!inScene)renderPage();}if(page==='admin'&&access.unlocked)renderOnlineAdmin();},error=>notify(error.message,'error'));
     stopPeriods=rankingPeriods?.watch(value=>{periods=value;periodsReady=true;if(archivedPeriod&&!periods.archives?.[archivedPeriod])archivedPeriod='';updateLeader();if(['ranking','profiles'].includes(page)&&!inScene)renderPage();},error=>notify(`Archives du classement : ${error.message}`,'error'));
     open('home');
   }

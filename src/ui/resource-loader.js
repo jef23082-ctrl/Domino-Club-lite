@@ -2,7 +2,7 @@ import { PLAYER_ASSETS, hasPlayerCutout, playerAsset, playerCutoutAsset } from '
 import { REACTION_ASSETS, REACTION_PARTICLES, reactionAssetUrl, reactionParticleUrl } from '../config/reaction-assets.js?v=20261005T162819119';
 import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20261005T162819119';
 import { imageSourceSet } from './image-source.js?v=20261005T162819119';
-import { aleksiPose } from '../config/domino-aleksi.js?v=58-r15';
+import { personalizedDominoPose } from '../config/domino-personalized.js?v=60';
 
 const requested = new Map();
 let warmScheduled = false;
@@ -17,7 +17,8 @@ export function roomResourcePlan({ style, seats = [] }) {
   const critical = [ROOM_STYLES[selectedStyle].scene];
   for (const { seat, characterId } of seats) {
     if (!PLAYER_ASSETS[characterId]?.seats?.[seat]) continue;
-    if (characterId === 'alexis') critical.push(aleksiPose(seat));
+    const personalized = personalizedDominoPose(characterId, seat);
+    if (personalized) critical.push(personalized);
     else critical.push(roomLayout(selectedStyle) === 'luxe' && hasPlayerCutout(characterId, seat)
       ? playerCutoutAsset(characterId, seat).src
       : playerAsset(characterId, seat).src);

@@ -1,6 +1,6 @@
 {
-  "version": "v59",
-  "generatedAt": "2026-11-15T17:36:00.428Z",
+  "version": "v60",
+  "generatedAt": "2026-11-22T03:17:21.215Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -11,6 +11,96 @@
       "path": ".nojekyll",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "DOMINO-V39.md",
+      "bytes": 1531,
+      "sha256": "c2adb54c81d9e5ff1abe70715d9e16479ae1d71057692027209d06528dccbc7c"
+    },
+    {
+      "path": "DOMINO-V50.md",
+      "bytes": 3840,
+      "sha256": "eab42f1295431d4aefe2fd13c75d8f5f5ec58158216cbe0e3dc3c82bacbdf2fa"
+    },
+    {
+      "path": "DOMINO-V51.md",
+      "bytes": 2990,
+      "sha256": "3aec6518d8a275bf6fb2dbced73a2812ff7702943e82df1910ec6f813c91868f"
+    },
+    {
+      "path": "DOMINO-V52.md",
+      "bytes": 1764,
+      "sha256": "e836c8abfd375b37435d71873914f40b96ac53a573a87d4b4a7b3979fda8a43f"
+    },
+    {
+      "path": "DOMINO-V53.md",
+      "bytes": 2107,
+      "sha256": "e0fc2da5ea027468cc9644cc6382bfd586ec1d865c7e0c01c5b78ca75e7ea256"
+    },
+    {
+      "path": "DOMINO-V54.md",
+      "bytes": 2265,
+      "sha256": "59f10251bde297f6e1f128dfb23251fbd27ad0fbb969c2274cf56f594121b871"
+    },
+    {
+      "path": "DOMINO-V55.md",
+      "bytes": 4293,
+      "sha256": "db26f1a75c378ae58b9448b06d93d2fbc4f32e1c2146d8687dac2042160d39f1"
+    },
+    {
+      "path": "DOMINO-V56.md",
+      "bytes": 1534,
+      "sha256": "39c13b5f4a857f70851a86d38bfcc97ddb337b50c1b0d0843f9311cd686e7498"
+    },
+    {
+      "path": "DOMINO-V57.md",
+      "bytes": 3312,
+      "sha256": "ebc30fba38a329f5609ba01a291f94271dfde42dd1686b5363f8d84bded71c99"
+    },
+    {
+      "path": "DOMINO-V58-NOEL.md",
+      "bytes": 8330,
+      "sha256": "dcc7dec730156af8dc67abf33ef5fd861c3dc118efeb37c3a3c5221432fc36a0"
+    },
+    {
+      "path": "LISEZ-MOI.txt",
+      "bytes": 27845,
+      "sha256": "7b8c5cbeb89a5c5f49c1bafc6742a9f8a69351de88e2c3a382a539190ba6516c"
+    },
+    {
+      "path": "POKER-V27.md",
+      "bytes": 1622,
+      "sha256": "9a1f45f33d621a8260d50a5274be55cd856f29441b1c33f60a83bd6af08443cc"
+    },
+    {
+      "path": "POKER-V28.md",
+      "bytes": 947,
+      "sha256": "8b0f60bb0e5e89d2497e729a717aec0436083d30631cc395a0d805ba7a60031d"
+    },
+    {
+      "path": "POKER-V29.md",
+      "bytes": 1160,
+      "sha256": "fade464c352b42ee21dc13ffc22142bb7a90e3ee05218d75c3dd31a917094cc3"
+    },
+    {
+      "path": "POKER-V30.md",
+      "bytes": 2823,
+      "sha256": "cb4558be102e40ac1547788b7b9f787e517c0d91444cde6e93258bdbd27fe720"
+    },
+    {
+      "path": "POKER-V31.md",
+      "bytes": 5091,
+      "sha256": "ff5b1ad5a9dff209603766a77492be9d9f8afdfb9e065c444740c70677feaf44"
+    },
+    {
+      "path": "README.md",
+      "bytes": 18,
+      "sha256": "ca460fe987ecea972d44cb8a6b81265c313a076edb00648627ef0007f8467180"
+    },
+    {
+      "path": "assets/audio/PIG-CREDITS.md",
+      "bytes": 982,
+      "sha256": "710387d38a8655b8e6b5ca86e06b9f867acdbe87c965819121f4f79a86b04167"
     },
     {
       "path": "assets/audio/cnoel.mp3",
@@ -31,11 +121,6 @@
       "path": "assets/audio/musique3.mp3",
       "bytes": 2810357,
       "sha256": "e4d84ed7652a5ddd73fff472fc9f3c96dd0bc20ba53fd3876e3f834e83e036e6"
-    },
-    {
-      "path": "assets/audio/PIG-CREDITS.md",
-      "bytes": 982,
-      "sha256": "710387d38a8655b8e6b5ca86e06b9f867acdbe87c965819121f4f79a86b04167"
     },
     {
       "path": "assets/audio/pig-grunt-erdie.ogg",
@@ -63,14 +148,19 @@
       "sha256": "5dbf4885ac33a6fad476f778fea063fa4ae9b456b8a843a4507b85c340191a23"
     },
     {
+      "path": "assets/christmas/v58/domino/audio/README.md",
+      "bytes": 470,
+      "sha256": "ff6c7acef366567001c348f1a461fbc6298d2e57adf94df24e00e8c9d645a596"
+    },
+    {
       "path": "assets/christmas/v58/domino/audio/nose-christmas-r2.wav",
       "bytes": 229364,
       "sha256": "50aa28795cb51b094849462e93e1ab756a6e70ff1575d693802563d523d342b6"
     },
     {
-      "path": "assets/christmas/v58/domino/audio/README.md",
-      "bytes": 470,
-      "sha256": "ff6c7acef366567001c348f1a461fbc6298d2e57adf94df24e00e8c9d645a596"
+      "path": "assets/christmas/v58/domino/flags/CREDITS.md",
+      "bytes": 1993,
+      "sha256": "40423de59589266e887813433e9bfc9d79c30e7d83fd441631eeeac5a10e1418"
     },
     {
       "path": "assets/christmas/v58/domino/flags/algeria.png",
@@ -86,11 +176,6 @@
       "path": "assets/christmas/v58/domino/flags/corsica.png",
       "bytes": 21239,
       "sha256": "2876340220c1bb74a29c11182718f74a957df6a49b7a915fdc789b34aa39caaa"
-    },
-    {
-      "path": "assets/christmas/v58/domino/flags/CREDITS.md",
-      "bytes": 1993,
-      "sha256": "40423de59589266e887813433e9bfc9d79c30e7d83fd441631eeeac5a10e1418"
     },
     {
       "path": "assets/christmas/v58/domino/flags/france.png",
@@ -1193,6 +1278,51 @@
       "sha256": "51206ae6fa1767058db6341f3918ae836f67ff0e8a9c8b1e63b261a665aa50d3"
     },
     {
+      "path": "assets/players-personalized-v60/ryad/ryad-left-applause.webp",
+      "bytes": 37086,
+      "sha256": "268b03d9d350b95aae15fa0ff99dabf78420d41bad1f088b9072c69b07176d40"
+    },
+    {
+      "path": "assets/players-personalized-v60/ryad/ryad-left-neutral.webp",
+      "bytes": 42426,
+      "sha256": "e12cb6d2996c4036fc018bff951c9d6722a24d685218f2482fabdc02457bd55b"
+    },
+    {
+      "path": "assets/players-personalized-v60/ryad/ryad-left-trophy.webp",
+      "bytes": 49380,
+      "sha256": "b3d376baa125986257759d7c7b3a9356db44ec6dfcfed602ffd8ede9759ba393"
+    },
+    {
+      "path": "assets/players-personalized-v60/ryad/ryad-right-applause.webp",
+      "bytes": 35022,
+      "sha256": "bedd453e574fc16e35fba09a1d534d90455f1ae5e027ff00aa51debc73364b43"
+    },
+    {
+      "path": "assets/players-personalized-v60/ryad/ryad-right-neutral.webp",
+      "bytes": 43156,
+      "sha256": "3250bc2feaefbf0e65acc926e8e07ff7b4daed0c2f1e77c75efd7175de7977c4"
+    },
+    {
+      "path": "assets/players-personalized-v60/ryad/ryad-right-trophy.webp",
+      "bytes": 50740,
+      "sha256": "c0d57796fc61d4bd286470233ee1cd5663465f82b151df0a532f4c9cedf0558b"
+    },
+    {
+      "path": "assets/players-personalized-v60/ryad/ryad-top-applause.webp",
+      "bytes": 35020,
+      "sha256": "44e0d7ca8a95ab0c70d6bbc59feb49931be880756f093bbff591cfa9d00d619d"
+    },
+    {
+      "path": "assets/players-personalized-v60/ryad/ryad-top-neutral.webp",
+      "bytes": 27478,
+      "sha256": "c0c65a3b774d0a8cd46eafa443b3114c5011e3be3113a0f4a3bed389b93fbf66"
+    },
+    {
+      "path": "assets/players-personalized-v60/ryad/ryad-top-trophy.webp",
+      "bytes": 50304,
+      "sha256": "ca6e4edb095cc1b31d879e3b13b70198586cfc1e27f6f354fbe58902aa802922"
+    },
+    {
       "path": "assets/players/alexis/alexis-left-scene-v1.png",
       "bytes": 1842202,
       "sha256": "da7d01a69f9d7970c2c80d1e15c2f5415035d4981accd449307b559ba7fd9f72"
@@ -1493,6 +1623,16 @@
       "sha256": "016c8598de90ca7b9e6c5a0420ae28e436d5c6c9e0ee88ac6bbed07326f004b3"
     },
     {
+      "path": "assets/poker-v27/README.md",
+      "bytes": 1847,
+      "sha256": "f8abfb621dc5e95abf5ce2583b9701758ed2ec00b3b1ce19c0779887b346a324"
+    },
+    {
+      "path": "assets/poker-v27/cards/LICENSE",
+      "bytes": 1095,
+      "sha256": "fe677a80c2b4ff84c482d46903cde46df6920636061e28779e9248a38b90b832"
+    },
+    {
       "path": "assets/poker-v27/cards/jack_of_clubs.svg",
       "bytes": 460477,
       "sha256": "bcc2997dce357462ed367d7ffca91ba6d73441b6e49614d17b112658ee9f1434"
@@ -1531,11 +1671,6 @@
       "path": "assets/poker-v27/cards/king_of_spades.svg",
       "bytes": 410382,
       "sha256": "5902f595c43d78096b9a053bf8f7f7ca24646c1c887b3b6b5b685416907d81e5"
-    },
-    {
-      "path": "assets/poker-v27/cards/LICENSE",
-      "bytes": 1095,
-      "sha256": "fe677a80c2b4ff84c482d46903cde46df6920636061e28779e9248a38b90b832"
     },
     {
       "path": "assets/poker-v27/cards/queen_of_clubs.svg",
@@ -1603,11 +1738,6 @@
       "sha256": "0b553964d2709b62c1a085c52a126806e991eb6a40a5855613331e9ded05b37a"
     },
     {
-      "path": "assets/poker-v27/README.md",
-      "bytes": 1847,
-      "sha256": "f8abfb621dc5e95abf5ce2583b9701758ed2ec00b3b1ce19c0779887b346a324"
-    },
-    {
       "path": "assets/poker-v27/room.png",
       "bytes": 2088848,
       "sha256": "04ef062ce12c0f79d5238d96e1e4e527c5c84f53782fc7c56c45c07f79e09821"
@@ -1616,6 +1746,11 @@
       "path": "assets/poker-v27/room.webp",
       "bytes": 1553124,
       "sha256": "780ff1c523694655b30ea2c6121c0eae6c1b8f605c166a8987e846c5af0419d8"
+    },
+    {
+      "path": "assets/poker-v29/README.md",
+      "bytes": 5273,
+      "sha256": "b8d31c968ebc7dfd0fc22572885132708ba77f7075bfafbc75469d81c9f0ff62"
     },
     {
       "path": "assets/poker-v29/back.png",
@@ -1656,11 +1791,6 @@
       "path": "assets/poker-v29/queen.webp",
       "bytes": 2375432,
       "sha256": "513a0891f9426e47a67ff6c6221b779a5101d3f21873ccc33a36eb32cd6c7834"
-    },
-    {
-      "path": "assets/poker-v29/README.md",
-      "bytes": 5273,
-      "sha256": "b8d31c968ebc7dfd0fc22572885132708ba77f7075bfafbc75469d81c9f0ff62"
     },
     {
       "path": "assets/poker-v29/stock.png",
@@ -1741,6 +1871,31 @@
       "path": "assets/portraits-v54/thomas-background.png",
       "bytes": 2652281,
       "sha256": "f6f44ba892bbe8e7153488103e5aa7d8f6efdc9d214d2c44076488527a3b332a"
+    },
+    {
+      "path": "assets/royal-pig-v60/lever.webm",
+      "bytes": 3757953,
+      "sha256": "14a018d4bbc0188efef400cac3f64131a60d6887d63d600974d6b9a947488df0"
+    },
+    {
+      "path": "assets/royal-pig-v60/marcher.webm",
+      "bytes": 8751585,
+      "sha256": "4dfda8e4d4a98b83d30f2cc7192b543df786596f20c92e75e854be0eb4d08286"
+    },
+    {
+      "path": "assets/royal-pig-v60/royal-pig-still.webp",
+      "bytes": 501020,
+      "sha256": "e76191ee8a005152c6320b9e303f0157a88a8b992df8b0ff3421922b15143ffa"
+    },
+    {
+      "path": "assets/royal-pig-v60/royal-pig.webm",
+      "bytes": 8809953,
+      "sha256": "cbe2493ac1059317a418e5e33b6642d6fa65b61858fccdd9de54aeb494e1c3ef"
+    },
+    {
+      "path": "assets/royal-pig-v60/trinquer.webm",
+      "bytes": 1125861,
+      "sha256": "ab13a09e8b4530ec4c9d1f19165786f1bca8d61a78f072620f804ebe3eaefaab"
     },
     {
       "path": "assets/scene/casino-base-v1.png",
@@ -2088,94 +2243,9 @@
       "sha256": "52f82f57b29d886231440a76965e0f3d51d35bf9f4d1abb63bd3acae5f441699"
     },
     {
-      "path": "DOMINO-V39.md",
-      "bytes": 1531,
-      "sha256": "c2adb54c81d9e5ff1abe70715d9e16479ae1d71057692027209d06528dccbc7c"
-    },
-    {
-      "path": "DOMINO-V50.md",
-      "bytes": 3840,
-      "sha256": "eab42f1295431d4aefe2fd13c75d8f5f5ec58158216cbe0e3dc3c82bacbdf2fa"
-    },
-    {
-      "path": "DOMINO-V51.md",
-      "bytes": 2990,
-      "sha256": "3aec6518d8a275bf6fb2dbced73a2812ff7702943e82df1910ec6f813c91868f"
-    },
-    {
-      "path": "DOMINO-V52.md",
-      "bytes": 1764,
-      "sha256": "e836c8abfd375b37435d71873914f40b96ac53a573a87d4b4a7b3979fda8a43f"
-    },
-    {
-      "path": "DOMINO-V53.md",
-      "bytes": 2107,
-      "sha256": "e0fc2da5ea027468cc9644cc6382bfd586ec1d865c7e0c01c5b78ca75e7ea256"
-    },
-    {
-      "path": "DOMINO-V54.md",
-      "bytes": 2265,
-      "sha256": "59f10251bde297f6e1f128dfb23251fbd27ad0fbb969c2274cf56f594121b871"
-    },
-    {
-      "path": "DOMINO-V55.md",
-      "bytes": 4293,
-      "sha256": "db26f1a75c378ae58b9448b06d93d2fbc4f32e1c2146d8687dac2042160d39f1"
-    },
-    {
-      "path": "DOMINO-V56.md",
-      "bytes": 1534,
-      "sha256": "39c13b5f4a857f70851a86d38bfcc97ddb337b50c1b0d0843f9311cd686e7498"
-    },
-    {
-      "path": "DOMINO-V57.md",
-      "bytes": 3312,
-      "sha256": "ebc30fba38a329f5609ba01a291f94271dfde42dd1686b5363f8d84bded71c99"
-    },
-    {
-      "path": "DOMINO-V58-NOEL.md",
-      "bytes": 8330,
-      "sha256": "dcc7dec730156af8dc67abf33ef5fd861c3dc118efeb37c3a3c5221432fc36a0"
-    },
-    {
       "path": "index.html",
-      "bytes": 18318,
-      "sha256": "7b309892b7977146c9bd50ea5b183bae1dadb2c989db99588629f0b3de068857"
-    },
-    {
-      "path": "LISEZ-MOI.txt",
-      "bytes": 27397,
-      "sha256": "15c63dded89bcd24f32aa1a948f53cd45349aee4585b15cb1bdd9d354c31e064"
-    },
-    {
-      "path": "POKER-V27.md",
-      "bytes": 1622,
-      "sha256": "9a1f45f33d621a8260d50a5274be55cd856f29441b1c33f60a83bd6af08443cc"
-    },
-    {
-      "path": "POKER-V28.md",
-      "bytes": 947,
-      "sha256": "8b0f60bb0e5e89d2497e729a717aec0436083d30631cc395a0d805ba7a60031d"
-    },
-    {
-      "path": "POKER-V29.md",
-      "bytes": 1160,
-      "sha256": "fade464c352b42ee21dc13ffc22142bb7a90e3ee05218d75c3dd31a917094cc3"
-    },
-    {
-      "path": "POKER-V30.md",
-      "bytes": 2823,
-      "sha256": "cb4558be102e40ac1547788b7b9f787e517c0d91444cde6e93258bdbd27fe720"
-    },
-    {
-      "path": "POKER-V31.md",
-      "bytes": 5091,
-      "sha256": "ff5b1ad5a9dff209603766a77492be9d9f8afdfb9e065c444740c70677feaf44"
-    },
-    {
-      "path": "README.md",
-      "bytes": 18,
-      "sha256": "ca460fe987ecea972d44cb8a6b81265c313a076edb00648627ef0007f8467180"
+      "bytes": 18381,
+      "sha256": "d378ab08ec6389f59746b1db8988917d52cf65551020224f560d1020a0461f5e"
     },
     {
       "path": "src/config/christmas.js",
@@ -2196,6 +2266,11 @@
       "path": "src/config/domino-environments.js",
       "bytes": 5879,
       "sha256": "a5f7fd155b41428231191830e4e4d39b5fc9f6136f10ed587d9fe5055d7e1010"
+    },
+    {
+      "path": "src/config/domino-personalized.js",
+      "bytes": 332,
+      "sha256": "a49277bec15d0bd47d20324c536bac2d7b2e170fbbdc4b2d8752eae471ac1f63"
     },
     {
       "path": "src/config/firebase.js",
@@ -2244,13 +2319,13 @@
     },
     {
       "path": "src/game/engine.js",
-      "bytes": 20979,
-      "sha256": "6eb1c5e62b871752fba023ba60206ca1a9460e729395bdd5d891d6d2dab5518b"
+      "bytes": 21155,
+      "sha256": "03b8a8d1c3db6114118b587f41ad2bc248ea380c68a8a2985eb95d992243c4d9"
     },
     {
       "path": "src/game/online-stats.js",
-      "bytes": 3422,
-      "sha256": "64832be98c3aae1570a5cb0a022bd225280e45530b049c2673d32d7a78722b41"
+      "bytes": 3576,
+      "sha256": "5d252939dff6cbec8e870d36eb9d97bdddc7da7852c95066ae3a48d3a67cb2d7"
     },
     {
       "path": "src/game/room-machine.js",
@@ -2264,18 +2339,18 @@
     },
     {
       "path": "src/game/room-state.js",
-      "bytes": 18748,
-      "sha256": "6add8709f9577ef093575424a0ae71629aa430cc76c7673787570f3d330e6c9f"
+      "bytes": 19405,
+      "sha256": "c5f9d2d679986d061a87dd8d5cbac386bf90a685b517819e0e7d4f56bd97c4dc"
     },
     {
       "path": "src/game/round-transition.js",
-      "bytes": 3440,
-      "sha256": "5a6640ebf325e7741744cf7557ae152727307312d0d5fcaad0dcb77bca627a3e"
+      "bytes": 3437,
+      "sha256": "f1b150283d1d224764597c7bf51d1fd7ad87220585f0bd07331084ace9a039c2"
     },
     {
       "path": "src/main.js",
-      "bytes": 163,
-      "sha256": "ed23ecc584d0879097cd5836f77a6f2dffceb1c8d71a76ca3f71a3be43545952"
+      "bytes": 160,
+      "sha256": "0a7e4fe588821439fd3ce1f6104cf816e08fcc04bf62ffd17ce1f4ca96bab1be"
     },
     {
       "path": "src/online/club-presentation.js",
@@ -2299,8 +2374,8 @@
     },
     {
       "path": "src/online/online-app.js",
-      "bytes": 99248,
-      "sha256": "9317e43b93a60e5207e84f84cd5e3ce4ec2b7d04a5a1b085b491b645c4c13f89"
+      "bytes": 100261,
+      "sha256": "9520e05a4fa495ee37a6286b8f81ef141f7396a41c5e45663fc30ab78d06618f"
     },
     {
       "path": "src/online/play-intent.js",
@@ -2339,8 +2414,8 @@
     },
     {
       "path": "src/online/round-transition-controller.js",
-      "bytes": 7909,
-      "sha256": "4f9de68564c8bb3dae711836ed53b71254deb780eace2fe7f408443569f40392"
+      "bytes": 7887,
+      "sha256": "cbe524cec317877efe020cf156386fbf5fc9b4a3c1111569ed36352ad6a2706b"
     },
     {
       "path": "src/online/seat-order.js",
@@ -2381,6 +2456,41 @@
       "path": "src/poker/poker-table-styles.js",
       "bytes": 846,
       "sha256": "c372f80a4833fc35769818df3803a5a9c9173ef48a8783c2019a28b78e4b9306"
+    },
+    {
+      "path": "src/royal-pig/catalog.js",
+      "bytes": 2006,
+      "sha256": "2163090c37a4ca9b8fc77097f2799cd3e6d9afc9046f73ece17da8f130378139"
+    },
+    {
+      "path": "src/royal-pig/royal-pig.js",
+      "bytes": 16955,
+      "sha256": "f87aa5cfad417a937480b857bb4ed40d181bb6bf7d8f8b1fd74d2393898b3f56"
+    },
+    {
+      "path": "src/royal-pig/scene-signals.js",
+      "bytes": 10775,
+      "sha256": "41dcd1c8c671d1f45fa3fa7a2eda24a6d3648151d9a70779d18a1468d06d0108"
+    },
+    {
+      "path": "src/royal-pig/stat-signals.js",
+      "bytes": 23074,
+      "sha256": "49195bffa49599344d22fc311d73f948e5477255383674fb3c738fd1baf94e4b"
+    },
+    {
+      "path": "src/royal-pig/stats-lines.js",
+      "bytes": 24149,
+      "sha256": "c35d85c5c6d109144d51248eda6583245a55c5f7037dc49d924f2dce4d3e7b8d"
+    },
+    {
+      "path": "src/royal-pig/table-events.js",
+      "bytes": 8720,
+      "sha256": "be990e226ac7eaf8c208d10b9461b0cdda8abfac8c4c32c9b7def332a680a7c5"
+    },
+    {
+      "path": "src/royal-pig/table-lines.js",
+      "bytes": 40979,
+      "sha256": "78908c9014fb97c1b3a172e843f54f02c6ddf076b871cccfe72cd76bce0bc251"
     },
     {
       "path": "src/services/admin-access.js",
@@ -2454,8 +2564,8 @@
     },
     {
       "path": "src/services/online-records.js",
-      "bytes": 2522,
-      "sha256": "32eedebdf0152cefe9e1275a8d3d2a28228d9dde0681dfebc60efd35cc244a94"
+      "bytes": 2490,
+      "sha256": "0f00deef81a009603e15fe100007dde486e8e6367f278da54b484a8c8dd207ad"
     },
     {
       "path": "src/services/physical-club-repository.js",
@@ -2494,8 +2604,8 @@
     },
     {
       "path": "src/services/room-repository.js",
-      "bytes": 13799,
-      "sha256": "6c18f7c8de6a798c37ceee6a3129b021af2bf7dbed23488c6f9d2f18e4a1f7e8"
+      "bytes": 13776,
+      "sha256": "762178fc5bc741b530a8165c2d84c4bb2a68134c16d6aeec3b28f7c2d05bc5f8"
     },
     {
       "path": "src/services/server-clock.js",
@@ -2514,8 +2624,8 @@
     },
     {
       "path": "src/services/stats-repository.js",
-      "bytes": 1518,
-      "sha256": "506100ab5d98d441c3e68d7c741cac07c37c39b910bb42656d5efe65dca93bab"
+      "bytes": 1502,
+      "sha256": "7c9e1d0dd480eaa1c7c0d9a7ec5bbe569b430c7d8d9f34f3a0b1145413e170ed"
     },
     {
       "path": "src/ui/app-shell.js",
@@ -2545,7 +2655,7 @@
     {
       "path": "src/ui/christmas-domino.js",
       "bytes": 7499,
-      "sha256": "4812d2632959d46d17aa910c194b960a04a6c35321e41ebb8c13b537cc7f40c4"
+      "sha256": "d8663a77905c5278674ab6c92aa645b3b306303145da4e034e796475f8314aba"
     },
     {
       "path": "src/ui/christmas-nose.js",
@@ -2564,8 +2674,8 @@
     },
     {
       "path": "src/ui/club-elements.js",
-      "bytes": 6031,
-      "sha256": "dab664d4e7ef5b0ea0c2b11a2e8a468c6edd96b21a7e5b3ab7b9bdf50897de19"
+      "bytes": 6093,
+      "sha256": "d312225d8aced188f25c9d38579a800def9b07fd406cb8a5d5a51e84fc8c5c6b"
     },
     {
       "path": "src/ui/club-info-ticker.js",
@@ -2574,8 +2684,8 @@
     },
     {
       "path": "src/ui/club-portal.js",
-      "bytes": 46801,
-      "sha256": "4dcc9f3f00508bc4cc3fbac6538321833ea673a8a562872278ac7d36656cdc90"
+      "bytes": 46819,
+      "sha256": "0c578014609879bbc045eaaaae1c11018875b7c09c27b43b699f44cbe87c014f"
     },
     {
       "path": "src/ui/connected-members.js",
@@ -2599,8 +2709,8 @@
     },
     {
       "path": "src/ui/domino-celebration.js",
-      "bytes": 4643,
-      "sha256": "520542999824c0c1c9bef73ab75b5df8bb232b25605499ef928d594ace427342"
+      "bytes": 4721,
+      "sha256": "57c3ef6118c30ea333e1774461c4a1145a98d9d8473f612922ab750147d6dfce"
     },
     {
       "path": "src/ui/domino-environment.js",
@@ -2754,8 +2864,8 @@
     },
     {
       "path": "src/ui/resource-loader.js",
-      "bytes": 3508,
-      "sha256": "9b27af7ebbb08064d6234b145e77e97dd672706afadfad62d3bdc93c25fe0b34"
+      "bytes": 3574,
+      "sha256": "eed8d845e5ad58119fc20659b98942aaf020231e70103a6050dba845d9a9f0e0"
     },
     {
       "path": "src/ui/room-cancel-dialog.js",
@@ -2769,8 +2879,8 @@
     },
     {
       "path": "src/ui/scene-renderer.js",
-      "bytes": 1566,
-      "sha256": "0136c2fba2271c863afda1fe37c7d214205fb150409087fbf07a73192de52aa9"
+      "bytes": 1579,
+      "sha256": "43e5063309be503c66bd628dcc24f4d70d7f94c43a424ed188654b892b7d90f1"
     },
     {
       "path": "src/ui/sound-player.js",
@@ -2996,6 +3106,11 @@
       "path": "styles/room-pickers-v56.css",
       "bytes": 2634,
       "sha256": "07b3f07fbf487cc791440468c2bbcf194cc671e23089a90976aaa35916307253"
+    },
+    {
+      "path": "styles/royal-pig-v60.css",
+      "bytes": 2745,
+      "sha256": "3b04618e261434855858a28c7a446c9acd2b0cd8cac2628e61617905ce91b8a4"
     },
     {
       "path": "styles/table-layout.css",

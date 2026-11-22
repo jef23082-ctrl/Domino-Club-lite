@@ -571,6 +571,7 @@ export function finishRoundInRoom(room, winnerId, cause, details = {}, at = now(
     remainingHands,
     lastTileId,
     scores: { ...game.roundWins },
+    ...(game.turnLog?.length && !game.turnLogPartial ? { turnLog: game.turnLog } : {}),
     at
   });
   const playerIds = game.playerOrder || [];
@@ -624,6 +625,7 @@ export function cancelRoundInRoom(room, reason, handPointTotals = {}, at = now()
     remainingHands,
     lastTileId: null,
     scores: { ...(game.roundWins || {}) },
+    ...(game.turnLog?.length && !game.turnLogPartial ? { turnLog: game.turnLog } : {}),
     at
   });
   game.lastAction = { type: 'round-annulled', reason, at };

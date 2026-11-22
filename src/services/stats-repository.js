@@ -1,5 +1,5 @@
 import { FIREBASE_PATHS } from '../config/firebase.js?v=20261005T162819119';
-import { historyRecordFromRoom } from '../game/online-stats.js?v=20261005T162819119';
+import { historyRecordFromRoom } from '../game/online-stats.js?v=60';
 import { addRecordToStats, validFirebaseKey, visibleHistory } from './online-records.js?v=20261005T162819119';
 
 export class StatsRepository {

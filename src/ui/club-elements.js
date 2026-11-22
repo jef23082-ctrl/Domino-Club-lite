@@ -7,7 +7,7 @@ import { PORTRAIT_BACKGROUNDS } from '../config/portrait-assets.js?v=20261005T16
 import { syncPlayerMedallion } from './player-medallion.js?v=20261005T162819119';
 import { paginate } from './pagination.js?v=20261005T162819119';
 import { createPremiumCrown, createPremiumPig } from './premium-symbols.js?v=20261005T162819119';
-import { aleksiPose } from '../config/domino-aleksi.js?v=58-r15';
+import { personalizedDominoPose } from '../config/domino-personalized.js?v=60';
 export function element(tag, className = '', text) {
   const node = document.createElement(tag); node.className = className;
   if (text !== undefined) node.textContent = displayName(text);
@@ -24,8 +24,8 @@ export function avatar(profile, { portrait = true, domino = false } = {}) {
   if (portrait && known) {
     const image = element('img', 'portal-character-portrait');
     const background=PORTRAIT_BACKGROUNDS[known];
-    image.src = domino && known === 'alexis' ? aleksiPose('top')
-      : background&&hasPlayerCutout(known,'top')?playerCutoutAsset(known,'top').src:PLAYER_ASSETS[known].seats.top;
+    const personalized = domino ? personalizedDominoPose(known, 'top') : null;
+    image.src = personalized || (background && hasPlayerCutout(known, 'top') ? playerCutoutAsset(known, 'top').src : PLAYER_ASSETS[known].seats.top);
     image.dataset.characterId=known;
     if(background){box.style.backgroundImage=`url("${background}")`;box.style.backgroundSize='cover';box.style.backgroundPosition='center';box.style.backgroundRepeat='no-repeat';}
     image.alt = displayName(profile.name); image.loading = 'lazy'; image.decoding = 'async';

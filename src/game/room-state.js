@@ -10,7 +10,7 @@ import {
   playerKey,
   roundWinReadyAt,
   validSides
-} from './engine.js?v=58-r14';
+} from './engine.js?v=60';
 import { ROOM_PHASE, synchronizeRoomPhase, transitionRoom } from './room-machine.js?v=20261005T162819119';
 import { ROOM_STYLES } from '../config/room-styles.js?v=20261005T162819119';
 import { normalizeDominoTrackIndex } from '../config/domino-audio.js?v=58-r8';
@@ -292,7 +292,15 @@ export function cancelRoomInState(room, { clientToken, playerId, creatorName, ex
   return room;
 }
 
-export function playTileInRoom(room, { playerId, tileId, side, at = Date.now() }) {
+function rememberTurn(game, playerId, kind, at, automatic) {
+  const clock = game.turnClock;
+  const remaining = clock && String(clock.turnId) === String(playerId) ? Number(clock.deadlineAt) - at : NaN;
+  game.turnLog ??= [];
+  if (['play', 'pass'].includes(game.lastAction?.type) && game.turnLog.at(-1)?.at !== game.lastAction.at) game.turnLogPartial = true;
+  game.turnLog.push({ playerId, kind, at, automatic, remainingMs: Number.isFinite(remaining) ? remaining : null });
+}
+
+export function playTileInRoom(room, { playerId, tileId, side, at = Date.now(), automatic = false }) {
   rule(room?.status === 'playing' && room.game?.roundStatus === 'playing', 'La manche n’est pas active.', 'round-inactive');
   const game = room.game;
   rule(!game.turnClock?.paused, 'La partie est en pause pendant le travail d’un joueur.', 'game-paused');
@@ -308,6 +316,7 @@ export function playTileInRoom(room, { playerId, tileId, side, at = Date.now() }
   );
   rule(validSides(tileId, board).includes(side), 'Ce domino ne peut pas être joué de ce côté.', 'invalid-side');
 
+  rememberTurn(game, playerId, 'play', at, automatic);
   game.hands[handKey] = hand.filter(id => id !== tileId);
   placeTile(board, tileId, side, playerId, at);
   game.forcedOpeningTileId = null;
@@ -323,13 +332,14 @@ export function playTileInRoom(room, { playerId, tileId, side, at = Date.now() }
   return room;
 }
 
-export function passTurnInRoom(room, { playerId, at = Date.now() }) {
+export function passTurnInRoom(room, { playerId, at = Date.now(), automatic = false }) {
   rule(room?.status === 'playing' && room.game?.roundStatus === 'playing', 'La manche n’est pas active.', 'round-inactive');
   const game = room.game;
   rule(!game.turnClock?.paused, 'La partie est en pause pendant le travail d’un joueur.', 'game-paused');
   rule(String(game.currentTurnId) === String(playerId), 'Ce n’est pas ton tour.', 'wrong-turn');
   rule(!hasPlayableTile(game, playerId), 'Tu possèdes au moins un domino jouable.', 'playable-tile');
 
+  rememberTurn(game, playerId, 'pass', at, automatic);
   game.consecutivePasses = Number(game.consecutivePasses || 0) + 1;
   game.lastAction = { type: 'pass', playerId, at };
   if (game.consecutivePasses >= (game.playerOrder || []).length) {
@@ -397,7 +407,7 @@ export function timeoutTurnInRoom(room, { expectedTurnId, at = Date.now(), rando
     ? hand.filter(tileId => tileId === game.forcedOpeningTileId)
     : hand.filter(tileId => validSides(tileId, game.board).length > 0);
   if (!candidates.length) {
-    passTurnInRoom(room, { playerId: turnId, at });
+    passTurnInRoom(room, { playerId: turnId, at, automatic: true });
     game.lastAction.auto = true;
     game.lastAction.reason = 'timeout';
     return room;
@@ -405,7 +415,7 @@ export function timeoutTurnInRoom(room, { expectedTurnId, at = Date.now(), rando
   const tileId = candidates[Math.max(0, Math.min(candidates.length - 1, Number(randomIndex(candidates.length)) || 0))];
   const sides = validSides(tileId, game.board);
   const side = sides[Math.max(0, Math.min(sides.length - 1, Number(randomIndex(sides.length)) || 0))];
-  playTileInRoom(room, { playerId: turnId, tileId, side, at });
+  playTileInRoom(room, { playerId: turnId, tileId, side, at, automatic: true });
   game.lastAction.auto = true;
   game.lastAction.reason = 'timeout';
   return room;

@@ -1,0 +1,89 @@
+#casino-stage > .royal-pig-v60 {
+  position: absolute;
+  left: -.25%;
+  bottom: -1.2%;
+  width: 17.5%;
+  aspect-ratio: 912 / 816;
+  z-index: 3;
+  pointer-events: none;
+}
+.royal-pig-v60 > video { position: absolute; width: 100%; height: auto; pointer-events: none; }
+.royal-pig-v60 > video:nth-child(2) { display: none; width: 147.37%; left: -5.26%; top: -15.69%; }
+.royal-pig-v60[data-gesture] > video:nth-child(2) { display: block; }
+.royal-pig-v60[data-gesture] > video:first-child { visibility: hidden; }
+.royal-pig-v60__nose {
+  position: absolute;
+  inset: 26% auto auto 28%;
+  width: 25%;
+  height: 24%;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.royal-pig-v60__nose:focus-visible { outline: 2px solid #ffe6a3; }
+#casino-stage > .royal-pig-v60__bubble {
+  position: absolute;
+  left: 16%;
+  bottom: 6%;
+  z-index: 6;
+  box-sizing: border-box;
+  max-width: 15.4%;
+  margin: 0;
+  padding: .6cqw .85cqw;
+  border: 1px solid #d8a958;
+  border-radius: .85cqw;
+  background: linear-gradient(145deg, #2d1c0ef5, #18170ef7);
+  box-shadow: 0 0 .6cqw #efb65c42, 0 .18cqw .55cqw #090603b0;
+  color: #fff0c8;
+  text-align: center;
+  font: italic 650 clamp(9px, 1.14cqw, 19px)/1.24 Georgia, serif;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+#casino-stage > .royal-pig-v60__bubble[data-long] { font-size: clamp(8px, .98cqw, 16px); }
+#casino-stage:has(.online-result-card) > .royal-pig-v60__bubble { visibility: hidden; }
+.royal-pig-v60__bubble--below {
+  position: fixed;
+  z-index: 8;
+  left: .7rem;
+  max-width: min(85vw, 22rem);
+  margin: 0;
+  padding: .4rem .65rem;
+  border: 1px solid #d8a958;
+  border-radius: .45rem;
+  background: #21190e;
+  color: #fff0c8;
+  font: italic 650 14px/1.25 Georgia, serif;
+  pointer-events: none;
+}
+.royal-pig-v60__bubble::after {
+  content: '';
+  position: absolute;
+  left: -.32cqw;
+  top: 44%;
+  width: .62cqw;
+  height: .62cqw;
+  border-left: 1px solid #d8a958;
+  border-bottom: 1px solid #d8a958;
+  background: #21190e;
+  transform: rotate(45deg);
+}
+.royal-pig-v60__bubble--below::after {
+  left: 1rem;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  border-bottom: 0;
+  border-top: 1px solid #d8a958;
+}
+@media (max-width: 760px), (max-height: 500px) {
+  #casino-stage > .royal-pig-v60 { width: 14.5%; }
+  #casino-stage:has(.royal-pig-v60) .player-seat--left .turn-countdown { min-width: 0; width: max(5cqw, 18px); }
+  #casino-stage > .royal-pig-v60__bubble { bottom: 2.3%; padding: 3px; max-width: 15.4%; }
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  #casino-stage:has(.royal-pig-v60) .player-seat--left .turn-countdown { translate: -50% -100%; }
+  #casino-stage > .royal-pig-v60__bubble { bottom: 2%; font-size: 7.5px; }
+}

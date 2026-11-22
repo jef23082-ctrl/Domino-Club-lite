@@ -1,13 +1,15 @@
 import { PLAYER_CUTOUT_ORDER } from '../config/player-assets.js?v=20261005T162819119';
 import { DOMINO_FIREWORK_TIMES, runDominoCelebrationEffects } from './domino-celebration-effects.js?v=58-r7';
 import * as sound from './sound-player.js?v=20261005T162819119';
-import { aleksiPose } from '../config/domino-aleksi.js?v=58-r15';
+import { personalizedDominoPose } from '../config/domino-personalized.js?v=60';
 
 const assets = new URL('../../assets/v58-celebrations/', import.meta.url);
 const source = file => new URL(file, assets).href;
-const pose = (characterId, seat, kind) => characterId === 'alexis'
-  ? new URL(aleksiPose(seat, kind), document.baseURI).href
-  : source(`poses/${characterId}-${seat}-${kind}.webp`);
+const pose = (characterId, seat, kind) => {
+  const personalized = personalizedDominoPose(characterId, seat, kind);
+  return personalized ? new URL(personalized, document.baseURI).href
+    : source(`poses/${characterId}-${seat}-${kind}.webp`);
+};
 const supported = characterId => PLAYER_CUTOUT_ORDER.includes(characterId);
 
 export function createDominoCelebration(stage) {

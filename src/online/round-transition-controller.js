@@ -1,7 +1,7 @@
 import { createRoundAdvanceRequest } from './round-advance.js?v=20261005T162819119';
-import { roomPlayers } from '../game/room-state.js?v=20261005T162819119';
-import { roundWinReadyAt } from '../game/engine.js?v=58-r7';
-import { roundTransitionConfirmed, roundTransitionMatches, roundTransitionId } from '../game/round-transition.js?v=58-r7';
+import { roomPlayers } from '../game/room-state.js?v=60';
+import { roundWinReadyAt } from '../game/engine.js?v=60';
+import { roundTransitionConfirmed, roundTransitionMatches, roundTransitionId } from '../game/round-transition.js?v=60';
 
 const TERMINAL = new Set(['player-not-seated', 'stale-match', 'stale-result', 'room-not-found']);
 

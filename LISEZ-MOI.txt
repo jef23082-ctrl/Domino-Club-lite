@@ -1,4 +1,6 @@
-Domino Club V59 NOËL — Poker V57
+Domino Club V60 NOËL — Poker V57
+
+V60 intègre le cochon royal et ses 240 situations nominatives dans les parties Domino. Les annonces de résultat et d’historique attendent le début d’une manche où le cochon est visible. Les statistiques reposent sur les résultats enregistrés. Les indicateurs de tempo, de passes et de format utilisent les nouvelles données complètes disponibles dans cet historique. Les neuf poses de Ryad sont personnalisées d’après sa vidéo.
 
 V59 ajoute le lancer des dominos depuis les trois sièges sur les 14 tables. Après le lancer, la pièce glisse jusqu’à la position confirmée par le moteur ou atterrit directement à cet emplacement si l’espace est trop serré. Le réglage « Animations sur cet appareil » permet d’activer le lancer complet.
 

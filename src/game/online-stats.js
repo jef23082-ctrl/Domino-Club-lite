@@ -1,4 +1,4 @@
-import { playerKey } from './engine.js?v=20261005T162819119';
+import { playerKey } from './engine.js?v=60';
 
 export function victories(stat) {
   return Number(stat?.victories ?? stat?.gamesWon ?? 0);
@@ -80,6 +80,8 @@ export function historyRecordFromRoom(room, at = Date.now()) {
     roomCode: room.code,
     startedAt: room.matchStartedAt || room.createdAt || at,
     endedAt: room.endedAt || at,
+    ...(typeof room.style === 'string' ? { style: room.style } : {}),
+    ...(Number.isFinite(room.turnTimerSeconds) ? { turnTimerSeconds: room.turnTimerSeconds } : {}),
     players: players.map(player => ({
       playerId: player.playerId,
       name: player.name,

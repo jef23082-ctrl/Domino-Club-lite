@@ -1,5 +1,5 @@
-import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=58-r7';
-import { canCancelRoom, normalizeTurnTimerSeconds, roomPlayers, TURN_TIMER_OPTIONS } from '../game/room-state.js?v=58-r14';
+import { handPoints, hasPlayableTile, playerKey, validSides } from '../game/engine.js?v=60';
+import { canCancelRoom, normalizeTurnTimerSeconds, roomPlayers, TURN_TIMER_OPTIONS } from '../game/room-state.js?v=60';
 import { roomActor, isRoomHost } from '../game/room-membership.js?v=20261005T162819119';
 import { isRoomCancellationModerator } from '../config/room-cancellation.js?v=20261005T162819119';
 import { ROOM_STYLES, roomStyle, roomLayout } from '../config/room-styles.js?v=20261005T162819119';
@@ -7,10 +7,10 @@ import { applyRoomStyle } from '../ui/room-style.js?v=20261005T162819119';
 import { PLAYER_ASSETS } from '../config/player-assets.js?v=20261005T162819119';
 import { OPPONENT_REACTIONS, SELF_EMOTIONS } from '../config/reactions.js?v=20261005T162819119';
 import { createPremiumDomino, renderBoard, renderHand, renderOpponentRack, renderPlayerPlaque, renderPlayerWorkStatus } from '../ui/domino-renderer.js?v=20261005T162819119';
-import { renderCharacterPlate } from '../ui/scene-renderer.js?v=58-r15';
+import { renderCharacterPlate } from '../ui/scene-renderer.js?v=60';
 import { createDominoThrow } from '../ui/domino-throw.js?v=59-r2';
 import { prepareThrowGestures } from '../ui/domino-throw-gesture.js?v=59';
-import { createDominoCelebration } from '../ui/domino-celebration.js?v=58-r15';
+import { createDominoCelebration } from '../ui/domino-celebration.js?v=60';
 import { fadeDominoCue, playDominoCue } from '../ui/domino-audio-cues.js?v=58-r14';
 import { playSound, unlockSound } from '../ui/sound-player.js?v=20261005T162819119';
 import { createBoudeVerdict, verdictReadyToStart } from '../ui/boude-verdict.js?v=20261005T162819119';
@@ -28,14 +28,14 @@ import { authenticateProfile } from '../services/profile-auth.js?v=20261005T1628
 import { PresenceService } from '../services/presence-service.js?v=20261005T162819119';
 import { ProfileRepository } from '../services/profile-repository.js?v=20261005T162819119';
 import { REACTION_COOLDOWN, REACTION_DURATION, ReactionRepository } from '../services/reaction-repository.js?v=20261005T162819119';
-import { RoomRepository, roomCommandFrame } from '../services/room-repository.js?v=58-r14';
+import { RoomRepository, roomCommandFrame } from '../services/room-repository.js?v=60';
 import { SessionStore } from '../services/session-store.js?v=20261005T162819119';
 import { SpectatorService } from '../services/spectator-service.js?v=20261005T162819119';
 import { ServerClock } from '../services/server-clock.js?v=20261005T162819119';
-import { StatsRepository } from '../services/stats-repository.js?v=20261005T162819119';
+import { StatsRepository } from '../services/stats-repository.js?v=60';
 import { AdminAccess } from '../services/admin-access.js?v=20261005T162819119';
 import { AdminRepository } from '../services/admin-repository.js?v=58-r7';
-import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=59';
+import { createClubPortal, SITE_VERSION } from '../ui/club-portal.js?v=60';
 import { ClubAnnouncementRepository } from '../services/club-announcement-repository.js?v=20261005T162819119';
 import { RankingPeriodRepository } from '../services/ranking-period-repository.js?v=20261005T162819119';
 import { EnvironmentSettingsRepository } from '../services/environment-settings-repository.js?v=20261005T162819119';
@@ -50,16 +50,18 @@ import { CLOCKWISE_SEATS as SEATS, seatedPlayers } from './seat-order.js?v=20261
 import { displayName } from './display-name.js?v=20261005T162819119';
 import { createRoundGate, roundGateKey, roundGateRemaining } from './round-gate.js?v=58-r7';
 import { RoundTransitionController } from './round-transition-controller.js?v=58-r7';
-import { avatar as memberAvatar } from '../ui/club-elements.js?v=58-r15';
+import { avatar as memberAvatar } from '../ui/club-elements.js?v=60';
 import { reactionPicker } from '../ui/reaction-picker.js?v=20261005T162819119';
 import { confirmRoomCancellation } from '../ui/room-cancel-dialog.js?v=20261005T162819119';
 import { requestAppFullscreen } from '../ui/app-shell.js?v=20261005T162819119';
 import { createUniversalPlacementEngine, placeSeatOverlay, placeUniversalOverlay } from '../ui/overlay-layout.js?v=20261005T162819119';
-import { preloadRoomResources, warmPremiumResources } from '../ui/resource-loader.js?v=58-r15';
+import { preloadRoomResources, warmPremiumResources } from '../ui/resource-loader.js?v=60';
 import { applyEventLighting, clearBoudeLighting, pulseBoudeLighting } from '../ui/event-lighting.js?v=20261005T162819119';
 import { applyInteractionFormat } from '../ui/interaction-format.js?v=20261005T162819119';
 import { muteLoungeMusic, primeLoungeMusic, selectLoungeTrack, setLoungeTrackAuthority, synchronizeLoungeMusic } from '../ui/lounge-music.js?v=20261005T162819119';
 import { createPremiumCrown, createPremiumPig } from '../ui/premium-symbols.js?v=20261005T162819119';
+import { createRoyalPig } from '../royal-pig/royal-pig.js?v=60';
+import { isChristmasTable } from '../config/christmas.js?v=58-r2';
 import { createOpeningMascot } from '../ui/opening-mascot.js?v=58-r16';
 import { createLeaderTrophy } from '../ui/leader-trophy.js?v=20261005T162819119';
 import { loungeTitle } from './lounge-name.js?v=20261005T162819119';
@@ -166,7 +168,6 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       const input=ui.content.querySelector('input[type="password"]');if(input)input.value='';
     }
   });
-  const openingMascot = createOpeningMascot({ stage: document.querySelector('#casino-stage'), shell: document.querySelector('#game-shell'), notify: message => toast(message) });
   const leaderTrophy = createLeaderTrophy({ stage: document.querySelector('#casino-stage'), onSound: playSound });
   const dominoCelebration = createDominoCelebration(document.querySelector('#casino-stage'));
   const state = {
@@ -194,6 +195,17 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
   let handContextKey = '';
   let portal;
   const animations = document.querySelector('#environment-quality');
+  const scene = document.querySelector('#casino-stage');
+  const seasonalMascot = createOpeningMascot({ stage: scene, shell: document.querySelector('#game-shell'), notify: message => toast(message) });
+  const royalPig = createRoyalPig(scene, {
+    isVisible: () => Boolean(portal?.isScene && portal.mode === 'domino' && state.role === 'player' && !scene.querySelector('.christmas-sleigh:not([hidden])')),
+    getLocalPlayer: () => state.networkProfile?.id,
+    getClock: () => serverClock.now(),
+    onNose: () => playDominoCue('nose'),
+    getWorking: () => roomPlayers(state.room).find(player=>playerIsWorking(player.playerId))?.playerId,
+    motionPreference: () => animations?.value || 'AUTO',
+    isHoliday: isChristmasTable
+  });
   const dominoThrow = createDominoThrow({
     stage: document.querySelector('#casino-stage'),
     isVisible: () => Boolean(portal?.isScene && portal.mode === 'domino'),
@@ -201,7 +213,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     onContact: () => playSound('placement'),
     onSettled: () => {
       if (!state.room?.game) return;
-      openingMascot.update(state.room);
+      if (isChristmasTable(state.room.style)) seasonalMascot.update(state.room);
       if (state.room.game.roundStatus === 'ended') renderResult(state.room);
     }
   });
@@ -373,7 +385,8 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     boudeVerdict.reset();
     clearBoudeLighting(document.querySelector('#casino-stage'));
     state.renderedActionKey = '';
-    openingMascot.reset();
+    royalPig.reset();
+    seasonalMascot.reset();
     leaderTrophy.reset();
     dominoCelebration.clear();
     document.querySelector('#casino-stage').removeAttribute('data-work-hands-hidden');
@@ -524,6 +537,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     }, error => toast(error.message, 'error'));
     if (!state.stopPresence) state.stopPresence = repositories.presence.watch(value => {
       state.presences = value; portal?.update(state);
+      royalPig.presence(value);
       if (state.view === 'lobby') setStatus('');
       if (state.view === 'waiting' && portal?.page === 'online') renderWaitingRoom();
       if (state.view === 'playing') {
@@ -728,6 +742,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     state.stopChat?.();
     const messages = new Map();
     const container = document.querySelector('.chat-messages');
+    let greetedChat = false;
     container.replaceChildren();
     state.chatBoundAt = Date.now();
     const render = () => {
@@ -741,6 +756,10 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       added: message => {
         messages.set(message.id, message);
         render();
+        if (!greetedChat && Number(message.createdAt || 0) >= state.chatBoundAt - 800) {
+          const sender = roomPlayers(state.room).find(person => person.token === message.senderToken);
+          if (sender) { royalPig.signal(192, sender.playerId); greetedChat = true; }
+        }
         if (!document.querySelector('#game-shell').hidden && Number(message.createdAt || 0) >= state.chatBoundAt - 800 && message.senderToken !== state.clientToken) {
           playSound('message');
           container.dispatchEvent(new CustomEvent('scene-chat-message', { bubbles: true }));
@@ -1409,7 +1428,6 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     document.querySelector('#play-right').classList.toggle('is-dual-choice', dualChoice);
     document.querySelector('#pass-button').disabled = !canAct || hasPlayableTile(game, me?.playerId);
     document.querySelector('#pass-button').hidden = room?.status !== 'playing' || game.roundStatus !== 'playing';
-    openingMascot.select({tileId: state.selectedTileId, playable: Boolean(state.selectedTileId && tileIntent(game, state.selectedTileId).playable), active: canAct});
     return canAct;
   }
 
@@ -1524,7 +1542,6 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
       seatFor: playerId => seatForPlayer(playerId, room),
       now: serverClock.now()
     });
-    if (!throwing) openingMascot.update(room);
     renderSpectators(room);
     const canAct = renderLiveHand(room);
 
@@ -1537,6 +1554,8 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     if (room.status !== 'playing' || game.roundStatus !== 'playing') closeReactionMenu();
     renderLastAction(game);
     if (!throwing || game.roundStatus !== 'ended') renderResult(room);
+    if (isChristmasTable(room.style) && !throwing) seasonalMascot.update(room);
+    royalPig.sync(room);
     renderReaction(state.activeReaction);
     ensureResultRecorded(room);
     warmPremiumResources();
@@ -1620,6 +1639,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
         toast('Cette session rejoint la table comme spectateur.');
       }
       if (room.status === 'waiting') {
+        royalPig.waiting(room);
         const waitingPlayers = seatedPlayers(room, state.leaderPlayerId);
         preloadRoomResources({
           style: room.style,
@@ -1840,7 +1860,7 @@ export async function initOnlineApp({ runtime: suppliedRuntime = null, session: 
     const poker = createPokerApp({ database: runtime.database, identity: () => ({ profile: state.networkProfile, clientToken: state.clientToken }),
       getLeaderId: () => state.leaderPlayerId, getProfiles: () => state.profiles, access: adminAccess,
       canWrite, notify: toast, now: () => serverClock.now() });
-    portal = createClubPortal({ ui, physical, access: adminAccess, stats: repositories.stats, admin, chat: repositories.chat, poker, announcements,rankingPeriods:new RankingPeriodRepository(runtime.database),
+    portal = createClubPortal({ ui, physical, access: adminAccess, stats: repositories.stats, admin, chat: repositories.chat, poker, announcements,rankingPeriods:new RankingPeriodRepository(runtime.database), onHistory: royalPig.history,
       identity: () => ({ profile: state.networkProfile, clientToken: state.clientToken, role: state.role }), canWrite, notify: toast,
       onData: value => { state.profiles = value.players; },
       onLeader: leader => {

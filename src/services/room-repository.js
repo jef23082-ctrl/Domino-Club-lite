@@ -15,16 +15,16 @@ import {
   startRematchInRoom,
   startNextRoundInRoom,
   timeoutTurnInRoom
-} from '../game/room-state.js?v=58-r14';
+} from '../game/room-state.js?v=60';
 import { randomId } from './ids.js?v=20261005T162819119';
 import { liveTransaction } from './live-transaction.js?v=20261005T162819119';
 import { conditionalRoomWrite } from './conditional-room-write.js?v=20261005T162819119';
-import { queueRoundTransition, commitRoundTransition } from '../game/round-transition.js?v=58-r7';
+import { queueRoundTransition, commitRoundTransition } from '../game/round-transition.js?v=60';
 import { createLoungeName } from '../online/lounge-name.js?v=20261005T162819119';
 import { DEFAULT_ENVIRONMENT } from '../config/domino-environments.js?v=20261005T162819119';
 import { knownCharacterIdForProfile } from '../online/profile-map.js?v=20261005T162819119';
 import { boundedOperation } from './bounded-operation.js?v=20261005T162819119';
-import { playerKey } from '../game/engine.js?v=20261005T162819119';
+import { playerKey } from '../game/engine.js?v=60';
 
 export const roomCommandFrame=room=>JSON.stringify([room?.matchId||'',room?.game?.roundNumber,room?.game?.currentTurnId,room?.game?.lastAction?.at,room?.game?.turnClock?.revision]);
 

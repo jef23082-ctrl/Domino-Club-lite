@@ -1,4 +1,4 @@
-import { GameRuleError, roomPlayers, startNextRoundInRoom } from './room-state.js?v=58-r7';
+import { GameRuleError, roomPlayers, startNextRoundInRoom } from './room-state.js?v=60';
 
 // One durable command per result, stored WITH the room, not in a second relay.
 // Its identity never depends on a tab token, host, DOM node or countdown.
