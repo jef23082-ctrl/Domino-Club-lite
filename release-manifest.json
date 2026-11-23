@@ -1,6 +1,6 @@
 {
-  "version": "v60",
-  "generatedAt": "2026-11-22T03:17:21.215Z",
+  "version": "v60-christopher",
+  "generatedAt": "2026-11-23T22:11:46.062Z",
   "files": [
     {
       "path": ".gitattributes",
@@ -11,96 +11,6 @@
       "path": ".nojekyll",
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "DOMINO-V39.md",
-      "bytes": 1531,
-      "sha256": "c2adb54c81d9e5ff1abe70715d9e16479ae1d71057692027209d06528dccbc7c"
-    },
-    {
-      "path": "DOMINO-V50.md",
-      "bytes": 3840,
-      "sha256": "eab42f1295431d4aefe2fd13c75d8f5f5ec58158216cbe0e3dc3c82bacbdf2fa"
-    },
-    {
-      "path": "DOMINO-V51.md",
-      "bytes": 2990,
-      "sha256": "3aec6518d8a275bf6fb2dbced73a2812ff7702943e82df1910ec6f813c91868f"
-    },
-    {
-      "path": "DOMINO-V52.md",
-      "bytes": 1764,
-      "sha256": "e836c8abfd375b37435d71873914f40b96ac53a573a87d4b4a7b3979fda8a43f"
-    },
-    {
-      "path": "DOMINO-V53.md",
-      "bytes": 2107,
-      "sha256": "e0fc2da5ea027468cc9644cc6382bfd586ec1d865c7e0c01c5b78ca75e7ea256"
-    },
-    {
-      "path": "DOMINO-V54.md",
-      "bytes": 2265,
-      "sha256": "59f10251bde297f6e1f128dfb23251fbd27ad0fbb969c2274cf56f594121b871"
-    },
-    {
-      "path": "DOMINO-V55.md",
-      "bytes": 4293,
-      "sha256": "db26f1a75c378ae58b9448b06d93d2fbc4f32e1c2146d8687dac2042160d39f1"
-    },
-    {
-      "path": "DOMINO-V56.md",
-      "bytes": 1534,
-      "sha256": "39c13b5f4a857f70851a86d38bfcc97ddb337b50c1b0d0843f9311cd686e7498"
-    },
-    {
-      "path": "DOMINO-V57.md",
-      "bytes": 3312,
-      "sha256": "ebc30fba38a329f5609ba01a291f94271dfde42dd1686b5363f8d84bded71c99"
-    },
-    {
-      "path": "DOMINO-V58-NOEL.md",
-      "bytes": 8330,
-      "sha256": "dcc7dec730156af8dc67abf33ef5fd861c3dc118efeb37c3a3c5221432fc36a0"
-    },
-    {
-      "path": "LISEZ-MOI.txt",
-      "bytes": 27845,
-      "sha256": "7b8c5cbeb89a5c5f49c1bafc6742a9f8a69351de88e2c3a382a539190ba6516c"
-    },
-    {
-      "path": "POKER-V27.md",
-      "bytes": 1622,
-      "sha256": "9a1f45f33d621a8260d50a5274be55cd856f29441b1c33f60a83bd6af08443cc"
-    },
-    {
-      "path": "POKER-V28.md",
-      "bytes": 947,
-      "sha256": "8b0f60bb0e5e89d2497e729a717aec0436083d30631cc395a0d805ba7a60031d"
-    },
-    {
-      "path": "POKER-V29.md",
-      "bytes": 1160,
-      "sha256": "fade464c352b42ee21dc13ffc22142bb7a90e3ee05218d75c3dd31a917094cc3"
-    },
-    {
-      "path": "POKER-V30.md",
-      "bytes": 2823,
-      "sha256": "cb4558be102e40ac1547788b7b9f787e517c0d91444cde6e93258bdbd27fe720"
-    },
-    {
-      "path": "POKER-V31.md",
-      "bytes": 5091,
-      "sha256": "ff5b1ad5a9dff209603766a77492be9d9f8afdfb9e065c444740c70677feaf44"
-    },
-    {
-      "path": "README.md",
-      "bytes": 18,
-      "sha256": "ca460fe987ecea972d44cb8a6b81265c313a076edb00648627ef0007f8467180"
-    },
-    {
-      "path": "assets/audio/PIG-CREDITS.md",
-      "bytes": 982,
-      "sha256": "710387d38a8655b8e6b5ca86e06b9f867acdbe87c965819121f4f79a86b04167"
     },
     {
       "path": "assets/audio/cnoel.mp3",
@@ -121,6 +31,11 @@
       "path": "assets/audio/musique3.mp3",
       "bytes": 2810357,
       "sha256": "e4d84ed7652a5ddd73fff472fc9f3c96dd0bc20ba53fd3876e3f834e83e036e6"
+    },
+    {
+      "path": "assets/audio/PIG-CREDITS.md",
+      "bytes": 982,
+      "sha256": "710387d38a8655b8e6b5ca86e06b9f867acdbe87c965819121f4f79a86b04167"
     },
     {
       "path": "assets/audio/pig-grunt-erdie.ogg",
@@ -148,19 +63,14 @@
       "sha256": "5dbf4885ac33a6fad476f778fea063fa4ae9b456b8a843a4507b85c340191a23"
     },
     {
-      "path": "assets/christmas/v58/domino/audio/README.md",
-      "bytes": 470,
-      "sha256": "ff6c7acef366567001c348f1a461fbc6298d2e57adf94df24e00e8c9d645a596"
-    },
-    {
       "path": "assets/christmas/v58/domino/audio/nose-christmas-r2.wav",
       "bytes": 229364,
       "sha256": "50aa28795cb51b094849462e93e1ab756a6e70ff1575d693802563d523d342b6"
     },
     {
-      "path": "assets/christmas/v58/domino/flags/CREDITS.md",
-      "bytes": 1993,
-      "sha256": "40423de59589266e887813433e9bfc9d79c30e7d83fd441631eeeac5a10e1418"
+      "path": "assets/christmas/v58/domino/audio/README.md",
+      "bytes": 470,
+      "sha256": "ff6c7acef366567001c348f1a461fbc6298d2e57adf94df24e00e8c9d645a596"
     },
     {
       "path": "assets/christmas/v58/domino/flags/algeria.png",
@@ -176,6 +86,11 @@
       "path": "assets/christmas/v58/domino/flags/corsica.png",
       "bytes": 21239,
       "sha256": "2876340220c1bb74a29c11182718f74a957df6a49b7a915fdc789b34aa39caaa"
+    },
+    {
+      "path": "assets/christmas/v58/domino/flags/CREDITS.md",
+      "bytes": 1993,
+      "sha256": "40423de59589266e887813433e9bfc9d79c30e7d83fd441631eeeac5a10e1418"
     },
     {
       "path": "assets/christmas/v58/domino/flags/france.png",
@@ -1278,6 +1193,51 @@
       "sha256": "51206ae6fa1767058db6341f3918ae836f67ff0e8a9c8b1e63b261a665aa50d3"
     },
     {
+      "path": "assets/players-personalized-v60/christopher/christopher-left-applause.webp",
+      "bytes": 141574,
+      "sha256": "296d3c194b4a3f26cd3db91e4e98fa5049c1ed762aa7461e7887e541cb68b33e"
+    },
+    {
+      "path": "assets/players-personalized-v60/christopher/christopher-left-neutral.webp",
+      "bytes": 105130,
+      "sha256": "da2f2b31ed95b0660e97d13080e3f9910fc00cd76ec971b3958cb80a1eae714d"
+    },
+    {
+      "path": "assets/players-personalized-v60/christopher/christopher-left-trophy.webp",
+      "bytes": 178262,
+      "sha256": "d6271b4330b4d051855a7022bb5283da2a67a9cd64c80dca0e54a33864d8b26c"
+    },
+    {
+      "path": "assets/players-personalized-v60/christopher/christopher-right-applause.webp",
+      "bytes": 142392,
+      "sha256": "9b7f1e4c67c71adce69e040e35013e16f22c2bb533219c82f0ddec55e84c8667"
+    },
+    {
+      "path": "assets/players-personalized-v60/christopher/christopher-right-neutral.webp",
+      "bytes": 99328,
+      "sha256": "15ef73e946d965dd17ccbac03b6cbd29e22a2139d979b0b87476bf13143692dc"
+    },
+    {
+      "path": "assets/players-personalized-v60/christopher/christopher-right-trophy.webp",
+      "bytes": 182676,
+      "sha256": "06d6451d33e365d89e583c3b8e11c4e83421d25aff6996f1f26069d0e17a9446"
+    },
+    {
+      "path": "assets/players-personalized-v60/christopher/christopher-top-applause.webp",
+      "bytes": 142956,
+      "sha256": "3ceb485113c08f18cadc8efc00dba49771c54c231876245c1a50862a8f609a05"
+    },
+    {
+      "path": "assets/players-personalized-v60/christopher/christopher-top-neutral.webp",
+      "bytes": 59724,
+      "sha256": "2b95b16e201eedb6c5a1ff8ef1b76e31ea896dd911854d36678bdf3247b98704"
+    },
+    {
+      "path": "assets/players-personalized-v60/christopher/christopher-top-trophy.webp",
+      "bytes": 184546,
+      "sha256": "c387ce9af379d4242a30230d398230e149d73aa0f36de75b40848cd200f3eb85"
+    },
+    {
       "path": "assets/players-personalized-v60/ryad/ryad-left-applause.webp",
       "bytes": 37086,
       "sha256": "268b03d9d350b95aae15fa0ff99dabf78420d41bad1f088b9072c69b07176d40"
@@ -1623,16 +1583,6 @@
       "sha256": "016c8598de90ca7b9e6c5a0420ae28e436d5c6c9e0ee88ac6bbed07326f004b3"
     },
     {
-      "path": "assets/poker-v27/README.md",
-      "bytes": 1847,
-      "sha256": "f8abfb621dc5e95abf5ce2583b9701758ed2ec00b3b1ce19c0779887b346a324"
-    },
-    {
-      "path": "assets/poker-v27/cards/LICENSE",
-      "bytes": 1095,
-      "sha256": "fe677a80c2b4ff84c482d46903cde46df6920636061e28779e9248a38b90b832"
-    },
-    {
       "path": "assets/poker-v27/cards/jack_of_clubs.svg",
       "bytes": 460477,
       "sha256": "bcc2997dce357462ed367d7ffca91ba6d73441b6e49614d17b112658ee9f1434"
@@ -1671,6 +1621,11 @@
       "path": "assets/poker-v27/cards/king_of_spades.svg",
       "bytes": 410382,
       "sha256": "5902f595c43d78096b9a053bf8f7f7ca24646c1c887b3b6b5b685416907d81e5"
+    },
+    {
+      "path": "assets/poker-v27/cards/LICENSE",
+      "bytes": 1095,
+      "sha256": "fe677a80c2b4ff84c482d46903cde46df6920636061e28779e9248a38b90b832"
     },
     {
       "path": "assets/poker-v27/cards/queen_of_clubs.svg",
@@ -1738,6 +1693,11 @@
       "sha256": "0b553964d2709b62c1a085c52a126806e991eb6a40a5855613331e9ded05b37a"
     },
     {
+      "path": "assets/poker-v27/README.md",
+      "bytes": 1847,
+      "sha256": "f8abfb621dc5e95abf5ce2583b9701758ed2ec00b3b1ce19c0779887b346a324"
+    },
+    {
       "path": "assets/poker-v27/room.png",
       "bytes": 2088848,
       "sha256": "04ef062ce12c0f79d5238d96e1e4e527c5c84f53782fc7c56c45c07f79e09821"
@@ -1746,11 +1706,6 @@
       "path": "assets/poker-v27/room.webp",
       "bytes": 1553124,
       "sha256": "780ff1c523694655b30ea2c6121c0eae6c1b8f605c166a8987e846c5af0419d8"
-    },
-    {
-      "path": "assets/poker-v29/README.md",
-      "bytes": 5273,
-      "sha256": "b8d31c968ebc7dfd0fc22572885132708ba77f7075bfafbc75469d81c9f0ff62"
     },
     {
       "path": "assets/poker-v29/back.png",
@@ -1791,6 +1746,11 @@
       "path": "assets/poker-v29/queen.webp",
       "bytes": 2375432,
       "sha256": "513a0891f9426e47a67ff6c6221b779a5101d3f21873ccc33a36eb32cd6c7834"
+    },
+    {
+      "path": "assets/poker-v29/README.md",
+      "bytes": 5273,
+      "sha256": "b8d31c968ebc7dfd0fc22572885132708ba77f7075bfafbc75469d81c9f0ff62"
     },
     {
       "path": "assets/poker-v29/stock.png",
@@ -2243,9 +2203,94 @@
       "sha256": "52f82f57b29d886231440a76965e0f3d51d35bf9f4d1abb63bd3acae5f441699"
     },
     {
+      "path": "DOMINO-V39.md",
+      "bytes": 1531,
+      "sha256": "c2adb54c81d9e5ff1abe70715d9e16479ae1d71057692027209d06528dccbc7c"
+    },
+    {
+      "path": "DOMINO-V50.md",
+      "bytes": 3840,
+      "sha256": "eab42f1295431d4aefe2fd13c75d8f5f5ec58158216cbe0e3dc3c82bacbdf2fa"
+    },
+    {
+      "path": "DOMINO-V51.md",
+      "bytes": 2990,
+      "sha256": "3aec6518d8a275bf6fb2dbced73a2812ff7702943e82df1910ec6f813c91868f"
+    },
+    {
+      "path": "DOMINO-V52.md",
+      "bytes": 1764,
+      "sha256": "e836c8abfd375b37435d71873914f40b96ac53a573a87d4b4a7b3979fda8a43f"
+    },
+    {
+      "path": "DOMINO-V53.md",
+      "bytes": 2107,
+      "sha256": "e0fc2da5ea027468cc9644cc6382bfd586ec1d865c7e0c01c5b78ca75e7ea256"
+    },
+    {
+      "path": "DOMINO-V54.md",
+      "bytes": 2265,
+      "sha256": "59f10251bde297f6e1f128dfb23251fbd27ad0fbb969c2274cf56f594121b871"
+    },
+    {
+      "path": "DOMINO-V55.md",
+      "bytes": 4293,
+      "sha256": "db26f1a75c378ae58b9448b06d93d2fbc4f32e1c2146d8687dac2042160d39f1"
+    },
+    {
+      "path": "DOMINO-V56.md",
+      "bytes": 1534,
+      "sha256": "39c13b5f4a857f70851a86d38bfcc97ddb337b50c1b0d0843f9311cd686e7498"
+    },
+    {
+      "path": "DOMINO-V57.md",
+      "bytes": 3312,
+      "sha256": "ebc30fba38a329f5609ba01a291f94271dfde42dd1686b5363f8d84bded71c99"
+    },
+    {
+      "path": "DOMINO-V58-NOEL.md",
+      "bytes": 8330,
+      "sha256": "dcc7dec730156af8dc67abf33ef5fd861c3dc118efeb37c3a3c5221432fc36a0"
+    },
+    {
       "path": "index.html",
       "bytes": 18381,
       "sha256": "d378ab08ec6389f59746b1db8988917d52cf65551020224f560d1020a0461f5e"
+    },
+    {
+      "path": "LISEZ-MOI.txt",
+      "bytes": 27845,
+      "sha256": "7b8c5cbeb89a5c5f49c1bafc6742a9f8a69351de88e2c3a382a539190ba6516c"
+    },
+    {
+      "path": "POKER-V27.md",
+      "bytes": 1622,
+      "sha256": "9a1f45f33d621a8260d50a5274be55cd856f29441b1c33f60a83bd6af08443cc"
+    },
+    {
+      "path": "POKER-V28.md",
+      "bytes": 947,
+      "sha256": "8b0f60bb0e5e89d2497e729a717aec0436083d30631cc395a0d805ba7a60031d"
+    },
+    {
+      "path": "POKER-V29.md",
+      "bytes": 1160,
+      "sha256": "fade464c352b42ee21dc13ffc22142bb7a90e3ee05218d75c3dd31a917094cc3"
+    },
+    {
+      "path": "POKER-V30.md",
+      "bytes": 2823,
+      "sha256": "cb4558be102e40ac1547788b7b9f787e517c0d91444cde6e93258bdbd27fe720"
+    },
+    {
+      "path": "POKER-V31.md",
+      "bytes": 5091,
+      "sha256": "ff5b1ad5a9dff209603766a77492be9d9f8afdfb9e065c444740c70677feaf44"
+    },
+    {
+      "path": "README.md",
+      "bytes": 18,
+      "sha256": "ca460fe987ecea972d44cb8a6b81265c313a076edb00648627ef0007f8467180"
     },
     {
       "path": "src/config/christmas.js",
@@ -2269,8 +2314,8 @@
     },
     {
       "path": "src/config/domino-personalized.js",
-      "bytes": 332,
-      "sha256": "a49277bec15d0bd47d20324c536bac2d7b2e170fbbdc4b2d8752eae471ac1f63"
+      "bytes": 458,
+      "sha256": "d2be4fee1ef76142482b955f169f7f596a4bd06137da7d958c524bb41da409c0"
     },
     {
       "path": "src/config/firebase.js",
